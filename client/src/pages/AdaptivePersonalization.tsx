@@ -1,155 +1,35 @@
-/**
- * AdaptivePersonalization — Phase 9 Intelligence Layer
- * Real-time user preference learning, feed tuning, and behavioral adaptation
- */
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
+import { AlertTriangle, Brain, FileWarning, LockKeyhole, Settings2, ShieldCheck, SlidersHorizontal, Target, UserRound } from "lucide-react";
 import { Link } from "wouter";
-import { ArrowLeft, Brain, Sliders, TrendingUp, Eye, Heart, Zap, RefreshCw, CheckCircle, BarChart2, Target } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
 
-const SIGNAL_TYPES = [
-  { key: "content_type", label: "Content Type", desc: "Posts, reels, articles, streams", weight: 85 },
-  { key: "topics", label: "Topics", desc: "Crypto, AI, gaming, art, music", weight: 92 },
-  { key: "creators", label: "Creators", desc: "Followed, liked, tipped", weight: 78 },
-  { key: "time_of_day", label: "Time Patterns", desc: "When you engage most", weight: 64 },
-  { key: "interaction_depth", label: "Interaction Depth", desc: "Scroll, pause, comment, share", weight: 71 },
-  { key: "session_length", label: "Session Length", desc: "Short bursts vs deep dives", weight: 58 },
-];
-
-const PERSONALIZATION_MODELS = [
-  { name: "Feed Ranker", status: "active", accuracy: 94, lastTrained: "2h ago" },
-  { name: "Content Recommender", status: "active", accuracy: 88, lastTrained: "4h ago" },
-  { name: "Creator Matcher", status: "training", accuracy: 76, lastTrained: "12h ago" },
-  { name: "Notification Filter", status: "active", accuracy: 91, lastTrained: "1h ago" },
-  { name: "Price Predictor", status: "idle", accuracy: 72, lastTrained: "1d ago" },
+const personalizationStates = [
+  { label: "Preference, behavior, and consent signals", value: "Unavailable", icon: UserRound },
+  { label: "Models, training, evaluations, and accuracy", value: "Not configured", icon: Brain },
+  { label: "Feed ranking and recommendation outcomes", value: "Not measured", icon: Target },
+  { label: "Preference storage, deletion, and privacy controls", value: "Disabled", icon: ShieldCheck },
 ];
 
 export default function AdaptivePersonalization() {
-  const [activeTab, setActiveTab] = useState<"signals" | "models" | "preferences">("signals");
-  const [preferences, setPreferences] = useState({
-    feedDiversity: 70,
-    contentFreshness: 80,
-    creatorFamiliarity: 60,
-    trendingWeight: 50,
-  });
-
   return (
     <div className="min-h-screen bg-background">
-      <div className="sticky top-0 z-10 bg-background/80 backdrop-blur-sm border-b border-border/50 px-4 py-3 flex items-center gap-3">
-        <Link href="/" className="p-2 rounded-lg hover:bg-secondary/50 transition-colors text-muted-foreground">
-          <ArrowLeft className="w-4 h-4" />
-        </Link>
-        <div>
-          <h1 className="font-bold text-lg">Adaptive Personalization</h1>
-          <p className="text-xs text-muted-foreground">AI learns your preferences in real-time</p>
-        </div>
-        <div className="ml-auto flex items-center gap-1.5 text-xs text-green-400">
-          <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-          Learning
-        </div>
-      </div>
+      <PageHeader
+        title="Adaptive Personalization"
+        description="Personalization services are not connected in this deployment. No behavioral signal, preference, model, recommendation, accuracy, relevance lift, profile, or saved setting is being collected or reported."
+      />
 
-      <div className="max-w-2xl mx-auto p-4 space-y-4">
-        {/* Stats bar */}
-        <div className="grid grid-cols-3 gap-3">
-          {[
-            { label: "Signals Collected", value: "12.4K", icon: Brain, color: "text-purple-400" },
-            { label: "Model Accuracy", value: "91%", icon: Target, color: "text-green-400" },
-            { label: "Feed Relevance", value: "+34%", icon: TrendingUp, color: "text-blue-400" },
-          ].map(stat => (
-            <div key={stat.label} className="card p-3 text-center">
-              <stat.icon className={`w-5 h-5 ${stat.color} mx-auto mb-1`} />
-              <div className="font-bold">{stat.value}</div>
-              <div className="text-xs text-muted-foreground">{stat.label}</div>
-            </div>
-          ))}
-        </div>
+      <main className="mx-auto max-w-6xl space-y-8 px-4 py-8">
+        <Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Adaptive personalization is unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous page presented a live-learning badge, fabricated signal weights, collected-signal and accuracy totals, relevance improvement, model training timestamps, model accuracy percentages, and a Save Preferences action without a verified consent, model, storage, evaluation, or recommendation contract. Those claims and controls were removed because the screen cannot safely infer or persist user behavior.</p></div></div></Card>
 
-        {/* Tabs */}
-        <div className="flex gap-1 bg-secondary/30 rounded-xl p-1">
-          {(["signals", "models", "preferences"] as const).map(tab => (
-            <button key={tab} onClick={() => setActiveTab(tab)}
-              className={`flex-1 py-2 rounded-lg text-sm font-medium capitalize transition-colors ${activeTab === tab ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}>
-              {tab}
-            </button>
-          ))}
-        </div>
+        <Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="space-y-6"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Brain aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Personalization readiness</h2><p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">A production personalization system requires explicit consent and purpose limitation, transparent signal definitions, user controls, data minimization, retention and deletion, profile access boundaries, model and evaluation provenance, bias and safety review, recommendation explanations, opt-out behavior, security, and clear update, failure, stale-data, and retry states. None of those controls are available through this screen.</p></div></div><div className="grid gap-4 md:grid-cols-3"><Card className="border border-primary/30 bg-background/80 p-4"><UserRound aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><h3 className="font-semibold">No signal claim</h3><p className="mt-1 text-sm text-muted-foreground">No scroll, click, follow, like, tip, time, topic, creator, session, behavioral, or inferred-preference data is collected or displayed.</p></Card><Card className="border border-primary/30 bg-background/80 p-4"><Target aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><h3 className="font-semibold">No model claim</h3><p className="mt-1 text-sm text-muted-foreground">No ranker, recommender, matcher, classifier, predictor, training run, accuracy score, or relevance improvement is presented.</p></Card><Card className="border border-primary/30 bg-background/80 p-4"><Settings2 aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><h3 className="font-semibold">No mutation claim</h3><p className="mt-1 text-sm text-muted-foreground">No preference slider, profile, feed setting, recommendation, model state, or personalization record is saved or changed.</p></Card></div><div className="flex flex-wrap gap-4 pt-2"><Link href="/ai-governance"><Button size="lg" className="bg-primary hover:bg-primary/90">View AI governance status</Button></Link><Link href="/privacy"><Button size="lg" variant="outline">View privacy status</Button></Link><Link href="/contact-us-form"><Button size="lg" variant="ghost">Ask about personalization</Button></Link></div></div></Card>
 
-        {activeTab === "signals" && (
-          <div className="space-y-3">
-            <p className="text-sm text-muted-foreground">Behavioral signals driving your personalized experience:</p>
-            {SIGNAL_TYPES.map(signal => (
-              <div key={signal.key} className="card p-4">
-                <div className="flex items-center justify-between mb-2">
-                  <div>
-                    <div className="font-medium text-sm">{signal.label}</div>
-                    <div className="text-xs text-muted-foreground">{signal.desc}</div>
-                  </div>
-                  <span className="text-sm font-bold text-primary">{signal.weight}%</span>
-                </div>
-                <div className="h-1.5 bg-secondary/50 rounded-full overflow-hidden">
-                  <div className="h-full bg-primary rounded-full transition-all duration-500" style={{ width: `${signal.weight}%` }} />
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
+        <section aria-labelledby="personalization-state-heading"><h2 id="personalization-state-heading" className="mb-4 text-xl font-semibold">Current personalization evidence</h2><div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">{personalizationStates.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-border/50 bg-card p-4"><p className="text-sm text-muted-foreground">{label}</p><div className="mt-2 flex items-center gap-2"><Icon aria-hidden="true" className="h-4 w-4 text-muted-foreground" /><p className="font-semibold">{value}</p></div></Card>)}</div></section>
 
-        {activeTab === "models" && (
-          <div className="space-y-3">
-            {PERSONALIZATION_MODELS.map(model => (
-              <div key={model.name} className="card p-4 flex items-center gap-4">
-                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
-                  <Brain className="w-5 h-5 text-primary" />
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-center gap-2">
-                    <span className="font-medium text-sm">{model.name}</span>
-                    <span className={`text-xs px-2 py-0.5 rounded-full ${model.status === "active" ? "bg-green-500/20 text-green-400" : model.status === "training" ? "bg-yellow-500/20 text-yellow-400" : "bg-secondary text-muted-foreground"}`}>
-                      {model.status}
-                    </span>
-                  </div>
-                  <div className="text-xs text-muted-foreground">Last trained: {model.lastTrained}</div>
-                </div>
-                <div className="text-right">
-                  <div className="font-bold text-sm">{model.accuracy}%</div>
-                  <div className="text-xs text-muted-foreground">accuracy</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {activeTab === "preferences" && (
-          <div className="space-y-4">
-            <p className="text-sm text-muted-foreground">Tune your personalization weights manually:</p>
-            {Object.entries(preferences).map(([key, value]) => {
-              const labels: Record<string, string> = {
-                feedDiversity: "Feed Diversity",
-                contentFreshness: "Content Freshness",
-                creatorFamiliarity: "Creator Familiarity",
-                trendingWeight: "Trending Content",
-              };
-              return (
-                <div key={key} className="card p-4">
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="font-medium text-sm">{labels[key]}</span>
-                    <span className="text-sm font-bold text-primary">{value}%</span>
-                  </div>
-                  <input
-                    type="range" min={0} max={100} value={value}
-                    onChange={(e) => setPreferences(prev => ({ ...prev, [key]: Number(e.target.value) }))}
-                    className="w-full accent-primary"
-                  />
-                </div>
-              );
-            })}
-            <button className="w-full py-3 bg-primary text-primary-foreground rounded-xl font-medium hover:opacity-90 transition-opacity">
-              Save Preferences
-            </button>
-          </div>
-        )}
-      </div>
+        <Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><FileWarning aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">Do not enter passwords, access tokens, seed phrases, private keys, sensitive profile data, confidential prompts, or personal information here. An unavailable personalization page is not evidence that behavior is collected, a model is learning, or a recommendation was generated.</p></div></Card>
+        <Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><LockKeyhole aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">Profiles, signals, consent, models, recommendations, storage, privacy, governance, billing, and observability remain separate integrations. This screen does not replace any of them.</p></div></Card>
+        <div className="sr-only"><SlidersHorizontal aria-hidden="true" /></div>
+      </main>
     </div>
   );
 }

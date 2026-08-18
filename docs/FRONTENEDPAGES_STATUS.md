@@ -526,3 +526,7 @@ The registered AgentMarketplace route no longer queries or displays an unverifie
 ## AgentPerformance hardening
 
 The registered AgentPerformance route no longer presents an incomplete authenticated shell with New, Search, Settings, loading, or empty-item behavior that could imply agent runs, task outcomes, uptime, latency, costs, quality scores, logs, traces, or alerts. It now states that agent observability is unavailable and documents required run identifiers, structured telemetry, cost accounting, metric definitions, evaluations, regression alerts, privacy, retention, access, incident ownership, and retry controls. Focused TypeScript validation reported no diagnostics for `AgentPerformance.tsx`, and `git diff --check` passed.
+
+## AdaptivePersonalization hardening
+
+The registered AdaptivePersonalization route no longer presents a live-learning badge, fabricated behavioral signal weights, collected-signal and accuracy totals, relevance improvement, model training timestamps, model accuracy percentages, or a Save Preferences mutation. It now states that personalization services are unavailable and documents required consent, purpose limitation, signal transparency, data minimization, retention, deletion, profile access, model provenance, bias review, explanations, opt-out, security, and retry controls. Focused TypeScript validation reported no diagnostics for `AdaptivePersonalization.tsx`, and `git diff --check` passed.
