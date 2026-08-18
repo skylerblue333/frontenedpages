@@ -466,3 +466,7 @@ The registered SchoolDashboard screen no longer displays fabricated enrolled-cou
 ## CourseCatalog hardening
 
 The registered CourseCatalog screen no longer presents an incomplete authenticated shell with New, Search, Settings, loading, or empty-item behavior that could imply a course catalog, instructor records, enrollment, access, pricing, ratings, or completion. It now states that catalog services are unavailable and documents required content provenance, publication, versioning, accessibility, entitlement, ownership, privacy, billing, and retry controls. Focused TypeScript validation reported no diagnostics for `CourseCatalog.tsx`, and `git diff --check` passed.
+
+## CertificateManager hardening
+
+The registered CertificateManager screen no longer presents an incomplete authenticated shell with New, Search, Settings, loading, or empty-record behavior that could imply an issued credential. It now states that certificate services are unavailable and documents required learner and issuer identity, achievement criteria, assessment evidence, signatures, verification, revocation, privacy, accessibility, blockchain-network, transaction, and ownership controls. Focused TypeScript validation reported no diagnostics for `CertificateManager.tsx`, and `git diff --check` passed.
