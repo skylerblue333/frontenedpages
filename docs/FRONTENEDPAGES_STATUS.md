@@ -414,3 +414,7 @@ The registered ChatBot screen no longer presents an incomplete authenticated she
 ## ChatHistory hardening
 
 The registered ChatHistory screen no longer presents an incomplete authenticated shell with New, Search, Settings, loading, or empty-list behavior that could imply stored conversations, retrieval, synchronization, privacy, export, or deletion. It now states that history services are unavailable and documents required ownership, tenant isolation, encryption, retention, deletion, search, export, pagination, concurrency, audit, backup, restoration, and access-revocation controls. Focused TypeScript validation reported no diagnostics for `ChatHistory.tsx`, and `git diff --check` passed.
+
+## ChatMVP hardening
+
+The registered ChatMVP screen no longer contains mock conversations, fabricated NOVA messages, online/unread indicators, designer matches with prices and delivery times, AI action commands, tips, payments, listings, service requests, matching, earning options, calls, or optimistic success states. It now states that chat, marketplace, payment, wallet, and AI-action services are unavailable and documents required identity, realtime, persistence, fraud, idempotency, ledger, permission, approval, audit, and observability controls. Focused TypeScript validation reported no diagnostics for `ChatMVP.tsx`, and `git diff --check` passed.
