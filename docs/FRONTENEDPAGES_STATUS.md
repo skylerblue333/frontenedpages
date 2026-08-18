@@ -162,3 +162,8 @@ The registered route `/cost-basis-calculation` no longer renders a generic comin
 ## Earnings Tracking hardening
 
 The registered route `/earnings-tracking` no longer renders a generic coming-soon placeholder. It now reports that earnings data is unavailable and does not display revenue, income, expenses, profit, margins, balances, trends, forecasts, invoices, payouts, tax outputs, or settlement results. It documents source accounts, transaction provenance, classification, fees, refunds, currency, payout and invoice reconciliation, access, privacy, tax methodology, audit, and independent-verification requirements. Focused TypeScript validation reported no diagnostics for `EarningsTracking.tsx`, and `git diff --check` passed.
+
+
+## Fee Calculation hardening
+
+The registered route `/fee-calculation` no longer renders a generic coming-soon placeholder. It now reports that fee calculation is unavailable and does not display fee schedules, gas, spreads, commissions, slippage, taxes, discounts, quote expiry, currency conversion, total cost, approvals, execution, or settlement results. It documents provider, venue, chain, route, network, quote, rounding, disclosure, and independent-settlement requirements. Focused TypeScript validation reported no diagnostics for `FeeCalculation.tsx`, and `git diff --check` passed.
