@@ -350,3 +350,7 @@ The registered Content Calendar screen no longer exposes a sign-in gate, New act
 ## Content Scheduler hardening
 
 The registered Content Scheduler no longer uses an in-memory demo queue containing scheduled or published posts, unsupported staking APY and market-analysis claims, timestamps, views, engagement, platform providers, best-time advice, schedule, delete, or analytics controls. No verified scheduling or publishing service was connected, so the queue and mutations were removed. The page now documents workspace ownership, versioning, provider authorization, moderation, timezone, durable queues, idempotency, webhooks, retries, cancellation, deletion, consent, delivery evidence, analytics provenance, audit, and failure-state requirements. Focused TypeScript validation reported no diagnostics for `ContentScheduler.tsx`, and `git diff --check` passed.
+
+## Media Gallery hardening
+
+The registered Media Gallery no longer exposes a sign-in gate, New action, search, settings, or empty gallery state as if media management were connected. It now reports that assets, albums, owners, storage, processing, thumbnails, metadata, moderation, sharing, downloads, and deletion are unavailable and documents the controls required for safe media management. Focused TypeScript validation reported no diagnostics for `MediaGallery.tsx`, and `git diff --check` passed.
