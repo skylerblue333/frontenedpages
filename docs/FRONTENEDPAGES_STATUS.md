@@ -107,3 +107,8 @@ The registered route `/token-information` no longer renders a generic coming-soo
 ## Asset Tracking hardening
 
 The registered route `/asset-tracking` no longer renders a generic coming-soon placeholder. It now reports that asset tracking is unavailable and does not display holdings, balances, valuations, cost basis, returns, performance, liquidity, inventory quantities, ownership proofs, transfers, or settlement evidence. It documents registry, source-of-truth, valuation, freshness, transfer, reconciliation, access-control, and audit requirements. Focused TypeScript validation reported no diagnostics for `AssetTracking.tsx`, and `git diff --check` passed.
+
+
+## Portfolio Optimization hardening
+
+The registered route `/portfolio-optimization` no longer renders a generic coming-soon placeholder. It now reports that optimization is unavailable and does not display holdings, allocations, prices, returns, forecasts, risk scores, recommendations, rebalances, orders, fees, taxes, or settlement results. It documents holdings, methodology, suitability, constraints, liquidity, tax, freshness, scenario, explainability, confirmation, and execution requirements. Focused TypeScript validation reported no diagnostics for `PortfolioOptimization.tsx`, and `git diff --check` passed.
