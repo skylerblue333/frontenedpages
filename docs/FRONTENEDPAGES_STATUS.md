@@ -486,3 +486,7 @@ The registered QuizBuilder screen no longer presents an incomplete authenticated
 ## SchoolCertificate hardening
 
 The registered SchoolCertificate route no longer renders a fabricated named learner certificate, course, score, completion date, instructor, executive, hash, permanent on-chain record, explorer action, social sharing, XP, time-spent metric, or recommended course list. It now states that certificate verification is unavailable and documents required identity, achievement, assessment, signature, revocation, privacy, export, network, transaction, token, and ownership controls. Focused TypeScript validation reported no diagnostics for `SchoolCertificate.tsx`, and `git diff --check` passed.
+
+## SchoolCourse hardening
+
+The registered SchoolCourse route no longer renders hard-coded courses, instructor biographies, ratings, review counts, student counts, SKY444 pricing, lesson access states, money-back guarantees, enrollment actions, certificate promises, rewards, reviews, or lesson links without verified contracts. It now states that course-detail services are unavailable and documents required identity, curriculum, provenance, pricing, entitlement, access, progress, certificate, refund, privacy, and retry controls. Focused TypeScript validation reported no diagnostics for `SchoolCourse.tsx`, and `git diff --check` passed.
