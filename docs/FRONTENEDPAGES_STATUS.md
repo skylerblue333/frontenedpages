@@ -226,3 +226,7 @@ The registered Admin Wallet Manager no longer renders hardcoded wallet addresses
 ## Wallet hardening
 
 The registered Wallet screen no longer renders unsupported live balances, platform wallet IDs, token prices, USD values, reconstructed portfolio history, MetaMask connection state, transaction history, send execution, network fees, or confirmation timing. No matching wallet backend contracts were found for the prior tRPC calls, so all wallet and transaction mutations were removed rather than presented as functional. The page now documents chain, provider, signing, replay, idempotency, reconciliation, custody, and settlement requirements and warns users not to submit secrets. Focused TypeScript validation reported no diagnostics for `Wallet.tsx`, and `git diff --check` passed.
+
+## Wallet Connect hardening
+
+The registered Wallet Connect screen no longer renders a fake authenticated CRUD shell or claims provider sessions, chain IDs, accounts, addresses, balances, permissions, ownership, signatures, transaction approval, broadcast, or settlement. It now reports that provider, chain, origin, permission, signature-verification, and relay integrations are unavailable and documents allowlists, session controls, validation, simulation, nonce and fee checks, confirmation, replay protection, rejection, revocation, and independent settlement requirements. Focused TypeScript validation reported no diagnostics for `WalletConnect.tsx`, and `git diff --check` passed.
