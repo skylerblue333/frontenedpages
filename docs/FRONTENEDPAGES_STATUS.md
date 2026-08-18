@@ -530,3 +530,7 @@ The registered AgentPerformance route no longer presents an incomplete authentic
 ## AdaptivePersonalization hardening
 
 The registered AdaptivePersonalization route no longer presents a live-learning badge, fabricated behavioral signal weights, collected-signal and accuracy totals, relevance improvement, model training timestamps, model accuracy percentages, or a Save Preferences mutation. It now states that personalization services are unavailable and documents required consent, purpose limitation, signal transparency, data minimization, retention, deletion, profile access, model provenance, bias review, explanations, opt-out, security, and retry controls. Focused TypeScript validation reported no diagnostics for `AdaptivePersonalization.tsx`, and `git diff --check` passed.
+
+## AdaptiveRoadmap hardening
+
+The registered AdaptiveRoadmap route no longer renders a hard-coded initiative inventory with Q2 progress, priority and confidence scores, market and resource signals, quarter totals, completion history, “on track” status, or automatic optimization events. It now states that roadmap intelligence is unavailable and documents required source-of-truth, ownership, typed records, dependency, evidence, forecast, change-history, approval, notification, audit, stale-data, and retry controls. Focused TypeScript validation reported no diagnostics for `AdaptiveRoadmap.tsx`, and `git diff --check` passed.
