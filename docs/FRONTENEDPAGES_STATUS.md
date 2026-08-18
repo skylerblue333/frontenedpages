@@ -426,3 +426,7 @@ The registered HopeAIAdvanced screen no longer simulates delayed assistant respo
 ## HopeAIMeta hardening
 
 The registered HopeAIMeta screen no longer simulates multimodal responses, web results, execution runtimes, voice and vision capability, language counts, confidence, token usage, thinking time, or conversation persistence. It now states that Meta-AI is unavailable and documents required provider routing, model/version metadata, file safety, citation-backed search, sandboxing, permissions, consent, privacy, retention, metering, evaluation, and observability controls. Focused TypeScript validation reported no diagnostics for `HopeAIMeta.tsx`, and `git diff --check` passed.
+
+## AIToolsHub hardening
+
+The registered AIToolsHub screen no longer catalogs unsupported tools as LIVE, BETA, or GREY and no longer advertises code generation, copy creation, personal AI support, model switching, market analysis, agent fleets, OSINT, media authenticity, cipher, social-engineering, network-recon, or moderation capabilities as available. It now presents an evidence-based integration boundary and documents required inventory, provider, authorization, file, safety, evaluation, data-source, rate, cost, monitoring, and retirement controls. Focused TypeScript validation reported no diagnostics for `AIToolsHub.tsx`, and `git diff --check` passed.
