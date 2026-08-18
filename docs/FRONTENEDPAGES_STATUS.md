@@ -518,3 +518,7 @@ The registered AgentBuilder route no longer presents editable agent identity and
 ## AgentCoordinationHub hardening
 
 The registered AgentCoordinationHub route no longer renders named agent teams, completed-task totals, active workflow states, crypto and security actions, sprint metrics, delegation controls, autonomous coding sprint mutations, or unverified sprint history. It now states that orchestration services are unavailable and documents required tenant, registry, task, permission, sandbox, approval, idempotency, budget, sensitive-data, output-verification, log, recovery, rollback, and audit controls. The PageHeader usage was corrected to the repository’s typed `description` contract. Focused TypeScript validation reported no diagnostics for `AgentCoordinationHub.tsx`, and `git diff --check` passed.
+
+## AgentMarketplace hardening
+
+The registered AgentMarketplace route no longer queries or displays an unverified agent catalog, fallback agent count, generated rating, Chat link, local Deploy toggle, capability status, or implied subscription and runtime state. It now states that marketplace services are unavailable and documents required publisher identity, capability metadata, security review, permissions, runtime isolation, model and cost disclosure, ratings provenance, billing, consent, abuse prevention, rollback, and deletion controls. Focused TypeScript validation reported no diagnostics for `AgentMarketplace.tsx`, and `git diff --check` passed.

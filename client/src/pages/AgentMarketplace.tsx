@@ -1,180 +1,33 @@
-import { useState, useMemo } from "react";
+import { AlertTriangle, Bot, Code2, FileWarning, LockKeyhole, Rocket, Search, ShieldCheck, Users, Wrench } from "lucide-react";
 import { Link } from "wouter";
-import { Bot, Star, Search, Zap, TrendingUp, Shield, Brain, Code, BarChart3, Cpu, Globe, Lock, Rocket, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/_core/hooks/useAuth";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
 
-const CATEGORY_ICONS: Record<string, any> = {
-  "Core Engineering": Code,
-  "AI & Intelligence": Brain,
-  "Security & Trust": Shield,
-  "Analytics & Data": BarChart3,
-  "Growth & Marketing": TrendingUp,
-  "Social & Community": Globe,
-  "DeFi & Crypto": Zap,
-  "Infrastructure": Cpu,
-  "Compliance & Legal": Lock,
-  "Creator Economy": Rocket,
-};
-
-const CATEGORY_COLORS: Record<string, string> = {
-  "Core Engineering": "from-blue-500 to-cyan-600",
-  "AI & Intelligence": "from-purple-500 to-violet-600",
-  "Security & Trust": "from-red-500 to-rose-600",
-  "Analytics & Data": "from-amber-500 to-orange-600",
-  "Growth & Marketing": "from-green-500 to-emerald-600",
-  "Social & Community": "from-pink-500 to-fuchsia-600",
-  "DeFi & Crypto": "from-yellow-500 to-amber-600",
-  "Infrastructure": "from-slate-500 to-gray-600",
-  "Compliance & Legal": "from-teal-500 to-cyan-600",
-  "Creator Economy": "from-indigo-500 to-purple-600",
-};
+const marketplaceStates = [
+  { label: "Agent catalog and typed capability records", value: "Unavailable", icon: Bot },
+  { label: "Availability, ratings, usage, and category data", value: "Not verified", icon: Users },
+  { label: "Chat, deployment, permissions, and runtime", value: "Disabled", icon: Rocket },
+  { label: "Billing, subscriptions, secrets, and audit", value: "Not configured", icon: ShieldCheck },
+];
 
 export default function AgentMarketplace() {
-  const { isAuthenticated } = useAuth();
-  const [search, setSearch] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("All");
-  const [deployedAgents, setDeployedAgents] = useState<Set<string>>(new Set());
-
-  const { data, isLoading } = trpc.agents44.getAll.useQuery();
-
-  const agents = data?.agents ?? [];
-  const rawCategories = (data?.categories ?? []) as Array<{ id: string; label: string }>;
-  const categories = [{ id: "All", label: "All" }, ...rawCategories];
-
-  const filtered = useMemo(() => {
-    return agents.filter((a: any) => {
-      const matchSearch = a.name.toLowerCase().includes(search.toLowerCase()) ||
-        (a.description ?? "").toLowerCase().includes(search.toLowerCase());
-      const matchCat = selectedCategory === "All" || a.category === selectedCategory || a.category?.toLowerCase().includes(selectedCategory.toLowerCase());
-      return matchSearch && matchCat;
-    });
-  }, [agents, search, selectedCategory]);
-
-  const handleDeploy = (agentId: string) => {
-    setDeployedAgents(prev => {
-      const next = new Set(prev);
-      if (next.has(agentId)) next.delete(agentId);
-      else next.add(agentId);
-      return next;
-    });
-  };
-
   return (
-    <div className="min-h-screen bg-background pb-24">
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-black mb-1">Agent Marketplace</h1>
-            <p className="text-muted-foreground">Deploy AI agents to automate your platform — {data?.total ?? 44} agents available</p>
-          </div>
-          <Link href="/agents/builder">
-            <Button className="bg-gradient-to-r from-cyan-500 to-purple-600 border-0 text-white">
-              <Rocket className="w-4 h-4 mr-2" /> Build Agent
-            </Button>
-          </Link>
-        </div>
+    <div className="min-h-screen bg-background">
+      <PageHeader
+        title="Agent Marketplace"
+        description="AI-agent marketplace services are not connected in this deployment. No agent catalog, capability, price, usage count, rating, chat session, deployment, subscription, payment, or runtime is being reported."
+      />
 
-        <div className="flex gap-3 mb-6 flex-wrap">
-          <div className="relative flex-1 min-w-[200px]">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search agents..." className="pl-9 bg-muted/30" />
-          </div>
-          <div className="flex gap-2 flex-wrap">
-            {categories.slice(0, 6).map(cat => (
-              <Button key={cat.id} variant={selectedCategory === cat.id ? "default" : "outline"} size="sm" onClick={() => setSelectedCategory(cat.id)} className="text-xs">
-                {cat.label}
-              </Button>
-            ))}
-          </div>
-        </div>
+      <main className="mx-auto max-w-6xl space-y-8 px-4 py-8">
+        <Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Agent Marketplace is unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous page queried an unverified agent catalog, supplied a fallback count, generated ratings from agent-name characters, exposed Chat and Deploy actions, and treated a local toggle as deployment state. Those claims and actions were removed because no verified catalog, capability, runtime, permission, billing, secret, or audit contract was established.</p></div></div></Card>
 
-        <div className="grid grid-cols-3 gap-4 mb-6">
-          {[
-            { label: "Total Agents", value: data?.total ?? 44, icon: Bot },
-            { label: "Deployed", value: deployedAgents.size, icon: Zap },
-            { label: "Categories", value: rawCategories.length ?? 10, icon: BarChart3 },
-          ].map(stat => (
-            <div key={stat.label} className="rounded-xl border border-border/50 bg-muted/20 p-4 flex items-center gap-3">
-              <stat.icon className="w-5 h-5 text-cyan-400" />
-              <div>
-                <p className="text-xl font-bold">{stat.value}</p>
-                <p className="text-xs text-muted-foreground">{stat.label}</p>
-              </div>
-            </div>
-          ))}
-        </div>
+        <Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="space-y-6"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Bot aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Marketplace readiness</h2><p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">A production agent marketplace requires verified publisher identity, agent version and capability metadata, security review, tool and data permissions, isolated runtime, model and cost disclosure, availability and compatibility checks, ratings provenance, subscription and payment controls, secret isolation, user consent, abuse prevention, and clear deployment, failure, rollback, and deletion states. None of those controls are available through this screen.</p></div></div><div className="grid gap-4 md:grid-cols-3"><Card className="border border-primary/30 bg-background/80 p-4"><Code2 aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><h3 className="font-semibold">No catalog claim</h3><p className="mt-1 text-sm text-muted-foreground">No agent name, provider, category, model, capability, rating, usage, availability, price, or production status is fabricated.</p></Card><Card className="border border-primary/30 bg-background/80 p-4"><Wrench aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><h3 className="font-semibold">No runtime claim</h3><p className="mt-1 text-sm text-muted-foreground">No chat session, tool call, web search, code execution, file access, agent deployment, endpoint, or external action is initiated.</p></Card><Card className="border border-primary/30 bg-background/80 p-4"><LockKeyhole aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><h3 className="font-semibold">No commerce claim</h3><p className="mt-1 text-sm text-muted-foreground">No subscription, payment, usage charge, token, API key, wallet credential, secret, entitlement, or audit record is created.</p></Card></div><div className="flex flex-wrap gap-4 pt-2"><Link href="/agent-builder"><Button size="lg" className="bg-primary hover:bg-primary/90">View agent builder status</Button></Link><Link href="/ai-tools-hub"><Button size="lg" variant="outline">View AI integration status</Button></Link><Link href="/contact-us-form"><Button size="lg" variant="ghost">Ask about agent access</Button></Link></div></div></Card>
 
-        {isLoading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {Array.from({ length: 9 }).map((_, i) => (
-              <div key={i} className="rounded-2xl border border-border/30 bg-muted/20 p-5 animate-pulse h-48" />
-            ))}
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filtered.map((agent: any) => {
-              const Icon = CATEGORY_ICONS[agent.category] ?? Bot;
-              const gradient = CATEGORY_COLORS[agent.category] ?? "from-slate-500 to-gray-600";
-              const isDeployed = deployedAgents.has(agent.id ?? agent.name);
-              const rating = (4.2 + (agent.name.charCodeAt(0) % 8) * 0.1).toFixed(1);
-              return (
-                <div key={agent.id ?? agent.name} className="rounded-2xl border border-border/50 bg-card/50 p-5 hover:border-border transition-all">
-                  <div className="flex items-start gap-4 mb-4">
-                    <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${gradient} flex items-center justify-center shrink-0`}>
-                      <Icon className="w-6 h-6 text-white" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <h3 className="font-semibold text-sm truncate">{agent.name}</h3>
-                        {agent.priority === "critical" && (
-                          <Badge className="text-[10px] px-1.5 py-0 bg-red-500/20 text-red-400 border-red-500/30">Core</Badge>
-                        )}
-                      </div>
-                      <p className="text-xs text-muted-foreground mt-0.5 truncate">{agent.category}</p>
-                    </div>
-                  </div>
-                  <p className="text-xs text-muted-foreground mb-4 line-clamp-2 leading-relaxed">
-                    {agent.description ?? "Advanced AI agent for automated platform operations."}
-                  </p>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-1">
-                      <Star className="w-3.5 h-3.5 text-yellow-400 fill-yellow-400" />
-                      <span className="text-xs font-medium">{rating}</span>
-                    </div>
-                    <div className="flex gap-2">
-                      {isAuthenticated && (
-                        <Link href={`/agents/chat/${agent.id ?? agent.name}`}>
-                          <Button size="sm" variant="outline" className="text-xs h-7 px-2">
-                            Chat <ChevronRight className="w-3 h-3 ml-0.5" />
-                          </Button>
-                        </Link>
-                      )}
-                      <Button
-                        size="sm"
-                        onClick={() => handleDeploy(agent.id ?? agent.name)}
-                        className={`text-xs h-7 px-2 ${isDeployed ? "bg-green-600 hover:bg-green-700" : "bg-gradient-to-r from-cyan-500 to-purple-600 border-0"} text-white`}
-                      >
-                        {isDeployed ? "✓ Active" : "Deploy"}
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        )}
+        <section aria-labelledby="marketplace-state-heading"><h2 id="marketplace-state-heading" className="mb-4 text-xl font-semibold">Current marketplace evidence</h2><div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">{marketplaceStates.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-border/50 bg-card p-4"><p className="text-sm text-muted-foreground">{label}</p><div className="mt-2 flex items-center gap-2"><Icon aria-hidden="true" className="h-4 w-4 text-muted-foreground" /><p className="font-semibold">{value}</p></div></Card>)}</div></section>
 
-        {filtered.length === 0 && !isLoading && (
-          <div className="text-center py-16 text-muted-foreground">
-            <Bot className="w-12 h-12 mx-auto mb-3 opacity-30" />
-            <p>No agents found matching your search.</p>
-          </div>
-        )}
-      </div>
+        <Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><FileWarning aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">Do not enter passwords, access tokens, seed phrases, private keys, confidential prompts, proprietary code, or sensitive personal information here. An unavailable marketplace is not evidence of an agent, rating, deployment, subscription, or successful AI action.</p></div></Card>
+      </main>
     </div>
   );
 }
