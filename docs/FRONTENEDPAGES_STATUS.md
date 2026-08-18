@@ -270,3 +270,7 @@ The registered Staking Portal no longer renders unsupported APY history, reward 
 ## Mining Pool Selector hardening
 
 The registered Mining Pool Selector no longer renders a generic coming-soon page as if pool functionality were available or claims pools, endpoints, algorithms, networks, connectivity, workers, hash rates, shares, blocks, profitability, fees, payouts, credentials, transfers, or settlement. It now reports that pool discovery, authenticated APIs, telemetry, accounting, custody, and verification are unavailable and documents the controls required for a production mining integration. Focused TypeScript validation reported no diagnostics for `MiningPoolSelector.tsx`, and `git diff --check` passed.
+
+## Tax Documentation hardening
+
+The registered Tax Documentation screen no longer renders a generic coming-soon page as if official tax documentation were available or claims authorities, source dates, jurisdictions, tax years, forms, deadlines, filing obligations, calculations, deductions, eligibility, or personalized advice. It now reports that current official sources, rule sets, reviewed forms, filing systems, and professional oversight are not connected and documents source versioning, scope, citations, privacy, and advice-boundary requirements. Focused TypeScript validation reported no diagnostics for `TaxDocumentation.tsx`, and `git diff --check` passed.
