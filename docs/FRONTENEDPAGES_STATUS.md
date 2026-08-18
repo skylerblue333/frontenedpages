@@ -338,3 +338,7 @@ The registered Content Upload screen no longer renders a generic coming-soon pag
 ## Content Vault hardening
 
 The registered Content Vault screen no longer renders static private photos, videos, audio, collections, access tiers, unlock counts, view counts, dates, View and Unlock actions, or a subscription-upgrade prompt. Those items and entitlements were not sourced from a verified vault, storage, subscription, or access-control service. The page now documents ownership, encrypted storage, object authorization, entitlements, payment reconciliation, signed delivery, watermarking, access audit, retention, deletion, privacy, moderation, and reliable access-state requirements. Focused TypeScript validation reported no diagnostics for `ContentVault.tsx`, and `git diff --check` passed.
+
+## Content Flagging hardening
+
+The registered Content Flagging screen no longer presents a generic coming-soon page as if moderation were available. It now reports that report intake, evidence storage, policy classification, AI confidence, human review, appeals, enforcement, notification, retention, privacy, audit, and incident-response workflows are unavailable and documents the controls required for responsible moderation. Focused TypeScript validation reported no diagnostics for `ContentFlagging.tsx`, and `git diff --check` passed.
