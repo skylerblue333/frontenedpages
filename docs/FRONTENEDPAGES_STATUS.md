@@ -47,3 +47,8 @@ The registered route `/a-p-y-tracking` no longer renders a generic coming-soon p
 ## Derivatives Trading hardening
 
 The registered route `/derivatives-trading` no longer renders a generic coming-soon placeholder. It now reports that derivatives trading is unavailable and does not display contracts, prices, funding, leverage, margin, collateral, positions, liquidation, orders, losses, or settlement results. It documents contract, market-data, matching, collateral, risk-limit, liquidation, and independent-execution requirements. Focused TypeScript validation reported no diagnostics for `DerivativesTrading.tsx`, and `git diff --check` passed.
+
+
+## Arbitrage Bot hardening
+
+The registered route `/arbitrage-bot` no longer renders fabricated analytics, automation, security, processing speed, uptime, latency, throughput, or “get started” claims. The previous file also used an undefined icon and unsupported `PageHeader` props. It now reports that automated arbitrage is unavailable and documents exchange, market-data, fee, slippage, order, capital, reconciliation, kill-switch, and audit requirements. Focused TypeScript validation reported no diagnostics for `ArbitrageBot.tsx`, and `git diff --check` passed.
