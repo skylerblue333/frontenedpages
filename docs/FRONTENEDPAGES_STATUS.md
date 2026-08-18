@@ -152,3 +152,8 @@ The registered route `/a-i-agent-market` no longer renders a fabricated revenue 
 ## Fundraiser Tools hardening
 
 The registered route `/fundraiser-tools` no longer renders a generic coming-soon placeholder. It now reports that fundraising is unavailable and does not display campaigns, beneficiaries, donations, goals, donor totals, receipts, refunds, disbursements, payouts, or settlement results. It documents beneficiary, campaign, consent, payment, donor, fraud, restricted-fund, approval, reconciliation, regulatory, and reporting requirements. Focused TypeScript validation reported no diagnostics for `FundraiserTools.tsx`, and `git diff --check` passed.
+
+
+## Cost Basis Calculation hardening
+
+The registered route `/cost-basis-calculation` no longer renders a generic coming-soon placeholder. It now reports that cost-basis calculation is unavailable and does not display transactions, tax lots, prices, basis, holding periods, gains, losses, income, deductions, jurisdictions, tax years, forms, filings, or compliance results. It documents transaction provenance, lot methodology, price and currency sources, corporate actions, fees, transfers, jurisdiction, audit, reconciliation, privacy, and professional-review requirements. Focused TypeScript validation reported no diagnostics for `CostBasisCalculation.tsx`, and `git diff --check` passed.
