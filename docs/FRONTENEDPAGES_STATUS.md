@@ -37,3 +37,8 @@ The registered route `/checkout-flow` no longer renders a generic coming-soon pl
 ## Crypto Wallet hardening
 
 The registered route `/crypto` no longer renders hardcoded token prices, percentage changes, balances, portfolio value, transaction history, APY, TVL, or unsupported swap/send/receive/yield/insurance actions. The previous page also referenced an undefined `isAuthenticated` value and untyped transaction data. It now presents a truthful crypto integration boundary with no wallet, market-data, portfolio, or transaction claims and explicitly warns users not to enter seed phrases or private keys. Focused TypeScript validation reported no diagnostics for `Crypto.tsx`, and `git diff --check` passed. Mentions of APY and TVL are now requirements/absence statements only, not values or product claims.
+
+
+## APY Tracking hardening
+
+The registered route `/a-p-y-tracking` no longer renders a generic coming-soon placeholder. It now reports that yield tracking is unavailable and does not display APY, APR, reward rates, balances, positions, historical returns, loss estimates, or withdrawal states. It documents protocol allowlists, rate methodology, compounding, fee, lockup, oracle, stale-data, and risk-disclosure requirements. Focused TypeScript validation reported no diagnostics for `APYTracking.tsx`, and `git diff --check` passed.
