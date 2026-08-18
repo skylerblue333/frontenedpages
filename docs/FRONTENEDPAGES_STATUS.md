@@ -42,3 +42,8 @@ The registered route `/crypto` no longer renders hardcoded token prices, percent
 ## APY Tracking hardening
 
 The registered route `/a-p-y-tracking` no longer renders a generic coming-soon placeholder. It now reports that yield tracking is unavailable and does not display APY, APR, reward rates, balances, positions, historical returns, loss estimates, or withdrawal states. It documents protocol allowlists, rate methodology, compounding, fee, lockup, oracle, stale-data, and risk-disclosure requirements. Focused TypeScript validation reported no diagnostics for `APYTracking.tsx`, and `git diff --check` passed.
+
+
+## Derivatives Trading hardening
+
+The registered route `/derivatives-trading` no longer renders a generic coming-soon placeholder. It now reports that derivatives trading is unavailable and does not display contracts, prices, funding, leverage, margin, collateral, positions, liquidation, orders, losses, or settlement results. It documents contract, market-data, matching, collateral, risk-limit, liquidation, and independent-execution requirements. Focused TypeScript validation reported no diagnostics for `DerivativesTrading.tsx`, and `git diff --check` passed.
