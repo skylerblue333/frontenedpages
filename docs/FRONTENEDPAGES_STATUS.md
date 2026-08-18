@@ -574,3 +574,7 @@ The registered AffiliateDashboard route no longer queries unverified referral da
 ## AlertConfiguration hardening
 
 The registered AlertConfiguration route no longer presents an incomplete authenticated shell with New, Search, Settings, loading, or empty-item behavior that could imply alert rules, thresholds, event evaluation, notification delivery, escalation, acknowledgement, webhooks, or audit records. It now states that alerting services are unavailable and documents required typed rules, metric and event semantics, threshold windows, deduplication, suppression, ownership, severity, provider authentication, retries, escalation, incidents, quiet hours, privacy, audit, and retry controls. Focused TypeScript validation reported no diagnostics for `AlertConfiguration.tsx`, and `git diff --check` passed.
+
+## AlertManagement hardening
+
+The registered AlertManagement route no longer presents an incomplete authenticated shell with New, Search, Settings, loading, or empty-item behavior that could imply alert rules, incidents, event evaluation, acknowledgements, ownership, escalation, notification delivery, webhooks, or audit records. It now states that alert-management services are unavailable and documents required event ingestion, typed incident state, severity, deduplication, ownership, acknowledgement, escalation, provider authentication, retries, suppression, privacy, audit, and retry controls. Focused TypeScript validation reported no diagnostics for `AlertManagement.tsx`, and `git diff --check` passed.
