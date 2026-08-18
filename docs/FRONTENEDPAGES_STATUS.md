@@ -102,3 +102,8 @@ The registered route `/rewards-monitoring` no longer renders a generic coming-so
 ## Token Information hardening
 
 The registered route `/token-information` no longer renders a generic coming-soon placeholder. It now reports that token metadata is unavailable and does not display a token address, supply, decimals, price, market cap, liquidity, holders, utility, ownership, governance, or contract safety result. It documents chain, contract, metadata, supply, indexing, market-data, governance, and independent-verification requirements. Focused TypeScript validation reported no diagnostics for `TokenInformation.tsx`, and `git diff --check` passed.
+
+
+## Asset Tracking hardening
+
+The registered route `/asset-tracking` no longer renders a generic coming-soon placeholder. It now reports that asset tracking is unavailable and does not display holdings, balances, valuations, cost basis, returns, performance, liquidity, inventory quantities, ownership proofs, transfers, or settlement evidence. It documents registry, source-of-truth, valuation, freshness, transfer, reconciliation, access-control, and audit requirements. Focused TypeScript validation reported no diagnostics for `AssetTracking.tsx`, and `git diff --check` passed.
