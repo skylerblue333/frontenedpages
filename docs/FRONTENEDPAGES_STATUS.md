@@ -117,3 +117,8 @@ The registered route `/portfolio-optimization` no longer renders a generic comin
 ## Portfolio Tracking hardening
 
 The registered route `/portfolio-tracking` no longer renders a generic coming-soon placeholder. It now reports that tracking is unavailable and does not display holdings, balances, prices, cost basis, market value, returns, benchmarks, allocations, performance, trades, fees, or settlement. It documents account, custody, transaction, corporate-action, pricing, benchmark, tax, freshness, reconciliation, access-control, and independent-verification requirements. Focused TypeScript validation reported no diagnostics for `PortfolioTracking.tsx`, and `git diff --check` passed.
+
+
+## Order Types hardening
+
+The registered route `/order-types` no longer renders a generic coming-soon placeholder. It now reports that order execution is unavailable and does not display instruments, quotes, order books, order semantics, prices, quantities, fills, cancellations, leverage, margin, fees, or settlement results. It documents market, validation, permissions, collateral, idempotency, rate-limit, matching, partial-fill, cancellation, audit, and settlement requirements. Focused TypeScript validation reported no diagnostics for `OrderTypes.tsx`, and `git diff --check` passed.
