@@ -282,3 +282,7 @@ The registered Staking Options screen no longer renders a generic coming-soon pa
 ## Order Tracking hardening
 
 The registered Order Tracking screen no longer renders a fake authenticated CRUD shell or claims orders, ownership, carriers, tracking numbers, shipment events, locations, delivery estimates, delays, refunds, replacements, disputes, support cases, or resolutions. It now reports that order, fulfillment, carrier, inventory, webhook, refund, and support sources are unavailable and documents authentication, reconciliation, freshness, deduplication, privacy, and exception-handling requirements. Focused TypeScript validation reported no diagnostics for `OrderTracking.tsx`, and `git diff --check` passed.
+
+## Tax Planning hardening
+
+The registered Tax Planning screen no longer renders a fake authenticated CRUD shell or claims strategies, savings, deductions, forecasts, tax positions, jurisdictional conclusions, legality, suitability, or personalized recommendations. It now reports that reconciled records, tax lots, income, expenses, residency, rules, filing history, legal interpretation, and professional review are unavailable and documents the requirements for responsible tax decision support. Focused TypeScript validation reported no diagnostics for `TaxPlanning.tsx`, and `git diff --check` passed.
