@@ -370,3 +370,7 @@ The registered Social Media Campaigns screen no longer exposes a sign-in gate, N
 ## Team Management hardening
 
 The registered Team Management screen no longer exposes a sign-in gate, New action, search, settings, or empty team state as if team administration were connected. It now reports that teams, workspaces, members, roles, permissions, invitations, activity, and mutations are unavailable and documents tenant isolation, ownership, lifecycle, least privilege, revocation, billing, export, deletion, notification, rate-limit, and audit requirements. Focused TypeScript validation reported no diagnostics for `TeamManagement.tsx`, and `git diff --check` passed.
+
+## Team Workspace hardening
+
+The registered Team Workspace no longer renders demo channels, unread counts, member counts and presence, messages, tasks, assignees, due dates, files, file metadata, activity bars, collaboration analytics, or send, invite, and new-task controls. No verified workspace, messaging, task, file, membership, or analytics contracts were connected, so those records, counts, and mutations were removed. The page now documents tenant isolation, channel and message ownership, delivery and read semantics, task integrity, file safety, presence accuracy, revocation, notifications, analytics provenance, retention, rate limits, audit, and explicit success and failure requirements. Focused TypeScript validation reported no diagnostics for `TeamWorkspace.tsx`, and `git diff --check` passed.
