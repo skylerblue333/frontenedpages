@@ -546,3 +546,7 @@ The registered Analytics Dashboard no longer renders fabricated DAU, MAU, MRR, p
 ## ABTesting hardening
 
 The registered ABTesting route no longer presents an incomplete authenticated shell with New, Search, Settings, loading, or empty-item behavior that could imply experiment records, assignment, exposure, sample size, conversion, lift, significance, or rollout. It now states that experimentation services are unavailable and documents required hypotheses, deterministic assignment, exposure logging, consent, sample-ratio monitoring, metric definitions, statistical methods, guardrails, privacy, approvals, staged rollout, rollback, and retry controls. Focused TypeScript validation reported no diagnostics for `ABTesting.tsx`, and `git diff --check` passed.
+
+## ABTestingAdvanced hardening
+
+The registered ABTestingAdvanced route no longer presents an incomplete authenticated shell with New, Search, Settings, loading, or empty-item behavior that could imply multivariate experiments, segments, allocations, exposure, statistical results, guardrails, feature flags, or rollout. It now states that advanced experimentation is unavailable and documents required pre-registration, deterministic allocation, eligibility, exposure, sample-ratio, statistical, multiple-comparison, heterogeneity, privacy, approval, staged-release, rollback, and retry controls. Focused TypeScript validation reported no diagnostics for `ABTestingAdvanced.tsx`, and `git diff --check` passed.
