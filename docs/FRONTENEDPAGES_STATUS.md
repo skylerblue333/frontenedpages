@@ -510,3 +510,7 @@ The registered wave3 Learning page no longer references the undefined `isAuthent
 ## LessonEditor hardening
 
 The registered LessonEditor screen no longer presents an incomplete authenticated shell with New, Search, Settings, loading, or empty-item behavior that could imply lesson drafts, structured content, media, files, course relationships, publication, or revision history. It now states that lesson-authoring services are unavailable and documents required ownership, validation, media safety, licensing, accessibility, versioning, review, rollback, entitlement, privacy, and retry controls. Focused TypeScript validation reported no diagnostics for `LessonEditor.tsx`, and `git diff --check` passed.
+
+## AgentBuilder hardening
+
+The registered AgentBuilder route no longer presents editable agent identity and system-prompt fields, preselected web-search and code-execution tools, Test and Deploy actions, or implied persistence and execution. It now states that agent-building services are unavailable and documents required ownership, prompt validation, tool allowlists, least privilege, isolated execution, secret management, human approval, cost limits, output verification, audit, versioning, rollback, and deployment controls. Focused TypeScript validation reported no diagnostics for `AgentBuilder.tsx`, and `git diff --check` passed.
