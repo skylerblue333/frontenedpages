@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { CheckCircle2, XCircle, Clock, Trophy, Zap, ArrowRight, RotateCcw } from "lucide-react";
+import { CheckCircle2, XCircle, Clock, Trophy, ArrowRight, RotateCcw } from "lucide-react";
 
 const QUESTIONS = [
   { q: "What is the primary purpose of a cryptographic hash function in blockchain?", options: ["Encrypt data for privacy", "Create a fixed-size fingerprint of data", "Sign transactions with private keys", "Compress data for storage"], correct: 1, explanation: "Hash functions create a fixed-size output (digest) from any input. In blockchain, this ensures data integrity — any change to the data produces a completely different hash." },
@@ -61,9 +61,9 @@ export default function SchoolQuiz() {
         <div className={`rounded-2xl border p-8 text-center ${passed ? "border-purple-500/30 bg-purple-600/5" : "border-red-500/30 bg-red-500/5"}`}>
           <div className="text-6xl mb-4">{passed ? "🏆" : "📚"}</div>
           <div className={`text-5xl font-bold mb-2 ${passed ? "text-purple-400" : "text-red-400"}`}>{pct}%</div>
-          <div className={`text-lg font-semibold mb-1 ${passed ? "text-purple-400" : "text-red-400"}`}>{passed ? "Quiz Passed!" : "Keep Studying"}</div>
+          <div className={`text-lg font-semibold mb-1 ${passed ? "text-purple-400" : "text-red-400"}`}>{passed ? "Local quiz threshold reached" : "Keep Studying"}</div>
           <p className="text-muted-foreground text-sm mb-6">{score}/{QUESTIONS.length} correct answers</p>
-          {passed && <div className="flex items-center justify-center gap-2 text-yellow-400 text-sm font-medium mb-6"><Zap className="h-4 w-4" />+200 XP Earned!</div>}
+          <p className="text-xs text-muted-foreground mb-6">This result is calculated locally and is not saved as a grade, certificate, XP award, or learner record.</p>
           <div className="grid grid-cols-10 gap-1 mb-6">
             {answers.map((a, i) => <div key={i} className={`h-2 rounded-full ${a ? "bg-purple-600" : "bg-red-500"}`} />)}
           </div>
@@ -83,7 +83,7 @@ export default function SchoolQuiz() {
     <div className="min-h-screen bg-background">
       <div className="border-b border-border/50 bg-card/30 px-4 py-3">
         <div className="container max-w-2xl flex items-center justify-between">
-          <span className="text-sm font-medium">Blockchain Fundamentals — Module Quiz</span>
+          <span className="text-sm font-medium">Blockchain Fundamentals — Local Module Quiz</span>
           <div className="flex items-center gap-4">
             <span className={`flex items-center gap-1 text-sm font-mono ${timeLeft < 60 ? "text-red-400 animate-pulse" : "text-muted-foreground"}`}><Clock className="h-4 w-4" />{mins}:{secs.toString().padStart(2, "0")}</span>
             <span className="text-sm text-muted-foreground">Q {current + 1}/{QUESTIONS.length}</span>
@@ -91,6 +91,7 @@ export default function SchoolQuiz() {
         </div>
       </div>
       <div className="container max-w-2xl py-8">
+        <p className="mb-3 text-xs text-muted-foreground">Educational practice only. Answers and score remain in this browser session.</p>
         <Progress value={((current + (answered ? 1 : 0)) / QUESTIONS.length) * 100} className="mb-8 h-2" />
         <div className="rounded-2xl border border-border/50 bg-card/30 p-6 md:p-8 mb-6">
           <p className="text-lg font-semibold mb-6">{q.q}</p>

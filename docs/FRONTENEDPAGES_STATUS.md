@@ -494,3 +494,7 @@ The registered SchoolCourse route no longer renders hard-coded courses, instruct
 ## SchoolLesson hardening
 
 The registered SchoolLesson route no longer renders a hard-coded course outline with completed lessons and progress, simulated video playback, XP rewards, account-saved notes, downloadable resources, discussion posts, likes, comments, or completion actions. It now states that lesson services are unavailable and documents required ownership, content delivery, media licensing, progress persistence, assessment, storage, moderation, privacy, accessibility, and retry controls. Focused TypeScript validation reported no diagnostics for `SchoolLesson.tsx`, and `git diff --check` passed.
+
+## SchoolQuiz hardening
+
+The deterministic educational quiz was preserved, but its unverified XP award and backend-like completion implication were removed. Results now explicitly remain local to the browser session and are not saved as grades, certificates, XP, or learner records; the result heading was changed to a local threshold state. Focused TypeScript validation reported no diagnostics for `SchoolQuiz.tsx`, and `git diff --check` passed.
