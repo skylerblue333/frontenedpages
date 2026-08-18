@@ -470,3 +470,7 @@ The registered CourseCatalog screen no longer presents an incomplete authenticat
 ## CertificateManager hardening
 
 The registered CertificateManager screen no longer presents an incomplete authenticated shell with New, Search, Settings, loading, or empty-record behavior that could imply an issued credential. It now states that certificate services are unavailable and documents required learner and issuer identity, achievement criteria, assessment evidence, signatures, verification, revocation, privacy, accessibility, blockchain-network, transaction, and ownership controls. Focused TypeScript validation reported no diagnostics for `CertificateManager.tsx`, and `git diff --check` passed.
+
+## StudentProgress hardening
+
+The registered StudentProgress screen no longer presents an incomplete authenticated shell with New, Search, Settings, loading, or empty-record behavior that could imply learner progress, completion, grades, assessments, streaks, XP, certificates, or student totals. It now states that progress services are unavailable and documents required ownership, event integrity, relationships, grading, timestamps, anti-tampering, accessibility, privacy, retention, instructor visibility, and retry controls. Focused TypeScript validation reported no diagnostics for `StudentProgress.tsx`, and `git diff --check` passed.
