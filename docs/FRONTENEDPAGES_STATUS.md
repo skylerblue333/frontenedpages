@@ -127,3 +127,8 @@ The registered route `/order-types` no longer renders a generic coming-soon plac
 ## Bulk Ordering hardening
 
 The registered route `/bulk-ordering` no longer renders a generic coming-soon placeholder. It now reports that bulk ordering is unavailable and does not display quantity pricing, discounts, minimum orders, inventory, quotes, payment, order IDs, receipts, shipping, or fulfillment results. It documents catalog, quote, supply, procurement, payment, idempotency, cancellation, refund, shipment, and fulfillment requirements. Focused TypeScript validation reported no diagnostics for `BulkOrdering.tsx`, and `git diff --check` passed.
+
+
+## Stake Delegation hardening
+
+The registered route `/stake-delegation` no longer renders a generic coming-soon placeholder. It now reports that delegation is unavailable and does not display validators, commissions, uptime, stake, delegation, rewards, APY, APR, slashing, lockups, signatures, withdrawals, or settlement results. It documents chain, validator, wallet, simulation, reward, slashing, unbonding, fee, and independent-verification requirements. Focused TypeScript validation reported no diagnostics for `StakeDelegation.tsx`, and `git diff --check` passed.
