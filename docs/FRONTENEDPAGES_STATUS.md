@@ -17,3 +17,8 @@ The full build remains blocked by pre-existing missing source imports, including
 ## Next safe work
 
 Continue by reconciling the missing source modules against the intended SKYCOIN4444 checkout before repairing them. Do not fabricate authentication, API, file-upload, governance, financial, or other backend behavior merely to satisfy the build.
+
+
+## Chain Explorer hardening
+
+The registered route `/chain-explorer` no longer renders a generic coming-soon placeholder. It now explicitly reports that blockchain exploration is unavailable and does not fabricate chain IDs, network health, block heights, addresses, transactions, balances, fees, confirmations, finality, or indexing status. The screen documents the required RPC/indexer, allowlist, reorganization, freshness, rate-limit, validation, and independent-verification boundaries. Focused TypeScript validation reported no diagnostics for `ChainExplorer.tsx`, and `git diff --check` passed. The full repository build remains blocked by pre-existing unresolved imports documented above.
