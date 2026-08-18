@@ -22,3 +22,8 @@ Continue by reconciling the missing source modules against the intended SKYCOIN4
 ## Chain Explorer hardening
 
 The registered route `/chain-explorer` no longer renders a generic coming-soon placeholder. It now explicitly reports that blockchain exploration is unavailable and does not fabricate chain IDs, network health, block heights, addresses, transactions, balances, fees, confirmations, finality, or indexing status. The screen documents the required RPC/indexer, allowlist, reorganization, freshness, rate-limit, validation, and independent-verification boundaries. Focused TypeScript validation reported no diagnostics for `ChainExplorer.tsx`, and `git diff --check` passed. The full repository build remains blocked by pre-existing unresolved imports documented above.
+
+
+## Blockchain Custody hardening
+
+The registered custody surface was audited at `/blockchain-custody`. The previous implementation claimed non-custodial HD wallet derivation, multi-chain balances, gas estimation, transaction signing, broadcast, and confirmation tracking while the imported server routes `blockchain` through the generic `createFeatureRouter()` and do not expose verified custody procedures. The page now disables custody actions and reports no wallet, key, balance, signature, gas, transaction, broadcast, or settlement result. It explicitly warns users never to enter a seed phrase or private key into this deployment. Focused TypeScript validation reported no diagnostics for `BlockchainCustody.tsx`, and `git diff --check` passed.
