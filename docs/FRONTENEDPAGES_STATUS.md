@@ -290,3 +290,7 @@ The registered Tax Planning screen no longer renders a fake authenticated CRUD s
 ## Wave4 Payments hardening
 
 The registered wave4 Payments screen no longer renders unsupported payment methods, masked card records, billing transactions, subscription renewals, spending and earnings totals, payout history, or payout requests. No matching wave4 payment contracts were found for the frontend calls, so the claims and mutation were removed. The page now documents provider, payment-intent, tokenization, PCI, authorization, webhook, idempotency, reconciliation, subscription, refund, dispute, payout, fraud, privacy, audit, and settlement requirements. Focused TypeScript validation reported no diagnostics for `wave4/Payments.tsx`, and `git diff --check` passed.
+
+## Crypto Research Hub hardening
+
+The registered Crypto Research Hub no longer renders hardcoded coin prices, market caps, volumes, changes, mining characteristics, pool shares, fees, block data, profitability, ROI, or randomized price-history charts. The prior values were not sourced, timestamped, or independently verified. The page now states the unavailable research boundary and documents authoritative sources, freshness, asset identity, methodology, reconciliation, provenance, mining assumptions, uncertainty, citations, conflicts, and risk disclosures. Focused TypeScript validation reported no diagnostics for `CryptoResearchHub.tsx`, and `git diff --check` passed.
