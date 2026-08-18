@@ -570,3 +570,7 @@ The registered AffiliateProgram route no longer claims fully functional live dat
 ## AffiliateDashboard hardening
 
 The registered AffiliateDashboard route no longer queries unverified referral data, references an undefined authentication state, generates a user-based referral code or link, shows fabricated commission tiers, earnings, pending balances, or referred users, or exposes copy, social-share, and withdrawal mutations. It now states that affiliate dashboard services are unavailable and documents required partner ownership, server-side attribution, program terms, consent, conversion, eligibility, tier versioning, commission, payout, tax, fraud, privacy, audit, dispute, and retry controls. Focused TypeScript validation reported no diagnostics for `AffiliateDashboard.tsx`, and `git diff --check` passed.
+
+## AlertConfiguration hardening
+
+The registered AlertConfiguration route no longer presents an incomplete authenticated shell with New, Search, Settings, loading, or empty-item behavior that could imply alert rules, thresholds, event evaluation, notification delivery, escalation, acknowledgement, webhooks, or audit records. It now states that alerting services are unavailable and documents required typed rules, metric and event semantics, threshold windows, deduplication, suppression, ownership, severity, provider authentication, retries, escalation, incidents, quiet hours, privacy, audit, and retry controls. Focused TypeScript validation reported no diagnostics for `AlertConfiguration.tsx`, and `git diff --check` passed.
