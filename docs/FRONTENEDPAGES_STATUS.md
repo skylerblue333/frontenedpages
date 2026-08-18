@@ -62,3 +62,8 @@ The registered route `/staking-dashboard` no longer renders the generic authenti
 ## Mining Dashboard hardening
 
 The Mining Dashboard no longer renders fabricated worker controls, random USD earnings, crypto breakdowns, rewards, payouts, profitability, uptime, or mining-session charts. The previous implementation called unverified `/api/mining/*` endpoints and included a random earnings simulation. It now reports that mining is unavailable and documents worker, pool, chain, payout, reconciliation, and operational-monitoring requirements. Focused TypeScript validation reported no diagnostics for `MiningDashboard.tsx`, and `git diff --check` passed.
+
+
+## Block Rewards hardening
+
+The registered route `/block-rewards` no longer renders a generic coming-soon placeholder. It now reports that block reward data is unavailable and does not display issuance, block height, reward amounts, balances, payouts, distributions, claims, transaction hashes, or settlement evidence. It documents chain, indexer, reorganization, attribution, accounting, authorization, and independent-settlement requirements. Focused TypeScript validation reported no diagnostics for `BlockRewards.tsx`, and `git diff --check` passed.
