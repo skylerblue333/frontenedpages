@@ -147,3 +147,8 @@ The registered route `/order-history` no longer renders unsupported marketplace 
 ## AI Agent Market hardening
 
 The registered route `/a-i-agent-market` no longer renders a fabricated revenue engine, agent catalog, prices, usage counts, ratings, paid unlocks, automation, subscriptions, or payment actions. It now reports that the agent marketplace is unavailable and documents agent metadata, model and tool contracts, consent, cost disclosure, sandboxing, rate limits, abuse controls, provenance, usage accounting, payment, refunds, and auditability requirements. Focused TypeScript validation reported no diagnostics for `AIAgentMarket.tsx`, `git diff --check` passed, and the removed revenue, pricing, usage, rating, unlock, and Stripe markers were absent.
+
+
+## Fundraiser Tools hardening
+
+The registered route `/fundraiser-tools` no longer renders a generic coming-soon placeholder. It now reports that fundraising is unavailable and does not display campaigns, beneficiaries, donations, goals, donor totals, receipts, refunds, disbursements, payouts, or settlement results. It documents beneficiary, campaign, consent, payment, donor, fraud, restricted-fund, approval, reconciliation, regulatory, and reporting requirements. Focused TypeScript validation reported no diagnostics for `FundraiserTools.tsx`, and `git diff --check` passed.
