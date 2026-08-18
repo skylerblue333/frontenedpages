@@ -566,3 +566,7 @@ The registered AdvancedOrders route no longer claims fully functional live data 
 ## AffiliateProgram hardening
 
 The registered AffiliateProgram route no longer claims fully functional live data or real-time updates, exposes generic feature cards, or renders fabricated active-user, transaction, success-rate, and response-time metrics. It now states that affiliate services are unavailable and documents required program terms, partner identity, referral attribution, consent, conversion, eligibility, commission, currency, tax, payout, fraud, reconciliation, dispute, privacy, audit, and retry controls. Focused TypeScript validation reported no diagnostics for `AffiliateProgram.tsx`, and `git diff --check` passed.
+
+## AffiliateDashboard hardening
+
+The registered AffiliateDashboard route no longer queries unverified referral data, references an undefined authentication state, generates a user-based referral code or link, shows fabricated commission tiers, earnings, pending balances, or referred users, or exposes copy, social-share, and withdrawal mutations. It now states that affiliate dashboard services are unavailable and documents required partner ownership, server-side attribution, program terms, consent, conversion, eligibility, tier versioning, commission, payout, tax, fraud, privacy, audit, dispute, and retry controls. Focused TypeScript validation reported no diagnostics for `AffiliateDashboard.tsx`, and `git diff --check` passed.
