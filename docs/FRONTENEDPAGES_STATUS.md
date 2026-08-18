@@ -438,3 +438,7 @@ The registered AITrainingLoops screen no longer displays fabricated model accura
 ## HopeAIPage hardening
 
 The registered HopeAIPage landing screen no longer claims mining optimization, profitability, automated trading, investment recommendations, asset/threat monitoring, content generation, or intelligent support, and no longer uses a placeholder background or unverified contact address. It now states that HopeAI is unavailable and documents required model, market, chain, authorization, risk, transaction, custody, security, privacy, safety, and observability controls. Focused TypeScript validation reported no diagnostics for `HopeAIPage.tsx`, and `git diff --check` passed.
+
+## AIModerationQueue hardening
+
+The registered AIModerationQueue screen no longer calls unverified queue, stats, or resolve procedures and no longer displays AI accuracy, auto-moderated counts, action labels, content IDs, reasons, queue-clear status, or approve/remove mutations without verified contracts, model evidence, authorization, or audit handling. It now states that moderation services are unavailable and documents required policy, threshold, human review, appeal, evidence, false-positive, access, audit, and incident controls. Focused TypeScript validation reported no diagnostics for `AIModerationQueue.tsx`, and `git diff --check` passed.
