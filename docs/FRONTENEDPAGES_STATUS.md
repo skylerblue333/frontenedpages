@@ -334,3 +334,7 @@ The registered Marketplace screen no longer renders static featured assets, sell
 ## Content Upload hardening
 
 The registered Content Upload screen no longer renders a generic coming-soon page as if upload, storage, processing, moderation, publishing, or asset access were available. It now reports that authenticated upload, object storage, validation, malware and content scanning, transcoding, metadata, access control, retention, deletion, retry, quota, and quarantine workflows are unavailable and documents the controls required for safe ingestion. Focused TypeScript validation reported no diagnostics for `ContentUpload.tsx`, and `git diff --check` passed.
+
+## Content Vault hardening
+
+The registered Content Vault screen no longer renders static private photos, videos, audio, collections, access tiers, unlock counts, view counts, dates, View and Unlock actions, or a subscription-upgrade prompt. Those items and entitlements were not sourced from a verified vault, storage, subscription, or access-control service. The page now documents ownership, encrypted storage, object authorization, entitlements, payment reconciliation, signed delivery, watermarking, access audit, retention, deletion, privacy, moderation, and reliable access-state requirements. Focused TypeScript validation reported no diagnostics for `ContentVault.tsx`, and `git diff --check` passed.
