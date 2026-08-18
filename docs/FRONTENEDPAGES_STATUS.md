@@ -446,3 +446,7 @@ The registered AIModerationQueue screen no longer calls unverified queue, stats,
 ## SkySchool hardening
 
 SkySchool's extensive static lesson catalog and lesson navigation were preserved, but fabricated student counts, ratings, XP rewards, SKY rewards, enrollment success claims, and certificate-award wording were removed or explicitly labeled as unavailable. Lesson selection and completion now disclose that progress is local to the browser session and that no server enrollment, backend progress record, credential, certificate, XP, or token reward is issued. External YouTube embeds are labeled as third-party content whose availability and ownership are not guaranteed by the application. The unused backend import and user binding were removed. Focused TypeScript validation reported no diagnostics for `SkySchool.tsx`, and `git diff --check` passed.
+
+## LearningPath hardening
+
+The registered LearningPath screen no longer presents an incomplete authenticated shell with New, Search, Settings, loading, or empty-item behavior that could imply recommendations, course paths, enrollment, progress, assessments, completion, certificates, or learner records. It now states that learning-path services are unavailable and documents required catalog, curriculum, learner ownership, persistence, assessment, accessibility, provenance, recommendation evaluation, privacy, retention, certificate, and retry controls. Focused TypeScript validation reported no diagnostics for `LearningPath.tsx`, and `git diff --check` passed.
