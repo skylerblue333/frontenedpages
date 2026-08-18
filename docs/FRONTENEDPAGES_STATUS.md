@@ -506,3 +506,7 @@ The registered School page no longer renders a fabricated course marketplace, in
 ## wave3 Learning hardening
 
 The registered wave3 Learning page no longer references the undefined `isAuthenticated` variable, unverified course/enrollment/certificate procedures, any-typed records, or enrollment and completion mutations that could claim certificate issuance. It now states that Wave 3 learning services are unavailable and documents required typed contracts, learner ownership, entitlements, progress, assessment, content provenance, accessibility, privacy, retention, and retry controls. Focused TypeScript validation reported no diagnostics for `wave3/Learning.tsx`, and `git diff --check` passed.
+
+## LessonEditor hardening
+
+The registered LessonEditor screen no longer presents an incomplete authenticated shell with New, Search, Settings, loading, or empty-item behavior that could imply lesson drafts, structured content, media, files, course relationships, publication, or revision history. It now states that lesson-authoring services are unavailable and documents required ownership, validation, media safety, licensing, accessibility, versioning, review, rollback, entitlement, privacy, and retry controls. Focused TypeScript validation reported no diagnostics for `LessonEditor.tsx`, and `git diff --check` passed.
