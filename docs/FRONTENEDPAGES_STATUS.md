@@ -142,3 +142,8 @@ The registered route `/rewards-tracking` no longer renders a generic coming-soon
 ## Order History hardening
 
 The registered route `/order-history` no longer renders unsupported marketplace order cards or a generic coming-soon state. It no longer queries the unavailable marketplace order procedure, uses untyped order data, displays totals or escrow, or implies review and invoice actions. It now reports that authenticated order, payment, shipment, refund, review, and fulfillment records are unavailable. Focused TypeScript validation reported no diagnostics for `OrderHistory.tsx`, `git diff --check` passed, and the removed query and fabricated action markers were absent.
+
+
+## AI Agent Market hardening
+
+The registered route `/a-i-agent-market` no longer renders a fabricated revenue engine, agent catalog, prices, usage counts, ratings, paid unlocks, automation, subscriptions, or payment actions. It now reports that the agent marketplace is unavailable and documents agent metadata, model and tool contracts, consent, cost disclosure, sandboxing, rate limits, abuse controls, provenance, usage accounting, payment, refunds, and auditability requirements. Focused TypeScript validation reported no diagnostics for `AIAgentMarket.tsx`, `git diff --check` passed, and the removed revenue, pricing, usage, rating, unlock, and Stripe markers were absent.
