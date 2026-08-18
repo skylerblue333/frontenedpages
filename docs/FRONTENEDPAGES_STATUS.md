@@ -594,3 +594,7 @@ The registered ActionObjects route no longer queries an unverified wallet balanc
 ## ActivityFeed hardening
 
 The registered ActivityFeed route no longer presents an incomplete authenticated shell with New, Search, Settings, loading, or empty-item behavior that could imply activity events, actors, timestamps, project updates, social actions, wallet events, commerce events, notifications, or audit records. It now states that activity-feed services are unavailable and documents required typed schemas, authoritative producers, authorization, ordering, deduplication, pagination, freshness, visibility, consent, sensitive-data filtering, retention, deletion, notification boundaries, audit, and retry controls. Focused TypeScript validation reported no diagnostics for `ActivityFeed.tsx`, and `git diff --check` passed.
+
+## ActivityTracking hardening
+
+The registered ActivityTracking route no longer presents an incomplete authenticated shell with New, Search, Settings, loading, or empty-item behavior that could imply event collection, actors, sessions, timestamps, consent, funnels, cohorts, metrics, attribution, pipelines, logs, monitoring, or audit records. It now states that activity-tracking services are unavailable and documents required purpose and consent, typed schemas, identity, minimization, ordering, deduplication, retention, deletion, regional handling, access, aggregation, attribution, privacy, monitoring, audit, and retry controls. Focused TypeScript validation reported no diagnostics for `ActivityTracking.tsx`, and `git diff --check` passed.
