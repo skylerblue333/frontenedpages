@@ -1,144 +1,92 @@
-import React from 'react';
-import { Link } from 'wouter';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { BrainIcon, RocketIcon, StarIcon } from 'lucide-react'; // Using lucide-react for icons
+import { AlertTriangle, Bot, FileWarning, LockKeyhole, MessageCircle, ShieldCheck, Sparkles, TrendingUp, WalletCards } from "lucide-react";
+import { Link } from "wouter";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
 
-const HopeAIPage = () => {
+const capabilityStates = [
+  { label: "HopeAI model and assistant access", value: "Unavailable", icon: Bot },
+  { label: "Mining optimization and trading automation", value: "Not configured", icon: TrendingUp },
+  { label: "Wallet, portfolio, and profitability insights", value: "Disabled", icon: WalletCards },
+  { label: "Security monitoring, support, and content generation", value: "Not verified", icon: ShieldCheck },
+];
+
+export default function HopeAIPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 to-gray-900 text-white">
-      {/* Hero Section */}
-      <section className="relative h-screen flex items-center justify-center text-center px-4 overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <img
-            src="https://via.placeholder.com/1920x1080/1A0A3A/FFFFFF?text=HOPE_AI_BACKGROUND"
-            alt="Hope AI Background"
-            className="w-full h-full object-cover opacity-30"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent"></div>
-        </div>
-        <div className="relative z-10 max-w-4xl mx-auto">
-          <h1 className="text-5xl md:text-7xl font-extrabold leading-tight mb-6 animate-fade-in-up">
-            Hope AI: Your Intelligent Partner in the Skycoin Ecosystem
-          </h1>
-          <p className="text-lg md:text-xl mb-8 opacity-90 animate-fade-in-up animation-delay-200">
-            Leverage advanced artificial intelligence for optimized crypto mining, smart trading, and personalized insights across your digital journey.
-          </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4 animate-fade-in-up animation-delay-400">
-            <Link href="/hope-ai/dashboard">
-              <Button className="bg-purple-600 hover:bg-purple-700 text-white text-lg px-8 py-6 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105">
-                Access Hope AI Dashboard <BrainIcon className="ml-2 h-5 w-5" />
-              </Button>
-            </Link>
-            <Link href="/hope-ai/features">
-              <Button variant="outline" className="border-purple-600 text-purple-600 hover:bg-purple-600 hover:text-white text-lg px-8 py-6 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105">
-                Learn More <RocketIcon className="ml-2 h-5 w-5" />
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </section>
+    <div className="min-h-screen bg-background">
+      <PageHeader
+        title="HopeAI"
+        description="HopeAI services are not connected in this deployment. No mining, trading, investment, profitability, security, support, or content-generation capability is being reported."
+      />
 
-      {/* Features Section */}
-      <section className="py-20 px-4 text-center">
-        <h2 className="text-4xl font-bold mb-12">How Hope AI Empowers You</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          <Card className="bg-gray-800 border-gray-700 text-white transform hover:scale-105 transition-transform duration-300">
-            <CardHeader>
-              <BrainIcon className="h-10 w-10 text-purple-400 mx-auto mb-4" />
-              <CardTitle className="text-2xl">AI Mining Optimization</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <CardDescription className="text-gray-300">Hope AI intelligently manages your mining operations, maximizing hash power and profitability across multiple cryptocurrencies.</CardDescription>
-            </CardContent>
-          </Card>
-          <Card className="bg-gray-800 border-gray-700 text-white transform hover:scale-105 transition-transform duration-300">
-            <CardHeader>
-              <StarIcon className="h-10 w-10 text-purple-400 mx-auto mb-4" />
-              <CardTitle className="text-2xl">Smart Trading Bots</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <CardDescription className="text-gray-300">Automate your crypto trading with AI-driven strategies, risk management, and real-time market analysis for optimal returns.</CardDescription>
-            </CardContent>
-          </Card>
-          <Card className="bg-gray-800 border-gray-700 text-white transform hover:scale-105 transition-transform duration-300">
-            <CardHeader>
-              <RocketIcon className="h-10 w-10 text-purple-400 mx-auto mb-4" />
-              <CardTitle className="text-2xl">Personalized Insights</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <CardDescription className="text-gray-300">Receive tailored recommendations for investments, market trends, and platform usage to enhance your overall experience.</CardDescription>
-            </CardContent>
-          </Card>
-          <Card className="bg-gray-800 border-gray-700 text-white transform hover:scale-105 transition-transform duration-300">
-            <CardHeader>
-              <BrainIcon className="h-10 w-10 text-purple-400 mx-auto mb-4" />
-              <CardTitle className="text-2xl">Content Generation</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <CardDescription className="text-gray-300">Utilize Hope AI to generate high-quality content for your social profiles, marketplace listings, and more.</CardDescription>
-            </CardContent>
-          </Card>
-          <Card className="bg-gray-800 border-gray-700 text-white transform hover:scale-105 transition-transform duration-300">
-            <CardHeader>
-              <StarIcon className="h-10 w-10 text-purple-400 mx-auto mb-4" />
-              <CardTitle className="text-2xl">Security & Anomaly Detection</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <CardDescription className="text-gray-300">Hope AI continuously monitors for suspicious activities and potential threats, ensuring the security of your assets and data.</CardDescription>
-            </CardContent>
-          </Card>
-          <Card className="bg-gray-800 border-gray-700 text-white transform hover:scale-105 transition-transform duration-300">
-            <CardHeader>
-              <RocketIcon className="h-10 w-10 text-purple-400 mx-auto mb-4" />
-              <CardTitle className="text-2xl">Automated Support</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <CardDescription className="text-gray-300">Get instant answers and support through Hope AI's intelligent chatbot, resolving your queries efficiently.</CardDescription>
-            </CardContent>
-          </Card>
-        </div>
-      </section>
+      <main className="mx-auto max-w-6xl space-y-8 px-4 py-8">
+        <Card className="border border-red-400/30 bg-red-950/20 p-6">
+          <div className="flex items-start gap-3">
+            <AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" />
+            <div>
+              <h2 className="font-semibold text-red-100">HopeAI is unavailable</h2>
+              <p className="mt-1 text-sm leading-6 text-red-100/80">
+                The previous landing page claimed HopeAI could optimize mining and profitability, automate trading, provide investment recommendations, monitor assets and threats, generate content, and resolve support queries. It also linked to unverified dashboards and provided an unverified contact address. Those claims and links were removed because the required AI, market, wallet, security, support, and operational integrations were not verified.
+              </p>
+            </div>
+          </div>
+        </Card>
 
-      {/* Call to Action */}
-      <section className="py-20 px-4 bg-purple-700 text-center">
-        <h2 className="text-4xl font-bold mb-6">Ready to Experience the Power of Hope AI?</h2>
-        <p className="text-lg mb-8 opacity-90">Integrate cutting-edge AI into your crypto journey and unlock new levels of efficiency and profitability.</p>
-        <Link href="/hope-ai/dashboard">
-          <Button className="bg-white text-purple-700 text-lg px-10 py-6 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105">
-            Start Your AI Journey <BrainIcon className="ml-2 h-5 w-5" />
-          </Button>
-        </Link>
-      </section>
+        <Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8">
+          <div className="space-y-6">
+            <div className="flex items-start gap-4">
+              <div className="rounded-xl bg-primary/15 p-3"><Sparkles aria-hidden="true" className="h-8 w-8 text-primary" /></div>
+              <div>
+                <h2 className="text-3xl font-bold">HopeAI readiness</h2>
+                <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">
+                  Any production AI connected to crypto, wallets, mining, trading, or security requires an authenticated model gateway, verified market and chain data, explicit user authorization, financial-risk disclosures, transaction confirmation, custody boundaries, least-privilege tools, monitoring evidence, privacy controls, safety escalation, and clear success, failure, timeout, and retry states. None of those controls are available through this page.
+                </p>
+              </div>
+            </div>
 
-      {/* Footer */}
-      <footer className="bg-gray-900 py-10 px-4 text-center text-gray-400">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div>
-            <h4 className="text-xl font-semibold text-white mb-4">Hope AI</h4>
-            <p>Your intelligent partner in the Skycoin Ecosystem.</p>
+            <div className="grid gap-4 md:grid-cols-3">
+              <Card className="border border-primary/30 bg-background/80 p-4">
+                <WalletCards aria-hidden="true" className="mb-3 h-7 w-7 text-primary" />
+                <h3 className="font-semibold">No financial claim</h3>
+                <p className="mt-1 text-sm text-muted-foreground">No mining result, hash power, trading strategy, market view, investment recommendation, balance, return, profitability, or transaction is presented.</p>
+              </Card>
+              <Card className="border border-primary/30 bg-background/80 p-4">
+                <ShieldCheck aria-hidden="true" className="mb-3 h-7 w-7 text-primary" />
+                <h3 className="font-semibold">No security claim</h3>
+                <p className="mt-1 text-sm text-muted-foreground">No anomaly detection, threat monitoring, asset protection, encryption, security coverage, or incident response is claimed.</p>
+              </Card>
+              <Card className="border border-primary/30 bg-background/80 p-4">
+                <MessageCircle aria-hidden="true" className="mb-3 h-7 w-7 text-primary" />
+                <h3 className="font-semibold">No assistant claim</h3>
+                <p className="mt-1 text-sm text-muted-foreground">No chatbot, content generation, personalization, support answer, model response, memory, or availability is simulated.</p>
+              </Card>
+            </div>
+
+            <div className="flex flex-wrap gap-4 pt-2">
+              <Link href="/hope-ai"><Button size="lg" className="bg-primary hover:bg-primary/90">View HopeAI status</Button></Link>
+              <Link href="/wallet"><Button size="lg" variant="outline">View wallet status</Button></Link>
+              <Link href="/contact-us-form"><Button size="lg" variant="ghost">Ask about HopeAI access</Button></Link>
+            </div>
           </div>
-          <div>
-            <h4 className="text-xl font-semibold text-white mb-4">Quick Links</h4>
-            <ul className="space-y-2">
-              <li><Link href="/hope-ai/dashboard" className="hover:text-purple-400">AI Dashboard</Link></li>
-              <li><Link href="/mining" className="hover:text-purple-400">AI Mining</Link></li>
-              <li><Link href="/trading" className="hover:text-purple-400">AI Trading</Link></li>
-              <li><Link href="/support" className="hover:text-purple-400">AI Support</Link></li>
-            </ul>
+        </Card>
+
+        <section aria-labelledby="hope-page-state-heading">
+          <h2 id="hope-page-state-heading" className="mb-4 text-xl font-semibold">Current HopeAI evidence</h2>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+            {capabilityStates.map(({ label, value, icon: Icon }) => (
+              <Card key={label} className="border border-border/50 bg-card p-4"><p className="text-sm text-muted-foreground">{label}</p><div className="mt-2 flex items-center gap-2"><Icon aria-hidden="true" className="h-4 w-4 text-muted-foreground" /><p className="font-semibold">{value}</p></div></Card>
+            ))}
           </div>
-          <div>
-            <h4 className="text-xl font-semibold text-white mb-4">Contact Us</h4>
-            <p>Email: hopeai@sky444.com</p>
-            <p>Follow us for AI updates!</p>
-          </div>
-        </div>
-        <div className="mt-10 border-t border-gray-700 pt-8">
-          <p>&copy; {new Date().getFullYear()} Hope AI. All rights reserved.</p>
-        </div>
-      </footer>
+        </section>
+
+        <Card className="border border-border/50 bg-card p-5">
+          <div className="flex items-start gap-3"><FileWarning aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">Do not enter passwords, access tokens, seed phrases, private keys, wallet secrets, financial details, health details, or sensitive personal information here. AI output must not be treated as financial, legal, medical, security, or production advice.</p></div>
+        </Card>
+
+        <Card className="border border-border/50 bg-card p-5">
+          <div className="flex items-start gap-3"><LockKeyhole aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">Model access, wallets, market data, mining, trading, security, support, privacy, billing, and observability remain separate integrations. This screen does not replace any of them.</p></div>
+        </Card>
+      </main>
     </div>
   );
-};
-
-export default HopeAIPage;
+}

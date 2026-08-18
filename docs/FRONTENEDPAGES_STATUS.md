@@ -434,3 +434,7 @@ The registered AIToolsHub screen no longer catalogs unsupported tools as LIVE, B
 ## AITrainingLoops hardening
 
 The registered AITrainingLoops screen no longer displays fabricated model accuracy, sample counts, training times, improvement trends, aggregate samples, average accuracy, cycle counts, SKY rewards, or an active continuous-training pipeline. It now states that training and feedback services are unavailable and documents required provenance, consent, PII minimization, retention, labeling, reproducibility, evaluation, drift, lineage, rollback, deployment, anti-fraud, reward, and settlement controls. Focused TypeScript validation reported no diagnostics for `AITrainingLoops.tsx`, and `git diff --check` passed.
+
+## HopeAIPage hardening
+
+The registered HopeAIPage landing screen no longer claims mining optimization, profitability, automated trading, investment recommendations, asset/threat monitoring, content generation, or intelligent support, and no longer uses a placeholder background or unverified contact address. It now states that HopeAI is unavailable and documents required model, market, chain, authorization, risk, transaction, custody, security, privacy, safety, and observability controls. Focused TypeScript validation reported no diagnostics for `HopeAIPage.tsx`, and `git diff --check` passed.
