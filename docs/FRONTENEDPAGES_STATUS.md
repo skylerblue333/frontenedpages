@@ -430,3 +430,7 @@ The registered HopeAIMeta screen no longer simulates multimodal responses, web r
 ## AIToolsHub hardening
 
 The registered AIToolsHub screen no longer catalogs unsupported tools as LIVE, BETA, or GREY and no longer advertises code generation, copy creation, personal AI support, model switching, market analysis, agent fleets, OSINT, media authenticity, cipher, social-engineering, network-recon, or moderation capabilities as available. It now presents an evidence-based integration boundary and documents required inventory, provider, authorization, file, safety, evaluation, data-source, rate, cost, monitoring, and retirement controls. Focused TypeScript validation reported no diagnostics for `AIToolsHub.tsx`, and `git diff --check` passed.
+
+## AITrainingLoops hardening
+
+The registered AITrainingLoops screen no longer displays fabricated model accuracy, sample counts, training times, improvement trends, aggregate samples, average accuracy, cycle counts, SKY rewards, or an active continuous-training pipeline. It now states that training and feedback services are unavailable and documents required provenance, consent, PII minimization, retention, labeling, reproducibility, evaluation, drift, lineage, rollback, deployment, anti-fraud, reward, and settlement controls. Focused TypeScript validation reported no diagnostics for `AITrainingLoops.tsx`, and `git diff --check` passed.
