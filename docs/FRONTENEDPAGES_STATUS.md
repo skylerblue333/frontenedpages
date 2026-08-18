@@ -366,3 +366,7 @@ The registered Social Media screen no longer calls unverified feed, trend, user-
 ## Social Media Campaigns hardening
 
 The registered Social Media Campaigns screen no longer exposes a sign-in gate, New action, search, settings, or empty campaign state as if campaign management were connected. It now reports that campaigns, drafts, audiences, budgets, consent, schedules, providers, delivery, spend, reach, engagement, conversion, and reporting are unavailable and documents workspace ownership, targeting, authorization, moderation, idempotent delivery, webhooks, reconciliation, attribution, privacy, retention, and audit requirements. Focused TypeScript validation reported no diagnostics for `SocialMediaCampaigns.tsx`, and `git diff --check` passed.
+
+## Team Management hardening
+
+The registered Team Management screen no longer exposes a sign-in gate, New action, search, settings, or empty team state as if team administration were connected. It now reports that teams, workspaces, members, roles, permissions, invitations, activity, and mutations are unavailable and documents tenant isolation, ownership, lifecycle, least privilege, revocation, billing, export, deletion, notification, rate-limit, and audit requirements. Focused TypeScript validation reported no diagnostics for `TeamManagement.tsx`, and `git diff --check` passed.
