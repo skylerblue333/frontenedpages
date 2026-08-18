@@ -5,16 +5,15 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/_core/hooks/useAuth";
-import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
 import {
-  BookOpen, Star, Zap, Award, Clock, Users, Search, GraduationCap, Brain,
-  Coins, Shield, Code, Rocket, Bug, Cloud, Cpu, CheckCircle, Terminal, Play,
-  Video, ArrowLeft, BarChart3, Lock, Trophy, ChevronRight, Flame, Target,
-  Sparkles, ArrowRight, Volume2, Code2
+  BookOpen, Star, Clock, Users, Search, GraduationCap, Brain,
+  Shield, Code, Rocket, Bug, Cloud, Cpu, CheckCircle, Terminal, Play,
+  Video, ArrowLeft, BarChart3, Lock, ChevronRight,
+  Sparkles
 } from "lucide-react";
 
-// Real YouTube Videos + Actual Lesson Content
+// Curated lesson content. External video availability and course progress are not verified by this screen.
 const COURSES = [
   {
     id: "blockchain-101",
@@ -26,10 +25,6 @@ const COURSES = [
     description: "Master distributed ledgers, consensus mechanisms, and cryptography",
     lessons: 12,
     duration: "4h 30m",
-    xpReward: 500,
-    skyReward: 50,
-    students: 28400,
-    rating: 4.9,
     color: "oklch(0.72 0.20 200)",
     topics: [
       {
@@ -417,8 +412,8 @@ Next Steps:
 • Join blockchain communities
 • Stay updated on developments
 
-Certificate:
-You have earned your Blockchain Fundamentals certificate!
+Completion note (no certificate is issued by this screen):
+Review the lesson objectives and complete the project independently; this screen does not issue a certificate.
 Share your achievement: #BlockchainFundamentals #SKY4444`
       }
     ]
@@ -433,10 +428,6 @@ Share your achievement: #BlockchainFundamentals #SKY4444`
     description: "From zero to production - scripts, APIs, automation, data pipelines",
     lessons: 6,
     duration: "3h 00m",
-    xpReward: 600,
-    skyReward: 60,
-    students: 45200,
-    rating: 4.9,
     color: "oklch(0.72 0.20 250)",
     topics: [
       {
@@ -724,8 +715,8 @@ Deployment:
 pip freeze > requirements.txt
 Deploy to Heroku, Railway, or Render
 
-Certificate:
-You have completed Python for Builders!
+Completion note (no certificate is issued by this screen):
+Review the lesson objectives and complete the project independently; this screen does not issue a certificate.
 Showcase your API project on GitHub.`
       }
     ]
@@ -740,10 +731,6 @@ Showcase your API project on GitHub.`
     description: "Modern JS/TS from fundamentals to full-stack React apps",
     lessons: 6,
     duration: "3h 30m",
-    xpReward: 700,
-    skyReward: 70,
-    students: 52100,
-    rating: 4.9,
     color: "oklch(0.80 0.20 70)",
     topics: [
       {
@@ -1037,8 +1024,8 @@ Testing:
 • Unit tests with Jest
 • E2E tests with Cypress
 
-Certificate:
-You have completed JavaScript & React Mastery!
+Completion note (no certificate is issued by this screen):
+Review the lesson objectives and complete the project independently; this screen does not issue a certificate.
 Share your project on GitHub and deploy on Vercel.`
       }
     ]
@@ -1052,7 +1039,7 @@ const LEVEL_COLORS: Record<string, string> = {
 };
 
 export default function SkySchool() {
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated } = useAuth();
   const [search, setSearch] = useState("");
   const [selectedCourse, setSelectedCourse] = useState<typeof COURSES[0] | null>(null);
   const [selectedLessonIdx, setSelectedLessonIdx] = useState(0);
@@ -1071,16 +1058,16 @@ export default function SkySchool() {
       return;
     }
     setEnrolledCourses(prev => new Set([...prev, courseId]));
-    toast.success("Enrolled successfully! 🎉");
+    toast.success("Course selected for this browser session. No server enrollment or credential was created.");
   };
 
   const handleCompleteLesson = () => {
     if (!selectedCourse) return;
     const key = selectedCourse.id;
-    const completed = completedLessons[key] || new Set();
+    const completed = new Set(completedLessons[key] || []);
     completed.add(selectedLessonIdx);
     setCompletedLessons(prev => ({ ...prev, [key]: completed }));
-    toast.success(`Lesson completed! +${Math.round(selectedCourse.xpReward / selectedCourse.lessons)} XP`);
+    toast.success("Lesson marked complete in this browser session. No credential, certificate, XP, or token reward was issued.");
   };
 
   const handleNextLesson = () => {
@@ -1090,11 +1077,11 @@ export default function SkySchool() {
       setSelectedLessonIdx(selectedLessonIdx + 1);
     } else {
       handleCompleteLesson();
-      toast.success(`Course completed! 🏆 +${selectedCourse.xpReward} XP, +${selectedCourse.skyReward} SKY`);
+      toast.success("Course lessons marked complete in this browser session. No certificate, XP, token reward, or backend progress record was issued.");
     }
   };
 
-  // Lesson View with REAL YouTube Video
+  // Lesson view. The external video URL may be unavailable or change outside this application.
   if (selectedCourse) {
     const lesson = selectedCourse.topics[selectedLessonIdx];
     const progress = (selectedLessonIdx + 1) / selectedCourse.lessons * 100;
@@ -1127,7 +1114,7 @@ export default function SkySchool() {
             </div>
           </div>
 
-          {/* REAL YouTube Video Player */}
+          {/* External video embed; availability and ownership are not guaranteed by this application. */}
           <div className="bg-black rounded-2xl overflow-hidden mb-8 aspect-video">
             <iframe
               width="100%"
@@ -1193,12 +1180,8 @@ export default function SkySchool() {
                     {selectedCourse.duration}
                   </div>
                   <div className="flex items-center gap-2">
-                    <Zap className="w-4 h-4 text-yellow-400" />
-                    +{selectedCourse.skyReward} SKY
                   </div>
                   <div className="flex items-center gap-2">
-                    <Award className="w-4 h-4 text-purple-400" />
-                    +{selectedCourse.xpReward} XP
                   </div>
                 </CardContent>
               </Card>
@@ -1252,7 +1235,7 @@ export default function SkySchool() {
             <GraduationCap className="w-10 h-10 text-cyan-400" />
             <div>
               <h1 className="text-5xl font-bold text-white">Sky School</h1>
-              <p className="text-slate-400 text-lg mt-2">Learn Web3, Coding, AI, and Hacking. Earn SKY4, XP, and Certifications.</p>
+              <p className="text-slate-400 text-lg mt-2">Study Web3, coding, AI, and security fundamentals. Course progress is local to this browser session; certificates and rewards are not issued here.</p>
             </div>
           </div>
         </div>
@@ -1279,7 +1262,7 @@ export default function SkySchool() {
           </Card>
           <Card className="bg-slate-900/50 border border-white/10">
             <CardContent className="p-4">
-              <p className="text-slate-400 text-sm">Enrolled</p>
+              <p className="text-slate-400 text-sm">Local session selections</p>
               <p className="text-3xl font-bold text-white">{enrolledCourses.size}</p>
             </CardContent>
           </Card>
@@ -1335,10 +1318,8 @@ export default function SkySchool() {
                     <div className="flex items-center justify-between mb-4">
                       <div className="flex items-center gap-3">
                         <span className="text-xs text-yellow-400 font-semibold flex items-center gap-1">
-                          <Zap className="w-3 h-3" />+{course.skyReward} SKY
                         </span>
                         <span className="text-xs text-purple-400 flex items-center gap-1">
-                          <Award className="w-3 h-3" />+{course.xpReward} XP
                         </span>
                       </div>
                     </div>

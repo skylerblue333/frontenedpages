@@ -442,3 +442,7 @@ The registered HopeAIPage landing screen no longer claims mining optimization, p
 ## AIModerationQueue hardening
 
 The registered AIModerationQueue screen no longer calls unverified queue, stats, or resolve procedures and no longer displays AI accuracy, auto-moderated counts, action labels, content IDs, reasons, queue-clear status, or approve/remove mutations without verified contracts, model evidence, authorization, or audit handling. It now states that moderation services are unavailable and documents required policy, threshold, human review, appeal, evidence, false-positive, access, audit, and incident controls. Focused TypeScript validation reported no diagnostics for `AIModerationQueue.tsx`, and `git diff --check` passed.
+
+## SkySchool hardening
+
+SkySchool's extensive static lesson catalog and lesson navigation were preserved, but fabricated student counts, ratings, XP rewards, SKY rewards, enrollment success claims, and certificate-award wording were removed or explicitly labeled as unavailable. Lesson selection and completion now disclose that progress is local to the browser session and that no server enrollment, backend progress record, credential, certificate, XP, or token reward is issued. External YouTube embeds are labeled as third-party content whose availability and ownership are not guaranteed by the application. The unused backend import and user binding were removed. Focused TypeScript validation reported no diagnostics for `SkySchool.tsx`, and `git diff --check` passed.
