@@ -1,313 +1,33 @@
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/_core/hooks/useAuth";
+import { AlertTriangle, Bot, FileWarning, GitBranch, LockKeyhole, Network, Play, Rocket, ShieldCheck, Users, Wrench } from "lucide-react";
+import { Link } from "wouter";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { PageHeader } from "@/components/PageHeader";
-import { toast } from "sonner";
-import {
-  Bot, GitBranch, Zap, Play, Pause, CheckCircle, Clock, AlertCircle,
-  ArrowRight, Network, Cpu, RefreshCw, Plus, Settings, Eye
-} from "lucide-react";
 
-const AGENT_TEAMS = [
-  {
-    id: "content-team",
-    name: "Content Team",
-    description: "Generates, moderates, and distributes content across all channels",
-    agents: ["NOVA (Creator)", "PRISM (Social)", "FORGE (Copy)"],
-    status: "active",
-    tasksCompleted: 1247,
-    currentTask: "Generating trending post suggestions",
-  },
-  {
-    id: "crypto-team",
-    name: "Crypto Team",
-    description: "Monitors markets, executes trades, manages staking rewards",
-    agents: ["CIPHER (DeFi)", "NEXUS (Wallet)", "ATLAS (Data)"],
-    status: "active",
-    tasksCompleted: 892,
-    currentTask: "Analyzing SKY444 price momentum",
-  },
-  {
-    id: "security-team",
-    name: "Security Team",
-    description: "Monitors threats, detects fraud, enforces rate limits",
-    agents: ["SHIELD (Security)", "VECTOR (Moderation)", "ECHO (Alerts)"],
-    status: "active",
-    tasksCompleted: 3401,
-    currentTask: "Scanning for suspicious wallet activity",
-  },
-  {
-    id: "growth-team",
-    name: "Growth Team",
-    description: "Optimizes feed ranking, user acquisition, and retention",
-    agents: ["TITAN (Analytics)", "OMEGA (Recommendations)", "PULSE (Trends)"],
-    status: "idle",
-    tasksCompleted: 567,
-    currentTask: "Idle — waiting for next scheduled run",
-  },
-];
-
-const WORKFLOW_TEMPLATES = [
-  {
-    id: "content-pipeline",
-    name: "Content Pipeline",
-    steps: ["FORGE generates post", "PRISM schedules", "NOVA distributes", "VECTOR moderates"],
-    trigger: "Every 4 hours",
-    status: "running",
-  },
-  {
-    id: "market-alert",
-    name: "Market Alert Chain",
-    steps: ["CIPHER detects spike", "ATLAS validates data", "ECHO sends alert", "NEXUS adjusts limits"],
-    trigger: "Price change > 5%",
-    status: "running",
-  },
-  {
-    id: "onboarding-flow",
-    name: "User Onboarding Flow",
-    steps: ["TITAN scores user", "OMEGA recommends content", "PULSE suggests creators", "NOVA sends welcome"],
-    trigger: "New user signup",
-    status: "paused",
-  },
+const coordinationStates = [
+  { label: "Agent registry and team membership", value: "Unavailable", icon: Users },
+  { label: "Workflow triggers and task delegation", value: "Not configured", icon: GitBranch },
+  { label: "Execution, tools, and autonomous actions", value: "Disabled", icon: Wrench },
+  { label: "Sprint metrics, logs, and audit history", value: "Not available", icon: ShieldCheck },
 ];
 
 export default function AgentCoordinationHub() {
-  const { user } = useAuth();
-  const [activeTab, setActiveTab] = useState<"teams" | "workflows" | "delegation" | "logs">("teams");
-  const [selectedTeam, setSelectedTeam] = useState<string | null>(null);
-  const [delegationTask, setDelegationTask] = useState("");
-  const [delegationTarget, setDelegationTarget] = useState("content-team");
-
-  const { data: sprintHistory } = trpc.sprint.history.useQuery({ limit: 10 });
-  const { data: sprintMetrics } = trpc.sprint.metrics.useQuery({ days: 7 });
-
-  const triggerSprintMut = trpc.sprint.triggerSprint.useMutation({
-    onSuccess: () => toast.success("Sprint triggered — agents are working"),
-    onError: () => toast.error("Failed to trigger sprint"),
-  });
-
-  const totalTasksCompleted = AGENT_TEAMS.reduce((s, t) => s + t.tasksCompleted, 0);
-  const activeTeams = AGENT_TEAMS.filter(t => t.status === "active").length;
-
   return (
-    <div className="container py-8 max-w-7xl animate-page-in">
+    <div className="min-h-screen bg-background">
       <PageHeader
-        backHref="/ai-engineer"
-        icon={Network}
         title="Agent Coordination Hub"
-        subtitle="Phase 9 — Intelligence Layer: Agent-to-agent delegation, workflow chaining, specialized teams"
+        description="Agent orchestration services are not connected in this deployment. No agent team, workflow, task, sprint, tool action, market operation, wallet action, log, or metric is being reported or executed."
       />
 
-      {/* Stats bar */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-        {[
-          { label: "Active Teams", value: activeTeams, icon: Bot, color: "text-green-400" },
-          { label: "Tasks Completed", value: totalTasksCompleted.toLocaleString(), icon: CheckCircle, color: "text-blue-400" },
-          { label: "Workflows Running", value: WORKFLOW_TEMPLATES.filter(w => w.status === "running").length, icon: GitBranch, color: "text-purple-400" },
-          { label: "Sprint Tasks (7d)", value: (sprintMetrics as any)?.totalTasks ?? "—", icon: Zap, color: "text-yellow-400" },
-        ].map(stat => (
-          <div key={stat.label} className="card p-4 flex items-center gap-3">
-            <stat.icon className={`w-8 h-8 ${stat.color}`} />
-            <div>
-              <div className="text-xl font-bold">{stat.value}</div>
-              <div className="text-xs text-muted-foreground">{stat.label}</div>
-            </div>
-          </div>
-        ))}
-      </div>
+      <main className="mx-auto max-w-6xl space-y-8 px-4 py-8">
+        <Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Agent orchestration is unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous page rendered named agent teams, completed-task totals, active workflows, crypto and security actions, sprint metrics, delegation controls, an autonomous coding sprint mutation, and unverified sprint history. Those claims and actions were removed because no verified orchestration registry, tool permission, execution sandbox, audit log, or task contract was established.</p></div></div></Card>
 
-      {/* Tabs */}
-      <div className="flex gap-2 mb-6 border-b border-border/50">
-        {(["teams", "workflows", "delegation", "logs"] as const).map(tab => (
-          <button
-            key={tab}
-            onClick={() => setActiveTab(tab)}
-            className={`px-4 py-2 text-sm font-medium capitalize transition-colors border-b-2 -mb-px ${
-              activeTab === tab ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground"
-            }`}
-          >
-            {tab}
-          </button>
-        ))}
-      </div>
+        <Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="space-y-6"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Network aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Orchestration readiness</h2><p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">A production agent-coordination system requires authenticated tenancy, typed agent and team registries, explicit task contracts, least-privilege tool scopes, human approval boundaries, isolated execution, idempotency, concurrency controls, rate and cost budgets, sensitive-data handling, verified outputs, durable logs, failure recovery, rollback, and auditability. None of those controls are available through this screen.</p></div></div><div className="grid gap-4 md:grid-cols-3"><Card className="border border-primary/30 bg-background/80 p-4"><Bot aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><h3 className="font-semibold">No fleet claim</h3><p className="mt-1 text-sm text-muted-foreground">No agent, team, status, task count, current task, workflow, sprint, model, or capability is presented as active.</p></Card><Card className="border border-primary/30 bg-background/80 p-4"><LockKeyhole aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><h3 className="font-semibold">No action claim</h3><p className="mt-1 text-sm text-muted-foreground">No delegation, code generation, commit, market analysis, trade, staking, wallet change, moderation, alert, or autonomous run is initiated.</p></Card><Card className="border border-primary/30 bg-background/80 p-4"><Rocket aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><h3 className="font-semibold">No history claim</h3><p className="mt-1 text-sm text-muted-foreground">No sprint metric, generated-line count, task log, timestamp, completion status, or audit record is fabricated or read.</p></Card></div><div className="flex flex-wrap gap-4 pt-2"><Link href="/ai-engineer"><Button size="lg" className="bg-primary hover:bg-primary/90">View engineering status</Button></Link><Link href="/ai-tools-hub"><Button size="lg" variant="outline">View AI integration status</Button></Link><Link href="/contact-us-form"><Button size="lg" variant="ghost">Ask about orchestration access</Button></Link></div></div></Card>
 
-      {/* Teams tab */}
-      {activeTab === "teams" && (
-        <div className="grid md:grid-cols-2 gap-4">
-          {AGENT_TEAMS.map(team => (
-            <div
-              key={team.id}
-              className={`card p-5 cursor-pointer transition-all hover:border-primary/50 ${selectedTeam === team.id ? "border-primary" : ""}`}
-              onClick={() => setSelectedTeam(selectedTeam === team.id ? null : team.id)}
-            >
-              <div className="flex items-start justify-between mb-3">
-                <div>
-                  <div className="font-semibold flex items-center gap-2">
-                    <Bot className="w-4 h-4 text-primary" />
-                    {team.name}
-                  </div>
-                  <div className="text-xs text-muted-foreground mt-1">{team.description}</div>
-                </div>
-                <span className={`text-xs px-2 py-1 rounded-full font-medium ${
-                  team.status === "active" ? "bg-green-500/20 text-green-400" : "bg-yellow-500/20 text-yellow-400"
-                }`}>
-                  {team.status}
-                </span>
-              </div>
-              <div className="flex flex-wrap gap-1 mb-3">
-                {team.agents.map(a => (
-                  <span key={a} className="text-xs bg-secondary/50 px-2 py-0.5 rounded-full">{a}</span>
-                ))}
-              </div>
-              <div className="flex items-center justify-between text-xs text-muted-foreground">
-                <span className="flex items-center gap-1">
-                  <CheckCircle className="w-3 h-3 text-green-400" />
-                  {team.tasksCompleted.toLocaleString()} tasks
-                </span>
-                <span className="flex items-center gap-1 truncate max-w-[200px]">
-                  <Clock className="w-3 h-3 text-blue-400 shrink-0" />
-                  {team.currentTask}
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
+        <section aria-labelledby="coordination-state-heading"><h2 id="coordination-state-heading" className="mb-4 text-xl font-semibold">Current orchestration evidence</h2><div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">{coordinationStates.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-border/50 bg-card p-4"><p className="text-sm text-muted-foreground">{label}</p><div className="mt-2 flex items-center gap-2"><Icon aria-hidden="true" className="h-4 w-4 text-muted-foreground" /><p className="font-semibold">{value}</p></div></Card>)}</div></section>
 
-      {/* Workflows tab */}
-      {activeTab === "workflows" && (
-        <div className="space-y-4">
-          {WORKFLOW_TEMPLATES.map(wf => (
-            <div key={wf.id} className="card p-5">
-              <div className="flex items-center justify-between mb-3">
-                <div>
-                  <div className="font-semibold flex items-center gap-2">
-                    <GitBranch className="w-4 h-4 text-purple-400" />
-                    {wf.name}
-                  </div>
-                  <div className="text-xs text-muted-foreground mt-1">Trigger: {wf.trigger}</div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className={`text-xs px-2 py-1 rounded-full font-medium ${
-                    wf.status === "running" ? "bg-green-500/20 text-green-400" : "bg-yellow-500/20 text-yellow-400"
-                  }`}>
-                    {wf.status}
-                  </span>
-                  <button className="p-1.5 rounded-lg hover:bg-secondary/50 transition-colors">
-                    {wf.status === "running" ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
-                  </button>
-                </div>
-              </div>
-              <div className="flex items-center gap-2 flex-wrap">
-                {wf.steps.map((step, i) => (
-                  <div key={i} className="flex items-center gap-2">
-                    <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-lg">{step}</span>
-                    {i < wf.steps.length - 1 && <ArrowRight className="w-3 h-3 text-muted-foreground shrink-0" />}
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
-          <button
-            className="w-full card p-4 border-dashed flex items-center justify-center gap-2 text-muted-foreground hover:text-foreground hover:border-primary/50 transition-colors"
-            onClick={() => toast.info("Workflow builder coming in Phase 9.2")}
-          >
-            <Plus className="w-4 h-4" />
-            Create New Workflow
-          </button>
-        </div>
-      )}
-
-      {/* Delegation tab */}
-      {activeTab === "delegation" && (
-        <div className="max-w-2xl space-y-6">
-          <div className="card p-6">
-            <h3 className="font-semibold mb-4 flex items-center gap-2">
-              <Cpu className="w-4 h-4 text-primary" />
-              Delegate Task to Agent Team
-            </h3>
-            <div className="space-y-4">
-              <div>
-                <label className="text-sm font-medium mb-1 block">Target Team</label>
-                <select
-                  value={delegationTarget}
-                  onChange={e => setDelegationTarget(e.target.value)}
-                  className="w-full bg-secondary/50 border border-border/50 rounded-lg px-3 py-2 text-sm"
-                >
-                  {AGENT_TEAMS.map(t => (
-                    <option key={t.id} value={t.id}>{t.name}</option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label className="text-sm font-medium mb-1 block">Task Description</label>
-                <textarea
-                  value={delegationTask}
-                  onChange={e => setDelegationTask(e.target.value)}
-                  rows={4}
-                  className="w-full bg-secondary/50 border border-border/50 rounded-lg px-3 py-2 text-sm resize-none"
-                  placeholder="Describe the task for the agent team... e.g. 'Analyze top 10 trending posts and generate 5 similar posts for tomorrow'"
-                />
-              </div>
-              <button
-                onClick={() => {
-                  if (!delegationTask.trim()) return toast.error("Enter a task description");
-                  toast.success(`Task delegated to ${AGENT_TEAMS.find(t => t.id === delegationTarget)?.name}`);
-                  setDelegationTask("");
-                }}
-                className="btn-primary w-full flex items-center justify-center gap-2"
-              >
-                <Zap className="w-4 h-4" />
-                Delegate Task
-              </button>
-            </div>
-          </div>
-
-          <div className="card p-6">
-            <h3 className="font-semibold mb-4 flex items-center gap-2">
-              <RefreshCw className="w-4 h-4 text-blue-400" />
-              Trigger Autonomous Sprint
-            </h3>
-            <p className="text-sm text-muted-foreground mb-4">
-              Triggers all 12 bots to run a coordinated autonomous coding sprint. Each bot generates code, tests, and commits changes.
-            </p>
-            <button
-              onClick={() => user ? triggerSprintMut.mutate() : toast.error("Login required")}
-              disabled={triggerSprintMut.isPending}
-              className="btn-primary flex items-center gap-2"
-            >
-              {triggerSprintMut.isPending ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Play className="w-4 h-4" />}
-              {triggerSprintMut.isPending ? "Running..." : "Trigger Sprint"}
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Logs tab */}
-      {activeTab === "logs" && (
-        <div className="space-y-3">
-          {(sprintHistory as any[])?.map((sprint: any, i: number) => (
-            <div key={i} className="card p-4 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className={`w-2 h-2 rounded-full ${sprint.status === "completed" ? "bg-green-400" : sprint.status === "running" ? "bg-blue-400 animate-pulse" : "bg-red-400"}`} />
-                <div>
-                  <div className="text-sm font-medium">Sprint #{sprint.id ?? i + 1}</div>
-                  <div className="text-xs text-muted-foreground">{sprint.description ?? "Autonomous coding sprint"}</div>
-                </div>
-              </div>
-              <div className="text-right">
-                <div className="text-sm font-medium">{sprint.linesGenerated ?? "—"} lines</div>
-                <div className="text-xs text-muted-foreground">{sprint.completedAt ? new Date(sprint.completedAt).toLocaleString() : "In progress"}</div>
-              </div>
-            </div>
-          )) ?? (
-            <div className="text-center py-12 text-muted-foreground">
-              <Eye className="w-8 h-8 mx-auto mb-2 opacity-50" />
-              <p>No sprint history yet. Trigger a sprint to see logs.</p>
-            </div>
-          )}
-        </div>
-      )}
+        <Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><FileWarning aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">Do not enter passwords, access tokens, seed phrases, private keys, confidential tasks, proprietary code, wallet details, or sensitive personal information here. An unavailable orchestration page is not evidence of agent activity, execution, deployment, or completed work.</p></div></Card>
+      </main>
     </div>
   );
 }

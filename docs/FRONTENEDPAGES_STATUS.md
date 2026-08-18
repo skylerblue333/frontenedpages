@@ -514,3 +514,7 @@ The registered LessonEditor screen no longer presents an incomplete authenticate
 ## AgentBuilder hardening
 
 The registered AgentBuilder route no longer presents editable agent identity and system-prompt fields, preselected web-search and code-execution tools, Test and Deploy actions, or implied persistence and execution. It now states that agent-building services are unavailable and documents required ownership, prompt validation, tool allowlists, least privilege, isolated execution, secret management, human approval, cost limits, output verification, audit, versioning, rollback, and deployment controls. Focused TypeScript validation reported no diagnostics for `AgentBuilder.tsx`, and `git diff --check` passed.
+
+## AgentCoordinationHub hardening
+
+The registered AgentCoordinationHub route no longer renders named agent teams, completed-task totals, active workflow states, crypto and security actions, sprint metrics, delegation controls, autonomous coding sprint mutations, or unverified sprint history. It now states that orchestration services are unavailable and documents required tenant, registry, task, permission, sandbox, approval, idempotency, budget, sensitive-data, output-verification, log, recovery, rollback, and audit controls. The PageHeader usage was corrected to the repository’s typed `description` contract. Focused TypeScript validation reported no diagnostics for `AgentCoordinationHub.tsx`, and `git diff --check` passed.
