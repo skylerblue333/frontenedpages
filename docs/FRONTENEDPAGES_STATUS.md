@@ -182,3 +182,7 @@ The registered route `/address-lookup` no longer renders a generic coming-soon p
 ## Audit Logs hardening
 
 The registered route `/audit-logs` no longer renders a generic coming-soon placeholder. It now reports that audit evidence is unavailable and does not display events, actors, timestamps, IP addresses, request context, retention, integrity, alerts, reviews, incidents, exports, or compliance results. It documents event taxonomy, identity, authorization, correlation, redaction, append-only storage, retention, integrity, access review, alerting, and completeness requirements. Focused TypeScript validation reported no diagnostics for `AuditLogs.tsx`, and `git diff --check` passed.
+
+## API Keys hardening
+
+The registered API Keys screen no longer renders a fake authenticated management workflow or generic item list. It now explicitly states that no API key is created, displayed, stored, rotated, revoked, monitored, or scoped through this deployment. The page documents server-side secret storage, controlled one-time reveal, protection of stored credentials, ownership, scopes, expiration, rotation, revocation, rate limiting, and log redaction as prerequisites for real key management. It also removes the broken unused API/auth imports and non-functional New, Search, and Settings controls. Focused TypeScript validation reported no diagnostics for `APIKeys.tsx`, and `git diff --check` passed.
