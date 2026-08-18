@@ -398,3 +398,7 @@ The registered AICopyStudio screen no longer calls unverified generation, improv
 ## AICore hardening
 
 The registered AICore screen no longer calls unverified chat, content-generation, market-analysis, or usage procedures. It removes the unsupported OpenAI attribution, token balances and limits, recent-generation records, and AI Pro unlimited/priority upgrade claim. The page now documents verified model, market-data provenance, usage metering, quota, entitlement, billing, privacy, safety, history, and observability boundaries. Focused TypeScript validation reported no diagnostics for `AICore.tsx`, and `git diff --check` passed.
+
+## AIEngineer hardening
+
+The registered AIEngineer screen no longer presents 44 named agents with specialties and levels, unverified chat procedures, or autonomous sprint behavior that could imply multi-agent coding, testing, security auditing, deployment, repository changes, Web3 work, or production-ready results. It now states that engineering services are unavailable and documents required model, least-privilege, sandboxing, secret, dependency, branch, approval, deployment, blockchain, audit, billing, and observability controls. Focused TypeScript validation reported no diagnostics for `AIEngineer.tsx`, and `git diff --check` passed.
