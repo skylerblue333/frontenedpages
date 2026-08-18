@@ -390,3 +390,7 @@ The registered AIBrain screen no longer displays eight active AI modules with fa
 ## AICodeStudio hardening
 
 The registered AICodeStudio screen no longer exposes twelve named coding bots, a hard-coded model, SSE streaming, code-generation and review mutations, generated-line counts, success states, autonomous cycles, session polling, push history, or repository-writing affordances without verified backend execution evidence. It now states that code-assistant services are unavailable and documents required model, validation, sandboxing, compiler/test evidence, repository approvals, secrets, permissions, audit, billing, and observability controls. Focused TypeScript validation reported no diagnostics for `AICodeStudio.tsx`, and `git diff --check` passed.
+
+## AICopyStudio hardening
+
+The registered AICopyStudio screen no longer calls unverified generation, improvement, analysis, translation, template, or history mutations. It removes unsupported claims about high-converting copy, high-open-rate subject lines, keyword optimization, completed analysis scores, generated word counts, publication readiness, and performance. The page now documents model, validation, brand, factual, copyright, privacy, retention, evaluation, publication, billing, and observability boundaries. Focused TypeScript validation reported no diagnostics for `AICopyStudio.tsx`, and `git diff --check` passed.
