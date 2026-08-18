@@ -346,3 +346,7 @@ The registered Content Flagging screen no longer presents a generic coming-soon 
 ## Content Calendar hardening
 
 The registered Content Calendar screen no longer exposes a sign-in gate, New action, search, settings, or empty calendar state as if scheduling were connected. It now reports that calendar records, drafts, audiences, channels, times, publishing, delivery, editing, deletion, and analytics are unavailable and documents workspace ownership, validation, moderation, timezone, queue, provider, retry, consent, evidence, audit, and failure-state requirements. Focused TypeScript validation reported no diagnostics for `ContentCalendar.tsx`, and `git diff --check` passed.
+
+## Content Scheduler hardening
+
+The registered Content Scheduler no longer uses an in-memory demo queue containing scheduled or published posts, unsupported staking APY and market-analysis claims, timestamps, views, engagement, platform providers, best-time advice, schedule, delete, or analytics controls. No verified scheduling or publishing service was connected, so the queue and mutations were removed. The page now documents workspace ownership, versioning, provider authorization, moderation, timezone, durable queues, idempotency, webhooks, retries, cancellation, deletion, consent, delivery evidence, analytics provenance, audit, and failure-state requirements. Focused TypeScript validation reported no diagnostics for `ContentScheduler.tsx`, and `git diff --check` passed.
