@@ -278,3 +278,7 @@ The registered Tax Documentation screen no longer renders a generic coming-soon 
 ## Staking Options hardening
 
 The registered Staking Options screen no longer renders a generic coming-soon page as if staking terms were available or claims assets, contracts, APY, APR, rewards, projections, capacity, lock periods, unlocks, fees, penalties, slashing, claim timing, withdrawals, positions, signatures, or settlement. It now reports that verified staking terms and custody integrations are unavailable and documents the requirements for authoritative, auditable, risk-disclosed staking options. Focused TypeScript validation reported no diagnostics for `StakingOptions.tsx`, and `git diff --check` passed.
+
+## Order Tracking hardening
+
+The registered Order Tracking screen no longer renders a fake authenticated CRUD shell or claims orders, ownership, carriers, tracking numbers, shipment events, locations, delivery estimates, delays, refunds, replacements, disputes, support cases, or resolutions. It now reports that order, fulfillment, carrier, inventory, webhook, refund, and support sources are unavailable and documents authentication, reconciliation, freshness, deduplication, privacy, and exception-handling requirements. Focused TypeScript validation reported no diagnostics for `OrderTracking.tsx`, and `git diff --check` passed.
