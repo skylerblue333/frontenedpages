@@ -177,3 +177,8 @@ The registered route `/donation-processing` no longer renders a generic coming-s
 ## Address Lookup hardening
 
 The registered route `/address-lookup` no longer renders a generic coming-soon placeholder. It now reports that address lookup is unavailable and does not display address validity, owners, contracts, balances, nonces, transactions, activity, confirmations, finality, or settlement. It documents chain and address allowlists, checksums, node and indexer provenance, pagination, privacy, ownership semantics, freshness, decoding, reorganization, and independent-verification requirements. Focused TypeScript validation reported no diagnostics for `AddressLookup.tsx`, and `git diff --check` passed.
+
+
+## Audit Logs hardening
+
+The registered route `/audit-logs` no longer renders a generic coming-soon placeholder. It now reports that audit evidence is unavailable and does not display events, actors, timestamps, IP addresses, request context, retention, integrity, alerts, reviews, incidents, exports, or compliance results. It documents event taxonomy, identity, authorization, correlation, redaction, append-only storage, retention, integrity, access review, alerting, and completeness requirements. Focused TypeScript validation reported no diagnostics for `AuditLogs.tsx`, and `git diff --check` passed.
