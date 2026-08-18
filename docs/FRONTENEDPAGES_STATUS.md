@@ -32,3 +32,8 @@ The registered custody surface was audited at `/blockchain-custody`. The previou
 ## Checkout Flow hardening
 
 The registered route `/checkout-flow` no longer renders a generic coming-soon placeholder. It now reports that checkout is unavailable and does not calculate payable totals, collect or authorize payment details, reserve inventory, create orders, issue receipts, or claim fulfillment. It documents server-side pricing, tax and shipping rules, idempotent order creation, refund handling, and fulfillment requirements. Focused TypeScript validation reported no diagnostics for `CheckoutFlow.tsx`, and `git diff --check` passed.
+
+
+## Crypto Wallet hardening
+
+The registered route `/crypto` no longer renders hardcoded token prices, percentage changes, balances, portfolio value, transaction history, APY, TVL, or unsupported swap/send/receive/yield/insurance actions. The previous page also referenced an undefined `isAuthenticated` value and untyped transaction data. It now presents a truthful crypto integration boundary with no wallet, market-data, portfolio, or transaction claims and explicitly warns users not to enter seed phrases or private keys. Focused TypeScript validation reported no diagnostics for `Crypto.tsx`, and `git diff --check` passed. Mentions of APY and TVL are now requirements/absence statements only, not values or product claims.
