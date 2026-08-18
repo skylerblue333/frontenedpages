@@ -458,3 +458,7 @@ The existing local Block Builder puzzle was preserved, but fabricated SKY444 don
 ## Chess discovery
 
 A repository search found no chess-named page or existing chess-board/piece implementation in `client/src/pages` or `App.tsx`; the nearest board-game surface is Block Builder. No chess experience was fabricated or added during this hardening batch.
+
+## SchoolDashboard hardening
+
+The registered SchoolDashboard screen no longer displays fabricated enrolled-course progress, learner totals, XP, certificates, named course records, or “Minted on-chain” credentials. It now states that learner-dashboard services are unavailable and documents required ownership, course, lesson, assessment, grade, content provenance, accessibility, certificate, on-chain verification, privacy, retention, and retry controls. Focused TypeScript validation reported no diagnostics for `SchoolDashboard.tsx`, and `git diff --check` passed.
