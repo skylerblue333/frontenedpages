@@ -374,3 +374,7 @@ The registered Team Management screen no longer exposes a sign-in gate, New acti
 ## Team Workspace hardening
 
 The registered Team Workspace no longer renders demo channels, unread counts, member counts and presence, messages, tasks, assignees, due dates, files, file metadata, activity bars, collaboration analytics, or send, invite, and new-task controls. No verified workspace, messaging, task, file, membership, or analytics contracts were connected, so those records, counts, and mutations were removed. The page now documents tenant isolation, channel and message ownership, delivery and read semantics, task integrity, file safety, presence accuracy, revocation, notifications, analytics provenance, retention, rate limits, audit, and explicit success and failure requirements. Focused TypeScript validation reported no diagnostics for `TeamWorkspace.tsx`, and `git diff --check` passed.
+
+## HopeAI hardening
+
+The registered HopeAI screen no longer calls unverified chat, history, message-save, clear-history, or gray-area mutations on a generic feature router. It no longer claims to read typing signals, infer emotional state, expose risk scores or 22 analyzers, provide inner thoughts, support specialized AI modes, or preserve conversations. The page now documents model gateway, versioning, validation, safety, privacy, retention, cost, history, observability, labeling, escalation, and mental-health safeguards. Focused TypeScript validation reported no diagnostics for `HopeAI.tsx`, and `git diff --check` passed.
