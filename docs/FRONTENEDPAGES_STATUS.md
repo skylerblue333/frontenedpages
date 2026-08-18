@@ -82,3 +82,8 @@ The registered route `/payments` no longer renders unsupported subscription plan
 ## Wallet Integration hardening
 
 The registered route `/wallet-integration` no longer renders a generic coming-soon placeholder. It now reports that wallet integration is unavailable and does not display a connected provider, address, balance, ownership proof, permissions, signatures, transaction, or settlement state. It documents provider and chain allowlists, origin controls, message separation, simulation, nonce and fee checks, user confirmation, rejection, replay, and independent verification requirements. Focused TypeScript validation reported no diagnostics for `WalletIntegration.tsx`, and `git diff --check` passed.
+
+
+## Order Placement hardening
+
+The registered route `/order-placement` no longer renders a generic coming-soon placeholder. It now reports that order placement is unavailable and does not display products, quantities, prices, taxes, payment authorization, inventory, order identifiers, receipts, refunds, or fulfillment state. It documents catalog, reservation, identity, payment, idempotency, fraud, cancellation, and fulfillment requirements. Focused TypeScript validation reported no diagnostics for `OrderPlacement.tsx`, and `git diff --check` passed.
