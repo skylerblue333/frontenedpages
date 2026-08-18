@@ -354,3 +354,7 @@ The registered Content Scheduler no longer uses an in-memory demo queue containi
 ## Media Gallery hardening
 
 The registered Media Gallery no longer exposes a sign-in gate, New action, search, settings, or empty gallery state as if media management were connected. It now reports that assets, albums, owners, storage, processing, thumbnails, metadata, moderation, sharing, downloads, and deletion are unavailable and documents the controls required for safe media management. Focused TypeScript validation reported no diagnostics for `MediaGallery.tsx`, and `git diff --check` passed.
+
+## Social Feed V2 hardening
+
+The registered Social Feed V2 no longer renders static posts, creator identities, verification badges, media, timestamps, likes, comments, shares, trends, post volumes, suggested creators, follower counts, or post, like, bookmark, comment, share, and follow controls. The registered social and feed routers are generic, so those records, counts, identities, and mutations were not verified. The page now documents authorship, ownership, moderation, privacy, identity, interaction ledgers, abuse controls, ranking methodology, freshness, notifications, search authorization, retention, reporting, appeals, audit, and reliable mutation requirements. Focused TypeScript validation reported no diagnostics for `SocialFeedV2.tsx`, and `git diff --check` passed.
