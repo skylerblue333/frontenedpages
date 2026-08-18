@@ -382,3 +382,7 @@ The registered HopeAI screen no longer calls unverified chat, history, message-s
 ## AIAssistant hardening
 
 The registered AIAssistant screen no longer presents an incomplete authenticated shell with New, Search, Settings, or empty-item behavior that could imply an assistant exists. It now truthfully states that no verified model gateway or assistant contract is connected and removes claims about prompts, responses, conversations, tools, files, external actions, personalization, or generated artifacts. The page documents required model, validation, tool, privacy, safety, observability, and explicit success/failure controls. Focused TypeScript validation reported no diagnostics for `AIAssistant.tsx`, and `git diff --check` passed.
+
+## AIBrain hardening
+
+The registered AIBrain screen no longer displays eight active AI modules with fabricated accuracy percentages, a LIVE AI badge, a superiority claim, or controls that call unverified model, code, learning, and analytics mutations. It now states that AI Brain is unavailable and documents the evidence boundary for models, code generation, analytics, forecasts, evaluation, safety, privacy, tools, files, billing, and observability. Focused TypeScript validation reported no diagnostics for `AIBrain.tsx`, and `git diff --check` passed.
