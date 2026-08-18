@@ -186,3 +186,7 @@ The registered route `/audit-logs` no longer renders a generic coming-soon place
 ## API Keys hardening
 
 The registered API Keys screen no longer renders a fake authenticated management workflow or generic item list. It now explicitly states that no API key is created, displayed, stored, rotated, revoked, monitored, or scoped through this deployment. The page documents server-side secret storage, controlled one-time reveal, protection of stored credentials, ownership, scopes, expiration, rotation, revocation, rate limiting, and log redaction as prerequisites for real key management. It also removes the broken unused API/auth imports and non-functional New, Search, and Settings controls. Focused TypeScript validation reported no diagnostics for `APIKeys.tsx`, and `git diff --check` passed.
+
+## Access Control hardening
+
+The registered Access Control screen no longer renders a fake authenticated CRUD shell or claims roles, permissions, policy decisions, administrative changes, or access enforcement. It now reports that the identity provider, policy decision point, role store, server-side enforcement middleware, approval workflow, and administrative audit trail are not connected. The screen documents deny-by-default evaluation, resource and tenant boundaries, separation of duties, privileged-action confirmation, revocation, least privilege, conflict handling, and tamper-evident records as prerequisites for real authorization. Focused TypeScript validation reported no diagnostics for `AccessControl.tsx`, and `git diff --check` passed.
