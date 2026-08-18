@@ -558,3 +558,7 @@ The registered APIManagement route no longer claims fully functional live data o
 ## AdvancedAdminPanel hardening
 
 The registered AdvancedAdminPanel route no longer renders named user records, roles, email addresses, join dates, activity times, moderation reports, system metrics, or destructive and privileged controls for suspension, removal, maintenance mode, rate limits, security policy, backup, and restore. It now states that administrative services are unavailable and documents required server-side authorization, scope enforcement, tenant isolation, typed contracts, destructive-action confirmation, immutable audit, rate governance, maintenance safeguards, backup verification, restore testing, secrets protection, recovery, and retry controls. Focused TypeScript validation reported no diagnostics for `AdvancedAdminPanel.tsx`, and `git diff --check` passed.
+
+## AdvancedOrders hardening
+
+The registered AdvancedOrders route no longer claims fully functional live data or real-time updates, exposes generic action cards, or renders fabricated active-user, transaction, success-rate, and response-time metrics. It now states that order-management services are unavailable and documents required typed order contracts, ownership, inventory and pricing source-of-truth, payment authorization, idempotency, tax, refunds, fulfillment, reconciliation, fraud, notification, audit, privacy, and retry controls. Focused TypeScript validation reported no diagnostics for `AdvancedOrders.tsx`, and `git diff --check` passed.
