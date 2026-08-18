@@ -157,3 +157,8 @@ The registered route `/fundraiser-tools` no longer renders a generic coming-soon
 ## Cost Basis Calculation hardening
 
 The registered route `/cost-basis-calculation` no longer renders a generic coming-soon placeholder. It now reports that cost-basis calculation is unavailable and does not display transactions, tax lots, prices, basis, holding periods, gains, losses, income, deductions, jurisdictions, tax years, forms, filings, or compliance results. It documents transaction provenance, lot methodology, price and currency sources, corporate actions, fees, transfers, jurisdiction, audit, reconciliation, privacy, and professional-review requirements. Focused TypeScript validation reported no diagnostics for `CostBasisCalculation.tsx`, and `git diff --check` passed.
+
+
+## Earnings Tracking hardening
+
+The registered route `/earnings-tracking` no longer renders a generic coming-soon placeholder. It now reports that earnings data is unavailable and does not display revenue, income, expenses, profit, margins, balances, trends, forecasts, invoices, payouts, tax outputs, or settlement results. It documents source accounts, transaction provenance, classification, fees, refunds, currency, payout and invoice reconciliation, access, privacy, tax methodology, audit, and independent-verification requirements. Focused TypeScript validation reported no diagnostics for `EarningsTracking.tsx`, and `git diff --check` passed.
