@@ -418,3 +418,7 @@ The registered ChatHistory screen no longer presents an incomplete authenticated
 ## ChatMVP hardening
 
 The registered ChatMVP screen no longer contains mock conversations, fabricated NOVA messages, online/unread indicators, designer matches with prices and delivery times, AI action commands, tips, payments, listings, service requests, matching, earning options, calls, or optimistic success states. It now states that chat, marketplace, payment, wallet, and AI-action services are unavailable and documents required identity, realtime, persistence, fraud, idempotency, ledger, permission, approval, audit, and observability controls. Focused TypeScript validation reported no diagnostics for `ChatMVP.tsx`, and `git diff --check` passed.
+
+## HopeAIAdvanced hardening
+
+The registered HopeAIAdvanced screen no longer simulates delayed assistant responses, placeholder code, production-readiness, thinking time, token usage, confidence, unsupported mode capabilities, or superiority claims. It now states that advanced AI is unavailable and documents required model, validation, safety, tools, files, privacy, retention, metering, evaluation, and observability controls. Focused TypeScript validation reported no diagnostics for `HopeAIAdvanced.tsx`, and `git diff --check` passed.
