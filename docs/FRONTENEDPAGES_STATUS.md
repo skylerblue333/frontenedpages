@@ -582,3 +582,7 @@ The registered AlertManagement route no longer presents an incomplete authentica
 ## Achievements hardening
 
 The registered Achievements route no longer presents an incomplete authenticated shell with New, Search, Settings, loading, or empty-item behavior that could imply achievement definitions, progress, streaks, unlocks, rewards, rankings, certificates, or credentials. It now states that achievement services are unavailable and documents required versioned definitions, identity, event provenance, anti-cheat, deterministic rules, reward authorization, ranking privacy, credential issuance and revocation, audit, and retry controls. Focused TypeScript validation reported no diagnostics for `Achievements.tsx`, and `git diff --check` passed.
+
+## ActionPanel hardening
+
+The registered ActionPanel route no longer exposes unverified tip and AI mutations, hard-coded recipient and service behavior, fake success states, fabricated platform activity, marketplace prices, recent actions, fee calculations, or claims that value was flowing. It now states that action execution is unavailable and documents required authenticated intent, validation, authorization, idempotency, confirmation, wallet and payment controls, provider verification, state transitions, receipts, notifications, audit, fraud controls, and safe AI permissions. Focused TypeScript validation reported no diagnostics for `ActionPanel.tsx`, and `git diff --check` passed.
