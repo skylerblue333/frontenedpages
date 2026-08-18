@@ -554,3 +554,7 @@ The registered ABTestingAdvanced route no longer presents an incomplete authenti
 ## APIManagement hardening
 
 The registered APIManagement route no longer claims fully functional live data or real-time updates, exposes generic action cards, or renders fabricated active-user, transaction, success-rate, and response-time metrics. It now states that API-management services are unavailable and documents required contract registry, versioning, server-side secret handling, scopes, validation, rate limits, retries, idempotency, error semantics, audit, provider allowlists, privacy, monitoring, and retry controls. Focused TypeScript validation reported no diagnostics for `APIManagement.tsx`, and `git diff --check` passed.
+
+## AdvancedAdminPanel hardening
+
+The registered AdvancedAdminPanel route no longer renders named user records, roles, email addresses, join dates, activity times, moderation reports, system metrics, or destructive and privileged controls for suspension, removal, maintenance mode, rate limits, security policy, backup, and restore. It now states that administrative services are unavailable and documents required server-side authorization, scope enforcement, tenant isolation, typed contracts, destructive-action confirmation, immutable audit, rate governance, maintenance safeguards, backup verification, restore testing, secrets protection, recovery, and retry controls. Focused TypeScript validation reported no diagnostics for `AdvancedAdminPanel.tsx`, and `git diff --check` passed.
