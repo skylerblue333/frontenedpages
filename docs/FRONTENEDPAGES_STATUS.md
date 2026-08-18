@@ -92,3 +92,8 @@ The registered route `/order-placement` no longer renders a generic coming-soon 
 ## Reward System hardening
 
 The registered route `/reward-system` no longer renders a generic coming-soon placeholder. It now reports that rewards are unavailable and does not display points, tokens, eligibility, balances, accrual, redemption, payouts, claims, or transaction results. It documents program rules, event provenance, anti-abuse, expiry, ledger, reconciliation, privacy, redemption, and settlement requirements. Focused TypeScript validation reported no diagnostics for `RewardSystem.tsx`, and `git diff --check` passed.
+
+
+## Rewards Monitoring hardening
+
+The registered route `/rewards-monitoring` no longer renders a generic coming-soon placeholder. It now reports that reward monitoring is unavailable and does not display accrual, balances, rates, freshness, anomalies, alerts, payouts, transactions, or settlement-health results. It documents event ingestion, ledger reconciliation, freshness checks, thresholds, notification delivery, incident ownership, privacy, and independent verification requirements. Focused TypeScript validation reported no diagnostics for `RewardsMonitoring.tsx`, and `git diff --check` passed.
