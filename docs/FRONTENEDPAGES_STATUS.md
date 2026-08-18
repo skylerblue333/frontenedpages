@@ -498,3 +498,7 @@ The registered SchoolLesson route no longer renders a hard-coded course outline 
 ## SchoolQuiz hardening
 
 The deterministic educational quiz was preserved, but its unverified XP award and backend-like completion implication were removed. Results now explicitly remain local to the browser session and are not saved as grades, certificates, XP, or learner records; the result heading was changed to a local threshold state. Focused TypeScript validation reported no diagnostics for `SchoolQuiz.tsx`, and `git diff --check` passed.
+
+## School hardening
+
+The registered School page no longer renders a fabricated course marketplace, instructor identities, student and review counts, ratings, prices, popularity badges, “Earn While You Learn,” on-chain certificate claims, SKY444 totals, learning tracks, or enrollment prompts. It now states that school services are unavailable and documents required catalog, provenance, accessibility, learner, progress, assessment, payment, entitlement, reward, credential, privacy, and retry controls. Focused TypeScript validation reported no diagnostics for `School.tsx`, and `git diff --check` passed.
