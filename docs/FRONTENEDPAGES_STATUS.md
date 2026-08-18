@@ -132,3 +132,8 @@ The registered route `/bulk-ordering` no longer renders a generic coming-soon pl
 ## Stake Delegation hardening
 
 The registered route `/stake-delegation` no longer renders a generic coming-soon placeholder. It now reports that delegation is unavailable and does not display validators, commissions, uptime, stake, delegation, rewards, APY, APR, slashing, lockups, signatures, withdrawals, or settlement results. It documents chain, validator, wallet, simulation, reward, slashing, unbonding, fee, and independent-verification requirements. Focused TypeScript validation reported no diagnostics for `StakeDelegation.tsx`, and `git diff --check` passed.
+
+
+## Rewards Tracking hardening
+
+The registered route `/rewards-tracking` no longer renders a generic coming-soon placeholder. It now reports that reward tracking is unavailable and does not display events, points, tokens, balances, accrual, conversions, redemptions, entitlements, payouts, notifications, or settlement results. It documents event provenance, immutable ledger entries, eligibility, expiry, reversals, anti-abuse, reconciliation, redemption, privacy, audit, and independent settlement requirements. Focused TypeScript validation reported no diagnostics for `RewardsTracking.tsx`, and `git diff --check` passed.
