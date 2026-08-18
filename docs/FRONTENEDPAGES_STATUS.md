@@ -462,3 +462,7 @@ A repository search found no chess-named page or existing chess-board/piece impl
 ## SchoolDashboard hardening
 
 The registered SchoolDashboard screen no longer displays fabricated enrolled-course progress, learner totals, XP, certificates, named course records, or “Minted on-chain” credentials. It now states that learner-dashboard services are unavailable and documents required ownership, course, lesson, assessment, grade, content provenance, accessibility, certificate, on-chain verification, privacy, retention, and retry controls. Focused TypeScript validation reported no diagnostics for `SchoolDashboard.tsx`, and `git diff --check` passed.
+
+## CourseCatalog hardening
+
+The registered CourseCatalog screen no longer presents an incomplete authenticated shell with New, Search, Settings, loading, or empty-item behavior that could imply a course catalog, instructor records, enrollment, access, pricing, ratings, or completion. It now states that catalog services are unavailable and documents required content provenance, publication, versioning, accessibility, entitlement, ownership, privacy, billing, and retry controls. Focused TypeScript validation reported no diagnostics for `CourseCatalog.tsx`, and `git diff --check` passed.
