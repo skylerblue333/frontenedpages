@@ -410,3 +410,7 @@ The registered AIGovernance screen no longer presents advanced analytics, autono
 ## ChatBot hardening
 
 The registered ChatBot screen no longer presents an incomplete authenticated shell with New, Search, Settings, loading, or empty-item behavior that could imply a chatbot, message history, persistence, or successful AI access. It now states that chatbot services are unavailable and documents required model, validation, safety, privacy, history, search, rate, cost, and observability controls. Focused TypeScript validation reported no diagnostics for `ChatBot.tsx`, and `git diff --check` passed.
+
+## ChatHistory hardening
+
+The registered ChatHistory screen no longer presents an incomplete authenticated shell with New, Search, Settings, loading, or empty-list behavior that could imply stored conversations, retrieval, synchronization, privacy, export, or deletion. It now states that history services are unavailable and documents required ownership, tenant isolation, encryption, retention, deletion, search, export, pagination, concurrency, audit, backup, restoration, and access-revocation controls. Focused TypeScript validation reported no diagnostics for `ChatHistory.tsx`, and `git diff --check` passed.
