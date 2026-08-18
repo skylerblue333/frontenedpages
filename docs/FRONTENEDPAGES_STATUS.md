@@ -550,3 +550,7 @@ The registered ABTesting route no longer presents an incomplete authenticated sh
 ## ABTestingAdvanced hardening
 
 The registered ABTestingAdvanced route no longer presents an incomplete authenticated shell with New, Search, Settings, loading, or empty-item behavior that could imply multivariate experiments, segments, allocations, exposure, statistical results, guardrails, feature flags, or rollout. It now states that advanced experimentation is unavailable and documents required pre-registration, deterministic allocation, eligibility, exposure, sample-ratio, statistical, multiple-comparison, heterogeneity, privacy, approval, staged-release, rollback, and retry controls. Focused TypeScript validation reported no diagnostics for `ABTestingAdvanced.tsx`, and `git diff --check` passed.
+
+## APIManagement hardening
+
+The registered APIManagement route no longer claims fully functional live data or real-time updates, exposes generic action cards, or renders fabricated active-user, transaction, success-rate, and response-time metrics. It now states that API-management services are unavailable and documents required contract registry, versioning, server-side secret handling, scopes, validation, rate limits, retries, idempotency, error semantics, audit, provider allowlists, privacy, monitoring, and retry controls. Focused TypeScript validation reported no diagnostics for `APIManagement.tsx`, and `git diff --check` passed.
