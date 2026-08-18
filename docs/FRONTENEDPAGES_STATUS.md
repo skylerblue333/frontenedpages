@@ -67,3 +67,8 @@ The Mining Dashboard no longer renders fabricated worker controls, random USD ea
 ## Block Rewards hardening
 
 The registered route `/block-rewards` no longer renders a generic coming-soon placeholder. It now reports that block reward data is unavailable and does not display issuance, block height, reward amounts, balances, payouts, distributions, claims, transaction hashes, or settlement evidence. It documents chain, indexer, reorganization, attribution, accounting, authorization, and independent-settlement requirements. Focused TypeScript validation reported no diagnostics for `BlockRewards.tsx`, and `git diff --check` passed.
+
+
+## Block Browser hardening
+
+The registered route `/block-browser` no longer renders a generic coming-soon placeholder. It now reports that block browsing is unavailable and does not display block heights, hashes, timestamps, parent hashes, transaction counts, miner or validator attribution, confirmations, finality, freshness, or network health. It documents chain allowlisting, canonical node/indexer sources, pagination, reorganization handling, and independent verification requirements. Focused TypeScript validation reported no diagnostics for `BlockBrowser.tsx`, and `git diff --check` passed.
