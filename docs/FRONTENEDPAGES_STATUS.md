@@ -478,3 +478,7 @@ The registered StudentProgress screen no longer presents an incomplete authentic
 ## CourseBuilder hardening
 
 The registered CourseBuilder screen no longer presents an incomplete authenticated shell with New, Search, Settings, loading, or empty-item behavior that could imply saved drafts, lesson authoring, assessments, publication, pricing, learner access, or ownership. It now states that authoring services are unavailable and documents required author identity, draft isolation, content validation, versioning, accessibility, review, rollback, entitlement, privacy, and retry controls. Focused TypeScript validation reported no diagnostics for `CourseBuilder.tsx`, and `git diff --check` passed.
+
+## QuizBuilder hardening
+
+The registered QuizBuilder screen no longer presents an incomplete authenticated shell with New, Search, Settings, loading, or empty-item behavior that could imply quizzes, question banks, attempts, answers, grades, scores, course relationships, or learner results. It now states that assessment services are unavailable and documents required authorization, question provenance, answer secrecy, deterministic grading, attempt limits, accessibility, anti-cheating, versioning, review, result integrity, privacy, and retry controls. Focused TypeScript validation reported no diagnostics for `QuizBuilder.tsx`, and `git diff --check` passed.
