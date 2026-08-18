@@ -538,3 +538,7 @@ The registered AdaptiveRoadmap route no longer renders a hard-coded initiative i
 ## AdvancedAnalytics hardening
 
 The registered AdvancedAnalytics route no longer renders hard-coded revenue, users, transactions, engagement, platform distribution, conversion-funnel counts, percentage changes, “real-time insights,” or export, scheduling, and sharing controls. It now states that analytics services are unavailable and documents required metric contracts, source provenance, period semantics, privacy, reconciliation, cohorts, stale-data handling, role-based access, export redaction, scheduled jobs, retention, and retry controls. Focused TypeScript validation reported no diagnostics for `AdvancedAnalytics.tsx`, and `git diff --check` passed.
+
+## Analytics hardening
+
+The registered Analytics Dashboard no longer renders fabricated DAU, MAU, MRR, page views, daily revenue, transaction and post trends, “Top Content This Week,” creator attribution, view counts, likes, or percentage changes. It now states that analytics services are unavailable and documents required event and metric contracts, provenance, time semantics, identity, consent, deduplication, reconciliation, attribution, cohorts, stale-data handling, role-based access, retention, redaction, and retry controls. Focused TypeScript validation reported no diagnostics for `Analytics.tsx`, and `git diff --check` passed.

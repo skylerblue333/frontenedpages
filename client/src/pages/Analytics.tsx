@@ -1,105 +1,32 @@
-import { useState } from "react";
+import { AlertTriangle, BarChart3, Database, FileDown, FileWarning, Heart, LockKeyhole, ShieldCheck, TrendingUp, Users } from "lucide-react";
 import { Link } from "wouter";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { PageHeader } from "@/components/PageHeader";
-import { BarChart3, TrendingUp, Users, DollarSign, Eye, Heart, MessageCircle, Share2, ArrowUp, ArrowDown } from "lucide-react";
 
-const DAILY_DATA = [
-  { day: "Mon", dau: 2100, revenue: 3200, posts: 890 },
-  { day: "Tue", dau: 2400, revenue: 3800, posts: 1020 },
-  { day: "Wed", dau: 2200, revenue: 3500, posts: 950 },
-  { day: "Thu", dau: 2800, revenue: 4200, posts: 1150 },
-  { day: "Fri", dau: 3100, revenue: 4800, posts: 1300 },
-  { day: "Sat", dau: 2900, revenue: 4400, posts: 1200 },
-  { day: "Sun", dau: 2600, revenue: 3900, posts: 1050 },
+const analyticsStates = [
+  { label: "Daily and monthly active users", value: "Unavailable", icon: Users },
+  { label: "Revenue, MRR, payments, and transactions", value: "Not measured", icon: TrendingUp },
+  { label: "Page views, posts, engagement, and growth", value: "Not configured", icon: BarChart3 },
+  { label: "Top-content ranking and creator attribution", value: "Disabled", icon: Heart },
 ];
-
-const TOP_CONTENT = [
-  { title: "How I made $10K with SKY444 staking", views: 12400, likes: 892, author: "skyler_blue" },
-  { title: "Complete DeFi guide for beginners", views: 9800, likes: 744, author: "defiwhale" },
-  { title: "AI coding bot builds 100K lines overnight", views: 8200, likes: 612, author: "cryptodev99" },
-  { title: "NFT marketplace launch strategy 2026", views: 7100, likes: 534, author: "nftcreator" },
-];
-
-const maxDau = Math.max(...DAILY_DATA.map(d => d.dau));
 
 export default function Analytics() {
-  const [metric, setMetric] = useState<"dau"|"revenue"|"posts">("dau");
-
   return (
-    <div className="container py-8 max-w-6xl animate-page-in">
-      <PageHeader backHref="/dashboard" icon={BarChart3} title="Analytics Dashboard" subtitle="Platform-wide metrics: DAU/MAU, revenue, content performance, and growth trends" />
-      
-      {/* KPI Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-        {[
-          { icon: Users, label: "DAU", value: "2,847", change: "+12%", up: true },
-          { icon: Users, label: "MAU", value: "...", change: "+8%", up: true },
-          { icon: DollarSign, label: "MRR", value: "$44,400", change: "+22%", up: true },
-          { icon: Eye, label: "Page Views", value: "144K", change: "+18%", up: true },
-        ].map((s, i) => (
-          <div key={i} className="card p-4">
-            <div className="flex items-center justify-between mb-2">
-              <s.icon className="w-4 h-4 text-muted-foreground" />
-              <span className={`text-xs flex items-center gap-0.5 ${s.up ? "text-success" : "text-destructive"}`}>
-                {s.up ? <ArrowUp className="w-3 h-3" /> : <ArrowDown className="w-3 h-3" />}{s.change}
-              </span>
-            </div>
-            <div className="text-2xl font-bold">{s.value}</div>
-            <div className="text-xs text-muted-foreground">{s.label}</div>
-          </div>
-        ))}
-      </div>
+    <div className="min-h-screen bg-background">
+      <PageHeader
+        title="Analytics Dashboard"
+        description="Analytics services are not connected in this deployment. No active-user count, revenue, payment, page-view, content-performance, engagement, ranking, or growth result is being reported."
+      />
 
-      {/* Chart */}
-      <div className="card p-5 mb-6">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="font-semibold">Weekly Trend</h3>
-          <div className="flex gap-2">
-            {(["dau","revenue","posts"] as const).map(m => (
-              <button key={m} onClick={() => setMetric(m)} className={`px-3 py-1 rounded text-xs font-medium uppercase transition-colors ${metric === m ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground hover:text-foreground"}`}>{m}</button>
-            ))}
-          </div>
-        </div>
-        <div className="flex items-end gap-2 h-32">
-          {DAILY_DATA.map((d, i) => {
-            const val = metric === "dau" ? d.dau : metric === "revenue" ? d.revenue : d.posts;
-            const maxVal = metric === "dau" ? maxDau : metric === "revenue" ? 4800 : 1300;
-            const pct = (val / maxVal) * 100;
-            return (
-              <div key={i} className="flex-1 flex flex-col items-center gap-1">
-                <div className="w-full bg-primary/20 rounded-t relative group" style={{height:`${pct}%`}}>
-                  <div className="w-full bg-primary rounded-t h-full opacity-80 hover:opacity-100 transition-opacity" />
-                  <div className="absolute -top-6 left-1/2 -translate-x-1/2 text-xs text-muted-foreground opacity-0 group-hover:opacity-100 whitespace-nowrap">{val.toLocaleString()}</div>
-                </div>
-                <span className="text-xs text-muted-foreground">{d.day}</span>
-              </div>
-            );
-          })}
-        </div>
-      </div>
+      <main className="mx-auto max-w-6xl space-y-8 px-4 py-8">
+        <Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Analytics Dashboard is unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous screen rendered fabricated DAU, MAU, MRR, page views, daily revenue, transaction and post trends, “Top Content This Week,” creator attribution, view counts, likes, and percentage changes. Those claims and navigation affordances were removed because no verified event pipeline, billing source, identity contract, content source, aggregation definition, or privacy boundary was established.</p></div></div></Card>
 
-      {/* Top Content */}
-      <div className="card overflow-hidden">
-        <div className="p-4 border-b border-border/50 flex items-center justify-between">
-          <h3 className="font-semibold">Top Content This Week</h3>
-          <Link href="/social" className="text-xs text-primary hover:underline">View all posts →</Link>
-        </div>
-        <div className="divide-y divide-border/30">
-          {TOP_CONTENT.map((c, i) => (
-            <div key={i} className="p-4 flex items-center gap-4 hover:bg-secondary/20 transition-colors">
-              <div className="text-2xl font-bold text-muted-foreground/30 w-6 text-center">{i+1}</div>
-              <div className="flex-1">
-                <div className="font-medium text-sm mb-1">{c.title}</div>
-                <div className="text-xs text-muted-foreground">by <Link href={`/creator/${c.author}`} className="text-primary hover:underline">{c.author}</Link></div>
-              </div>
-              <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                <span className="flex items-center gap-1"><Eye className="w-3 h-3" />{c.views.toLocaleString()}</span>
-                <span className="flex items-center gap-1"><Heart className="w-3 h-3" />{c.likes}</span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+        <Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="space-y-6"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><BarChart3 aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Analytics readiness</h2><p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">Production analytics requires event and metric contracts, source provenance, period and time-zone semantics, identity and consent controls, deduplication, revenue reconciliation, content attribution, cohort definitions, stale-data handling, role-based access, retention, redaction, and clear partial, failed, and retry states. None of those controls are available through this screen.</p></div></div><div className="grid gap-4 md:grid-cols-3"><Card className="border border-primary/30 bg-background/80 p-4"><Database aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><h3 className="font-semibold">No KPI claim</h3><p className="mt-1 text-sm text-muted-foreground">No DAU, MAU, MRR, revenue, payment, transaction, page-view, conversion, post, engagement, or growth value is fabricated.</p></Card><Card className="border border-primary/30 bg-background/80 p-4"><ShieldCheck aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><h3 className="font-semibold">No attribution claim</h3><p className="mt-1 text-sm text-muted-foreground">No content ranking, creator identity, audience, view, like, share, comment, cohort, or behavioral record is read or inferred.</p></Card><Card className="border border-primary/30 bg-background/80 p-4"><FileDown aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><h3 className="font-semibold">No reporting claim</h3><p className="mt-1 text-sm text-muted-foreground">No chart refresh, export, scheduled report, share, alert, dashboard link, or external analytics action is initiated.</p></Card></div><div className="flex flex-wrap gap-4 pt-2"><Link href="/advanced-analytics"><Button size="lg" className="bg-primary hover:bg-primary/90">View advanced analytics status</Button></Link><Link href="/api-status"><Button size="lg" variant="outline">View API status</Button></Link><Link href="/contact-us-form"><Button size="lg" variant="ghost">Ask about analytics access</Button></Link></div></div></Card>
+
+        <Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><FileWarning aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">Do not enter passwords, access tokens, seed phrases, private keys, confidential financial records, proprietary business data, or sensitive personal information here. An unavailable analytics page is not evidence of users, revenue, growth, engagement, attribution, or reporting compliance.</p></div></Card>
+        <Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><LockKeyhole aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">Events, warehouses, billing, identity, content, reports, permissions, privacy, and observability remain separate integrations. This screen does not replace any of them.</p></div></Card>
+      </main>
     </div>
   );
 }
