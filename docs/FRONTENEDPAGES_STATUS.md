@@ -77,3 +77,8 @@ The registered route `/block-browser` no longer renders a generic coming-soon pl
 ## Payments hardening
 
 The registered route `/payments` no longer renders unsupported subscription plans, prices, discounts, payment methods, test-card instructions, Stripe claims, checkout mutations, order history, or refund states. The previous page also used untyped mutation and order data. It now reports that payments are unavailable and documents catalog, provider, tokenization, webhook, order, refund, dispute, privacy, and security requirements. Focused TypeScript validation reported no diagnostics for `Payments.tsx`, and `git diff --check` passed.
+
+
+## Wallet Integration hardening
+
+The registered route `/wallet-integration` no longer renders a generic coming-soon placeholder. It now reports that wallet integration is unavailable and does not display a connected provider, address, balance, ownership proof, permissions, signatures, transaction, or settlement state. It documents provider and chain allowlists, origin controls, message separation, simulation, nonce and fee checks, user confirmation, rejection, replay, and independent verification requirements. Focused TypeScript validation reported no diagnostics for `WalletIntegration.tsx`, and `git diff --check` passed.
