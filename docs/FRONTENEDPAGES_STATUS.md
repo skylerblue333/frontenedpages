@@ -286,3 +286,7 @@ The registered Order Tracking screen no longer renders a fake authenticated CRUD
 ## Tax Planning hardening
 
 The registered Tax Planning screen no longer renders a fake authenticated CRUD shell or claims strategies, savings, deductions, forecasts, tax positions, jurisdictional conclusions, legality, suitability, or personalized recommendations. It now reports that reconciled records, tax lots, income, expenses, residency, rules, filing history, legal interpretation, and professional review are unavailable and documents the requirements for responsible tax decision support. Focused TypeScript validation reported no diagnostics for `TaxPlanning.tsx`, and `git diff --check` passed.
+
+## Wave4 Payments hardening
+
+The registered wave4 Payments screen no longer renders unsupported payment methods, masked card records, billing transactions, subscription renewals, spending and earnings totals, payout history, or payout requests. No matching wave4 payment contracts were found for the frontend calls, so the claims and mutation were removed. The page now documents provider, payment-intent, tokenization, PCI, authorization, webhook, idempotency, reconciliation, subscription, refund, dispute, payout, fraud, privacy, audit, and settlement requirements. Focused TypeScript validation reported no diagnostics for `wave4/Payments.tsx`, and `git diff --check` passed.

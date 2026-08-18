@@ -1,192 +1,96 @@
-// @ts-nocheck
-import { useState } from 'react';
-import { trpc } from '@/lib/trpc';
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Skeleton } from '@/components/ui/skeleton';
-import { useAuth } from '@/_core/hooks/useAuth';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { toast } from 'sonner';
+import { AlertTriangle, CreditCard, FileText, LockKeyhole, ReceiptText, RefreshCcw, WalletCards } from "lucide-react";
+import { Link } from "wouter";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const paymentStates = [
+  { label: "Payment methods", value: "Unavailable", icon: CreditCard },
+  { label: "Billing and transaction ledger", value: "Unavailable", icon: ReceiptText },
+  { label: "Subscriptions and renewals", value: "Not configured", icon: RefreshCcw },
+  { label: "Payouts and settlement", value: "Disabled", icon: WalletCards },
+];
 
 export default function PaymentsPage() {
-  const { isAuthenticated } = useAuth();
-  const [payoutAmount, setPayoutAmount] = useState('');
-
-  const { data: methods } = trpc.wave4Payments.getPaymentMethods.useQuery();
-  const { data: history, isLoading: historyLoading } = trpc.wave4Payments.getBillingHistory.useQuery({
-    limit: 20,
-  });
-  const { data: subscriptions } = trpc.wave4Payments.getSubscriptions.useQuery();
-  const { data: payouts } = trpc.wave4Payments.getPayouts.useQuery({ limit: 20 });
-  const { data: stats } = trpc.wave4Payments.getPaymentStats.useQuery();
-
-  const requestPayoutMutation = trpc.wave4Payments.requestPayout.useMutation({
-    onSuccess: () => {
-      toast.success('Payout requested!');
-      setPayoutAmount('');
-    },
-  });
-
-  if (!isAuthenticated) {
-    return (
-      <div className="container py-8">
-        <Card className="p-6">
-          <p className="text-gray-600">Please log in to access Payments</p>
-        </Card>
-      </div>
-    );
-  }
-
   return (
-    <div className="container py-8 space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold">Payments & Billing</h1>
-        <p className="text-gray-600">Manage your payment methods and billing</p>
-      </div>
+    <div className="min-h-screen bg-background">
+      <PageHeader
+        title="Payments & Billing"
+        description="Payment, billing, subscription, and payout services are not connected in this deployment. No financial balance, charge, renewal, refund, payout, or settlement result is being reported."
+      />
 
-      {/* Stats */}
-      {stats && (
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <Card className="p-4">
-            <p className="text-sm text-gray-600">Total Spent</p>
-            <p className="text-2xl font-bold">${stats.totalSpent.toFixed(2)}</p>
-          </Card>
-          <Card className="p-4">
-            <p className="text-sm text-gray-600">Total Earned</p>
-            <p className="text-2xl font-bold text-green-600">${stats.totalEarned.toFixed(2)}</p>
-          </Card>
-          <Card className="p-4">
-            <p className="text-sm text-gray-600">Pending Payouts</p>
-            <p className="text-2xl font-bold">{stats.pendingPayouts}</p>
-          </Card>
-          <Card className="p-4">
-            <p className="text-sm text-gray-600">Last Transaction</p>
-            <p className="text-sm font-semibold">
-              {stats.lastTransaction ? new Date(stats.lastTransaction).toLocaleDateString() : 'None'}
-            </p>
-          </Card>
-        </div>
-      )}
+      <main className="mx-auto max-w-6xl space-y-8 px-4 py-8">
+        <Card className="border border-red-400/30 bg-red-950/20 p-6">
+          <div className="flex items-start gap-3">
+            <AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" />
+            <div>
+              <h2 className="font-semibold text-red-100">Payment services are unavailable</h2>
+              <p className="mt-1 text-sm leading-6 text-red-100/80">
+                The previous screen claimed payment methods, masked card records, billing transactions, subscription renewals, spending and earnings totals, payout history, and successful payout requests. No matching wave4 payment contracts were found for the frontend calls, so those claims and the payout mutation have been removed. This page does not collect credentials, charge, refund, renew, or transfer funds.
+              </p>
+            </div>
+          </div>
+        </Card>
 
-      <Tabs defaultValue="methods" className="w-full">
-        <TabsList>
-          <TabsTrigger value="methods">Payment Methods</TabsTrigger>
-          <TabsTrigger value="history">Billing History</TabsTrigger>
-          <TabsTrigger value="subscriptions">Subscriptions</TabsTrigger>
-          <TabsTrigger value="payouts">Payouts</TabsTrigger>
-        </TabsList>
-
-        {/* Payment Methods Tab */}
-        <TabsContent value="methods" className="space-y-4">
-          <Card className="p-6">
-            <h3 className="text-lg font-semibold mb-4">Your Payment Methods</h3>
-            {methods && methods.length > 0 ? (
-              <div className="space-y-2">
-                {methods.map((m: any) => (
-                  <Card key={m.id} className="p-4 flex justify-between items-center">
-                    <div>
-                      <p className="font-semibold capitalize">{m.type}</p>
-                      <p className="text-sm text-gray-600">•••• {m.lastFour}</p>
-                      {m.isDefault && <p className="text-xs text-blue-600 mt-1">Default</p>}
-                    </div>
-                    <p className="text-xs text-gray-500">{new Date(m.createdAt).toLocaleDateString()}</p>
-                  </Card>
-                ))}
+        <Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8">
+          <div className="space-y-6">
+            <div className="flex items-start gap-4">
+              <div className="rounded-xl bg-primary/15 p-3"><CreditCard aria-hidden="true" className="h-8 w-8 text-primary" /></div>
+              <div>
+                <h2 className="text-3xl font-bold">Payments readiness</h2>
+                <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">
+                  A production payments system requires a provider integration, server-side payment intents, tokenized payment-method references, PCI scope controls, customer and merchant authorization, webhook signature verification, idempotency, ledger reconciliation, subscription lifecycle, refunds and disputes, payout eligibility and approval, sanctions and fraud controls, privacy-safe access, audit records, and independently verified settlement. None of those controls are available here.
+                </p>
               </div>
-            ) : (
-              <p className="text-gray-600">No payment methods added</p>
-            )}
-          </Card>
-        </TabsContent>
-
-        {/* Billing History Tab */}
-        <TabsContent value="history" className="space-y-4">
-          {historyLoading ? (
-            <Skeleton className="h-64" />
-          ) : (
-            <div className="space-y-2">
-              {history?.transactions.map((t: any) => (
-                <Card key={t.id} className="p-4 flex justify-between items-center">
-                  <div>
-                    <p className="font-semibold capitalize">{t.type}</p>
-                    <p className="text-sm text-gray-600">${t.amount.toFixed(2)}</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-sm font-semibold">{t.status}</p>
-                    <p className="text-xs text-gray-500">{new Date(t.createdAt).toLocaleDateString()}</p>
-                  </div>
-                </Card>
-              ))}
             </div>
-          )}
-        </TabsContent>
 
-        {/* Subscriptions Tab */}
-        <TabsContent value="subscriptions" className="space-y-4">
-          {subscriptions && subscriptions.length > 0 ? (
-            <div className="space-y-2">
-              {subscriptions.map((s: any) => (
-                <Card key={s.id} className="p-4">
-                  <p className="font-semibold">{s.plan?.name}</p>
-                  <p className="text-sm text-gray-600">${s.plan?.price}/month</p>
-                  <p className="text-xs text-gray-500 mt-2">Status: {s.status}</p>
-                  <p className="text-xs text-gray-500">
-                    Renews: {new Date(s.currentPeriodEnd).toLocaleDateString()}
-                  </p>
-                </Card>
-              ))}
+            <div className="grid gap-4 md:grid-cols-3">
+              <Card className="border border-primary/30 bg-background/80 p-4">
+                <CreditCard aria-hidden="true" className="mb-3 h-7 w-7 text-primary" />
+                <h3 className="font-semibold">No credential claim</h3>
+                <p className="mt-1 text-sm text-muted-foreground">No card, bank account, wallet, payment token, default method, or customer payment profile is displayed.</p>
+              </Card>
+              <Card className="border border-primary/30 bg-background/80 p-4">
+                <ReceiptText aria-hidden="true" className="mb-3 h-7 w-7 text-primary" />
+                <h3 className="font-semibold">No ledger claim</h3>
+                <p className="mt-1 text-sm text-muted-foreground">No charge, balance, spend, earning, subscription, renewal, refund, dispute, invoice, or payout record is asserted.</p>
+              </Card>
+              <Card className="border border-primary/30 bg-background/80 p-4">
+                <WalletCards aria-hidden="true" className="mb-3 h-7 w-7 text-primary" />
+                <h3 className="font-semibold">No settlement claim</h3>
+                <p className="mt-1 text-sm text-muted-foreground">No payment, payout, transfer, approval, confirmation, or settlement action can be initiated here.</p>
+              </Card>
             </div>
-          ) : (
-            <Card className="p-6">
-              <p className="text-gray-600">No active subscriptions</p>
-            </Card>
-          )}
-        </TabsContent>
 
-        {/* Payouts Tab */}
-        <TabsContent value="payouts" className="space-y-4">
-          <Card className="p-6">
-            <h3 className="text-lg font-semibold mb-4">Request Payout</h3>
-            <div className="space-y-4">
-              <Input
-                placeholder="Amount"
-                type="number"
-                value={payoutAmount}
-                onChange={(e) => setPayoutAmount(e.target.value)}
-              />
-              <Button
-                onClick={() => {
-                  if (payoutAmount) {
-                    requestPayoutMutation.mutate({
-                      amount: parseFloat(payoutAmount),
-                      paymentMethodId: 'default',
-                    });
-                  }
-                }}
-                disabled={requestPayoutMutation.isPending || !payoutAmount}
-              >
-                Request Payout
-              </Button>
+            <div className="flex flex-wrap gap-4 pt-2">
+              <Link href="/admin-orders"><Button size="lg" className="bg-primary hover:bg-primary/90">View order status</Button></Link>
+              <Link href="/wallet"><Button size="lg" variant="outline">View wallet status</Button></Link>
+              <Link href="/contact-us-form"><Button size="lg" variant="ghost">Ask about payment access</Button></Link>
             </div>
-          </Card>
+          </div>
+        </Card>
 
-          <h3 className="text-lg font-semibold">Payout History</h3>
-          <div className="space-y-2">
-            {payouts?.map((p: any) => (
-              <Card key={p.id} className="p-4">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <p className="font-semibold">${p.amount.toFixed(2)}</p>
-                    <p className="text-sm text-gray-600 capitalize">{p.status}</p>
-                  </div>
-                  <p className="text-xs text-gray-500">{new Date(p.requestedAt).toLocaleDateString()}</p>
-                </div>
+        <section aria-labelledby="payment-state-heading">
+          <h2 id="payment-state-heading" className="mb-4 text-xl font-semibold">Current payment evidence</h2>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+            {paymentStates.map(({ label, value, icon: Icon }) => (
+              <Card key={label} className="border border-border/50 bg-card p-4">
+                <p className="text-sm text-muted-foreground">{label}</p>
+                <div className="mt-2 flex items-center gap-2"><Icon aria-hidden="true" className="h-4 w-4 text-muted-foreground" /><p className="font-semibold">{value}</p></div>
               </Card>
             ))}
           </div>
-        </TabsContent>
-      </Tabs>
+        </section>
+
+        <Card className="border border-border/50 bg-card p-5">
+          <div className="flex items-start gap-3">
+            <LockKeyhole aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" />
+            <p className="text-sm leading-6 text-muted-foreground">
+              Never enter a full card number, bank credential, seed phrase, private key, or payment token here. Do not treat an unavailable state as proof that a charge, refund, payout, or subscription was completed.
+            </p>
+          </div>
+        </Card>
+      </main>
     </div>
   );
 }
