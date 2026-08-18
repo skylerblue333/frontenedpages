@@ -172,3 +172,8 @@ The registered route `/fee-calculation` no longer renders a generic coming-soon 
 ## Donation Processing hardening
 
 The registered route `/donation-processing` no longer renders a generic coming-soon placeholder. It now reports that donation processing is unavailable and does not display campaigns, beneficiaries, donation amounts, donor totals, payment authorization, receipts, refunds, chargebacks, disbursements, payouts, or settlement results. It documents campaign, beneficiary, consent, payment, fraud, receipt, restricted-fund, refund, approval, reconciliation, regulatory, and reporting requirements. Focused TypeScript validation reported no diagnostics for `DonationProcessing.tsx`, and `git diff --check` passed.
+
+
+## Address Lookup hardening
+
+The registered route `/address-lookup` no longer renders a generic coming-soon placeholder. It now reports that address lookup is unavailable and does not display address validity, owners, contracts, balances, nonces, transactions, activity, confirmations, finality, or settlement. It documents chain and address allowlists, checksums, node and indexer provenance, pagination, privacy, ownership semantics, freshness, decoding, reorganization, and independent-verification requirements. Focused TypeScript validation reported no diagnostics for `AddressLookup.tsx`, and `git diff --check` passed.
