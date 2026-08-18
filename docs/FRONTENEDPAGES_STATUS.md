@@ -394,3 +394,7 @@ The registered AICodeStudio screen no longer exposes twelve named coding bots, a
 ## AICopyStudio hardening
 
 The registered AICopyStudio screen no longer calls unverified generation, improvement, analysis, translation, template, or history mutations. It removes unsupported claims about high-converting copy, high-open-rate subject lines, keyword optimization, completed analysis scores, generated word counts, publication readiness, and performance. The page now documents model, validation, brand, factual, copyright, privacy, retention, evaluation, publication, billing, and observability boundaries. Focused TypeScript validation reported no diagnostics for `AICopyStudio.tsx`, and `git diff --check` passed.
+
+## AICore hardening
+
+The registered AICore screen no longer calls unverified chat, content-generation, market-analysis, or usage procedures. It removes the unsupported OpenAI attribution, token balances and limits, recent-generation records, and AI Pro unlimited/priority upgrade claim. The page now documents verified model, market-data provenance, usage metering, quota, entitlement, billing, privacy, safety, history, and observability boundaries. Focused TypeScript validation reported no diagnostics for `AICore.tsx`, and `git diff --check` passed.

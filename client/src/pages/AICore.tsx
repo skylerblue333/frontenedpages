@@ -1,308 +1,105 @@
-// @ts-nocheck
-import React, { useState } from 'react';
-import { trpc } from '@/lib/trpc';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Sparkles, Send, Copy, Trash2, BarChart3, Zap } from 'lucide-react';
+import { AlertTriangle, BarChart3, Brain, FileWarning, LockKeyhole, MessageCircle, ShieldCheck, Sparkles, Zap } from "lucide-react";
+import { Link } from "wouter";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const coreStates = [
+  { label: "Model, provider, and version", value: "Unavailable", icon: Brain },
+  { label: "Chat, generation, and market analysis", value: "Disabled", icon: MessageCircle },
+  { label: "Token usage, quotas, and billing", value: "Not verified", icon: Zap },
+  { label: "History, outputs, and retention", value: "Not configured", icon: BarChart3 },
+];
 
 export default function AICore() {
-  const [activeTab, setActiveTab] = useState('chat');
-  const [prompt, setPrompt] = useState('');
-  const [messages, setMessages] = useState<any[]>([]);
-  const [tokenUsage, setTokenUsage] = useState(0);
-
-  // Fetch AI usage
-  const { data: aiUsage } = trpc.ai.getUsage.useQuery();
-
-  // Chat mutation
-  const chatMutation = trpc.ai.chat.useMutation({
-    onSuccess: (data) => {
-      setMessages([
-        ...messages,
-        { role: 'user', content: prompt },
-        { role: 'assistant', content: data.response },
-      ]);
-      setPrompt('');
-      setTokenUsage(tokenUsage + data.tokensUsed);
-    },
-  });
-
-  // Content generation mutation
-  const generateMutation = trpc.ai.generateContent.useMutation({
-    onSuccess: (data) => {
-      alert('Content generated! Check your dashboard.');
-      setPrompt('');
-    },
-  });
-
-  // Market analysis mutation
-  const analysisMutation = trpc.ai.analyzeMarket.useMutation({
-    onSuccess: (data) => {
-      setMessages([
-        ...messages,
-        { role: 'user', content: `Analyze: ${prompt}` },
-        { role: 'assistant', content: data.analysis },
-      ]);
-      setPrompt('');
-    },
-  });
-
-  const handleChat = () => {
-    if (!prompt) return;
-    chatMutation.mutate({ message: prompt });
-  };
-
-  const handleGenerate = () => {
-    if (!prompt) return;
-    generateMutation.mutate({ prompt });
-  };
-
-  const handleAnalyze = () => {
-    if (!prompt) return;
-    analysisMutation.mutate({ symbol: prompt });
-  };
-
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <div className="border-b bg-card p-6">
-        <div className="mx-auto max-w-7xl">
-          <div className="flex items-center gap-3 mb-2">
-            <Sparkles className="h-8 w-8 text-purple-600" />
-            <h1 className="text-3xl font-bold">AI Core</h1>
-          </div>
-          <p className="text-muted-foreground">
-            Powered by OpenAI • {aiUsage?.tokensRemaining.toLocaleString()} tokens remaining
-          </p>
-        </div>
-      </div>
+      <PageHeader
+        title="AI Core"
+        description="AI Core services are not connected in this deployment. No model response, generated content, market analysis, token usage, recent generation, quota, or subscription state is being reported."
+      />
 
-      {/* Main Content */}
-      <div className="mx-auto max-w-7xl p-6">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Main Panel */}
-          <div className="lg:col-span-2">
-            <Tabs value={activeTab} onValueChange={setActiveTab}>
-              <TabsList className="grid w-full grid-cols-3 mb-6">
-                <TabsTrigger value="chat">Chat</TabsTrigger>
-                <TabsTrigger value="generate">Generate</TabsTrigger>
-                <TabsTrigger value="analyze">Analyze</TabsTrigger>
-              </TabsList>
-
-              {/* Chat Tab */}
-              <TabsContent value="chat">
-                <Card className="p-6 flex flex-col h-[600px]">
-                  {/* Messages */}
-                  <div className="flex-1 overflow-y-auto mb-4 space-y-4">
-                    {messages.length === 0 ? (
-                      <div className="flex items-center justify-center h-full text-center">
-                        <div>
-                          <Sparkles className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                          <p className="text-muted-foreground">
-                            Start a conversation with AI
-                          </p>
-                        </div>
-                      </div>
-                    ) : (
-                      messages.map((msg, i) => (
-                        <div
-                          key={i}
-                          className={`flex ${
-                            msg.role === 'user' ? 'justify-end' : 'justify-start'
-                          }`}
-                        >
-                          <div
-                            className={`max-w-xs px-4 py-2 rounded-lg ${
-                              msg.role === 'user'
-                                ? 'bg-blue-600 text-white'
-                                : 'bg-accent text-foreground'
-                            }`}
-                          >
-                            <p className="text-sm">{msg.content}</p>
-                          </div>
-                        </div>
-                      ))
-                    )}
-                  </div>
-
-                  {/* Input */}
-                  <div className="flex gap-2">
-                    <Input
-                      placeholder="Ask AI anything..."
-                      value={prompt}
-                      onChange={(e) => setPrompt(e.target.value)}
-                      onKeyPress={(e) => e.key === 'Enter' && handleChat()}
-                      disabled={chatMutation.isPending}
-                    />
-                    <Button
-                      onClick={handleChat}
-                      disabled={!prompt || chatMutation.isPending}
-                      size="icon"
-                    >
-                      <Send className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </Card>
-              </TabsContent>
-
-              {/* Generate Tab */}
-              <TabsContent value="generate">
-                <Card className="p-6">
-                  <h2 className="text-xl font-bold mb-4">Generate Content</h2>
-                  <div className="space-y-4">
-                    <div>
-                      <label className="text-sm font-semibold mb-2 block">
-                        Content Description
-                      </label>
-                      <Textarea
-                        placeholder="Describe the content you want to generate..."
-                        value={prompt}
-                        onChange={(e) => setPrompt(e.target.value)}
-                        className="h-32"
-                      />
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-2">
-                      <div className="p-3 border rounded-lg">
-                        <p className="text-sm font-semibold mb-1">Content Type</p>
-                        <p className="text-xs text-muted-foreground">Blog Post</p>
-                      </div>
-                      <div className="p-3 border rounded-lg">
-                        <p className="text-sm font-semibold mb-1">Tone</p>
-                        <p className="text-xs text-muted-foreground">Professional</p>
-                      </div>
-                    </div>
-
-                    <Button
-                      onClick={handleGenerate}
-                      disabled={!prompt || generateMutation.isPending}
-                      className="w-full"
-                    >
-                      {generateMutation.isPending ? 'Generating...' : 'Generate Content'}
-                    </Button>
-                  </div>
-                </Card>
-              </TabsContent>
-
-              {/* Analyze Tab */}
-              <TabsContent value="analyze">
-                <Card className="p-6">
-                  <h2 className="text-xl font-bold mb-4">Market Analysis</h2>
-                  <div className="space-y-4">
-                    <div>
-                      <label className="text-sm font-semibold mb-2 block">
-                        Trading Symbol
-                      </label>
-                      <Input
-                        placeholder="e.g., BTC, ETH, SKY"
-                        value={prompt}
-                        onChange={(e) => setPrompt(e.target.value)}
-                      />
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="p-3 border rounded-lg">
-                        <p className="text-xs text-muted-foreground mb-1">Analysis Type</p>
-                        <p className="font-semibold">Technical</p>
-                      </div>
-                      <div className="p-3 border rounded-lg">
-                        <p className="text-xs text-muted-foreground mb-1">Timeframe</p>
-                        <p className="font-semibold">24h</p>
-                      </div>
-                    </div>
-
-                    <Button
-                      onClick={handleAnalyze}
-                      disabled={!prompt || analysisMutation.isPending}
-                      className="w-full"
-                    >
-                      {analysisMutation.isPending ? 'Analyzing...' : 'Analyze Market'}
-                    </Button>
-                  </div>
-                </Card>
-              </TabsContent>
-            </Tabs>
-          </div>
-
-          {/* Sidebar */}
-          <div className="space-y-6">
-            {/* Usage Stats */}
-            <Card className="p-6">
-              <h3 className="font-semibold mb-4 flex items-center gap-2">
-                <Zap className="h-4 w-4" />
-                Token Usage
-              </h3>
-              <div className="space-y-3">
-                <div>
-                  <div className="flex justify-between mb-2">
-                    <span className="text-sm">This Month</span>
-                    <span className="font-semibold">
-                      {aiUsage?.tokensUsedMonth.toLocaleString()}
-                    </span>
-                  </div>
-                  <div className="w-full bg-accent rounded-full h-2">
-                    <div
-                      className="bg-blue-600 h-2 rounded-full"
-                      style={{
-                        width: `${
-                          (aiUsage?.tokensUsedMonth || 0) /
-                          (aiUsage?.monthlyLimit || 1) *
-                          100
-                        }%`,
-                      }}
-                    />
-                  </div>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    {aiUsage?.tokensRemaining.toLocaleString()} remaining
-                  </p>
-                </div>
-              </div>
-            </Card>
-
-            {/* Recent Generations */}
-            <Card className="p-6">
-              <h3 className="font-semibold mb-4 flex items-center gap-2">
-                <BarChart3 className="h-4 w-4" />
-                Recent Generations
-              </h3>
-              <div className="space-y-3">
-                <div className="p-3 border rounded-lg">
-                  <p className="text-sm font-semibold line-clamp-2">
-                    Market Analysis Report
-                  </p>
-                  <p className="text-xs text-muted-foreground mt-1">2 hours ago</p>
-                </div>
-                <div className="p-3 border rounded-lg">
-                  <p className="text-sm font-semibold line-clamp-2">
-                    Trading Strategy Guide
-                  </p>
-                  <p className="text-xs text-muted-foreground mt-1">5 hours ago</p>
-                </div>
-                <div className="p-3 border rounded-lg">
-                  <p className="text-sm font-semibold line-clamp-2">
-                    Portfolio Optimization Tips
-                  </p>
-                  <p className="text-xs text-muted-foreground mt-1">1 day ago</p>
-                </div>
-              </div>
-            </Card>
-
-            {/* Subscription */}
-            <Card className="p-6 bg-gradient-to-br from-purple-500/10 to-blue-500/10">
-              <h3 className="font-semibold mb-2">AI Pro</h3>
-              <p className="text-sm text-muted-foreground mb-4">
-                Unlimited AI features with priority processing
+      <main className="mx-auto max-w-6xl space-y-8 px-4 py-8">
+        <Card className="border border-red-400/30 bg-red-950/20 p-6">
+          <div className="flex items-start gap-3">
+            <AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" />
+            <div>
+              <h2 className="font-semibold text-red-100">AI Core is unavailable</h2>
+              <p className="mt-1 text-sm leading-6 text-red-100/80">
+                The previous screen called unverified chat, content-generation, market-analysis, and usage procedures. It also displayed an OpenAI attribution, token balances and limits, recent generations, and an AI Pro upgrade claim without verified service, entitlement, billing, or history evidence. Those actions and claims were removed.
               </p>
-              <Button className="w-full" size="sm">
-                Upgrade Now
-              </Button>
-            </Card>
+            </div>
           </div>
-        </div>
-      </div>
+        </Card>
+
+        <Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8">
+          <div className="space-y-6">
+            <div className="flex items-start gap-4">
+              <div className="rounded-xl bg-primary/15 p-3"><Sparkles aria-hidden="true" className="h-8 w-8 text-primary" /></div>
+              <div>
+                <h2 className="text-3xl font-bold">AI Core readiness</h2>
+                <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">
+                  A production AI core requires a verified provider and model registry, authenticated model gateway, input and output validation, content and market-data provenance, safe tool boundaries, privacy and retention settings, rate and cost controls, accurate quota and entitlement data, usage metering, audit logs, and explicit success, failure, timeout, and retry states. None of those controls are available through this page.
+                </p>
+              </div>
+            </div>
+
+            <div className="grid gap-4 md:grid-cols-3">
+              <Card className="border border-primary/30 bg-background/80 p-4">
+                <MessageCircle aria-hidden="true" className="mb-3 h-7 w-7 text-primary" />
+                <h3 className="font-semibold">No response claim</h3>
+                <p className="mt-1 text-sm text-muted-foreground">No chat reply, generated content, market analysis, strategy, recommendation, or financial decision support is produced here.</p>
+              </Card>
+              <Card className="border border-primary/30 bg-background/80 p-4">
+                <BarChart3 aria-hidden="true" className="mb-3 h-7 w-7 text-primary" />
+                <h3 className="font-semibold">No usage claim</h3>
+                <p className="mt-1 text-sm text-muted-foreground">No tokens used, tokens remaining, monthly limit, quota percentage, latency, cost, or recent-generation history is invented.</p>
+              </Card>
+              <Card className="border border-primary/30 bg-background/80 p-4">
+                <ShieldCheck aria-hidden="true" className="mb-3 h-7 w-7 text-primary" />
+                <h3 className="font-semibold">No billing claim</h3>
+                <p className="mt-1 text-sm text-muted-foreground">No plan, entitlement, unlimited access, priority processing, upgrade, charge, or subscription status is represented.</p>
+              </Card>
+            </div>
+
+            <div className="flex flex-wrap gap-4 pt-2">
+              <Link href="/ai-brain"><Button size="lg" className="bg-primary hover:bg-primary/90">View AI Brain status</Button></Link>
+              <Link href="/ai-control-center"><Button size="lg" variant="outline">View AI controls</Button></Link>
+              <Link href="/contact-us-form"><Button size="lg" variant="ghost">Ask about AI access</Button></Link>
+            </div>
+          </div>
+        </Card>
+
+        <section aria-labelledby="core-state-heading">
+          <h2 id="core-state-heading" className="mb-4 text-xl font-semibold">Current AI Core evidence</h2>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+            {coreStates.map(({ label, value, icon: Icon }) => (
+              <Card key={label} className="border border-border/50 bg-card p-4">
+                <p className="text-sm text-muted-foreground">{label}</p>
+                <div className="mt-2 flex items-center gap-2"><Icon aria-hidden="true" className="h-4 w-4 text-muted-foreground" /><p className="font-semibold">{value}</p></div>
+              </Card>
+            ))}
+          </div>
+        </section>
+
+        <Card className="border border-border/50 bg-card p-5">
+          <div className="flex items-start gap-3">
+            <FileWarning aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" />
+            <p className="text-sm leading-6 text-muted-foreground">
+              Do not enter passwords, access tokens, seed phrases, private keys, confidential business information, health details, or sensitive personal information here. AI output and market analysis must not be treated as verified financial, legal, medical, security, or production advice.
+            </p>
+          </div>
+        </Card>
+
+        <Card className="border border-border/50 bg-card p-5">
+          <div className="flex items-start gap-3">
+            <LockKeyhole aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" />
+            <p className="text-sm leading-6 text-muted-foreground">
+              Model access, market data, usage metering, billing, history, privacy, safety, and observability remain separate integrations. This screen does not replace any of them.
+            </p>
+          </div>
+        </Card>
+      </main>
     </div>
   );
 }
