@@ -262,3 +262,7 @@ The registered Crypto Hub no longer renders unsupported live token prices, balan
 ## Tax Reports hardening
 
 The registered Tax Reports screen no longer renders a fake authenticated CRUD shell or claims taxable basis, gains, losses, jurisdictions, deductions, withholding, filings, reports, downloads, accountant review, or tax compliance. It now reports that the transaction ledger, cost-basis method, pricing source, tax-rule engine, jurisdiction profile, identity records, review, filing workflow, and document store are not connected. The screen documents ledger reconciliation, valuation, lot methodology, classification, residency, period locking, corrections, privacy, review, filing ownership, retention, and professional-advice requirements. Focused TypeScript validation reported no diagnostics for `TaxReports.tsx`, and `git diff --check` passed.
+
+## Staking Portal hardening
+
+The registered Staking Portal no longer renders unsupported APY history, reward projections, pool metrics, active-staker counts, lock periods, penalties, user positions, earned rewards, staking execution, or reward claims. The registered staking backend route is currently a generic feature router, so those claims and mutations were not verified. The page now documents asset and chain configuration, pool terms, balances, reward accounting, lock semantics, failure handling, idempotency, settlement, reconciliation, audit, and financial-risk requirements. Focused TypeScript validation reported no diagnostics for `StakingPortal.tsx`, and `git diff --check` passed.
