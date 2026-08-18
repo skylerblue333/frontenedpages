@@ -1,215 +1,34 @@
-import React, { useState } from 'react';
-import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { AlertTriangle, BarChart3, Database, FileDown, FileWarning, LockKeyhole, PieChart, RefreshCw, ShieldCheck, TrendingUp } from "lucide-react";
+import { Link } from "wouter";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
 
-// Mock analytics data
-const revenueData = [
-  { month: 'Jan', revenue: 4000, users: 2400, transactions: 240 },
-  { month: 'Feb', revenue: 3000, users: 1398, transactions: 221 },
-  { month: 'Mar', revenue: 2000, users: 9800, transactions: 229 },
-  { month: 'Apr', revenue: 2780, users: 3908, transactions: 200 },
-  { month: 'May', revenue: 1890, users: 4800, transactions: 221 },
-  { month: 'Jun', revenue: 2390, users: 3800, transactions: 250 },
+const analyticsStates = [
+  { label: "Revenue, transaction, and billing data", value: "Unavailable", icon: TrendingUp },
+  { label: "Users, engagement, conversion, and retention", value: "Not measured", icon: BarChart3 },
+  { label: "Platform distribution and business dimensions", value: "Not configured", icon: PieChart },
+  { label: "Exports, schedules, sharing, and permissions", value: "Disabled", icon: FileDown },
 ];
-
-const userEngagementData = [
-  { day: 'Mon', active: 4000, inactive: 2400 },
-  { day: 'Tue', active: 3000, inactive: 1398 },
-  { day: 'Wed', active: 2000, inactive: 9800 },
-  { day: 'Thu', active: 2780, inactive: 3908 },
-  { day: 'Fri', active: 1890, inactive: 4800 },
-  { day: 'Sat', active: 2390, inactive: 3800 },
-  { day: 'Sun', active: 2490, inactive: 4300 },
-];
-
-const platformMetrics = [
-  { name: 'Social', value: 35, color: '#FF6B6B' },
-  { name: 'Gaming', value: 25, color: '#4ECDC4' },
-  { name: 'Commerce', value: 20, color: '#FFE66D' },
-  { name: 'Charity', value: 15, color: '#95E1D3' },
-  { name: 'Other', value: 5, color: '#A8E6CF' },
-];
-
-const conversionFunnelData = [
-  { stage: 'Visitors', count: 10000, percentage: 100 },
-  { stage: 'Signups', count: 7500, percentage: 75 },
-  { stage: 'Active Users', count: 5000, percentage: 50 },
-  { stage: 'Paid Users', count: 2500, percentage: 25 },
-  { stage: 'Premium', count: 1000, percentage: 10 },
-];
-
-const COLORS = ['#FF6B6B', '#4ECDC4', '#FFE66D', '#95E1D3', '#A8E6CF'];
 
 export default function AdvancedAnalytics() {
-  const [timeRange, setTimeRange] = useState('30d');
-  const [metric, setMetric] = useState('revenue');
-
-  const stats = [
-    { label: 'Total Revenue', value: '$18,060', change: '+12.5%', positive: true },
-    { label: 'Active Users', value: '24,398', change: '+8.2%', positive: true },
-    { label: 'Conversion Rate', value: '3.24%', change: '-0.5%', positive: false },
-    { label: 'Avg. Session', value: '4m 32s', change: '+2.1%', positive: true },
-  ];
-
   return (
-    <div className="min-h-screen bg-background p-6">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-foreground mb-2">Advanced Analytics</h1>
-          <p className="text-muted-foreground">Real-time insights and performance metrics</p>
-        </div>
+    <div className="min-h-screen bg-background">
+      <PageHeader
+        title="Advanced Analytics"
+        description="Analytics services are not connected in this deployment. No revenue, user, transaction, engagement, conversion, platform distribution, forecast, export, schedule, or shared report is being reported."
+      />
 
-        {/* Time Range Selector */}
-        <div className="mb-6 flex gap-4">
-          <Select value={timeRange} onValueChange={setTimeRange}>
-            <SelectTrigger className="w-40">
-              <SelectValue placeholder="Select time range" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="7d">Last 7 days</SelectItem>
-              <SelectItem value="30d">Last 30 days</SelectItem>
-              <SelectItem value="90d">Last 90 days</SelectItem>
-              <SelectItem value="1y">Last year</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+      <main className="mx-auto max-w-6xl space-y-8 px-4 py-8">
+        <Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Advanced Analytics is unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous screen rendered hard-coded revenue, users, transactions, engagement, platform distribution, conversion-funnel counts, percentage changes, “real-time insights,” and export, scheduling, and sharing controls. Those claims and actions were removed because no verified analytics source, metric definitions, authorization, report job, or export service was established.</p></div></div></Card>
 
-        {/* Key Metrics */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          {stats.map((stat, idx) => (
-            <Card key={idx} className="bg-card border-border">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">{stat.label}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-foreground">{stat.value}</div>
-                <p className={`text-xs mt-2 ${stat.positive ? 'text-green-500' : 'text-red-500'}`}>
-                  {stat.change} from last period
-                </p>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+        <Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="space-y-6"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><BarChart3 aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Analytics readiness</h2><p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">Production analytics requires defined event and metric contracts, source provenance, time-zone and period semantics, identity and privacy controls, deduplication, revenue and transaction reconciliation, cohort definitions, stale-data handling, role-based access, export redaction, scheduled jobs, retention, and clear partial, failed, and retry states. None of those controls are available through this screen.</p></div></div><div className="grid gap-4 md:grid-cols-3"><Card className="border border-primary/30 bg-background/80 p-4"><Database aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><h3 className="font-semibold">No metric claim</h3><p className="mt-1 text-sm text-muted-foreground">No revenue, user, transaction, engagement, conversion, retention, funnel, distribution, growth, or forecast value is fabricated.</p></Card><Card className="border border-primary/30 bg-background/80 p-4"><ShieldCheck aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><h3 className="font-semibold">No privacy claim</h3><p className="mt-1 text-sm text-muted-foreground">No personal profile, behavioral event, billing record, cohort, audience, or sensitive business data is read or inferred.</p></Card><Card className="border border-primary/30 bg-background/80 p-4"><RefreshCw aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><h3 className="font-semibold">No report claim</h3><p className="mt-1 text-sm text-muted-foreground">No CSV, PDF, dashboard share, scheduled report, alert, data refresh, or external analytics action is initiated.</p></Card></div><div className="flex flex-wrap gap-4 pt-2"><Link href="/analytics"><Button size="lg" className="bg-primary hover:bg-primary/90">View analytics status</Button></Link><Link href="/api-status"><Button size="lg" variant="outline">View API status</Button></Link><Link href="/contact-us-form"><Button size="lg" variant="ghost">Ask about analytics access</Button></Link></div></div></Card>
 
-        {/* Charts */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-          {/* Revenue Chart */}
-          <Card className="bg-card border-border">
-            <CardHeader>
-              <CardTitle>Revenue Trend</CardTitle>
-              <CardDescription>Monthly revenue and transaction volume</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ResponsiveContainer width="100%" height={300}>
-                <LineChart data={revenueData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#333" />
-                  <XAxis dataKey="month" stroke="#666" />
-                  <YAxis stroke="#666" />
-                  <Tooltip contentStyle={{ backgroundColor: '#1a1a1a', border: '1px solid #333' }} />
-                  <Legend />
-                  <Line type="monotone" dataKey="revenue" stroke="#FF6B6B" strokeWidth={2} />
-                  <Line type="monotone" dataKey="transactions" stroke="#4ECDC4" strokeWidth={2} />
-                </LineChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
+        <section aria-labelledby="advanced-analytics-state-heading"><h2 id="advanced-analytics-state-heading" className="mb-4 text-xl font-semibold">Current analytics evidence</h2><div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">{analyticsStates.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-border/50 bg-card p-4"><p className="text-sm text-muted-foreground">{label}</p><div className="mt-2 flex items-center gap-2"><Icon aria-hidden="true" className="h-4 w-4 text-muted-foreground" /><p className="font-semibold">{value}</p></div></Card>)}</div></section>
 
-          {/* User Engagement */}
-          <Card className="bg-card border-border">
-            <CardHeader>
-              <CardTitle>User Engagement</CardTitle>
-              <CardDescription>Daily active vs inactive users</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={userEngagementData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#333" />
-                  <XAxis dataKey="day" stroke="#666" />
-                  <YAxis stroke="#666" />
-                  <Tooltip contentStyle={{ backgroundColor: '#1a1a1a', border: '1px solid #333' }} />
-                  <Legend />
-                  <Bar dataKey="active" fill="#4ECDC4" />
-                  <Bar dataKey="inactive" fill="#666" />
-                </BarChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Platform Distribution & Conversion Funnel */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-          {/* Platform Metrics */}
-          <Card className="bg-card border-border">
-            <CardHeader>
-              <CardTitle>Platform Distribution</CardTitle>
-              <CardDescription>Usage by platform section</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ResponsiveContainer width="100%" height={300}>
-                <PieChart>
-                  <Pie
-                    data={platformMetrics}
-                    cx="50%"
-                    cy="50%"
-                    labelLine={false}
-                    label={({ name, value }) => `${name}: ${value}%`}
-                    outerRadius={80}
-                    fill="#8884d8"
-                    dataKey="value"
-                  >
-                    {platformMetrics.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                  </Pie>
-                  <Tooltip />
-                </PieChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-
-          {/* Conversion Funnel */}
-          <Card className="bg-card border-border">
-            <CardHeader>
-              <CardTitle>Conversion Funnel</CardTitle>
-              <CardDescription>User journey from signup to premium</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {conversionFunnelData.map((item, idx) => (
-                  <div key={idx}>
-                    <div className="flex justify-between mb-1">
-                      <span className="text-sm font-medium text-foreground">{item.stage}</span>
-                      <span className="text-sm text-muted-foreground">{item.count.toLocaleString()} ({item.percentage}%)</span>
-                    </div>
-                    <div className="w-full bg-muted rounded-full h-2">
-                      <div
-                        className="bg-gradient-to-r from-purple-500 to-pink-500 h-2 rounded-full"
-                        style={{ width: `${item.percentage}%` }}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Export & Actions */}
-        <Card className="bg-card border-border">
-          <CardHeader>
-            <CardTitle>Export & Actions</CardTitle>
-          </CardHeader>
-          <CardContent className="flex gap-4">
-            <Button className="bg-purple-600 hover:bg-purple-700">Export CSV</Button>
-            <Button className="bg-pink-600 hover:bg-pink-700">Export PDF</Button>
-            <Button variant="outline">Schedule Report</Button>
-            <Button variant="outline">Share Dashboard</Button>
-          </CardContent>
-        </Card>
-      </div>
+        <Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><FileWarning aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">Do not enter passwords, access tokens, seed phrases, private keys, confidential financial records, proprietary business data, or sensitive personal information here. An unavailable analytics page is not evidence of revenue, growth, users, conversion, performance, or reporting compliance.</p></div></Card>
+        <Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><LockKeyhole aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">Events, warehouses, billing, identity, reports, exports, permissions, privacy, and observability remain separate integrations. This screen does not replace any of them.</p></div></Card>
+      </main>
     </div>
   );
 }

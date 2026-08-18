@@ -534,3 +534,7 @@ The registered AdaptivePersonalization route no longer presents a live-learning 
 ## AdaptiveRoadmap hardening
 
 The registered AdaptiveRoadmap route no longer renders a hard-coded initiative inventory with Q2 progress, priority and confidence scores, market and resource signals, quarter totals, completion history, “on track” status, or automatic optimization events. It now states that roadmap intelligence is unavailable and documents required source-of-truth, ownership, typed records, dependency, evidence, forecast, change-history, approval, notification, audit, stale-data, and retry controls. Focused TypeScript validation reported no diagnostics for `AdaptiveRoadmap.tsx`, and `git diff --check` passed.
+
+## AdvancedAnalytics hardening
+
+The registered AdvancedAnalytics route no longer renders hard-coded revenue, users, transactions, engagement, platform distribution, conversion-funnel counts, percentage changes, “real-time insights,” or export, scheduling, and sharing controls. It now states that analytics services are unavailable and documents required metric contracts, source provenance, period semantics, privacy, reconciliation, cohorts, stale-data handling, role-based access, export redaction, scheduled jobs, retention, and retry controls. Focused TypeScript validation reported no diagnostics for `AdvancedAnalytics.tsx`, and `git diff --check` passed.
