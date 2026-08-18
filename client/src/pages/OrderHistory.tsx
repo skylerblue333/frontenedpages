@@ -1,182 +1,127 @@
-import { useState, useMemo, useCallback } from "react";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/_core/hooks/useAuth";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { Progress } from "@/components/ui/progress";
-import { PageHeader } from "@/components/PageHeader";
-import { toast } from "sonner";
-import { getLoginUrl } from "@/const";
+import { AlertTriangle, ClipboardList, CreditCard, LockKeyhole, Package, RefreshCw, ShieldAlert, Truck } from "lucide-react";
 import { Link } from "wouter";
-import {
-  Package, Search, CheckCircle, Clock, XCircle, Truck, ShoppingBag,
-  Star, RefreshCw, ChevronRight, DollarSign, Shield, AlertCircle,
-  Repeat, Download, MessageSquare
-} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
 
-const STATUS_CONFIG: Record<string, { label: string; color: string; progress: number }> = {
-  pending:    { label: "Pending",    color: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30",  progress: 15 },
-  processing: { label: "Processing", color: "bg-blue-500/20 text-blue-400 border-blue-500/30",        progress: 40 },
-  shipped:    { label: "Shipped",    color: "bg-purple-500/20 text-purple-400 border-purple-500/30",  progress: 70 },
-  delivered:  { label: "Delivered",  color: "bg-green-500/20 text-green-400 border-green-500/30",     progress: 100 },
-  cancelled:  { label: "Cancelled",  color: "bg-red-500/20 text-red-400 border-red-500/30",           progress: 0 },
-  completed:  { label: "Completed",  color: "bg-green-500/20 text-green-400 border-green-500/30",     progress: 100 },
-};
-
-function OrderCard({ order }: { order: any }) {
-  const status = STATUS_CONFIG[order.status] || STATUS_CONFIG.pending;
-
-  return (
-    <div className="bg-[#0e0a1a] border border-white/5 hover:border-purple-500/20 rounded-2xl p-4 transition-all">
-      <div className="flex items-start justify-between mb-3">
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500/20 to-cyan-500/20 flex items-center justify-center shrink-0">
-            <Package className="w-6 h-6 text-purple-400" />
-          </div>
-          <div>
-            <p className="text-white font-semibold text-sm">{order.listingTitle || "Marketplace Item"}</p>
-            <p className="text-slate-500 text-xs">Order #{order.id} · {new Date(order.createdAt).toLocaleDateString()}</p>
-          </div>
-        </div>
-        <Badge className={`text-[10px] ${status.color}`}>{status.label}</Badge>
-      </div>
-
-      {order.status !== "cancelled" && (
-        <div className="mb-3">
-          <Progress value={status.progress} className="h-1.5" />
-          <div className="flex justify-between text-[10px] text-slate-600 mt-1">
-            <span>Ordered</span><span>Processing</span><span>Shipped</span><span>Delivered</span>
-          </div>
-        </div>
-      )}
-
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3 text-xs text-slate-500">
-          <span className="flex items-center gap-1">
-            <DollarSign className="w-3 h-3" />
-            <span className="text-white font-bold">{Number(order.totalPrice || 0).toLocaleString()} SKY444</span>
-          </span>
-          {order.escrowStatus && (
-            <span className="flex items-center gap-1 text-cyan-400">
-              <Shield className="w-3 h-3" />Escrow: {order.escrowStatus}
-            </span>
-          )}
-        </div>
-        <div className="flex gap-2">
-          {(order.status === "delivered" || order.status === "completed") && (
-            <Button size="sm" variant="outline" className="h-7 text-xs border-yellow-500/30 text-yellow-400 hover:bg-yellow-500/10"
-              onClick={() => toast.success("Review submitted!")}>
-              <Star className="w-3 h-3 mr-1" />Review
-            </Button>
-          )}
-          <Button size="sm" variant="outline" className="h-7 text-xs border-white/10 text-slate-400"
-            onClick={() => toast.info("Invoice download coming soon")}>
-            <Download className="w-3 h-3 mr-1" />Invoice
-          </Button>
-        </div>
-      </div>
-    </div>
-  );
-}
+const orderStates = [
+  { label: "Order source and account", value: "Not configured", icon: ClipboardList },
+  { label: "Payment and receipt records", value: "Unavailable", icon: CreditCard },
+  { label: "Shipment and fulfillment records", value: "Unavailable", icon: Truck },
+  { label: "Refund and reconciliation", value: "Unavailable", icon: ShieldAlert },
+];
 
 export default function OrderHistory() {
-  
-  const [role, setRole] = useState<"buyer" | "seller">("buyer");
-  const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState("all");
-
-  const { data: orders, isLoading, refetch } = trpc.marketplace.myOrders.useQuery(
-    { role },
-    { enabled: isAuthenticated }
-  );
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen bg-[#07050f] flex items-center justify-center">
-        <div className="text-center space-y-4">
-          <ShoppingBag className="w-16 h-16 text-slate-700 mx-auto" />
-          <h2 className="text-xl font-bold text-white">Sign in to view orders</h2>
-          <Button  className="bg-purple-500/20 text-purple-300 border border-purple-500/30">
-            Sign In
-          </Button>
-        </div>
-      </div>
-    );
-  }
-
-  const filtered = (orders || []).filter((o: any) => {
-    const matchSearch = !search || (o.listingTitle || "").toLowerCase().includes(search.toLowerCase());
-    const matchStatus = statusFilter === "all" || o.status === statusFilter;
-    return matchSearch && matchStatus;
-  });
-
-  const stats = {
-    total: orders?.length || 0,
-    active: orders?.filter((o: any) => ["pending", "processing", "shipped"].includes(o.status)).length || 0,
-    completed: orders?.filter((o: any) => ["completed", "delivered"].includes(o.status)).length || 0,
-    totalSpent: orders?.reduce((s: number, o: any) => s + Number(o.totalPrice || 0), 0) || 0,
-  };
-
   return (
-    <div className="min-h-screen bg-[#07050f] text-white p-4">
-      <div className="max-w-4xl mx-auto space-y-6">
-        <PageHeader icon={ShoppingBag} title="Order History" subtitle="Track your marketplace purchases and sales" backHref="/marketplace" />
+    <div className="min-h-screen bg-background">
+      <PageHeader
+        title="Order History"
+        description="Order history is not enabled in this deployment. No order, amount, payment, shipment, refund, review, or fulfillment record is being reported."
+      />
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          {[
-            { label: "Total Orders", value: stats.total, color: "text-white" },
-            { label: "Active", value: stats.active, color: "text-yellow-400" },
-            { label: "Completed", value: stats.completed, color: "text-green-400" },
-            { label: "Total Spent", value: `${(stats.totalSpent / 1000).toFixed(1)}K SKY`, color: "text-purple-400" },
-          ].map(stat => (
-            <div key={stat.label} className="bg-[#0e0a1a] border border-white/5 rounded-xl p-3">
-              <p className={`text-xl font-black ${stat.color}`}>{stat.value}</p>
-              <p className="text-xs text-slate-500">{stat.label}</p>
+      <div className="mx-auto max-w-6xl space-y-8 px-4 py-8">
+        <Card className="border border-red-400/30 bg-red-950/20 p-6">
+          <div className="flex items-start gap-3">
+            <AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" />
+            <div>
+              <h2 className="font-semibold text-red-100">Order records are unavailable</h2>
+              <p className="mt-1 text-sm leading-6 text-red-100/80">
+                This page does not connect to an authenticated order ledger, marketplace, payment provider, shipping carrier, fulfillment system, review service, or refund processor. It cannot prove a purchase, sale, amount, delivery, escrow state, invoice, review, refund, or completion. No commerce result should be inferred from this screen.
+              </p>
             </div>
-          ))}
-        </div>
+          </div>
+        </Card>
 
-        <div className="flex flex-wrap gap-3">
-          <div className="flex gap-1 bg-white/5 rounded-xl p-1">
-            {(["buyer", "seller"] as const).map(r => (
-              <button key={r} onClick={() => setRole(r)}
-                className={`px-4 py-1.5 rounded-lg text-sm font-medium capitalize transition-all ${role === r ? "bg-purple-500/20 text-purple-300 border border-purple-500/30" : "text-slate-500 hover:text-slate-300"}`}>
-                {r === "buyer" ? "My Purchases" : "My Sales"}
-              </button>
-            ))}
-          </div>
-          <div className="relative flex-1 min-w-48">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-            <Input value={search} onChange={e => setSearch(e.target.value)}
-              placeholder="Search orders..." className="pl-9 bg-white/5 border-white/10 text-white h-9" />
-          </div>
-          <Button size="sm" variant="outline" className="border-white/10 text-slate-400 h-9" onClick={() => refetch()}>
-            <RefreshCw className="w-3.5 h-3.5" />
-          </Button>
-        </div>
+        <Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8">
+          <div className="space-y-6">
+            <div>
+              <h2 className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-3xl font-bold text-transparent">Order-history readiness</h2>
+              <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">
+                A production order-history surface requires authenticated buyer and seller scopes, a source-of-truth order ledger, typed line items and prices, payment and refund reconciliation, shipment and fulfillment events, cancellation and dispute handling, review authorization, privacy controls, pagination, and audit history. Those integrations are not connected here.
+              </p>
+            </div>
 
-        {isLoading ? (
-          <div className="space-y-3">
-            {[1, 2, 3].map(i => (
-              <div key={i} className="bg-[#0e0a1a] border border-white/5 rounded-2xl p-4 animate-pulse h-24" />
-            ))}
-          </div>
-        ) : filtered.length === 0 ? (
-          <div className="text-center py-16">
-            <Package className="w-16 h-16 text-slate-700 mx-auto mb-4" />
-            <h3 className="text-lg font-bold text-slate-400 mb-2">{orders?.length === 0 ? "No orders yet" : "No matching orders"}</h3>
-            {orders?.length === 0 && (
-              <Link href="/marketplace">
-                <Button className="mt-3 bg-purple-500/20 text-purple-300 border border-purple-500/30">Browse Marketplace</Button>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+              <Card className="border border-primary/30 bg-background/80 p-4">
+                <div className="space-y-3">
+                  <ClipboardList aria-hidden="true" className="h-8 w-8 text-primary" />
+                  <h3 className="text-lg font-bold">Record boundary</h3>
+                  <p className="text-sm text-muted-foreground">No buyer, seller, order ID, line item, quantity, amount, currency, date, status, or account relationship is configured.</p>
+                </div>
+              </Card>
+              <Card className="border border-primary/30 bg-background/80 p-4">
+                <div className="space-y-3">
+                  <CreditCard aria-hidden="true" className="h-8 w-8 text-primary" />
+                  <h3 className="text-lg font-bold">Payment boundary</h3>
+                  <p className="text-sm text-muted-foreground">No payment authorization, capture, receipt, escrow, refund, dispute, invoice, or financial total is displayed.</p>
+                </div>
+              </Card>
+              <Card className="border border-primary/30 bg-background/80 p-4">
+                <div className="space-y-3">
+                  <Truck aria-hidden="true" className="h-8 w-8 text-primary" />
+                  <h3 className="text-lg font-bold">Fulfillment boundary</h3>
+                  <p className="text-sm text-muted-foreground">No inventory, shipment, tracking number, delivery event, cancellation, review, or fulfillment confirmation is available.</p>
+                </div>
+              </Card>
+            </div>
+
+            <div className="flex flex-wrap gap-4 pt-2">
+              <Link href="/order-placement">
+                <Button size="lg" className="bg-primary hover:bg-primary/90">View order status</Button>
               </Link>
-            )}
+              <Link href="/payments">
+                <Button size="lg" variant="outline">View payment status</Button>
+              </Link>
+              <Link href="/documentation">
+                <Button size="lg" variant="ghost">View documentation</Button>
+              </Link>
+            </div>
           </div>
-        ) : (
-          <div className="space-y-3">
-            {filtered.map((order: any) => <OrderCard key={order.id} order={order} />)}
+        </Card>
+
+        <section aria-labelledby="history-state-heading">
+          <h2 id="history-state-heading" className="mb-4 text-xl font-semibold">Current order-history state</h2>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+            {orderStates.map(({ label, value, icon: Icon }) => (
+              <Card key={label} className="border border-border/50 bg-card p-4">
+                <div className="space-y-2">
+                  <p className="text-sm text-muted-foreground">{label}</p>
+                  <div className="flex items-center gap-2">
+                    <Icon aria-hidden="true" className="h-4 w-4 text-muted-foreground" />
+                    <p className="text-lg font-semibold">{value}</p>
+                  </div>
+                </div>
+              </Card>
+            ))}
           </div>
-        )}
+        </section>
+
+        <Card className="border border-border/50 bg-card p-5">
+          <div className="flex items-start gap-3">
+            <LockKeyhole aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" />
+            <p className="text-sm leading-6 text-muted-foreground">
+              Do not enter payment details, marketplace credentials, or shipping information into this deployment. Do not treat this page as evidence that an order, payment, delivery, review, refund, or fulfillment event exists.
+            </p>
+          </div>
+        </Card>
+
+        <Card className="border border-border/50 bg-card p-5">
+          <div className="flex items-start gap-3">
+            <RefreshCw aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" />
+            <p className="text-sm leading-6 text-muted-foreground">
+              Refreshing this page cannot create or retrieve order records while the required authenticated commerce integrations are unavailable.
+            </p>
+          </div>
+        </Card>
+
+        <Card className="border border-border/50 bg-card p-5">
+          <div className="flex items-start gap-3">
+            <Package aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" />
+            <p className="text-sm leading-6 text-muted-foreground">
+              Verify order, payment, shipping, refund, and review records through independently trusted commerce systems until this integration is implemented and audited.
+            </p>
+          </div>
+        </Card>
       </div>
     </div>
   );

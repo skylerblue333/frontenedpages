@@ -137,3 +137,8 @@ The registered route `/stake-delegation` no longer renders a generic coming-soon
 ## Rewards Tracking hardening
 
 The registered route `/rewards-tracking` no longer renders a generic coming-soon placeholder. It now reports that reward tracking is unavailable and does not display events, points, tokens, balances, accrual, conversions, redemptions, entitlements, payouts, notifications, or settlement results. It documents event provenance, immutable ledger entries, eligibility, expiry, reversals, anti-abuse, reconciliation, redemption, privacy, audit, and independent settlement requirements. Focused TypeScript validation reported no diagnostics for `RewardsTracking.tsx`, and `git diff --check` passed.
+
+
+## Order History hardening
+
+The registered route `/order-history` no longer renders unsupported marketplace order cards or a generic coming-soon state. It no longer queries the unavailable marketplace order procedure, uses untyped order data, displays totals or escrow, or implies review and invoice actions. It now reports that authenticated order, payment, shipment, refund, review, and fulfillment records are unavailable. Focused TypeScript validation reported no diagnostics for `OrderHistory.tsx`, `git diff --check` passed, and the removed query and fabricated action markers were absent.
