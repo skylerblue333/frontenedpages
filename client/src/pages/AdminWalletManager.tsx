@@ -1,364 +1,93 @@
-import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { AlertCircle, Copy, ExternalLink, TrendingUp, Wallet, Send, Settings } from 'lucide-react';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { useAuth } from '@/hooks/useAuth';
-import { trpc } from '@/lib/trpc';
+import { AlertTriangle, KeyRound, LockKeyhole, ShieldAlert, Wallet } from "lucide-react";
+import { Link } from "wouter";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
 
-interface WalletInfo {
-  address: string;
-  type: 'primary' | 'secondary';
-  balance: number;
-  pendingRewards: number;
-  totalEarned: number;
-  lastUpdated: number;
-}
-
-interface Transaction {
-  id: string;
-  from: string;
-  to: string;
-  amount: number;
-  coin: string;
-  status: 'pending' | 'confirmed' | 'failed';
-  timestamp: number;
-  txHash?: string;
-}
+const walletStates = [
+  { label: "Wallet registry", value: "Unavailable", icon: Wallet },
+  { label: "Custody and key control", value: "Not configured", icon: KeyRound },
+  { label: "Balance and reward ledger", value: "Unavailable", icon: ShieldAlert },
+  { label: "Transfer and swap execution", value: "Disabled", icon: LockKeyhole },
+];
 
 export default function AdminWalletManager() {
-  const { user } = useAuth();
-  const [wallets, setWallets] = useState<WalletInfo[]>([
-    {
-      address: '0xC2519f4eD39cCea670490bB2Cc07485dD64aC7fb',
-      type: 'primary',
-      balance: 0,
-      pendingRewards: 0,
-      totalEarned: 0,
-      lastUpdated: Date.now(),
-    },
-    {
-      address: '0x16188a203a715de6b131e273b3a9bcf6d09e7d0a',
-      type: 'secondary',
-      balance: 0,
-      pendingRewards: 0,
-      totalEarned: 0,
-      lastUpdated: Date.now(),
-    },
-  ]);
-
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [selectedWallet, setSelectedWallet] = useState<WalletInfo>(wallets[0]);
-  const [autoSwapEnabled, setAutoSwapEnabled] = useState(true);
-  const [autoDepositEnabled, setAutoDepositEnabled] = useState(true);
-
-  // Fetch wallet data
-  useEffect(() => {
-    const fetchWalletData = async () => {
-      try {
-        const response = await fetch('/api/mining/wallet/balance', {
-          headers: { 'Content-Type': 'application/json' },
-        });
-        if (response.ok) {
-          const data = await response.json();
-          setWallets(data.wallets || wallets);
-        }
-      } catch (error) {
-        console.error('Failed to fetch wallet data:', error);
-      }
-    };
-
-    const interval = setInterval(fetchWalletData, 5000); // Update every 5 seconds
-    fetchWalletData();
-
-    return () => clearInterval(interval);
-  }, []);
-
-  // Fetch transactions
-  useEffect(() => {
-    const fetchTransactions = async () => {
-      try {
-        const response = await fetch(`/api/mining/wallet/transactions?limit=20`, {
-          headers: { 'Content-Type': 'application/json' },
-        });
-        if (response.ok) {
-          const data = await response.json();
-          setTransactions(data.transactions || []);
-        }
-      } catch (error) {
-        console.error('Failed to fetch transactions:', error);
-      }
-    };
-
-    const interval = setInterval(fetchTransactions, 10000); // Update every 10 seconds
-    fetchTransactions();
-
-    return () => clearInterval(interval);
-  }, []);
-
-  const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text);
-    // Show toast notification
-  };
-
-  const formatAddress = (address: string) => {
-    return `${address.slice(0, 6)}...${address.slice(-4)}`;
-  };
-
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    }).format(value);
-  };
-
-  const totalBalance = wallets.reduce((sum, w) => sum + w.balance, 0);
-  const totalPending = wallets.reduce((sum, w) => sum + w.pendingRewards, 0);
-  const totalEarned = wallets.reduce((sum, w) => sum + w.totalEarned, 0);
-
-  if (!user || user.role !== 'admin') {
-    return (
-      <div className="container mx-auto py-8">
-        <Alert variant="destructive">
-          <AlertCircle className="h-4 w-4" />
-          <AlertDescription>
-            Access denied. Admin privileges required.
-          </AlertDescription>
-        </Alert>
-      </div>
-    );
-  }
-
   return (
-    <div className="container mx-auto py-8 space-y-8">
-      {/* Header */}
-      <div className="space-y-2">
-        <h1 className="text-4xl font-bold">Admin Wallet Manager</h1>
-        <p className="text-muted-foreground">Manage mining rewards and wallet operations</p>
-      </div>
+    <div className="min-h-screen bg-background">
+      <PageHeader
+        title="Admin Wallet Manager"
+        description="Administrative wallet and mining-reward operations are not connected in this deployment. No wallet, balance, transaction, key, or automation state is being reported."
+      />
 
-      {/* Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium">Total Balance</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{formatCurrency(totalBalance)}</div>
-            <p className="text-xs text-muted-foreground mt-1">Across all wallets</p>
-          </CardContent>
+      <main className="mx-auto max-w-6xl space-y-8 px-4 py-8">
+        <Card className="border border-red-400/30 bg-red-950/20 p-6">
+          <div className="flex items-start gap-3">
+            <AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" />
+            <div>
+              <h2 className="font-semibold text-red-100">Admin custody controls are unavailable</h2>
+              <p className="mt-1 text-sm leading-6 text-red-100/80">
+                The prior screen contained hardcoded wallet addresses, zero-valued balance objects, unverified polling endpoints, automatic transfer toggles, and a fake swap form. Those elements did not prove custody, ownership, balances, mining rewards, transaction settlement, signing, or execution. They have been removed rather than presented as live administrative controls.
+              </p>
+            </div>
+          </div>
         </Card>
 
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium">Pending Rewards</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{formatCurrency(totalPending)}</div>
-            <p className="text-xs text-muted-foreground mt-1">Awaiting confirmation</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium">Total Earned</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-green-600">{formatCurrency(totalEarned)}</div>
-            <p className="text-xs text-muted-foreground mt-1">All time</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium">Active Wallets</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{wallets.length}</div>
-            <p className="text-xs text-muted-foreground mt-1">Mining destinations</p>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Wallet Details */}
-      <Tabs defaultValue="wallets" className="w-full">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="wallets">Wallets</TabsTrigger>
-          <TabsTrigger value="transactions">Transactions</TabsTrigger>
-          <TabsTrigger value="settings">Settings</TabsTrigger>
-        </TabsList>
-
-        {/* Wallets Tab */}
-        <TabsContent value="wallets" className="space-y-4">
-          {wallets.map((wallet) => (
-            <Card key={wallet.address} className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => setSelectedWallet(wallet)}>
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <Wallet className="h-5 w-5 text-blue-600" />
-                    <div>
-                      <CardTitle className="text-lg">{wallet.type === 'primary' ? 'Primary Wallet' : 'Secondary Wallet'}</CardTitle>
-                      <CardDescription className="font-mono text-sm mt-1">{formatAddress(wallet.address)}</CardDescription>
-                    </div>
-                  </div>
-                  <Badge variant={wallet.type === 'primary' ? 'default' : 'secondary'}>
-                    {wallet.type.toUpperCase()}
-                  </Badge>
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-3 gap-4">
-                  <div>
-                    <p className="text-sm text-muted-foreground">Balance</p>
-                    <p className="text-xl font-bold">{formatCurrency(wallet.balance)}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">Pending</p>
-                    <p className="text-xl font-bold text-yellow-600">{formatCurrency(wallet.pendingRewards)}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">Total Earned</p>
-                    <p className="text-xl font-bold text-green-600">{formatCurrency(wallet.totalEarned)}</p>
-                  </div>
-                </div>
-
-                <div className="flex gap-2 pt-4">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      copyToClipboard(wallet.address);
-                    }}
-                  >
-                    <Copy className="h-4 w-4 mr-2" />
-                    Copy Address
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      window.open(`https://etherscan.io/address/${wallet.address}`, '_blank');
-                    }}
-                  >
-                    <ExternalLink className="h-4 w-4 mr-2" />
-                    View on Etherscan
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </TabsContent>
-
-        {/* Transactions Tab */}
-        <TabsContent value="transactions" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Recent Transactions</CardTitle>
-              <CardDescription>Last 20 transactions across all wallets</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {transactions.length === 0 ? (
-                  <p className="text-sm text-muted-foreground text-center py-8">No transactions yet</p>
-                ) : (
-                  transactions.map((tx) => (
-                    <div key={tx.id} className="flex items-center justify-between p-3 border rounded-lg">
-                      <div className="flex items-center gap-3 flex-1">
-                        <TrendingUp className="h-4 w-4 text-green-600" />
-                        <div className="flex-1">
-                          <p className="text-sm font-medium">{tx.coin} Swap</p>
-                          <p className="text-xs text-muted-foreground">{formatAddress(tx.from)} → {formatAddress(tx.to)}</p>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-sm font-bold">{tx.amount} {tx.coin}</p>
-                        <Badge variant={tx.status === 'confirmed' ? 'default' : tx.status === 'pending' ? 'secondary' : 'destructive'}>
-                          {tx.status}
-                        </Badge>
-                      </div>
-                    </div>
-                  ))
-                )}
+        <Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8">
+          <div className="space-y-6">
+            <div className="flex items-start gap-4">
+              <div className="rounded-xl bg-primary/15 p-3"><Wallet aria-hidden="true" className="h-8 w-8 text-primary" /></div>
+              <div>
+                <h2 className="text-3xl font-bold">Custody readiness</h2>
+                <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">
+                  Production administrative wallet operations require an approved custody model, chain and asset allowlists, hardened key management or a qualified custodian, multi-party authorization, address allowlists, transaction simulation, nonce and fee controls, idempotency, signing policy, broadcast and confirmation verification, reconciliation, limits, monitoring, incident response, and tamper-evident audit records. None of those controls are connected through this frontend-only surface.
+                </p>
               </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
+            </div>
 
-        {/* Settings Tab */}
-        <TabsContent value="settings" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Mining Settings</CardTitle>
-              <CardDescription>Configure automatic operations</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              {/* Auto-Swap Setting */}
-              <div className="flex items-center justify-between p-4 border rounded-lg">
-                <div>
-                  <p className="font-medium">Auto-Swap to ETH</p>
-                  <p className="text-sm text-muted-foreground">Automatically swap mined coins to ETH</p>
-                </div>
-                <Button
-                  variant={autoSwapEnabled ? 'default' : 'outline'}
-                  onClick={() => setAutoSwapEnabled(!autoSwapEnabled)}
-                >
-                  {autoSwapEnabled ? 'Enabled' : 'Disabled'}
-                </Button>
-              </div>
+            <div className="grid gap-4 md:grid-cols-3">
+              <Card className="border border-primary/30 bg-background/80 p-4">
+                <KeyRound aria-hidden="true" className="mb-3 h-7 w-7 text-primary" />
+                <h3 className="font-semibold">No key claim</h3>
+                <p className="mt-1 text-sm text-muted-foreground">No seed phrase, private key, signer, custodian, ownership proof, or signing capability is exposed.</p>
+              </Card>
+              <Card className="border border-primary/30 bg-background/80 p-4">
+                <ShieldAlert aria-hidden="true" className="mb-3 h-7 w-7 text-primary" />
+                <h3 className="font-semibold">No ledger claim</h3>
+                <p className="mt-1 text-sm text-muted-foreground">No balance, reward, valuation, transaction, confirmation, or settlement result is displayed.</p>
+              </Card>
+              <Card className="border border-primary/30 bg-background/80 p-4">
+                <LockKeyhole aria-hidden="true" className="mb-3 h-7 w-7 text-primary" />
+                <h3 className="font-semibold">No mutation claim</h3>
+                <p className="mt-1 text-sm text-muted-foreground">No transfer, swap, deposit, auto-routing, address change, or mining operation can be triggered here.</p>
+              </Card>
+            </div>
 
-              {/* Auto-Deposit Setting */}
-              <div className="flex items-center justify-between p-4 border rounded-lg">
-                <div>
-                  <p className="font-medium">Auto-Deposit to Primary</p>
-                  <p className="text-sm text-muted-foreground">Automatically deposit swapped ETH to primary wallet</p>
-                </div>
-                <Button
-                  variant={autoDepositEnabled ? 'default' : 'outline'}
-                  onClick={() => setAutoDepositEnabled(!autoDepositEnabled)}
-                >
-                  {autoDepositEnabled ? 'Enabled' : 'Disabled'}
-                </Button>
-              </div>
+            <div className="flex flex-wrap gap-4 pt-2">
+              <Link href="/blockchain-custody"><Button size="lg" className="bg-primary hover:bg-primary/90">View custody status</Button></Link>
+              <Link href="/audit-logs"><Button size="lg" variant="outline">View audit status</Button></Link>
+              <Link href="/contact-us-form"><Button size="lg" variant="ghost">Ask about custody</Button></Link>
+            </div>
+          </div>
+        </Card>
 
-              {/* Manual Swap */}
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button className="w-full">
-                    <Send className="h-4 w-4 mr-2" />
-                    Manual Swap
-                  </Button>
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>Manual Swap</DialogTitle>
-                    <DialogDescription>Manually swap coins to ETH</DialogDescription>
-                  </DialogHeader>
-                  <div className="space-y-4">
-                    <div>
-                      <Label>From Coin</Label>
-                      <Input placeholder="BTC, SOL, DOGE, etc." />
-                    </div>
-                    <div>
-                      <Label>Amount</Label>
-                      <Input type="number" placeholder="0.00" />
-                    </div>
-                    <Button className="w-full">Execute Swap</Button>
-                  </div>
-                </DialogContent>
-              </Dialog>
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
+        <section aria-labelledby="wallet-state-heading">
+          <h2 id="wallet-state-heading" className="mb-4 text-xl font-semibold">Current wallet evidence</h2>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+            {walletStates.map(({ label, value, icon: Icon }) => (
+              <Card key={label} className="border border-border/50 bg-card p-4">
+                <p className="text-sm text-muted-foreground">{label}</p>
+                <div className="mt-2 flex items-center gap-2"><Icon aria-hidden="true" className="h-4 w-4 text-muted-foreground" /><p className="font-semibold">{value}</p></div>
+              </Card>
+            ))}
+          </div>
+        </section>
+
+        <Card className="border border-border/50 bg-card p-5">
+          <p className="text-sm leading-6 text-muted-foreground">
+            Never enter a seed phrase, private key, access token, or other secret into this page. Do not authorize a transaction, assume a mining payout, or treat a rendered address or balance as proof of custody or settlement.
+          </p>
+        </Card>
+      </main>
     </div>
   );
 }
