@@ -330,3 +330,7 @@ The registered CRM Hub no longer renders static contact names, companies, email 
 ## Marketplace hardening
 
 The registered Marketplace screen no longer renders static featured assets, sellers, prices, ratings, review counts, view counts, bids, auction deadlines, product inventory, delivery estimates, total volume, seller counts, escrow protection, Native product feeds, Stripe checkout, order placement, or listing creation. The registered marketplace router is generic, and the available product helper is not a verified end-to-end UI contract, so those claims and commerce actions were removed. The page now documents authorization, listing ownership, inventory, provenance, payment, tax, escrow, delivery, refunds, disputes, webhooks, idempotency, privacy, reconciliation, and audit requirements. Focused TypeScript validation reported no diagnostics for `Marketplace.tsx`, and `git diff --check` passed.
+
+## Content Upload hardening
+
+The registered Content Upload screen no longer renders a generic coming-soon page as if upload, storage, processing, moderation, publishing, or asset access were available. It now reports that authenticated upload, object storage, validation, malware and content scanning, transcoding, metadata, access control, retention, deletion, retry, quota, and quarantine workflows are unavailable and documents the controls required for safe ingestion. Focused TypeScript validation reported no diagnostics for `ContentUpload.tsx`, and `git diff --check` passed.
