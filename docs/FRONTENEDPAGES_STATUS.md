@@ -490,3 +490,7 @@ The registered SchoolCertificate route no longer renders a fabricated named lear
 ## SchoolCourse hardening
 
 The registered SchoolCourse route no longer renders hard-coded courses, instructor biographies, ratings, review counts, student counts, SKY444 pricing, lesson access states, money-back guarantees, enrollment actions, certificate promises, rewards, reviews, or lesson links without verified contracts. It now states that course-detail services are unavailable and documents required identity, curriculum, provenance, pricing, entitlement, access, progress, certificate, refund, privacy, and retry controls. Focused TypeScript validation reported no diagnostics for `SchoolCourse.tsx`, and `git diff --check` passed.
+
+## SchoolLesson hardening
+
+The registered SchoolLesson route no longer renders a hard-coded course outline with completed lessons and progress, simulated video playback, XP rewards, account-saved notes, downloadable resources, discussion posts, likes, comments, or completion actions. It now states that lesson services are unavailable and documents required ownership, content delivery, media licensing, progress persistence, assessment, storage, moderation, privacy, accessibility, and retry controls. Focused TypeScript validation reported no diagnostics for `SchoolLesson.tsx`, and `git diff --check` passed.
