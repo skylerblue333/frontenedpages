@@ -238,3 +238,7 @@ The registered API Monitoring screen no longer renders a fake authenticated CRUD
 ## Admin Orders hardening
 
 The registered Admin Orders screen no longer renders hardcoded order records, buyer identities, prices, fees, taxes, countries, statuses, revenue totals, or a CSV export labeled for tax compliance. Those values were static and did not prove an order ledger, payment authorization, refund, fulfillment, tax obligation, or administrative permission. The page now states that commerce records and controls are unavailable and documents server-side ledgers, provider webhooks, idempotency, refunds, fulfillment, role-based access, privacy, audit, and accounting ownership requirements. Focused TypeScript validation reported no diagnostics for `AdminOrders.tsx`, and `git diff --check` passed.
+
+## Admin Panel hardening
+
+The registered Admin Panel no longer renders unverified live user counts, online users, connections, system health, user records, moderation queues, role promotion, account bans, or analytics. The registered admin backend is currently a generic feature router, so the prior values and privileged mutations were not verified. The page now states the unavailable boundary and documents server-side role enforcement, object authorization, least privilege, moderation evidence, protected user data, destructive-action approvals, reversible workflows, audit, incident response, and independent metrics requirements. Focused TypeScript validation reported no diagnostics for `AdminPanel.tsx`, and `git diff --check` passed.
