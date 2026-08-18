@@ -52,3 +52,8 @@ The registered route `/derivatives-trading` no longer renders a generic coming-s
 ## Arbitrage Bot hardening
 
 The registered route `/arbitrage-bot` no longer renders fabricated analytics, automation, security, processing speed, uptime, latency, throughput, or “get started” claims. The previous file also used an undefined icon and unsupported `PageHeader` props. It now reports that automated arbitrage is unavailable and documents exchange, market-data, fee, slippage, order, capital, reconciliation, kill-switch, and audit requirements. Focused TypeScript validation reported no diagnostics for `ArbitrageBot.tsx`, and `git diff --check` passed.
+
+
+## Staking Dashboard hardening
+
+The registered route `/staking-dashboard` no longer renders the generic authentication-and-empty-data shell. The missing `useState` import and unused placeholder controls were removed. The route now reports that staking is unavailable and does not display positions, balances, APY, APR, rewards, lockups, validator state, slashing, withdrawal, or transaction results. Focused TypeScript validation reported no diagnostics for `StakingDashboard.tsx`, and `git diff --check` passed.
