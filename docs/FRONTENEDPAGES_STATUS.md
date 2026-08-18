@@ -450,3 +450,11 @@ SkySchool's extensive static lesson catalog and lesson navigation were preserved
 ## LearningPath hardening
 
 The registered LearningPath screen no longer presents an incomplete authenticated shell with New, Search, Settings, loading, or empty-item behavior that could imply recommendations, course paths, enrollment, progress, assessments, completion, certificates, or learner records. It now states that learning-path services are unavailable and documents required catalog, curriculum, learner ownership, persistence, assessment, accessibility, provenance, recommendation evaluation, privacy, retention, certificate, and retry controls. Focused TypeScript validation reported no diagnostics for `LearningPath.tsx`, and `git diff --check` passed.
+
+## GameBlockBuilder hardening
+
+The existing local Block Builder puzzle was preserved, but fabricated SKY444 donation, XP, token, and charity-settlement claims were removed. The game now presents only local stack score and precision gameplay and explicitly states that no token transfer, XP award, donation, or charitable settlement occurs. Focused TypeScript validation reported no diagnostics for `GameBlockBuilder.tsx`, and `git diff --check` passed.
+
+## Chess discovery
+
+A repository search found no chess-named page or existing chess-board/piece implementation in `client/src/pages` or `App.tsx`; the nearest board-game surface is Block Builder. No chess experience was fabricated or added during this hardening batch.
