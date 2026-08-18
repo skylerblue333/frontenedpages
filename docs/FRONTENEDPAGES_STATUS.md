@@ -72,3 +72,8 @@ The registered route `/block-rewards` no longer renders a generic coming-soon pl
 ## Block Browser hardening
 
 The registered route `/block-browser` no longer renders a generic coming-soon placeholder. It now reports that block browsing is unavailable and does not display block heights, hashes, timestamps, parent hashes, transaction counts, miner or validator attribution, confirmations, finality, freshness, or network health. It documents chain allowlisting, canonical node/indexer sources, pagination, reorganization handling, and independent verification requirements. Focused TypeScript validation reported no diagnostics for `BlockBrowser.tsx`, and `git diff --check` passed.
+
+
+## Payments hardening
+
+The registered route `/payments` no longer renders unsupported subscription plans, prices, discounts, payment methods, test-card instructions, Stripe claims, checkout mutations, order history, or refund states. The previous page also used untyped mutation and order data. It now reports that payments are unavailable and documents catalog, provider, tokenization, webhook, order, refund, dispute, privacy, and security requirements. Focused TypeScript validation reported no diagnostics for `Payments.tsx`, and `git diff --check` passed.
