@@ -27,3 +27,8 @@ The registered route `/chain-explorer` no longer renders a generic coming-soon p
 ## Blockchain Custody hardening
 
 The registered custody surface was audited at `/blockchain-custody`. The previous implementation claimed non-custodial HD wallet derivation, multi-chain balances, gas estimation, transaction signing, broadcast, and confirmation tracking while the imported server routes `blockchain` through the generic `createFeatureRouter()` and do not expose verified custody procedures. The page now disables custody actions and reports no wallet, key, balance, signature, gas, transaction, broadcast, or settlement result. It explicitly warns users never to enter a seed phrase or private key into this deployment. Focused TypeScript validation reported no diagnostics for `BlockchainCustody.tsx`, and `git diff --check` passed.
+
+
+## Checkout Flow hardening
+
+The registered route `/checkout-flow` no longer renders a generic coming-soon placeholder. It now reports that checkout is unavailable and does not calculate payable totals, collect or authorize payment details, reserve inventory, create orders, issue receipts, or claim fulfillment. It documents server-side pricing, tax and shipping rules, idempotent order creation, refund handling, and fulfillment requirements. Focused TypeScript validation reported no diagnostics for `CheckoutFlow.tsx`, and `git diff --check` passed.
