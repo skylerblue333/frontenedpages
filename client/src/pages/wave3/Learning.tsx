@@ -1,232 +1,35 @@
-// @ts-nocheck
-import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Skeleton } from '@/components/ui/skeleton';
-import { useAuth } from '@/_core/hooks/useAuth';
-import { trpc } from '@/lib/trpc';
-import { toast } from 'sonner';
+import { AlertTriangle, Award, BookOpen, FileWarning, LockKeyhole, Search, ShieldCheck, Users, WalletCards } from "lucide-react";
+import { Link } from "wouter";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
 
-const LearningPage: React.FC = () => {
-  
-  const [activeTab, setActiveTab] = useState<'browse' | 'enrolled' | 'certificates'>('browse');
-  const [searchQuery, setSearchQuery] = useState('');
+const learningStates = [
+  { label: "Course catalog and lesson records", value: "Unavailable", icon: BookOpen },
+  { label: "Enrollment and learner progress", value: "Not verified", icon: Users },
+  { label: "Completion and certificate issuance", value: "Disabled", icon: Award },
+  { label: "Pricing, entitlements, and reward accounting", value: "Not configured", icon: WalletCards },
+];
 
-  // Queries
-  const coursesQuery = trpc.wave3Learning.getCourses.useQuery(
-    { limit: 20 },
-    { enabled: true }
-  );
-
-  const enrollmentsQuery = trpc.wave3Learning.getEnrollments.useQuery(
-    { limit: 20 },
-    { enabled: isAuthenticated }
-  );
-
-  const certificatesQuery = trpc.wave3Learning.getCertificates.useQuery(
-    { limit: 20 },
-    { enabled: isAuthenticated }
-  );
-
-  // Mutations
-  const enrollMutation = trpc.wave3Learning.enrollCourse.useMutation({
-    onSuccess: () => {
-      enrollmentsQuery.refetch();
-      toast.success('Enrolled successfully');
-    },
-    onError: (error) => {
-      toast.error(error.message || 'Failed to enroll');
-    },
-  });
-
-  const completeMutation = trpc.wave3Learning.completeCourse.useMutation({
-    onSuccess: () => {
-      certificatesQuery.refetch();
-      enrollmentsQuery.refetch();
-      toast.success('Course completed! Certificate issued');
-    },
-    onError: (error) => {
-      toast.error(error.message || 'Failed to complete course');
-    },
-  });
-
-  const handleEnroll = async (courseId: string) => {
-    await enrollMutation.mutateAsync({ courseId });
-  };
-
-  const handleComplete = async (courseId: string) => {
-    await completeMutation.mutateAsync({ courseId });
-  };
-
+export default function Learning() {
   return (
-    <div className="flex-1 space-y-4 p-8 pt-6">
-      <div className="flex items-center justify-between">
-        <h2 className="text-3xl font-bold tracking-tight">Learning Hub</h2>
-      </div>
+    <div className="min-h-screen bg-background">
+      <PageHeader
+        title="Learning Hub"
+        description="Wave 3 learning services are not connected in this deployment. No course, enrollment, progress, completion, certificate, learner record, price, entitlement, or reward is being reported."
+      />
 
-      {/* Tabs */}
-      <div className="flex gap-2 border-b">
-        {(['browse', 'enrolled', 'certificates'] as const).map((tab) => (
-          <button
-            key={tab}
-            onClick={() => setActiveTab(tab)}
-            className={`px-4 py-2 font-medium capitalize ${
-              activeTab === tab
-                ? 'border-b-2 border-primary text-primary'
-                : 'text-muted-foreground hover:text-foreground'
-            }`}
-          >
-            {tab}
-          </button>
-        ))}
-      </div>
+      <main className="mx-auto max-w-6xl space-y-8 px-4 py-8">
+        <Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Learning Hub is unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous screen referenced an undefined authentication variable, unverified course, enrollment, and certificate procedures, and any-typed records with enrollment and certificate mutations. Those calls were removed because no verified Wave 3 learning contract, authorization, persistence, or credential workflow was established.</p></div></div></Card>
 
-      {/* Browse Tab */}
-      {activeTab === 'browse' && (
-        <div className="space-y-4">
-          <div className="flex gap-2">
-            <Input
-              placeholder="Search courses..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="flex-1"
-            />
-          </div>
+        <Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="space-y-6"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><BookOpen aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Learning integration readiness</h2><p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">A production learning hub requires typed course and lesson contracts, authenticated learner ownership, enrollment and entitlement rules, progress persistence, assessment and certificate semantics, content provenance, accessibility, privacy, retention, rate and cost controls, and clear loading, empty, error, success, and retry states. None of those controls are available through this route.</p></div></div><div className="grid gap-4 md:grid-cols-3"><Card className="border border-primary/30 bg-background/80 p-4"><BookOpen aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><h3 className="font-semibold">No course claim</h3><p className="mt-1 text-sm text-muted-foreground">No title, description, lesson count, content, instructor, enrollment total, or course availability is fabricated.</p></Card><Card className="border border-primary/30 bg-background/80 p-4"><ShieldCheck aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><h3 className="font-semibold">No learner claim</h3><p className="mt-1 text-sm text-muted-foreground">No learner identity, course ownership, progress percentage, completion, grade, certificate, or personal record is read or stored.</p></Card><Card className="border border-primary/30 bg-background/80 p-4"><WalletCards aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><h3 className="font-semibold">No transaction claim</h3><p className="mt-1 text-sm text-muted-foreground">No enrollment, payment, entitlement, issuance, reward, wallet balance, or blockchain transaction is initiated.</p></Card></div><div className="flex flex-wrap gap-4 pt-2"><Link href="/skyschool"><Button size="lg" className="bg-primary hover:bg-primary/90">View SkySchool status</Button></Link><Link href="/school"><Button size="lg" variant="outline">View school status</Button></Link><Link href="/contact-us-form"><Button size="lg" variant="ghost">Ask about learning access</Button></Link></div></div></Card>
 
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {coursesQuery.isLoading ? (
-              <>
-                <Skeleton className="h-64 w-full" />
-                <Skeleton className="h-64 w-full" />
-                <Skeleton className="h-64 w-full" />
-              </>
-            ) : (coursesQuery.data?.courses || []).length > 0 ? (
-              (coursesQuery.data?.courses || []).map((course: any) => (
-                <Card key={course.id} className="hover:shadow-lg transition-shadow">
-                  <CardHeader>
-                    <CardTitle className="line-clamp-2">{course.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <p className="text-sm text-muted-foreground line-clamp-3">
-                      {course.description}
-                    </p>
-                    <div className="flex justify-between items-center">
-                      <div>
-                        <p className="text-xs text-muted-foreground">
-                          {course._count.lessons} lessons
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          {course._count.enrollments} enrolled
-                        </p>
-                      </div>
-                    </div>
-                    {isAuthenticated && (
-                      <Button
-                        onClick={() => handleEnroll(course.id)}
-                        disabled={enrollMutation.isPending}
-                        className="w-full"
-                      >
-                        {enrollMutation.isPending ? 'Enrolling...' : 'Enroll Now'}
-                      </Button>
-                    )}
-                  </CardContent>
-                </Card>
-              ))
-            ) : (
-              <p className="text-sm text-muted-foreground">No courses found</p>
-            )}
-          </div>
-        </div>
-      )}
+        <section aria-labelledby="wave3-learning-state-heading"><h2 id="wave3-learning-state-heading" className="mb-4 text-xl font-semibold">Current learning evidence</h2><div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">{learningStates.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-border/50 bg-card p-4"><p className="text-sm text-muted-foreground">{label}</p><div className="mt-2 flex items-center gap-2"><Icon aria-hidden="true" className="h-4 w-4 text-muted-foreground" /><p className="font-semibold">{value}</p></div></Card>)}</div></section>
 
-      {/* Enrolled Tab */}
-      {activeTab === 'enrolled' && isAuthenticated && (
-        <Card>
-          <CardHeader>
-            <CardTitle>My Courses</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {enrollmentsQuery.isLoading ? (
-              <div className="space-y-2">
-                <Skeleton className="h-12 w-full" />
-                <Skeleton className="h-12 w-full" />
-              </div>
-            ) : (enrollmentsQuery.data?.enrollments || []).length > 0 ? (
-              <div className="space-y-2">
-                {(enrollmentsQuery.data?.enrollments || []).map((enrollment: any) => (
-                  <div key={enrollment.id} className="p-3 rounded-lg border border-border">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <p className="font-medium">{enrollment.course.title}</p>
-                        <div className="w-full bg-muted rounded-full h-2 mt-2">
-                          <div
-                            className="bg-primary h-2 rounded-full"
-                            style={{ width: `${enrollment.progress}%` }}
-                          />
-                        </div>
-                        <p className="text-xs text-muted-foreground mt-1">
-                          {enrollment.progress}% complete
-                        </p>
-                      </div>
-                      {enrollment.progress === 100 && (
-                        <Button
-                          onClick={() => handleComplete(enrollment.course.id)}
-                          disabled={completeMutation.isPending}
-                          size="sm"
-                        >
-                          {completeMutation.isPending ? 'Issuing...' : 'Get Certificate'}
-                        </Button>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p className="text-sm text-muted-foreground">Not enrolled in any courses</p>
-            )}
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Certificates Tab */}
-      {activeTab === 'certificates' && isAuthenticated && (
-        <Card>
-          <CardHeader>
-            <CardTitle>My Certificates</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {certificatesQuery.isLoading ? (
-              <div className="space-y-2">
-                <Skeleton className="h-12 w-full" />
-                <Skeleton className="h-12 w-full" />
-              </div>
-            ) : (certificatesQuery.data?.certificates || []).length > 0 ? (
-              <div className="space-y-2">
-                {(certificatesQuery.data?.certificates || []).map((cert: any) => (
-                  <div key={cert.id} className="p-3 rounded-lg border border-border bg-green-50">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <p className="font-medium text-green-900">{cert.course.title}</p>
-                        <p className="text-xs text-green-700">
-                          Certificate #{cert.certificateNumber}
-                        </p>
-                        <p className="text-xs text-green-600">
-                          Issued: {new Date(cert.issuedAt).toLocaleDateString()}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p className="text-sm text-muted-foreground">No certificates yet</p>
-            )}
-          </CardContent>
-        </Card>
-      )}
+        <Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><FileWarning aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">Do not enter passwords, access tokens, seed phrases, private keys, payment details, confidential course materials, learner records, or sensitive personal information here. An unavailable learning hub is not evidence of enrollment, completion, certificate issuance, or reward settlement.</p></div></Card>
+        <Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><LockKeyhole aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">Courses, learners, content, enrollment, progress, certificates, payments, rewards, privacy, billing, and observability remain separate integrations. This screen does not replace any of them.</p></div></Card>
+        <div className="sr-only"><Search aria-hidden="true" /></div>
+      </main>
     </div>
   );
-};
-
-export default LearningPage;
+}

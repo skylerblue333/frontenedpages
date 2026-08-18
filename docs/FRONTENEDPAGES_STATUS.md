@@ -502,3 +502,7 @@ The deterministic educational quiz was preserved, but its unverified XP award an
 ## School hardening
 
 The registered School page no longer renders a fabricated course marketplace, instructor identities, student and review counts, ratings, prices, popularity badges, “Earn While You Learn,” on-chain certificate claims, SKY444 totals, learning tracks, or enrollment prompts. It now states that school services are unavailable and documents required catalog, provenance, accessibility, learner, progress, assessment, payment, entitlement, reward, credential, privacy, and retry controls. Focused TypeScript validation reported no diagnostics for `School.tsx`, and `git diff --check` passed.
+
+## wave3 Learning hardening
+
+The registered wave3 Learning page no longer references the undefined `isAuthenticated` variable, unverified course/enrollment/certificate procedures, any-typed records, or enrollment and completion mutations that could claim certificate issuance. It now states that Wave 3 learning services are unavailable and documents required typed contracts, learner ownership, entitlements, progress, assessment, content provenance, accessibility, privacy, retention, and retry controls. Focused TypeScript validation reported no diagnostics for `wave3/Learning.tsx`, and `git diff --check` passed.
