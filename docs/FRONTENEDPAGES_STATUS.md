@@ -378,3 +378,7 @@ The registered Team Workspace no longer renders demo channels, unread counts, me
 ## HopeAI hardening
 
 The registered HopeAI screen no longer calls unverified chat, history, message-save, clear-history, or gray-area mutations on a generic feature router. It no longer claims to read typing signals, infer emotional state, expose risk scores or 22 analyzers, provide inner thoughts, support specialized AI modes, or preserve conversations. The page now documents model gateway, versioning, validation, safety, privacy, retention, cost, history, observability, labeling, escalation, and mental-health safeguards. Focused TypeScript validation reported no diagnostics for `HopeAI.tsx`, and `git diff --check` passed.
+
+## AIAssistant hardening
+
+The registered AIAssistant screen no longer presents an incomplete authenticated shell with New, Search, Settings, or empty-item behavior that could imply an assistant exists. It now truthfully states that no verified model gateway or assistant contract is connected and removes claims about prompts, responses, conversations, tools, files, external actions, personalization, or generated artifacts. The page documents required model, validation, tool, privacy, safety, observability, and explicit success/failure controls. Focused TypeScript validation reported no diagnostics for `AIAssistant.tsx`, and `git diff --check` passed.
