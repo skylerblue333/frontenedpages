@@ -294,3 +294,7 @@ The registered wave4 Payments screen no longer renders unsupported payment metho
 ## Crypto Research Hub hardening
 
 The registered Crypto Research Hub no longer renders hardcoded coin prices, market caps, volumes, changes, mining characteristics, pool shares, fees, block data, profitability, ROI, or randomized price-history charts. The prior values were not sourced, timestamped, or independently verified. The page now states the unavailable research boundary and documents authoritative sources, freshness, asset identity, methodology, reconciliation, provenance, mining assumptions, uncertainty, citations, conflicts, and risk disclosures. Focused TypeScript validation reported no diagnostics for `CryptoResearchHub.tsx`, and `git diff --check` passed.
+
+## Wave4 Admin hardening
+
+The registered wave4 Admin screen no longer renders unsupported user records, post counts, banned users, open reports, 24-hour analytics, revenue, ban actions, report resolution, report dismissal, or audit logs. No matching wave4 admin contracts were found for the frontend calls, so the claims and privileged mutations were removed. The page now documents server-side role and object authorization, least privilege, protected data, moderation evidence, destructive-action controls, reversibility, rate limits, audit, incident response, and independently sourced metrics. Focused TypeScript validation reported no diagnostics for `wave4/Admin.tsx`, and `git diff --check` passed.
