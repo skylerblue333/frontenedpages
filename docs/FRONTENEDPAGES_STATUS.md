@@ -97,3 +97,8 @@ The registered route `/reward-system` no longer renders a generic coming-soon pl
 ## Rewards Monitoring hardening
 
 The registered route `/rewards-monitoring` no longer renders a generic coming-soon placeholder. It now reports that reward monitoring is unavailable and does not display accrual, balances, rates, freshness, anomalies, alerts, payouts, transactions, or settlement-health results. It documents event ingestion, ledger reconciliation, freshness checks, thresholds, notification delivery, incident ownership, privacy, and independent verification requirements. Focused TypeScript validation reported no diagnostics for `RewardsMonitoring.tsx`, and `git diff --check` passed.
+
+
+## Token Information hardening
+
+The registered route `/token-information` no longer renders a generic coming-soon placeholder. It now reports that token metadata is unavailable and does not display a token address, supply, decimals, price, market cap, liquidity, holders, utility, ownership, governance, or contract safety result. It documents chain, contract, metadata, supply, indexing, market-data, governance, and independent-verification requirements. Focused TypeScript validation reported no diagnostics for `TokenInformation.tsx`, and `git diff --check` passed.
