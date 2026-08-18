@@ -122,3 +122,8 @@ The registered route `/portfolio-tracking` no longer renders a generic coming-so
 ## Order Types hardening
 
 The registered route `/order-types` no longer renders a generic coming-soon placeholder. It now reports that order execution is unavailable and does not display instruments, quotes, order books, order semantics, prices, quantities, fills, cancellations, leverage, margin, fees, or settlement results. It documents market, validation, permissions, collateral, idempotency, rate-limit, matching, partial-fill, cancellation, audit, and settlement requirements. Focused TypeScript validation reported no diagnostics for `OrderTypes.tsx`, and `git diff --check` passed.
+
+
+## Bulk Ordering hardening
+
+The registered route `/bulk-ordering` no longer renders a generic coming-soon placeholder. It now reports that bulk ordering is unavailable and does not display quantity pricing, discounts, minimum orders, inventory, quotes, payment, order IDs, receipts, shipping, or fulfillment results. It documents catalog, quote, supply, procurement, payment, idempotency, cancellation, refund, shipment, and fulfillment requirements. Focused TypeScript validation reported no diagnostics for `BulkOrdering.tsx`, and `git diff --check` passed.
