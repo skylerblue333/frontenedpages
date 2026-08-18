@@ -542,3 +542,7 @@ The registered AdvancedAnalytics route no longer renders hard-coded revenue, use
 ## Analytics hardening
 
 The registered Analytics Dashboard no longer renders fabricated DAU, MAU, MRR, page views, daily revenue, transaction and post trends, “Top Content This Week,” creator attribution, view counts, likes, or percentage changes. It now states that analytics services are unavailable and documents required event and metric contracts, provenance, time semantics, identity, consent, deduplication, reconciliation, attribution, cohorts, stale-data handling, role-based access, retention, redaction, and retry controls. Focused TypeScript validation reported no diagnostics for `Analytics.tsx`, and `git diff --check` passed.
+
+## ABTesting hardening
+
+The registered ABTesting route no longer presents an incomplete authenticated shell with New, Search, Settings, loading, or empty-item behavior that could imply experiment records, assignment, exposure, sample size, conversion, lift, significance, or rollout. It now states that experimentation services are unavailable and documents required hypotheses, deterministic assignment, exposure logging, consent, sample-ratio monitoring, metric definitions, statistical methods, guardrails, privacy, approvals, staged rollout, rollback, and retry controls. Focused TypeScript validation reported no diagnostics for `ABTesting.tsx`, and `git diff --check` passed.
