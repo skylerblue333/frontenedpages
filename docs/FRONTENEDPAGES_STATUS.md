@@ -298,3 +298,7 @@ The registered Crypto Research Hub no longer renders hardcoded coin prices, mark
 ## Wave4 Admin hardening
 
 The registered wave4 Admin screen no longer renders unsupported user records, post counts, banned users, open reports, 24-hour analytics, revenue, ban actions, report resolution, report dismissal, or audit logs. No matching wave4 admin contracts were found for the frontend calls, so the claims and privileged mutations were removed. The page now documents server-side role and object authorization, least privilege, protected data, moderation evidence, destructive-action controls, reversibility, rate limits, audit, incident response, and independently sourced metrics. Focused TypeScript validation reported no diagnostics for `wave4/Admin.tsx`, and `git diff --check` passed.
+
+## Crypto Enhancements hardening
+
+The registered Crypto Enhancements screen no longer makes unsupported promotional claims for multi-crypto mining, exclusive pools, multisignature or hardware wallets, transaction history, swaps, low fees, trading bots, real-time data, staking, yield farming, governance, or digital-asset wealth. It now states that the wallet, custody, market, execution, reward, governance, and audit integrations are unavailable and documents the controls required before those features can be offered. Focused TypeScript validation reported no diagnostics for `CryptoEnhancementsPage.tsx`, and `git diff --check` passed.
