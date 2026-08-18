@@ -112,3 +112,8 @@ The registered route `/asset-tracking` no longer renders a generic coming-soon p
 ## Portfolio Optimization hardening
 
 The registered route `/portfolio-optimization` no longer renders a generic coming-soon placeholder. It now reports that optimization is unavailable and does not display holdings, allocations, prices, returns, forecasts, risk scores, recommendations, rebalances, orders, fees, taxes, or settlement results. It documents holdings, methodology, suitability, constraints, liquidity, tax, freshness, scenario, explainability, confirmation, and execution requirements. Focused TypeScript validation reported no diagnostics for `PortfolioOptimization.tsx`, and `git diff --check` passed.
+
+
+## Portfolio Tracking hardening
+
+The registered route `/portfolio-tracking` no longer renders a generic coming-soon placeholder. It now reports that tracking is unavailable and does not display holdings, balances, prices, cost basis, market value, returns, benchmarks, allocations, performance, trades, fees, or settlement. It documents account, custody, transaction, corporate-action, pricing, benchmark, tax, freshness, reconciliation, access-control, and independent-verification requirements. Focused TypeScript validation reported no diagnostics for `PortfolioTracking.tsx`, and `git diff --check` passed.
