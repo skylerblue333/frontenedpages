@@ -274,3 +274,7 @@ The registered Mining Pool Selector no longer renders a generic coming-soon page
 ## Tax Documentation hardening
 
 The registered Tax Documentation screen no longer renders a generic coming-soon page as if official tax documentation were available or claims authorities, source dates, jurisdictions, tax years, forms, deadlines, filing obligations, calculations, deductions, eligibility, or personalized advice. It now reports that current official sources, rule sets, reviewed forms, filing systems, and professional oversight are not connected and documents source versioning, scope, citations, privacy, and advice-boundary requirements. Focused TypeScript validation reported no diagnostics for `TaxDocumentation.tsx`, and `git diff --check` passed.
+
+## Staking Options hardening
+
+The registered Staking Options screen no longer renders a generic coming-soon page as if staking terms were available or claims assets, contracts, APY, APR, rewards, projections, capacity, lock periods, unlocks, fees, penalties, slashing, claim timing, withdrawals, positions, signatures, or settlement. It now reports that verified staking terms and custody integrations are unavailable and documents the requirements for authoritative, auditable, risk-disclosed staking options. Focused TypeScript validation reported no diagnostics for `StakingOptions.tsx`, and `git diff --check` passed.
