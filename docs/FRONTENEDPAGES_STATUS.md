@@ -57,3 +57,8 @@ The registered route `/arbitrage-bot` no longer renders fabricated analytics, au
 ## Staking Dashboard hardening
 
 The registered route `/staking-dashboard` no longer renders the generic authentication-and-empty-data shell. The missing `useState` import and unused placeholder controls were removed. The route now reports that staking is unavailable and does not display positions, balances, APY, APR, rewards, lockups, validator state, slashing, withdrawal, or transaction results. Focused TypeScript validation reported no diagnostics for `StakingDashboard.tsx`, and `git diff --check` passed.
+
+
+## Mining Dashboard hardening
+
+The Mining Dashboard no longer renders fabricated worker controls, random USD earnings, crypto breakdowns, rewards, payouts, profitability, uptime, or mining-session charts. The previous implementation called unverified `/api/mining/*` endpoints and included a random earnings simulation. It now reports that mining is unavailable and documents worker, pool, chain, payout, reconciliation, and operational-monitoring requirements. Focused TypeScript validation reported no diagnostics for `MiningDashboard.tsx`, and `git diff --check` passed.
