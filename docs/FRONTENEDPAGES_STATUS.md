@@ -342,3 +342,7 @@ The registered Content Vault screen no longer renders static private photos, vid
 ## Content Flagging hardening
 
 The registered Content Flagging screen no longer presents a generic coming-soon page as if moderation were available. It now reports that report intake, evidence storage, policy classification, AI confidence, human review, appeals, enforcement, notification, retention, privacy, audit, and incident-response workflows are unavailable and documents the controls required for responsible moderation. Focused TypeScript validation reported no diagnostics for `ContentFlagging.tsx`, and `git diff --check` passed.
+
+## Content Calendar hardening
+
+The registered Content Calendar screen no longer exposes a sign-in gate, New action, search, settings, or empty calendar state as if scheduling were connected. It now reports that calendar records, drafts, audiences, channels, times, publishing, delivery, editing, deletion, and analytics are unavailable and documents workspace ownership, validation, moderation, timezone, queue, provider, retry, consent, evidence, audit, and failure-state requirements. Focused TypeScript validation reported no diagnostics for `ContentCalendar.tsx`, and `git diff --check` passed.
