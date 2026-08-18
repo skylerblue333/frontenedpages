@@ -406,3 +406,7 @@ The registered AIEngineer screen no longer presents 44 named agents with special
 ## AIGovernance hardening
 
 The registered AIGovernance screen no longer presents advanced analytics, autonomous decision-making, robust encryption, processing/uptime/latency/throughput metrics, or inert configuration and demo actions without governance workflows or measurement evidence. It now states that governance controls are unavailable and documents required model inventory, owners, risk classification, privacy, policy, approvals, evaluation, monitoring, human oversight, vendor review, change management, retention, and audit controls. Focused TypeScript validation reported no diagnostics for `AIGovernance.tsx`, and `git diff --check` passed.
+
+## ChatBot hardening
+
+The registered ChatBot screen no longer presents an incomplete authenticated shell with New, Search, Settings, loading, or empty-item behavior that could imply a chatbot, message history, persistence, or successful AI access. It now states that chatbot services are unavailable and documents required model, validation, safety, privacy, history, search, rate, cost, and observability controls. Focused TypeScript validation reported no diagnostics for `ChatBot.tsx`, and `git diff --check` passed.
