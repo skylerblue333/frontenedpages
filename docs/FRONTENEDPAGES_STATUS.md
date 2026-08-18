@@ -266,3 +266,7 @@ The registered Tax Reports screen no longer renders a fake authenticated CRUD sh
 ## Staking Portal hardening
 
 The registered Staking Portal no longer renders unsupported APY history, reward projections, pool metrics, active-staker counts, lock periods, penalties, user positions, earned rewards, staking execution, or reward claims. The registered staking backend route is currently a generic feature router, so those claims and mutations were not verified. The page now documents asset and chain configuration, pool terms, balances, reward accounting, lock semantics, failure handling, idempotency, settlement, reconciliation, audit, and financial-risk requirements. Focused TypeScript validation reported no diagnostics for `StakingPortal.tsx`, and `git diff --check` passed.
+
+## Mining Pool Selector hardening
+
+The registered Mining Pool Selector no longer renders a generic coming-soon page as if pool functionality were available or claims pools, endpoints, algorithms, networks, connectivity, workers, hash rates, shares, blocks, profitability, fees, payouts, credentials, transfers, or settlement. It now reports that pool discovery, authenticated APIs, telemetry, accounting, custody, and verification are unavailable and documents the controls required for a production mining integration. Focused TypeScript validation reported no diagnostics for `MiningPoolSelector.tsx`, and `git diff --check` passed.
