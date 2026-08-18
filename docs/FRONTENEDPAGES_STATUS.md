@@ -422,3 +422,7 @@ The registered ChatMVP screen no longer contains mock conversations, fabricated 
 ## HopeAIAdvanced hardening
 
 The registered HopeAIAdvanced screen no longer simulates delayed assistant responses, placeholder code, production-readiness, thinking time, token usage, confidence, unsupported mode capabilities, or superiority claims. It now states that advanced AI is unavailable and documents required model, validation, safety, tools, files, privacy, retention, metering, evaluation, and observability controls. Focused TypeScript validation reported no diagnostics for `HopeAIAdvanced.tsx`, and `git diff --check` passed.
+
+## HopeAIMeta hardening
+
+The registered HopeAIMeta screen no longer simulates multimodal responses, web results, execution runtimes, voice and vision capability, language counts, confidence, token usage, thinking time, or conversation persistence. It now states that Meta-AI is unavailable and documents required provider routing, model/version metadata, file safety, citation-backed search, sandboxing, permissions, consent, privacy, retention, metering, evaluation, and observability controls. Focused TypeScript validation reported no diagnostics for `HopeAIMeta.tsx`, and `git diff --check` passed.
