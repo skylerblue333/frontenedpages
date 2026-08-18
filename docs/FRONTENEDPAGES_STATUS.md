@@ -302,3 +302,7 @@ The registered wave4 Admin screen no longer renders unsupported user records, po
 ## Crypto Enhancements hardening
 
 The registered Crypto Enhancements screen no longer makes unsupported promotional claims for multi-crypto mining, exclusive pools, multisignature or hardware wallets, transaction history, swaps, low fees, trading bots, real-time data, staking, yield farming, governance, or digital-asset wealth. It now states that the wallet, custody, market, execution, reward, governance, and audit integrations are unavailable and documents the controls required before those features can be offered. Focused TypeScript validation reported no diagnostics for `CryptoEnhancementsPage.tsx`, and `git diff --check` passed.
+
+## Security Dashboard hardening
+
+The registered Security Dashboard no longer renders unsupported security scores, completed scans, SSL/TLS grades, WAF state, 2FA state, uptime, recommendations, connected-app counts, moderation statistics, audit activity, security events, or active-session claims. The registered security and audit routes are generic feature routers, so the prior claims and scan behavior were not verified. The page now documents measurement methodology, authenticated telemetry, infrastructure scope, identity and MFA state, session controls, event provenance, alerting, incident response, privacy, retention, and independent verification requirements. Focused TypeScript validation reported no diagnostics for `SecurityDashboard.tsx`, and `git diff --check` passed.
