@@ -386,3 +386,7 @@ The registered AIAssistant screen no longer presents an incomplete authenticated
 ## AIBrain hardening
 
 The registered AIBrain screen no longer displays eight active AI modules with fabricated accuracy percentages, a LIVE AI badge, a superiority claim, or controls that call unverified model, code, learning, and analytics mutations. It now states that AI Brain is unavailable and documents the evidence boundary for models, code generation, analytics, forecasts, evaluation, safety, privacy, tools, files, billing, and observability. Focused TypeScript validation reported no diagnostics for `AIBrain.tsx`, and `git diff --check` passed.
+
+## AICodeStudio hardening
+
+The registered AICodeStudio screen no longer exposes twelve named coding bots, a hard-coded model, SSE streaming, code-generation and review mutations, generated-line counts, success states, autonomous cycles, session polling, push history, or repository-writing affordances without verified backend execution evidence. It now states that code-assistant services are unavailable and documents required model, validation, sandboxing, compiler/test evidence, repository approvals, secrets, permissions, audit, billing, and observability controls. Focused TypeScript validation reported no diagnostics for `AICodeStudio.tsx`, and `git diff --check` passed.
