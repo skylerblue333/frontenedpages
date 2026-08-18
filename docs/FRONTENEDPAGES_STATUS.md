@@ -222,3 +222,7 @@ The registered Compliance Center no longer renders unverified KYC submission, id
 ## Admin Wallet Manager hardening
 
 The registered Admin Wallet Manager no longer renders hardcoded wallet addresses, zero-valued balance objects, unverified mining polling, transaction history, automatic transfer toggles, or a manual swap form. The previous controls did not prove custody, ownership, rewards, signing, broadcast, confirmation, or settlement. The page now states that wallet registry, custody, key control, ledger, and transaction services are unavailable and documents allowlists, qualified custody, multi-party authorization, simulation, nonce and fee controls, idempotency, reconciliation, monitoring, and tamper-evident audit requirements. Focused TypeScript validation reported no diagnostics for `AdminWalletManager.tsx`, and `git diff --check` passed.
+
+## Wallet hardening
+
+The registered Wallet screen no longer renders unsupported live balances, platform wallet IDs, token prices, USD values, reconstructed portfolio history, MetaMask connection state, transaction history, send execution, network fees, or confirmation timing. No matching wallet backend contracts were found for the prior tRPC calls, so all wallet and transaction mutations were removed rather than presented as functional. The page now documents chain, provider, signing, replay, idempotency, reconciliation, custody, and settlement requirements and warns users not to submit secrets. Focused TypeScript validation reported no diagnostics for `Wallet.tsx`, and `git diff --check` passed.
