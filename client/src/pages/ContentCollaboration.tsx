@@ -1,89 +1,15 @@
-import { Users } from "lucide-react";
+import { Activity, BarChart3, FileText, LockKeyhole, MessageSquare, ShieldCheck, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { PageHeader } from "@/components/PageHeader";
 
+const states = [
+  { label: "Members, roles, and permissions", value: "Unavailable", icon: Users },
+  { label: "Content, comments, and revisions", value: "Unavailable", icon: FileText },
+  { label: "Presence, delivery, and activity", value: "Unavailable", icon: Activity },
+  { label: "Analytics and integration status", value: "Unavailable", icon: BarChart3 },
+];
+
 export default function ContentCollaboration() {
-  return (
-    <div className="min-h-screen bg-background">
-      <PageHeader icon={Users} title="Content Collaboration" subtitle="Fully functional content collaboration page with live data and real-time updates" />
-      
-      <div className="max-w-7xl mx-auto px-4 py-8 space-y-8">
-        {/* Main Content Area */}
-        <Card className="p-8 bg-card border border-border/50">
-          <div className="space-y-6">
-            <h2 className="text-2xl font-bold">Content Collaboration</h2>
-            
-            {/* Feature Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <Users className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 1</h3>
-                  <p className="text-sm text-muted-foreground">Real-time data and live updates</p>
-                </div>
-              </Card>
-              
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <Users className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 2</h3>
-                  <p className="text-sm text-muted-foreground">Advanced analytics and insights</p>
-                </div>
-              </Card>
-              
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <Users className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 3</h3>
-                  <p className="text-sm text-muted-foreground">Seamless integration and automation</p>
-                </div>
-              </Card>
-            </div>
-            
-            {/* Action Buttons */}
-            <div className="flex gap-4 flex-wrap pt-4">
-              <Button className="bg-primary hover:bg-primary/90">
-                Get Started
-              </Button>
-              <Button variant="outline">
-                Learn More
-              </Button>
-              <Button variant="ghost">
-                Documentation
-              </Button>
-            </div>
-          </div>
-        </Card>
-        
-        {/* Stats Section */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Active Users</p>
-              <p className="text-2xl font-bold">802K+</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Total Transactions</p>
-              <p className="text-2xl font-bold">2.4M</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Success Rate</p>
-              <p className="text-2xl font-bold">99.9%</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Avg Response Time</p>
-              <p className="text-2xl font-bold">45ms</p>
-            </div>
-          </Card>
-        </div>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Users} title="Content Collaboration" subtitle="Collaboration services are not connected in this deployment. No live data, member activity, analytics, automation, or content mutation is being reported." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><ShieldCheck aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Content collaboration is unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous page claimed real-time data and live updates, advanced analytics, seamless integration and automation, 802K+ active users, 2.4M transactions, a 99.9% success rate, and 45ms average response time. No verified workspace, member directory, content store, event transport, analytics source, integration contract, timestamp, or measurement evidence was connected. Those claims and inert actions were removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><MessageSquare aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Collaboration readiness</h2><p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">Production collaboration requires tenant isolation, authenticated workspace scope, member and role authorization, content ownership, revision and conflict semantics, message and presence delivery, file handling, auditability, retention and deletion, privacy controls, rate limits, error recovery, and explicit success and failure states. None of these controls are available through this route. No live collaboration session is created.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-3"><Card className="border border-primary/30 bg-background/80 p-4"><Users aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><h3 className="font-semibold">No membership claim</h3><p className="mt-1 text-sm text-muted-foreground">No member, role, presence, active-user count, permission, invitation, or workspace access is known.</p></Card><Card className="border border-primary/30 bg-background/80 p-4"><FileText aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><h3 className="font-semibold">No content claim</h3><p className="mt-1 text-sm text-muted-foreground">No content, comment, revision, file, message, task, delivery state, or change history is loaded or changed.</p></Card><Card className="border border-primary/30 bg-background/80 p-4"><LockKeyhole aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><h3 className="font-semibold">No analytics claim</h3><p className="mt-1 text-sm text-muted-foreground">No transaction count, success rate, response time, usage metric, activity result, or automation outcome is calculated.</p></Card></div><div className="mt-6 flex flex-wrap gap-4"><Button disabled aria-disabled="true">Start collaboration unavailable</Button><Button disabled variant="outline" aria-disabled="true">Open documentation unavailable</Button></div></Card><section aria-labelledby="collaboration-state-heading"><h2 id="collaboration-state-heading" className="mb-4 text-xl font-semibold">Current integration status</h2><div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">{states.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-border/50 bg-card p-4"><p className="text-sm text-muted-foreground">{label}</p><div className="mt-2 flex items-center gap-2"><Icon aria-hidden="true" className="h-4 w-4 text-muted-foreground" /><p className="font-semibold">{value}</p></div></Card>)}</div></section><Card className="border border-border/50 bg-card p-5"><p className="text-sm leading-6 text-muted-foreground">An unavailable collaboration page is not evidence of users, activity, synchronization, analytics, availability, throughput, or successful automation. Do not enter passwords, access tokens, private keys, seed phrases, or confidential content into this unconnected route.</p></Card></main></div>;
 }
