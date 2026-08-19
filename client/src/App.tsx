@@ -1205,6 +1205,7 @@ function Router() {
         <Route path="/bulk-ordering" component={BulkOrdering} />
         <Route path="/bulk-upload" component={BulkUpload} />
         <Route path="/c-c-p-a" component={CCPA} />
+        <Route path="/ccpa" component={CCPA} />
         <Route path="/c-d-n-management" component={CDNManagement} />
         <Route path="/c-r-m" component={CRM} />
         <Route path="/cache-management" component={CacheManagement} />
