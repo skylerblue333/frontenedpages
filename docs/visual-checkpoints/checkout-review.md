@@ -1,0 +1,5 @@
+# Checkout visual checkpoint
+
+The route renders an unauthenticated access boundary and does not expose cart contents, prices, payment fields, order totals, inventory, or transaction success. Desktop and mobile captures preserve this truthful state. A signed-in authenticated checkpoint and verified commerce integration remain required before assessing internal checkout workflows.
+
+Files: `checkout-desktop.webp`, `checkout-mobile.png`.
