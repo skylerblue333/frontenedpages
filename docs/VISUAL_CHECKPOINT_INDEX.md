@@ -12,6 +12,7 @@ This index records only screenshots that were actually rendered and reviewed. A 
 | CheckoutFlow | `docs/visual-checkpoints/checkout-flow-desktop.webp` | `docs/visual-checkpoints/checkout-flow-mobile.png` | Reviewed unavailable checkout boundary at desktop and 390px mobile | Cart, pricing, payment authorization, inventory, order creation, receipts, refunds, and fulfillment remain unavailable and unclaimed. |
 | CCPA | `docs/visual-checkpoints/ccpa-desktop.webp` | `docs/visual-checkpoints/ccpa-mobile.png` | Reviewed repaired `/ccpa` route at desktop and 390px mobile | Privacy-rights intake, identity, data discovery, deletion, opt-out, appeal, disclosure, legal review, and compliance results remain unavailable and unclaimed. |
 | CDNManagement | `docs/visual-checkpoints/cdn-management-desktop.webp` | `docs/visual-checkpoints/cdn-management-mobile.png` | Reviewed upgraded unavailable boundary at desktop and 390px mobile | CDN provider, distribution, origin, cache, telemetry, certificate, access, audit, and cost integrations remain unavailable; fabricated metrics removed. |
+| CRM | `docs/visual-checkpoints/crm-desktop.webp` | `docs/visual-checkpoints/crm-mobile.png` | Reviewed upgraded unavailable boundary at desktop and 390px mobile | Contacts, pipeline, revenue, lead scoring, activities, and CRM mutations remain unavailable; fabricated business records and metrics removed. |
 
 ## Capture notes
 
