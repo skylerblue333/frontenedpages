@@ -1,25 +1,17 @@
 import { useState } from "react";
+import { ChevronDown, Compass, Info, LockKeyhole, Navigation, Search, ShieldCheck } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const sections = [
+  { id: "platform", title: "Platform areas", content: "Use the application’s registered navigation to visit available screens. Module availability, records, metrics, and actions must be verified on each destination." },
+  { id: "integration", title: "Integration boundaries", content: "Crypto, AI, education, commerce, community, and external-service features remain separate integrations. This navigation component does not imply that any backend service is connected." },
+  { id: "accessibility", title: "Keyboard and assistive technology", content: "Each disclosure uses a native button with an accessible name and expanded state. Browser and operating-system preferences remain available through the user’s environment." },
+];
 
 export default function AccordionNavigation() {
-  const [state, setState] = useState(false);
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 to-black p-4">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">AccordionNavigation</h1>
-        <p className="text-slate-400 mb-8">accordion navigation</p>
-        
-        <Card className="bg-slate-900 border-slate-800 p-8">
-          <div className="space-y-6">
-            <p className="text-slate-300">Content for AccordionNavigation page</p>
-            <Button onClick={() => setState(!state)}>
-              {state ? "Deactivate" : "Activate"}
-            </Button>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+  const [openId, setOpenId] = useState<string | null>("platform");
+  return <div className="min-h-screen bg-background"><PageHeader icon={Navigation} title="Accordion Navigation" subtitle="A keyboard-accessible disclosure navigation pattern. No hidden content, route permission, backend record, or saved navigation state is being claimed." /><main className="mx-auto max-w-4xl space-y-8 px-4 py-8"><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-6 md:p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Compass aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-2xl font-bold">Explore the navigation pattern</h2><p className="mt-2 text-sm leading-6 text-muted-foreground">This screen demonstrates a real local accordion interaction without fabricating a catalog, counts, destinations, permissions, or remote content. Select a section to expand or collapse its explanatory text.</p></div></div><div className="mt-6 space-y-3" aria-label="Accordion navigation sections">{sections.map(section => { const isOpen = openId === section.id; return <div key={section.id} className="overflow-hidden rounded-xl border border-border/60 bg-background/70"><button type="button" aria-expanded={isOpen} aria-controls={`accordion-panel-${section.id}`} onClick={() => setOpenId(isOpen ? null : section.id)} className="flex w-full items-center justify-between gap-4 px-4 py-4 text-left font-semibold hover:bg-muted/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"><span>{section.title}</span><ChevronDown aria-hidden="true" className={`h-5 w-5 shrink-0 transition-transform ${isOpen ? "rotate-180" : ""}`} /></button>{isOpen && <div id={`accordion-panel-${section.id}`} role="region" className="border-t border-border/50 px-4 py-4 text-sm leading-6 text-muted-foreground">{section.content}</div>}</div>; })}</div><div className="mt-6 flex flex-wrap gap-3"><Link href="/"><Button><Compass className="mr-2 h-4 w-4" />Open home navigation</Button></Link><Link href="/about"><Button variant="outline">Read ecosystem overview</Button></Link><Link href="/contact-us-form"><Button variant="ghost">Report a navigation issue</Button></Link></div></Card><section aria-labelledby="navigation-state-heading"><h2 id="navigation-state-heading" className="mb-4 text-xl font-semibold">Navigation evidence</h2><div className="grid gap-4 md:grid-cols-3"><Card className="border border-border/50 bg-card p-4"><Search aria-hidden="true" className="mb-3 h-6 w-6 text-primary" /><p className="font-semibold">Local interaction</p><p className="mt-1 text-sm text-muted-foreground">Disclosure state changes locally and is not persisted to an account or backend.</p></Card><Card className="border border-border/50 bg-card p-4"><ShieldCheck aria-hidden="true" className="mb-3 h-6 w-6 text-primary" /><p className="font-semibold">No permission claim</p><p className="mt-1 text-sm text-muted-foreground">Expanded text does not authorize access to a route, record, wallet, or administrative action.</p></Card><Card className="border border-border/50 bg-card p-4"><LockKeyhole aria-hidden="true" className="mb-3 h-6 w-6 text-primary" /><p className="font-semibold">No secret handling</p><p className="mt-1 text-sm text-muted-foreground">Do not enter passwords, tokens, private keys, seed phrases, or personal data into navigation content.</p></Card></div></section><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><Info aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">The accordion is a local interface pattern, not evidence of backend availability, route completeness, accessibility conformance, or saved user preferences.</p></div></Card></main></div>;
 }
