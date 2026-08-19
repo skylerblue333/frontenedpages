@@ -598,3 +598,7 @@ The registered ActivityFeed route no longer presents an incomplete authenticated
 ## ActivityTracking hardening
 
 The registered ActivityTracking route no longer presents an incomplete authenticated shell with New, Search, Settings, loading, or empty-item behavior that could imply event collection, actors, sessions, timestamps, consent, funnels, cohorts, metrics, attribution, pipelines, logs, monitoring, or audit records. It now states that activity-tracking services are unavailable and documents required purpose and consent, typed schemas, identity, minimization, ordering, deduplication, retention, deletion, regional handling, access, aggregation, attribution, privacy, monitoring, audit, and retry controls. Focused TypeScript validation reported no diagnostics for `ActivityTracking.tsx`, and `git diff --check` passed.
+
+## Visual quality batch: AdvancedSearch and AnalyticsReports
+
+AdvancedSearch and AnalyticsReports were upgraded from generic authenticated New/Search/Settings/empty shells to polished, truthful integration-status screens. Both now provide a clear unavailable-state explanation, production readiness guidance, structured evidence cards, privacy and security boundaries, and route-preserving next-step navigation. Unsupported queries, results, metrics, reports, exports, schedules, delivery, and audit assumptions were removed. Focused TypeScript checks reported no diagnostics for either page, and `git diff --check` passed.
