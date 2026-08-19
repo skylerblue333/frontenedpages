@@ -674,3 +674,7 @@ BudgetPlanner was upgraded from a generic authenticated New/Search/Settings/empt
 ## Visual quality batch: BugReporting
 
 BugReporting was upgraded from a generic authenticated New/Search/Settings/empty shell to a polished, truthful incident-reporting readiness screen. It now defines the missing issue tracker, reporter identity, environment, reproduction, severity, ownership, SLA, attachments, security intake, notifications, releases, privacy, and audit boundaries, with responsive evidence cards and route-preserving next steps. Focused TypeScript validation reported no diagnostics for `BugReporting.tsx`, and `git diff --check` passed.
+
+## Visual quality batch: BulkOperations
+
+BulkOperations was upgraded from a generic authenticated New/Search/Settings/empty shell to a polished, truthful batch-workflow readiness screen. It now defines the missing record scope, selection, authorization, validation, idempotency, queues, partial failure, retry, rollback, side-effect, privacy, and audit boundaries, with responsive evidence cards and route-preserving next steps. Focused TypeScript validation reported no diagnostics for `BulkOperations.tsx`, and `git diff --check` passed.

@@ -99,3 +99,7 @@ The local ActivityTracking hardening commit is `32525a5`. Its push was rejected 
 ## Nineteenth visual-upgrade batch
 
 `BugReporting.tsx` now uses the shared production visual pattern with explicit unavailable boundary, incident-reporting explanation, evidence grid, support/system/security navigation, and security disclosure. The generic New/Search/Settings shell has been removed while preserving the registered route.
+
+## Twentieth visual-upgrade batch
+
+`BulkOperations.tsx` now uses the shared production visual pattern with explicit unavailable boundary, batch-readiness explanation, evidence grid, action/automation/access navigation, and security disclosure. The generic New/Search/Settings shell has been removed while preserving the registered route.
