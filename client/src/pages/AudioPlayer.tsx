@@ -1,25 +1,16 @@
-import { useState } from "react";
+import { AudioLines, Download, FileAudio, LockKeyhole, PlayCircle, ShieldAlert, UserRound } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const evidence = [
+  { label: "Audio source, title, and rights", value: "Unavailable", icon: FileAudio },
+  { label: "Playback session and progress", value: "Not measured", icon: PlayCircle },
+  { label: "Listener identity and entitlements", value: "Not configured", icon: UserRound },
+  { label: "Downloads, delivery, and audit", value: "Disabled", icon: Download },
+];
 
 export default function AudioPlayer() {
-  const [state, setState] = useState(false);
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 to-black p-4">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">AudioPlayer</h1>
-        <p className="text-slate-400 mb-8">audio player</p>
-        
-        <Card className="bg-slate-900 border-slate-800 p-8">
-          <div className="space-y-6">
-            <p className="text-slate-300">Content for AudioPlayer page</p>
-            <Button onClick={() => setState(!state)}>
-              {state ? "Deactivate" : "Activate"}
-            </Button>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={AudioLines} title="Audio Player" subtitle="Audio playback services are not connected in this deployment. No source, track, listener, session, progress, download, subscription, or delivery result is being reported or created." /><main className="mx-auto max-w-5xl space-y-8 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><ShieldAlert aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Audio playback is unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous screen was a generic audio-player placeholder with an Activate/Deactivate control. No audio source, rights and license check, playback provider, session store, listener identity, subscription entitlement, signed delivery, download authorization, or audit contract was connected. The control was removed rather than implying that audio is playable or that a listener session exists.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><AudioLines aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Playback readiness</h2><p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">A production player requires an authorized media source, codec and duration metadata, consent and rights checks, signed or protected delivery, session and progress semantics, playback error and retry states, listener privacy controls, entitlement enforcement, download restrictions, and auditable server-side records. None are available through this route.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{evidence.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div><div className="mt-6 flex flex-wrap gap-3"><Link href="/audio-library"><Button>View audio library status</Button></Link><Link href="/audio-analytics"><Button variant="outline">View audio analytics</Button></Link><Link href="/privacy"><Button variant="ghost">View privacy status</Button></Link></div></Card><section aria-labelledby="player-evidence-heading"><h2 id="player-evidence-heading" className="mb-4 text-xl font-semibold">Current player evidence</h2><div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">{evidence.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-border/50 bg-card p-4"><p className="text-sm text-muted-foreground">{label}</p><div className="mt-2 flex items-center gap-2"><Icon aria-hidden="true" className="h-4 w-4 text-muted-foreground" /><p className="font-semibold">{value}</p></div></Card>)}</div></section><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><LockKeyhole aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">Do not enter passwords, access tokens, private keys, seed phrases, storage credentials, license documents, confidential recordings, listener data, or sensitive personal information here. An unavailable player is not evidence that audio is stored, licensed, playable, downloaded, or recoverable.</p></div></Card><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><PlayCircle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No playback start, pause, seek, progress update, volume change, playlist action, download, subscription check, notification, external share, or media API call is read, written, sent, stored, or simulated by this page.</p></div></Card><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><FileAudio aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No track, duration, format, listener count, play count, completion rate, progress position, entitlement, download URL, delivery status, quality result, license, royalty, or audit event is fabricated as a fallback. Verify future media and rights records through independently trusted server-side systems.</p></div></Card></main></div>;
 }
