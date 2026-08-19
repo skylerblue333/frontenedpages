@@ -71,3 +71,7 @@ The local ActivityTracking hardening commit is `32525a5`. Its push was rejected 
 ## Twelfth visual-upgrade batch
 
 `BillingHistory.tsx` now uses the shared production visual pattern with explicit unavailable boundary, billing-readiness explanation, evidence grid, payments/subscriptions/privacy navigation, and security disclosure. The generic New/Search/Settings shell has been removed while preserving the registered route.
+
+## Thirteenth visual-upgrade batch
+
+`BlockchainMonitor.tsx` now uses the shared production visual pattern with explicit unavailable boundary, chain-readiness explanation, evidence grid, chain/address/wallet navigation, and security disclosure. The generic New/Search/Settings shell has been removed while preserving the registered route.
