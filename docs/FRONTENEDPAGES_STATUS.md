@@ -666,3 +666,7 @@ BrandGuidelines was upgraded from a generic authenticated New/Search/Settings/em
 ## Visual quality batch: BridgeTransactions
 
 BridgeTransactions was upgraded from a generic authenticated New/Search/Settings/empty shell to a polished, truthful cross-chain readiness screen. It now defines the missing network allowlists, assets, bridge routes, custody, signing, fees, slippage, nonce, lock/burn, relay, confirmation, finality, refund, privacy, and audit boundaries, with responsive evidence cards and route-preserving next steps. Focused TypeScript validation reported no diagnostics for `BridgeTransactions.tsx`, and `git diff --check` passed.
+
+## Visual quality batch: BudgetPlanner
+
+BudgetPlanner was upgraded from a generic authenticated New/Search/Settings/empty shell to a polished, truthful financial-planning readiness screen. It now defines the missing accounts, transactions, categories, budgets, forecasts, goals, recommendations, alerts, privacy, security, and audit boundaries, with responsive evidence cards and route-preserving next steps. Focused TypeScript validation reported no diagnostics for `BudgetPlanner.tsx`, and `git diff --check` passed.

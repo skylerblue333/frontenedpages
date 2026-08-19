@@ -91,3 +91,7 @@ The local ActivityTracking hardening commit is `32525a5`. Its push was rejected 
 ## Seventeenth visual-upgrade batch
 
 `BridgeTransactions.tsx` now uses the shared production visual pattern with explicit unavailable boundary, cross-chain-readiness explanation, evidence grid, wallet/chain/security navigation, and security disclosure. The generic New/Search/Settings shell has been removed while preserving the registered route.
+
+## Eighteenth visual-upgrade batch
+
+`BudgetPlanner.tsx` now uses the shared production visual pattern with explicit unavailable boundary, budget-readiness explanation, evidence grid, portfolio/analytics/security navigation, and security disclosure. Unsupported financial claims and the generic New/Search/Settings shell have been removed while preserving the registered route.
