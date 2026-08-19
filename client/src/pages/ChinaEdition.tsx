@@ -34,12 +34,12 @@ const T = {
   mission_desc_en: "Making AI accessible to everyone. Building an open, secure, and innovative digital ecosystem. Connecting global developers, learners, creators, and enterprises.",
   modules_title_zh: "核心模块",
   modules_title_en: "Core Modules",
-  integrations_zh: "生态合作伙伴",
-  integrations_en: "Ecosystem Partners",
-  features_zh: "44项核心功能",
-  features_en: "44 Advanced Features",
-  advantages_zh: "核心优势",
-  advantages_en: "Core Advantages",
+  integrations_zh: "生态连接状态",
+  integrations_en: "Ecosystem Connection Status",
+  features_zh: "功能目录（未验证）",
+  features_en: "Feature Directory (Unverified)",
+  advantages_zh: "产品方向",
+  advantages_en: "Product Direction",
 };
 
 const MODULES = [
@@ -264,7 +264,7 @@ export default function ChinaEdition() {
           <div className="glow-orb w-48 h-48 bg-purple-500/8 top-1/2 left-1/2" />
           <div className="absolute inset-0 cyber-grid opacity-5" />
         </div>
-        <div className="container max-w-5xl mx-auto px-4 relative z-10 text-center">
+        <div className="container max-w-5xl mx-auto px-4 relative z-10 text-center"><div className="mb-8 rounded-2xl border border-amber-400/30 bg-amber-950/25 px-5 py-4 text-left text-sm leading-6 text-amber-100"><strong>{isZh ? "功能与合作状态说明：" : "Availability notice: "}</strong>{isZh ? "本页面展示的是产品方向与潜在模块，不代表已连接、已上线、已获准或可用的服务。AI能力、教育、社交、创作者、企业功能和中国平台连接均须通过独立集成验证。页面不展示真实用户、交易、收入、覆盖范围或安全认证数据。" : "This page describes product direction and potential module surfaces; it does not prove that services are connected, launched, approved, or available. AI, education, social, creator, enterprise, and China-platform connections require independent integration verification. No real user, transaction, revenue, coverage, or security-certification data is presented."}</div>
           {/* Flag + badge */}
           <div className="flex items-center justify-center gap-3 mb-6">
             <span className="text-3xl">🇨🇳</span>
@@ -370,7 +370,7 @@ export default function ChinaEdition() {
               {isZh ? T.integrations_zh : T.integrations_en}
             </h2>
             <p className="text-sm text-muted-foreground">
-              {isZh ? "无缝集成中国主流平台" : "Seamlessly integrated with China's leading platforms"}
+              {isZh ? "潜在连接 — 当前未验证或启用" : "Potential connections — not verified or enabled in this deployment"}
             </p>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
@@ -385,7 +385,7 @@ export default function ChinaEdition() {
         </div>
       </div>
 
-      {/* 44 Features Grid */}
+      {/* Feature directory — labels are not availability claims */}
       <div className="container max-w-6xl mx-auto px-4 py-16">
         <div className="text-center mb-10">
           <h2 className="text-3xl font-black rainbow-text mb-2">
@@ -464,10 +464,10 @@ export default function ChinaEdition() {
         <div className="container max-w-5xl mx-auto px-4">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
             {[
-              { zh: "44+", en: "44+", label_zh: "核心功能", label_en: "Core Features", color: "text-cyan-400" },
-              { zh: "8", en: "8", label_zh: "AI模式", label_en: "AI Modes", color: "text-purple-400" },
-              { zh: "8", en: "8", label_zh: "平台集成", label_en: "Platform Integrations", color: "text-green-400" },
-              { zh: "全球", en: "Global", label_zh: "覆盖范围", label_en: "Coverage", color: "text-amber-400" },
+              { zh: "未验证", en: "Unverified", label_zh: "功能数量", label_en: "Feature count", color: "text-cyan-400" },
+              { zh: "未验证", en: "Unverified", label_zh: "AI模式", label_en: "AI Modes", color: "text-purple-400" },
+              { zh: "未验证", en: "Unverified", label_zh: "平台集成", label_en: "Platform Integrations", color: "text-green-400" },
+              { zh: "未验证", en: "Unverified", label_zh: "覆盖范围", label_en: "Coverage", color: "text-amber-400" },
             ].map(s => (
               <div key={s.label_en}>
                 <div className={`text-3xl font-black ${s.color} stat-number`}>{isZh ? s.zh : s.en}</div>

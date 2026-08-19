@@ -1,0 +1,3 @@
+# ChinaEdition audit note
+
+The current ChinaEdition route renders a bilingual, visually substantial landing page, but it presents unverified claims about a China Edition V4.4, Hope AI modes, education/social/creator/enterprise capabilities, WeChat/Alipay/Bilibili/Douyin/Xiaohongshu/DingTalk/Tencent Cloud/Alibaba Cloud integrations, 44 core features, 8 AI modes, 8 platform integrations, and global coverage. The route needs an explicit integration-status boundary or verified evidence before these claims can be presented as live functionality. Preserve the bilingual identity and visual quality while removing or qualifying unsupported availability, partner, feature-count, and coverage assertions.
