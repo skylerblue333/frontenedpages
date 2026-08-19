@@ -1,25 +1,15 @@
-import { useState } from "react";
+import { AlertTriangle, Download, QrCode, ScanLine, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const states = [
+  { label: "QR payload and encoding", value: "Unavailable", icon: QrCode },
+  { label: "Scanner and decoded result", value: "Not configured", icon: ScanLine },
+  { label: "Export and download", value: "Disabled", icon: Download },
+  { label: "Destination and safety checks", value: "Not verified", icon: ShieldCheck },
+];
 
 export default function QRCodeGenerator() {
-  const [state, setState] = useState(false);
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 to-black p-4">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">QRCodeGenerator</h1>
-        <p className="text-slate-400 mb-8">QR code generator</p>
-        
-        <Card className="bg-slate-900 border-slate-800 p-8">
-          <div className="space-y-6">
-            <p className="text-slate-300">Content for QRCodeGenerator page</p>
-            <Button onClick={() => setState(!state)}>
-              {state ? "Deactivate" : "Activate"}
-            </Button>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={QrCode} title="QR Code Generator" subtitle="QR generation and scanning services are not connected in this deployment. No code, payload, destination, scan result, or download is being created." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">QR service is unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous screen contained only a generic content placeholder and an inert Activate/Deactivate toggle. No encoder, payload validation, scanner, destination preview, malware or phishing checks, export contract, or security evidence was connected. The placeholder and toggle were removed rather than implying that a QR code was generated or activated.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><QrCode aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">QR readiness</h2><p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">A production QR workflow requires explicit payload types and limits, correct encoding, destination display, URL and phishing review, privacy handling, scanner permissions, decoded-content warnings, image generation, export integrity, and clear success and failure states. None of these controls are available through this route. No QR code is generated, scanned, activated, exported, or downloaded.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-3"><Card className="border border-primary/30 bg-background/80 p-4"><QrCode aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><h3 className="font-semibold">No generation claim</h3><p className="mt-1 text-sm text-muted-foreground">No payload, encoded symbol, correction level, preview, image, or QR activation state is produced.</p></Card><Card className="border border-primary/30 bg-background/80 p-4"><ScanLine aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><h3 className="font-semibold">No scan claim</h3><p className="mt-1 text-sm text-muted-foreground">No camera, scanner, decoded value, destination, permission, or scan history is accessed.</p></Card><Card className="border border-primary/30 bg-background/80 p-4"><ShieldCheck aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><h3 className="font-semibold">No safety claim</h3><p className="mt-1 text-sm text-muted-foreground">No destination, malware, phishing, privacy, or security result is verified or certified.</p></Card></div><div className="mt-6"><Button disabled aria-disabled="true">Generate QR unavailable</Button></div></Card><section aria-labelledby="qr-state-heading"><h2 id="qr-state-heading" className="mb-4 text-xl font-semibold">Current QR integration status</h2><div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">{states.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-border/50 bg-card p-4"><p className="text-sm text-muted-foreground">{label}</p><div className="mt-2 flex items-center gap-2"><Icon aria-hidden="true" className="h-4 w-4 text-muted-foreground" /><p className="font-semibold">{value}</p></div></Card>)}</div></section><Card className="border border-border/50 bg-card p-5"><p className="text-sm leading-6 text-muted-foreground">Do not encode passwords, access tokens, private keys, seed phrases, financial credentials, or confidential personal data into an unverified QR workflow. An unavailable QR page is not evidence that any code was generated, scanned, safe, or delivered.</p></Card></main></div>;
 }
