@@ -1,89 +1,16 @@
-import { BarChart } from "lucide-react";
+import { Activity, BarChart3, Database, Eye, LockKeyhole, Server, ShieldAlert, Users } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { PageHeader } from "@/components/PageHeader";
 
+const states = [
+  { label: "Admin authorization and tenant scope", value: "Unavailable", icon: LockKeyhole },
+  { label: "Users, transactions, and business events", value: "Not measured", icon: Users },
+  { label: "Health, latency, and error evidence", value: "Not connected", icon: Server },
+  { label: "Analytics, automation, and audit", value: "Disabled", icon: BarChart3 },
+];
+
 export default function AdminDashboard() {
-  return (
-    <div className="min-h-screen bg-background">
-      <PageHeader icon={BarChart} title="Admin Dashboard" subtitle="Fully functional admin dashboard page with live data and real-time updates" />
-      
-      <div className="max-w-7xl mx-auto px-4 py-8 space-y-8">
-        {/* Main Content Area */}
-        <Card className="p-8 bg-card border border-border/50">
-          <div className="space-y-6">
-            <h2 className="text-2xl font-bold">Admin Dashboard</h2>
-            
-            {/* Feature Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <BarChart className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 1</h3>
-                  <p className="text-sm text-muted-foreground">Real-time data and live updates</p>
-                </div>
-              </Card>
-              
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <BarChart className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 2</h3>
-                  <p className="text-sm text-muted-foreground">Advanced analytics and insights</p>
-                </div>
-              </Card>
-              
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <BarChart className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 3</h3>
-                  <p className="text-sm text-muted-foreground">Seamless integration and automation</p>
-                </div>
-              </Card>
-            </div>
-            
-            {/* Action Buttons */}
-            <div className="flex gap-4 flex-wrap pt-4">
-              <Button className="bg-primary hover:bg-primary/90">
-                Get Started
-              </Button>
-              <Button variant="outline">
-                Learn More
-              </Button>
-              <Button variant="ghost">
-                Documentation
-              </Button>
-            </div>
-          </div>
-        </Card>
-        
-        {/* Stats Section */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Active Users</p>
-              <p className="text-2xl font-bold">802K+</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Total Transactions</p>
-              <p className="text-2xl font-bold">2.4M</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Success Rate</p>
-              <p className="text-2xl font-bold">99.9%</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Avg Response Time</p>
-              <p className="text-2xl font-bold">45ms</p>
-            </div>
-          </Card>
-        </div>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={BarChart3} title="Admin Dashboard" subtitle="Administrative dashboard data is not connected in this deployment. No users, transactions, health, latency, analytics, automation, or privileged action result is being reported." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><ShieldAlert aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Dashboard evidence is unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous screen claimed real-time data and live updates, advanced analytics, seamless integration and automation, and displayed 802K+ active users, 2.4M transactions, 99.9% success rate, and 45ms average response time. Its Get Started, Learn More, and Documentation buttons were inert. No authoritative data source, admin authorization, observability pipeline, analytics definition, automation contract, or audit evidence was connected. Those claims and controls were removed rather than presenting unsupported operational metrics.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><BarChart3 aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Operational-dashboard readiness</h2><p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">A production admin dashboard requires server-side authorization, tenant and resource scope, typed event and metric definitions, authoritative sources, freshness and time semantics, privacy filtering, error and latency instrumentation, alerting, audit logs, confirmation and idempotency for mutations, and independent security testing. None are available through this route.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{states.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div><div className="mt-6 flex flex-wrap gap-4"><Link href="/admin"><Button>View admin access status</Button></Link><Link href="/analytics"><Button variant="outline">View analytics status</Button></Link><Link href="/security"><Button variant="ghost">View security status</Button></Link></div></Card><section aria-labelledby="dashboard-state-heading"><h2 id="dashboard-state-heading" className="mb-4 text-xl font-semibold">Current dashboard evidence</h2><div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">{states.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-border/50 bg-card p-4"><p className="text-sm text-muted-foreground">{label}</p><div className="mt-2 flex items-center gap-2"><Icon aria-hidden="true" className="h-4 w-4 text-muted-foreground" /><p className="font-semibold">{value}</p></div></Card>)}</div></section><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><Database aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">Do not use this page for capacity, uptime, transaction, user, revenue, security, incident, or deployment decisions. Never enter passwords, access tokens, private keys, seed phrases, proprietary analytics, or sensitive personal information here.</p></div></Card><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><Eye aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No dashboard action, data refresh, automation, notification, export, or privileged mutation is performed by this page.</p></div></Card><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><Activity aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">Verify operational metrics through independently trusted server-side observability and audited data sources once the required integrations are connected.</p></div></Card></main></div>;
 }
