@@ -690,3 +690,7 @@ CCPA was upgraded from a generic authenticated New/Search/Settings/empty shell t
 ## Visual quality batch: Calculator
 
 Calculator was upgraded from a generic authenticated New/Search/Settings/empty shell to a polished, truthful calculation-readiness screen. It now defines the missing inputs, units, currencies, rates, formulas, precision, assumptions, results, scenarios, recommendations, persistence, privacy, and audit boundaries, with responsive evidence cards and route-preserving next steps. Focused TypeScript validation reported no diagnostics for `Calculator.tsx`, and `git diff --check` passed.
+
+## Visual quality batch: Calendar
+
+Calendar was upgraded from a generic authenticated New/Search/Settings/empty shell to a polished, truthful scheduling-readiness screen. It now defines the missing events, owners, participants, time zones, recurrence, availability, invitations, reminders, notifications, external sync, privacy, and audit boundaries, with responsive evidence cards and route-preserving next steps. Focused TypeScript validation reported no diagnostics for `Calendar.tsx`, and `git diff --check` passed.

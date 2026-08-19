@@ -115,3 +115,7 @@ The local ActivityTracking hardening commit is `32525a5`. Its push was rejected 
 ## Twenty-third visual-upgrade batch
 
 `Calculator.tsx` now uses the shared production visual pattern with explicit unavailable boundary, calculation-readiness explanation, evidence grid, analytics/budget/privacy navigation, and professional-advice disclaimer. Unsupported result claims and the generic New/Search/Settings shell have been removed while preserving the registered route.
+
+## Twenty-fourth visual-upgrade batch
+
+`Calendar.tsx` now uses the shared production visual pattern with explicit unavailable boundary, scheduling-readiness explanation, evidence grid, notifications/automation/privacy navigation, and security disclosure. The generic New/Search/Settings shell has been removed while preserving the registered route.
