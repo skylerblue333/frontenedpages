@@ -107,3 +107,7 @@ The local ActivityTracking hardening commit is `32525a5`. Its push was rejected 
 ## Twenty-first visual-upgrade batch
 
 `BulkUpload.tsx` now uses the shared production visual pattern with explicit unavailable boundary, import-readiness explanation, evidence grid, upload/content/access navigation, and security disclosure. The generic New/Search/Settings shell has been removed while preserving the registered route.
+
+## Twenty-second visual-upgrade batch
+
+`CCPA.tsx` now uses the shared production visual pattern with explicit unavailable boundary, privacy-rights readiness explanation, evidence grid, privacy/data/security navigation, legal disclaimer, and security disclosure. Unsupported compliance claims and the generic New/Search/Settings shell have been removed while preserving the registered route.

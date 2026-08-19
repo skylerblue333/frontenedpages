@@ -682,3 +682,7 @@ BulkOperations was upgraded from a generic authenticated New/Search/Settings/emp
 ## Visual quality batch: BulkUpload
 
 BulkUpload was upgraded from a generic authenticated New/Search/Settings/empty shell to a polished, truthful import-workflow readiness screen. It now defines the missing files, formats, schema, mapping, validation, preview, storage, processing, partial failure, rollback, privacy, permissions, and audit boundaries, with responsive evidence cards and route-preserving next steps. Focused TypeScript validation reported no diagnostics for `BulkUpload.tsx`, and `git diff --check` passed.
+
+## Visual quality batch: CCPA
+
+CCPA was upgraded from a generic authenticated New/Search/Settings/empty shell to a polished, truthful privacy-rights readiness screen. It now defines the missing identity, residency, consent, data inventory, vendors, retention, access, deletion, correction, opt-out, appeal, legal review, deadline, disclosure, and audit boundaries, with responsive evidence cards and route-preserving next steps. Focused TypeScript validation reported no diagnostics for `CCPA.tsx`, and `git diff --check` passed.
