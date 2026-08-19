@@ -14,6 +14,7 @@ This index records only screenshots that were actually rendered and reviewed. A 
 | CDNManagement | `docs/visual-checkpoints/cdn-management-desktop.webp` | `docs/visual-checkpoints/cdn-management-mobile.png` | Reviewed upgraded unavailable boundary at desktop and 390px mobile | CDN provider, distribution, origin, cache, telemetry, certificate, access, audit, and cost integrations remain unavailable; fabricated metrics removed. |
 | CRM | `docs/visual-checkpoints/crm-desktop.webp` | `docs/visual-checkpoints/crm-mobile.png` | Reviewed upgraded unavailable boundary at desktop and 390px mobile | Contacts, pipeline, revenue, lead scoring, activities, and CRM mutations remain unavailable; fabricated business records and metrics removed. |
 | CacheManagement | `docs/visual-checkpoints/cache-management-desktop.webp` | `docs/visual-checkpoints/cache-management-mobile.png` | Reviewed upgraded unavailable boundary at desktop and 390px mobile | Cache provider, namespace, key policy, invalidation, telemetry, storage, access, audit, and cost integrations remain unavailable; fabricated metrics removed. |
+| Calculator | `docs/visual-checkpoints/calculator-desktop.webp` | `docs/visual-checkpoints/calculator-mobile.png` | Reviewed unavailable calculation boundary at desktop and 390px mobile | Inputs, formulas, rates, results, scenarios, recommendations, persistence, exports, and professional advice remain unavailable and unclaimed. |
 
 ## Capture notes
 
