@@ -678,3 +678,7 @@ BugReporting was upgraded from a generic authenticated New/Search/Settings/empty
 ## Visual quality batch: BulkOperations
 
 BulkOperations was upgraded from a generic authenticated New/Search/Settings/empty shell to a polished, truthful batch-workflow readiness screen. It now defines the missing record scope, selection, authorization, validation, idempotency, queues, partial failure, retry, rollback, side-effect, privacy, and audit boundaries, with responsive evidence cards and route-preserving next steps. Focused TypeScript validation reported no diagnostics for `BulkOperations.tsx`, and `git diff --check` passed.
+
+## Visual quality batch: BulkUpload
+
+BulkUpload was upgraded from a generic authenticated New/Search/Settings/empty shell to a polished, truthful import-workflow readiness screen. It now defines the missing files, formats, schema, mapping, validation, preview, storage, processing, partial failure, rollback, privacy, permissions, and audit boundaries, with responsive evidence cards and route-preserving next steps. Focused TypeScript validation reported no diagnostics for `BulkUpload.tsx`, and `git diff --check` passed.
