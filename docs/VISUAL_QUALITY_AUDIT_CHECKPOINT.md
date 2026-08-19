@@ -123,3 +123,7 @@ The local ActivityTracking hardening commit is `32525a5`. Its push was rejected 
 ## Twenty-fifth visual-upgrade batch
 
 `CampaignAnalytics.tsx` now uses the shared production visual pattern with explicit unavailable boundary, campaign-analytics explanation, evidence grid, attribution/audience/analytics navigation, and security disclosure. Fabricated campaign metrics and the generic New/Search/Settings shell have been removed while preserving the registered route.
+
+## Twenty-sixth visual-upgrade batch
+
+`CampaignBuilder.tsx` now uses the shared production visual pattern with explicit unavailable boundary, campaign-creation explanation, evidence grid, analytics/audience/content navigation, and security disclosure. Unsupported campaign and spend claims and the generic New/Search/Settings shell have been removed while preserving the registered route.
