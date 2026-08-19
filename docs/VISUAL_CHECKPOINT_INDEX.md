@@ -9,6 +9,7 @@ This index records only screenshots that were actually rendered and reviewed. A 
 | CategoryManagement | `docs/visual-checkpoints/category-management-desktop.webp` | `docs/visual-checkpoints/category-management-mobile.png` | Reviewed unauthenticated access state at desktop and 390px mobile | Category records, counts, permissions, and administrative mutations are not exposed without verified authentication. |
 | ChangeLog | `docs/visual-checkpoints/change-log-desktop.webp` | `docs/visual-checkpoints/change-log-mobile.png` | Reviewed unauthenticated access state at desktop and 390px mobile | Release entries, timestamps, authorship, deployment status, and audit claims are not exposed without verified authentication. |
 | Checkout | `docs/visual-checkpoints/checkout-desktop.webp` | `docs/visual-checkpoints/checkout-mobile.png` | Reviewed unauthenticated access state at desktop and 390px mobile | Cart, pricing, payment, inventory, order, and transaction success are not exposed without verified authentication and commerce integrations. |
+| CheckoutFlow | `docs/visual-checkpoints/checkout-flow-desktop.webp` | `docs/visual-checkpoints/checkout-flow-mobile.png` | Reviewed unavailable checkout boundary at desktop and 390px mobile | Cart, pricing, payment authorization, inventory, order creation, receipts, refunds, and fulfillment remain unavailable and unclaimed. |
 
 ## Capture notes
 
