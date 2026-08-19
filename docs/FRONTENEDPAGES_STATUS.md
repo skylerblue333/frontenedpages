@@ -602,3 +602,7 @@ The registered ActivityTracking route no longer presents an incomplete authentic
 ## Visual quality batch: AdvancedSearch and AnalyticsReports
 
 AdvancedSearch and AnalyticsReports were upgraded from generic authenticated New/Search/Settings/empty shells to polished, truthful integration-status screens. Both now provide a clear unavailable-state explanation, production readiness guidance, structured evidence cards, privacy and security boundaries, and route-preserving next-step navigation. Unsupported queries, results, metrics, reports, exports, schedules, delivery, and audit assumptions were removed. Focused TypeScript checks reported no diagnostics for either page, and `git diff --check` passed.
+
+## Visual quality batch: AnomalyDetection and AssetManagement
+
+AnomalyDetection and AssetManagement were upgraded from generic authenticated New/Search/Settings/empty shells to polished, truthful integration-status screens. AnomalyDetection now defines the missing telemetry, baseline, model, threshold, confidence, alert, privacy, and audit boundaries. AssetManagement now defines the missing asset registry, storage, metadata, ownership, rights, versioning, approval, upload, delivery, retention, and audit boundaries. Both preserve their registered routes, use responsive shared visual patterns, and passed focused TypeScript and diff checks.

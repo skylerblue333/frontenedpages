@@ -27,3 +27,7 @@ The local ActivityTracking hardening commit is `32525a5`. Its push was rejected 
 ## First visual-upgrade batch
 
 `AdvancedSearch.tsx` and `AnalyticsReports.tsx` now use the shared production visual pattern: PageHeader, explicit red unavailable boundary, readiness explanation, three capability cards, state grid, route-preserving navigation, and security/privacy disclosure. No generic New/Search/Settings shell remains in either page. Both passed focused TypeScript and diff checks. The changes remain local until GitHub authentication is refreshed; the preserved ActivityTracking commit `32525a5` is still awaiting publication.
+
+## Second visual-upgrade batch
+
+`AnomalyDetection.tsx` and `AssetManagement.tsx` now use the shared production visual pattern with explicit unavailable boundaries, readiness explanations, evidence grids, route-preserving navigation, and security/privacy disclosures. No generic New/Search/Settings shell remains in either page. Both passed focused TypeScript and diff checks.
