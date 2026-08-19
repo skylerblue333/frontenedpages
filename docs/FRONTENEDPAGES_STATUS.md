@@ -634,3 +634,7 @@ AutoResponder was upgraded from a generic authenticated New/Search/Settings/empt
 ## Visual quality batch: AutomationRules
 
 AutomationRules was upgraded from a generic authenticated New/Search/Settings/empty shell to a polished, truthful workflow-automation readiness screen. It now defines the missing trigger, rule, action, integration, credential, approval, queue, retry, side-effect, privacy, and audit boundaries, with responsive evidence cards and route-preserving next steps. Focused TypeScript validation reported no diagnostics for `AutomationRules.tsx`, and `git diff --check` passed.
+
+## Visual quality batch: AuditTrail
+
+AuditTrail was upgraded from a generic authenticated New/Search/Settings/empty shell to a polished, truthful audit-readiness screen. It now defines the missing event, actor, timestamp, provenance, integrity, retention, reviewer access, export, compliance, privacy, and audit-health boundaries, with responsive evidence cards and route-preserving next steps. Focused TypeScript validation reported no diagnostics for `AuditTrail.tsx`, and `git diff --check` passed.
