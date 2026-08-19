@@ -1,25 +1,9 @@
-import { useState } from "react";
+import { AlertTriangle, BellOff, LockKeyhole, ShieldCheck } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
 
 export default function AlertDialog() {
-  const [state, setState] = useState(false);
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 to-black p-4">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">AlertDialog</h1>
-        <p className="text-slate-400 mb-8">alert modal</p>
-        
-        <Card className="bg-slate-900 border-slate-800 p-8">
-          <div className="space-y-6">
-            <p className="text-slate-300">Content for AlertDialog page</p>
-            <Button onClick={() => setState(!state)}>
-              {state ? "Deactivate" : "Activate"}
-            </Button>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={AlertTriangle} title="Alert dialog" subtitle="Alert creation and delivery services are not connected in this deployment. No alert, notification, escalation, or acknowledgement is being created or reported." /><main className="mx-auto max-w-4xl space-y-6 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><BellOff aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Alert dialog is unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous screen exposed an Activate/Deactivate control without a verified alert registry, event source, delivery provider, ownership model, escalation policy, acknowledgement contract, or audit record. That control was removed rather than implying that an operational alert exists or that a notification will be delivered.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><ShieldCheck aria-hidden="true" className="h-7 w-7 text-primary" /></div><div><h2 className="text-2xl font-bold">No alert action is available</h2><p className="mt-2 text-sm leading-6 text-muted-foreground">A production alert dialog requires a typed rule or incident identifier, authenticated ownership, event and threshold semantics, severity, suppression and deduplication, delivery-provider authentication, retry and escalation policy, acknowledgement state, privacy filtering, and an auditable server-side record. None are available through this route.</p></div></div><div className="mt-6 grid gap-4 md:grid-cols-3"><Card className="border border-border/50 bg-background/70 p-4"><p className="text-sm text-muted-foreground">Rule or incident</p><p className="mt-2 font-semibold">Unavailable</p></Card><Card className="border border-border/50 bg-background/70 p-4"><p className="text-sm text-muted-foreground">Delivery and escalation</p><p className="mt-2 font-semibold">Disabled</p></Card><Card className="border border-border/50 bg-background/70 p-4"><p className="text-sm text-muted-foreground">Acknowledgement and audit</p><p className="mt-2 font-semibold">Not configured</p></Card></div><div className="mt-6 flex flex-wrap gap-3"><Link href="/alert-configuration"><Button>View alerting status</Button></Link><Link href="/notifications"><Button variant="outline">View notification status</Button></Link></div></Card><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><LockKeyhole aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">Do not enter passwords, access tokens, private keys, seed phrases, webhook secrets, confidential incident data, or sensitive personal information here. No email, push, SMS, webhook, chat notification, retry, escalation, acknowledgement, incident, audit record, or external API call is created, sent, configured, or invoked by this page.</p></div></Card></main></div>;
 }
