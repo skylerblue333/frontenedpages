@@ -79,3 +79,7 @@ The local ActivityTracking hardening commit is `32525a5`. Its push was rejected 
 ## Fourteenth visual-upgrade batch
 
 `BlogEditor.tsx` now uses the shared production visual pattern with explicit unavailable boundary, editorial-readiness explanation, evidence grid, publishing/content/media navigation, and security disclosure. The generic New/Search/Settings shell has been removed while preserving the registered route.
+
+## Fifteenth visual-upgrade batch
+
+`BlogPublisher.tsx` now uses the shared production visual pattern with explicit unavailable boundary, publication-readiness explanation, evidence grid, editor/calendar/analytics navigation, and security disclosure. The generic New/Search/Settings shell has been removed while preserving the registered route.
