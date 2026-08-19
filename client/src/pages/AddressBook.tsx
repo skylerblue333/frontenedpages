@@ -1,25 +1,16 @@
-import { useState } from "react";
+import { BookOpen, Contact, LockKeyhole, Mail, MessageCircle, ShieldAlert, Users } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const states = [
+  { label: "Contact records and ownership", value: "Unavailable", icon: Contact },
+  { label: "Import, sharing, and consent", value: "Not configured", icon: Users },
+  { label: "Messaging and invitations", value: "Disabled", icon: MessageCircle },
+  { label: "Storage, export, and deletion", value: "Not connected", icon: LockKeyhole },
+];
 
 export default function AddressBook() {
-  const [state, setState] = useState(false);
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 to-black p-4">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">AddressBook</h1>
-        <p className="text-slate-400 mb-8">address book</p>
-        
-        <Card className="bg-slate-900 border-slate-800 p-8">
-          <div className="space-y-6">
-            <p className="text-slate-300">Content for AddressBook page</p>
-            <Button onClick={() => setState(!state)}>
-              {state ? "Deactivate" : "Activate"}
-            </Button>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={BookOpen} title="Address Book" subtitle="Contact-management services are not connected in this deployment. No person, email, address, contact relationship, invitation, or message is being reported or changed." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><ShieldAlert aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Contact management is unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous screen was a generic placeholder with an inert Activate control. No contact source, account ownership, consent, import flow, address validation, sharing policy, messaging provider, notification boundary, retention, export, or deletion contract was connected. This route does not collect or store contact data and does not simulate activation.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><BookOpen aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Privacy-safe contact readiness</h2><p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">A production address book requires explicit user consent, verified record ownership, field minimization, secure import and export, duplicate handling, sharing and block controls, invitation semantics, messaging authorization, access controls, encryption, retention and deletion, audit, and clear failed or revoked states. None are available through this screen.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{states.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div><div className="mt-6 flex flex-wrap gap-4"><Link href="/contacts"><Button>View contact status</Button></Link><Link href="/messages"><Button variant="outline"><Mail className="mr-2 h-4 w-4" />View messaging status</Button></Link><Link href="/contact-us-form"><Button variant="ghost">Ask about contact access</Button></Link></div></Card><section aria-labelledby="address-state-heading"><h2 id="address-state-heading" className="mb-4 text-xl font-semibold">Current contact evidence</h2><div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">{states.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-border/50 bg-card p-4"><p className="text-sm text-muted-foreground">{label}</p><div className="mt-2 flex items-center gap-2"><Icon aria-hidden="true" className="h-4 w-4 text-muted-foreground" /><p className="font-semibold">{value}</p></div></Card>)}</div></section><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><LockKeyhole aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">Never enter names, email addresses, phone numbers, physical addresses, contact lists, passwords, access tokens, or other personal data into this page. Do not treat this screen as proof of identity, relationship, invitation, consent, message delivery, or contact ownership.</p></div></Card><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><Mail aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">Use your device’s or provider’s official contact-management tools until reviewed contact integrations are connected and independently tested.</p></div></Card></main></div>;
 }
