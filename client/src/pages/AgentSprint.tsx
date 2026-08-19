@@ -1,52 +1,16 @@
-import { useState } from "react";
-import { Zap, Play, CheckCircle, Clock, AlertCircle, Plus } from "lucide-react";
+import { Activity, Clock3, Database, GitBranch, LockKeyhole, Play, ShieldAlert, ShieldCheck, Sparkles, Zap } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
 
-const SPRINT_TASKS = [
-  { id: "1", name: "Analyze BTC price trend", agent: "Oracle", status: "done", duration: "2.3s", output: "+18.2% signal detected" },
-  { id: "2", name: "Generate weekly report", agent: "Forge", status: "running", duration: "12s", output: "Processing..." },
-  { id: "3", name: "Scan for security threats", agent: "Shield", status: "done", duration: "0.8s", output: "No threats found" },
-  { id: "4", name: "Optimize staking yield", agent: "Atlas", status: "queued", duration: "--", output: "Waiting..." },
-  { id: "5", name: "Post social content", agent: "Echo", status: "done", duration: "1.1s", output: "Posted to 3 channels" },
+const states = [
+  { label: "Sprint, task, and agent registry", value: "Unavailable", icon: Zap },
+  { label: "Models, tools, permissions, and sandbox", value: "Not configured", icon: ShieldCheck },
+  { label: "Outputs, statuses, and timing evidence", value: "Not measured", icon: Activity },
+  { label: "Financial, security, and social actions", value: "Disabled", icon: LockKeyhole },
 ];
 
 export default function AgentSprint() {
-  const [tasks, setTasks] = useState(SPRINT_TASKS);
-  return (
-    <div className="min-h-screen bg-[#0a0a0f] text-white pb-24">
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-black text-white mb-1">Agent Sprint</h1>
-            <p className="text-slate-400">Run parallel agent tasks in a single sprint</p>
-          </div>
-          <Button className="bg-gradient-to-r from-cyan-500 to-purple-600 border-0 text-white gap-2">
-            <Play className="h-4 w-4" /> Run Sprint
-          </Button>
-        </div>
-        <div className="space-y-3">
-          {tasks.map(task => (
-            <div key={task.id} className="rounded-2xl border border-slate-800/60 bg-slate-900/40 p-4 flex items-center gap-4">
-              <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${task.status === "done" ? "bg-emerald-500/20" : task.status === "running" ? "bg-cyan-500/20" : "bg-slate-700/40"}`}>
-                {task.status === "done" ? <CheckCircle className="h-4 w-4 text-emerald-400" /> : task.status === "running" ? <Zap className="h-4 w-4 text-cyan-400 animate-pulse" /> : <Clock className="h-4 w-4 text-slate-500" />}
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="font-medium text-white text-sm">{task.name}</div>
-                <div className="text-xs text-slate-500">Agent: {task.agent} · {task.output}</div>
-              </div>
-              <div className="text-right shrink-0">
-                <Badge className={`text-xs border-0 ${task.status === "done" ? "bg-emerald-500/15 text-emerald-400" : task.status === "running" ? "bg-cyan-500/15 text-cyan-400" : "bg-slate-700/50 text-slate-400"}`}>{task.status}</Badge>
-                <div className="text-xs text-slate-500 mt-1">{task.duration}</div>
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className="mt-6 rounded-2xl border border-dashed border-slate-700 p-6 text-center cursor-pointer hover:border-cyan-500/50 transition-colors">
-          <Plus className="h-6 w-6 text-slate-600 mx-auto mb-2" />
-          <p className="text-slate-500 text-sm">Add task to sprint</p>
-        </div>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Zap} title="Agent Sprint" subtitle="Parallel agent-task execution is not connected in this deployment. No sprint, task, output, status, timing, market signal, staking action, security result, or social post is being reported or performed." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><ShieldAlert aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Agent sprint is unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous screen contained hardcoded tasks for BTC price analysis with a +18.2% signal, weekly report generation, “no threats found,” staking-yield optimization, social posting to three channels, running and queued statuses, durations, and a Run Sprint/Add Task interface. No agent registry, model provider, wallet, market-data source, security telemetry, social provider, task queue, permission boundary, sandbox, audit, or output evidence was connected. Those claims and controls were removed rather than initiating financial, security, or social actions.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Zap aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Sprint readiness</h2><p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">A production sprint runner requires authenticated ownership, typed task contracts, explicit model and tool allowlists, isolated execution, approval boundaries, queue durability, idempotency, retries and cancellation, output verification, cost and rate limits, sensitive-data controls, audit, and separate governance for trading, security, wallet, and social actions. None are available through this screen.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{states.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div><div className="mt-6 flex flex-wrap gap-4"><Link href="/agent-coordination-hub"><Button>View orchestration status</Button></Link><Link href="/ai-governance"><Button variant="outline">View AI governance</Button></Link><Link href="/security"><Button variant="ghost">View security status</Button></Link></div></Card><section aria-labelledby="sprint-state-heading"><h2 id="sprint-state-heading" className="mb-4 text-xl font-semibold">Current sprint evidence</h2><div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">{states.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-border/50 bg-card p-4"><p className="text-sm text-muted-foreground">{label}</p><div className="mt-2 flex items-center gap-2"><Icon aria-hidden="true" className="h-4 w-4 text-muted-foreground" /><p className="font-semibold">{value}</p></div></Card>)}</div></section><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><LockKeyhole aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">Do not use this page for trading, staking, security, social publishing, or operational decisions. Never enter passwords, access tokens, private keys, seed phrases, confidential prompts, proprietary code, wallet credentials, or sensitive personal information here.</p></div></Card><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><Database aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No sprint run, task assignment, market analysis, price signal, wallet transaction, staking operation, security scan, report save, social post, notification, or external API call is read, written, or simulated by this page.</p></div></Card><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><GitBranch aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No task identifier, agent identity, output, status, duration, queue freshness, completion, failure, retry, or audit record is fabricated as a fallback.</p></div></Card><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><Clock3 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No scheduled execution, timeout, cancellation, or completion state is claimed by this screen.</p></div></Card><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><Sparkles aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">Verify future agent outputs and actions through independently trusted server-side records before relying on them.</p></div></Card></main></div>;
 }
