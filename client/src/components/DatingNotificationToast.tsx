@@ -1,12 +1,12 @@
 import React from 'react';
 import { Heart } from 'lucide-react';
 
-interface DatingNotificationToastProps {
-  message: string;
+export interface DatingNotificationToastProps {
+  message?: string;
   type?: 'match' | 'message' | 'like';
 }
 
-export default function DatingNotificationToast({ message, type = 'message' }: DatingNotificationToastProps) {
+export function DatingNotificationToast({ message = 'New notification', type = 'message' }: DatingNotificationToastProps) {
   const icons = {
     match: <Heart className="w-5 h-5 text-red-500" />,
     message: <span>💬</span>,
@@ -20,3 +20,5 @@ export default function DatingNotificationToast({ message, type = 'message' }: D
     </div>
   );
 }
+
+export default DatingNotificationToast;

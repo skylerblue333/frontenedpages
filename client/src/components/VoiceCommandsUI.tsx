@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { Mic } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-interface VoiceCommandsUIProps {
+export interface VoiceCommandsUIProps {
   onCommand?: (command: string) => void;
 }
 
-export default function VoiceCommandsUI({ onCommand }: VoiceCommandsUIProps) {
+export function VoiceCommandsUI({ onCommand }: VoiceCommandsUIProps) {
   const [isListening, setIsListening] = useState(false);
 
   const handleToggle = () => {
@@ -27,3 +27,5 @@ export default function VoiceCommandsUI({ onCommand }: VoiceCommandsUIProps) {
     </div>
   );
 }
+
+export default VoiceCommandsUI;
