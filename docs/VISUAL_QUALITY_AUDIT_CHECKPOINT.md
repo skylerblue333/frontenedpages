@@ -75,3 +75,7 @@ The local ActivityTracking hardening commit is `32525a5`. Its push was rejected 
 ## Thirteenth visual-upgrade batch
 
 `BlockchainMonitor.tsx` now uses the shared production visual pattern with explicit unavailable boundary, chain-readiness explanation, evidence grid, chain/address/wallet navigation, and security disclosure. The generic New/Search/Settings shell has been removed while preserving the registered route.
+
+## Fourteenth visual-upgrade batch
+
+`BlogEditor.tsx` now uses the shared production visual pattern with explicit unavailable boundary, editorial-readiness explanation, evidence grid, publishing/content/media navigation, and security disclosure. The generic New/Search/Settings shell has been removed while preserving the registered route.
