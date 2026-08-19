@@ -1,74 +1,20 @@
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/_core/hooks/useAuth";
+import { AlertTriangle, FileClock, LockKeyhole, Network, RefreshCw, Search, ShieldCheck } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Loader2, Plus, Search, Settings } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+import { useAuth } from "@/_core/hooks/useAuth";
+
+const states = [
+  { label: "Owned endpoints and providers", value: "Unavailable", icon: Network },
+  { label: "Event schemas and signatures", value: "Not configured", icon: ShieldCheck },
+  { label: "Delivery, retry, and replay evidence", value: "Not measured", icon: RefreshCw },
+  { label: "Audit, search, and management actions", value: "Disabled", icon: FileClock },
+];
 
 export default function WebhookManager() {
   const { isAuthenticated } = useAuth();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const signIn = () => { window.location.href = "/api/oauth/login"; };
 
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>WebhookManager</CardTitle>
-            <CardDescription>Sign in to access this feature</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full">Sign In</Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold">WebhookManager</h1>
-            <p className="text-muted-foreground mt-2">Webhook configuration</p>
-          </div>
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            New
-          </Button>
-        </div>
-
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Search className="w-4 h-4 text-muted-foreground" />
-              <Input
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="max-w-sm"
-              />
-              <Button variant="outline" size="icon">
-                <Settings className="w-4 h-4" />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {isLoading ? (
-              <div className="flex justify-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
-              </div>
-            ) : (
-              <div className="text-center py-12 text-muted-foreground">
-                <p>No data available. Start by creating a new item.</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Network} title="Webhook Manager" subtitle="Authenticated webhook management is not connected in this deployment. No endpoint, provider, event, delivery, or mutation result is being reported." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8">{!isAuthenticated && <Card className="border border-primary/30 bg-primary/5 p-6"><div className="flex items-start gap-3"><LockKeyhole aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-primary" /><div><h2 className="font-semibold">Sign in to check access</h2><p className="mt-1 text-sm leading-6 text-muted-foreground">Webhook ownership, provider permissions, and administrative actions require the platform’s authenticated session. Signing in does not imply that webhook services or records are available.</p><Button className="mt-4" onClick={signIn}>Sign in securely</Button></div></div></Card>}<Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Webhook management is unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous authenticated state exposed New, Search, Settings, a loading branch, and a generic “no data” message without a webhook registry, provider connection, event schema, delivery worker, retry queue, signature verifier, ownership model, or audit contract. Those controls and empty-state claims were removed. Whether signed in or not, this route cannot create, search, configure, update, disable, send, receive, retry, or acknowledge a webhook.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Network aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Authenticated management readiness</h2><p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">A production manager requires authenticated ownership, provider allowlists, signed event envelopes, idempotency, replay protection, schema/version controls, delivery ordering, retries and dead letters, reconciliation, redaction, audit logs, and clear success, failure, disable, and recovery states. None are available through this route.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{states.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div><div className="mt-6 flex flex-wrap gap-4"><Link href="/webhooks"><Button>View webhook status</Button></Link><Link href="/api-keys"><Button variant="outline">View credential status</Button></Link><Link href="/contact-us-form"><Button variant="ghost">Ask about manager access</Button></Link></div></Card><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><Search aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No endpoint, event, delivery, provider, owner, search result, usage metric, or administrative mutation is loaded. Do not treat the signed-out or signed-in boundary as evidence that a webhook exists or is healthy.</p></div></Card><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><LockKeyhole aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">Do not paste signing secrets, API keys, access tokens, private keys, seed phrases, personal data, or confidential event payloads here. Use reviewed server-side infrastructure for production webhook management.</p></div></Card></main></div>;
 }
