@@ -1,129 +1,16 @@
-import { useAuth } from "@/_core/hooks/useAuth";
-import { trpc } from "@/lib/trpc";
+import { CircleAlert, Gamepad2, LockKeyhole, ShieldCheck, Trophy, WalletCards } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Gamepad2, Trophy, Swords, Star, Zap, Crown, Target, Dices, CircleDot, Circle, Spade, Flame, Coins } from "lucide-react";
-import { Link } from "wouter";
+import { PageHeader } from "@/components/PageHeader";
+
+const evidence = [
+  { label: "Game catalog and playable sessions", value: "Unavailable", icon: Gamepad2 },
+  { label: "Accounts, age controls, and player state", value: "Not configured", icon: ShieldCheck },
+  { label: "Wagering, token rewards, and prizes", value: "Disabled", icon: WalletCards },
+  { label: "Tournaments, quests, and leaderboards", value: "Not measured", icon: Trophy },
+];
 
 export default function Arcade() {
-  const { isAuthenticated } = useAuth();
-  const { data: tournaments, isLoading } = trpc.gamefi.tournaments.useQuery();
-  const { data: quests } = trpc.gamefi.quests.useQuery();
-
-  const gameTypes = [
-    { name: "PvP Arena", icon: Swords, color: "oklch(0.7_0.2_0)", desc: "1v1 and team battles" },
-    { name: "Tournaments", icon: Trophy, color: "oklch(0.8_0.15_90)", desc: "Compete for prizes" },
-    { name: "Quests", icon: Target, color: "oklch(0.72 0.28 305)", desc: "Daily & weekly missions" },
-    { name: "Ranked", icon: Crown, color: "oklch(0.7_0.15_280)", desc: "Climb the ladder" },
-  ];
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="container max-w-6xl mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">
-            <span className="bg-gradient-to-r from-[oklch(0.8_0.15_90)] to-[oklch(0.7_0.2_0)] bg-clip-text text-transparent">Arcade</span>
-          </h1>
-          <p className="text-muted-foreground">Play games, earn tokens, compete in tournaments, and climb the leaderboards.</p>
-        </div>
-
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          {gameTypes.map(g => (
-            <Card key={g.name} className="p-4 border-border/50 bg-card/80 hover:border-primary/30 transition-all text-center cursor-pointer">
-              <g.icon className="w-6 h-6 mx-auto mb-2" style={{ color: g.color }} />
-              <h3 className="font-semibold text-sm">{g.name}</h3>
-              <p className="text-xs text-muted-foreground mt-1">{g.desc}</p>
-            </Card>
-          ))}
-        </div>
-
-        {/* Casino Games */}
-        <div className="mb-8">
-          <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-            <Coins className="w-5 h-5 text-yellow-400" /> Casino Games
-            <Badge className="text-[10px] bg-yellow-500/20 text-yellow-400 border-yellow-500/30 ml-1">SKY444 Wagering</Badge>
-          </h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-            {[
-              { name: "Crash", icon: Flame, color: "from-red-600 to-orange-600", href: "/game/crash", desc: "Ride the curve" },
-              { name: "Slots", icon: Star, color: "from-purple-600 to-pink-600", href: "/game/slots", desc: "Spin to win" },
-              { name: "Blackjack", icon: Spade, color: "from-slate-700 to-slate-900", href: "/game/blackjack", desc: "Beat the dealer" },
-              { name: "Dice", icon: Dices, color: "from-blue-600 to-purple-600", href: "/game/dice", desc: "Over or under" },
-              { name: "Roulette", icon: CircleDot, color: "from-red-700 to-red-900", href: "/game/roulette", desc: "Spin the wheel" },
-              { name: "Plinko", icon: Circle, color: "from-yellow-500 to-orange-500", href: "/game/plinko", desc: "Drop the ball" },
-            ].map(game => (
-              <Link key={game.name} href={game.href}>
-                <Card className="p-4 border-border/50 bg-card/80 hover:border-primary/30 transition-all text-center cursor-pointer group hover:scale-105">
-                  <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${game.color} flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform`}>
-                    <game.icon className="w-5 h-5 text-white" />
-                  </div>
-                  <h3 className="font-bold text-sm">{game.name}</h3>
-                  <p className="text-xs text-muted-foreground mt-0.5">{game.desc}</p>
-                </Card>
-              </Link>
-            ))}
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div>
-            <h2 className="text-xl font-bold mb-4 flex items-center gap-2"><Trophy className="w-5 h-5 text-[oklch(0.8_0.15_90)]" /> Tournaments</h2>
-            {isLoading ? (
-              <div className="space-y-3">{[1,2,3].map(i => <Card key={i} className="p-4 border-border/50 animate-pulse"><div className="h-20 bg-muted rounded" /></Card>)}</div>
-            ) : tournaments && tournaments.length > 0 ? (
-              <div className="space-y-3">
-                {tournaments.map((t: any) => (
-                  <Card key={t.id} className="p-4 border-border/50 bg-card/80 hover:border-primary/30 transition-all">
-                    <div className="flex items-center justify-between mb-2">
-                      <h3 className="font-semibold text-sm">{t.name}</h3>
-                      <Badge variant="secondary" className="text-[10px]">{t.status}</Badge>
-                    </div>
-                    <p className="text-xs text-muted-foreground mb-2">{t.description || "Compete for token rewards!"}</p>
-                    <div className="flex items-center justify-between text-xs">
-                      <span className="text-muted-foreground">{t.currentPlayers}/{t.maxPlayers} players</span>
-                      <span className="font-mono text-primary">Prize: {t.prizePool} SKY444</span>
-                    </div>
-                  </Card>
-                ))}
-              </div>
-            ) : (
-              <Card className="p-8 text-center border-border/50 bg-card/80">
-                <Trophy className="w-10 h-10 text-primary/50 mx-auto mb-3" />
-                <h3 className="font-semibold mb-1">No tournaments yet</h3>
-                <p className="text-xs text-muted-foreground">Tournaments are coming soon!</p>
-              </Card>
-            )}
-          </div>
-
-          <div>
-            <h2 className="text-xl font-bold mb-4 flex items-center gap-2"><Target className="w-5 h-5 text-[oklch(0.72 0.28 305)]" /> Active Quests</h2>
-            {quests && quests.length > 0 ? (
-              <div className="space-y-3">
-                {quests.map((q: any) => (
-                  <Card key={q.id} className="p-4 border-border/50 bg-card/80 hover:border-primary/30 transition-all">
-                    <div className="flex items-center justify-between mb-2">
-                      <h3 className="font-semibold text-sm">{q.title}</h3>
-                      <Badge className="text-[10px] bg-[oklch(0.8_0.15_90)]/20 text-[oklch(0.8_0.15_90)]">{q.xpReward} XP</Badge>
-                    </div>
-                    <p className="text-xs text-muted-foreground mb-2">{q.description}</p>
-                    <div className="flex items-center justify-between text-xs">
-                      <span className="text-muted-foreground">{q.type} quest</span>
-                      <span className="font-mono text-primary">+{q.tokenReward} SKY444</span>
-                    </div>
-                  </Card>
-                ))}
-              </div>
-            ) : (
-              <Card className="p-8 text-center border-border/50 bg-card/80">
-                <Target className="w-10 h-10 text-primary/50 mx-auto mb-3" />
-                <h3 className="font-semibold mb-1">No quests available</h3>
-                <p className="text-xs text-muted-foreground">Daily and weekly quests are coming soon!</p>
-              </Card>
-            )}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Gamepad2} title="Arcade" subtitle="Game, wagering, token-reward, and tournament services are not connected in this deployment. No game, player, score, wager, reward, prize, or leaderboard result is being reported." /><main className="mx-auto max-w-5xl space-y-8 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><CircleAlert aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Arcade services are unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous screen advertised play-to-earn tokens, PvP, tournaments, quests, ranked competition, and SKY444 wagering for Crash, Slots, Blackjack, Dice, Roulette, and Plinko. It also connected tournament and quest data without a verified game service, player identity, age and jurisdiction controls, wallet, payment or wagering provider, odds and rules, prize ledger, anti-cheat system, or audit contract. Those game links, reward claims, and controls were removed rather than enabling gambling or implying financial outcomes.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Gamepad2 aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Arcade readiness</h2><p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">A production game platform requires verified game builds, server-authoritative sessions, identity and age gating, jurisdiction checks, fair-play and anti-cheat controls, responsible-gaming safeguards, wallet and payment boundaries, immutable score and reward records, dispute handling, rate limits, and auditable tournament and quest state. None are available through this screen.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{evidence.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div><div className="mt-6 flex flex-wrap gap-3"><Link href="/gaming"><Button>View gaming status</Button></Link><Link href="/crypto-wallet"><Button variant="outline">View wallet status</Button></Link><Link href="/age-verification"><Button variant="ghost">View age-verification status</Button></Link></div></Card><section aria-labelledby="arcade-evidence-heading"><h2 id="arcade-evidence-heading" className="mb-4 text-xl font-semibold">Current arcade evidence</h2><div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">{evidence.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-border/50 bg-card p-4"><p className="text-sm text-muted-foreground">{label}</p><div className="mt-2 flex items-center gap-2"><Icon aria-hidden="true" className="h-4 w-4 text-muted-foreground" /><p className="font-semibold">{value}</p></div></Card>)}</div></section><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><LockKeyhole aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">This screen does not enable wagering or financial play. Do not enter passwords, access tokens, private keys, seed phrases, payment credentials, wallet credentials, or sensitive personal information here. If a future game or wagering service is introduced, follow its verified age, jurisdiction, responsible-gaming, and financial-risk controls.</p></div></Card><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><WalletCards aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No game launch, match, wager, wallet transaction, token award, prize payout, tournament registration, quest completion, score update, leaderboard change, notification, or external API call is read, written, sent, stored, or simulated by this page.</p></div></Card><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><Trophy aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No player count, score, rank, odds, reward, XP, token balance, prize pool, tournament status, quest status, win, loss, payout, or fair-play result is fabricated as a fallback. Verify future game and financial records through independently trusted server-side systems.</p></div></Card></main></div>;
 }
