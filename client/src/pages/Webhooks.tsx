@@ -1,25 +1,16 @@
-import { useState } from "react";
+import { AlertTriangle, CheckCircle2, FileClock, LockKeyhole, Network, RefreshCw, ShieldCheck } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const states = [
+  { label: "Endpoint registry and ownership", value: "Unavailable", icon: Network },
+  { label: "Signature verification and secrets", value: "Not configured", icon: ShieldCheck },
+  { label: "Delivery, retry, and replay state", value: "Not measured", icon: RefreshCw },
+  { label: "Event audit and retention", value: "Disabled", icon: FileClock },
+];
 
 export default function Webhooks() {
-  const [state, setState] = useState(false);
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 to-black p-4">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">Webhooks</h1>
-        <p className="text-slate-400 mb-8">webhooks configuration</p>
-        
-        <Card className="bg-slate-900 border-slate-800 p-8">
-          <div className="space-y-6">
-            <p className="text-slate-300">Content for Webhooks page</p>
-            <Button onClick={() => setState(!state)}>
-              {state ? "Deactivate" : "Activate"}
-            </Button>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Network} title="Webhooks" subtitle="Webhook configuration and delivery services are not connected in this deployment. No endpoint, event, signature, delivery, retry, or provider result is being reported." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Webhook management is unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous screen contained only a generic webhook configuration placeholder and an inert Activate/Deactivate toggle. No endpoint registry, provider allowlist, signing-secret broker, event schema, delivery worker, retry queue, replay protection, dead-letter handling, or audit trail was connected. The placeholder and toggle were removed rather than implying that an external service can receive or send events.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Network aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Webhook readiness</h2><p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">Production webhooks require an owned endpoint registry, authenticated source and destination, signed event envelopes, replay protection, idempotency keys, schema/version management, timeout and retry behavior, delivery ordering, dead-letter handling, privacy-safe payloads, observability, reconciliation, and clear failure and disable states. None are available through this route. No webhook is registered, sent, received, retried, or acknowledged.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{states.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div><div className="mt-6 flex flex-wrap gap-4"><Link href="/api-integration"><Button>View API integration</Button></Link><Link href="/api-monitoring"><Button variant="outline">View API monitoring</Button></Link><Link href="/contact-us-form"><Button variant="ghost">Ask about webhook access</Button></Link></div></Card><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><LockKeyhole aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">Do not paste signing secrets, API keys, access tokens, private keys, seed phrases, personal data, or confidential event payloads here. An unavailable webhook page is not evidence that an event was delivered, verified, retried, persisted, or processed.</p></div></Card><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">Use a reviewed server-side webhook service with signature verification, idempotency, replay protection, redaction, and independently retained delivery evidence before connecting production events.</p></div></Card></main></div>;
 }
