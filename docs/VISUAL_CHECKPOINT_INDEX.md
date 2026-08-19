@@ -23,6 +23,7 @@ This index records only screenshots that were actually rendered and reviewed. A 
 | CarRental | `docs/visual-checkpoints/car-rental-desktop.webp` | `docs/visual-checkpoints/car-rental-mobile.png` | Reviewed unavailable rental-booking boundary at desktop and 390px mobile | Fleet inventory, availability, rates, eligibility, insurance, reservations, payments, pickup, returns, refunds, and audit results remain unavailable and unclaimed. |
 | CardGridView | `docs/visual-checkpoints/card-grid-view-desktop.webp` | `docs/visual-checkpoints/card-grid-view-mobile.png` | Reviewed upgraded unavailable boundary at desktop and 390px mobile | Card sources, entities, images, filters, search, pagination, actions, permissions, and audit results remain unavailable; generic Activate placeholder removed. |
 | CertificateManager | `docs/visual-checkpoints/certificate-manager-desktop.webp` | `docs/visual-checkpoints/certificate-manager-mobile.png` | Reviewed unavailable credential boundary at desktop and 390px mobile | Issuance, learner records, signatures, verification, revocation, blockchain minting, wallet ownership, and audit results remain unavailable and unclaimed. |
+| ChainExplorer | `docs/visual-checkpoints/chain-explorer-desktop.webp` | `docs/visual-checkpoints/chain-explorer-mobile.png` | Reviewed unavailable blockchain-exploration boundary at desktop and 390px mobile | Networks, RPC/indexers, blocks, addresses, balances, transactions, confirmations, finality, freshness, and verification remain unavailable and unclaimed. |
 
 ## Capture notes
 
