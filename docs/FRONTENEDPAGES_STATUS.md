@@ -630,3 +630,7 @@ AudioLibrary was upgraded from a generic authenticated New/Search/Settings/empty
 ## Visual quality batch: AutoResponder
 
 AutoResponder was upgraded from a generic authenticated New/Search/Settings/empty shell to a polished, truthful automated-messaging readiness screen. It now defines the missing conversation, trigger, recipient, consent, template, AI, schedule, delivery, opt-out, privacy, and audit boundaries, with responsive evidence cards and route-preserving next steps. Focused TypeScript validation reported no diagnostics for `AutoResponder.tsx`, and `git diff --check` passed.
+
+## Visual quality batch: AutomationRules
+
+AutomationRules was upgraded from a generic authenticated New/Search/Settings/empty shell to a polished, truthful workflow-automation readiness screen. It now defines the missing trigger, rule, action, integration, credential, approval, queue, retry, side-effect, privacy, and audit boundaries, with responsive evidence cards and route-preserving next steps. Focused TypeScript validation reported no diagnostics for `AutomationRules.tsx`, and `git diff --check` passed.
