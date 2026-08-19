@@ -17,6 +17,7 @@ This index records only screenshots that were actually rendered and reviewed. A 
 | Calculator | `docs/visual-checkpoints/calculator-desktop.webp` | `docs/visual-checkpoints/calculator-mobile.png` | Reviewed unavailable calculation boundary at desktop and 390px mobile | Inputs, formulas, rates, results, scenarios, recommendations, persistence, exports, and professional advice remain unavailable and unclaimed. |
 | Calendar | `docs/visual-checkpoints/calendar-desktop.webp` | `docs/visual-checkpoints/calendar-mobile.png` | Reviewed unavailable scheduling boundary at desktop and 390px mobile | Events, attendance, reminders, notifications, external sync, participant data, and audit results remain unavailable and unclaimed. |
 | CalendarView | `docs/visual-checkpoints/calendar-view-desktop.webp` | `docs/visual-checkpoints/calendar-view-mobile.png` | Reviewed upgraded unavailable boundary at desktop and 390px mobile | Events, attendance, locations, reminders, external sync, participant data, and audit results remain unavailable; generic Activate placeholder removed. |
+| CampaignAnalytics | `docs/visual-checkpoints/campaign-analytics-desktop.webp` | `docs/visual-checkpoints/campaign-analytics-mobile.png` | Reviewed unavailable analytics boundary at desktop and 390px mobile | Campaigns, spend, conversions, revenue, attribution, cohorts, lift, audiences, exports, and audit results remain unavailable and unclaimed. |
 
 ## Capture notes
 
