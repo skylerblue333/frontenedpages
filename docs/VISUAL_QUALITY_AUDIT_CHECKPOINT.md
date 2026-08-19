@@ -31,3 +31,7 @@ The local ActivityTracking hardening commit is `32525a5`. Its push was rejected 
 ## Second visual-upgrade batch
 
 `AnomalyDetection.tsx` and `AssetManagement.tsx` now use the shared production visual pattern with explicit unavailable boundaries, readiness explanations, evidence grids, route-preserving navigation, and security/privacy disclosures. No generic New/Search/Settings shell remains in either page. Both passed focused TypeScript and diff checks.
+
+## Third visual-upgrade batch
+
+`AssignmentTracker.tsx` now uses the shared production visual pattern with explicit unavailable boundary, readiness explanation, evidence grid, education/privacy navigation, and security disclosure. The generic New/Search/Settings shell has been removed and the registered route is preserved.
