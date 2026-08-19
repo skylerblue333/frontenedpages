@@ -1,89 +1,74 @@
-import { Globe } from "lucide-react";
+import { AlertTriangle, Database, Globe, LockKeyhole, Network, Server, ShieldCheck, FileWarning } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { PageHeader } from "@/components/PageHeader";
 
+const cdnStates = [
+  { label: "Provider and distribution configuration", value: "Not connected", icon: Network },
+  { label: "Origins, cache rules, and invalidation", value: "Unavailable", icon: Server },
+  { label: "Traffic, errors, and latency telemetry", value: "Not reported", icon: Database },
+  { label: "Certificates, access, and audit controls", value: "Not configured", icon: ShieldCheck },
+];
+
 export default function CDNManagement() {
   return (
     <div className="min-h-screen bg-background">
-      <PageHeader icon={Globe} title="CDN Management" subtitle="Fully functional cdn management page with live data and real-time updates" />
-      
-      <div className="max-w-7xl mx-auto px-4 py-8 space-y-8">
-        {/* Main Content Area */}
-        <Card className="p-8 bg-card border border-border/50">
-          <div className="space-y-6">
-            <h2 className="text-2xl font-bold">CDN Management</h2>
-            
-            {/* Feature Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <Globe className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 1</h3>
-                  <p className="text-sm text-muted-foreground">Real-time data and live updates</p>
-                </div>
-              </Card>
-              
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <Globe className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 2</h3>
-                  <p className="text-sm text-muted-foreground">Advanced analytics and insights</p>
-                </div>
-              </Card>
-              
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <Globe className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 3</h3>
-                  <p className="text-sm text-muted-foreground">Seamless integration and automation</p>
-                </div>
-              </Card>
-            </div>
-            
-            {/* Action Buttons */}
-            <div className="flex gap-4 flex-wrap pt-4">
-              <Button className="bg-primary hover:bg-primary/90">
-                Get Started
-              </Button>
-              <Button variant="outline">
-                Learn More
-              </Button>
-              <Button variant="ghost">
-                Documentation
-              </Button>
+      <PageHeader
+        icon={Globe}
+        title="CDN Management"
+        subtitle="CDN provider and delivery-network services are not connected in this deployment. No traffic, cache, latency, origin, certificate, or availability metric is being reported."
+      />
+
+      <main className="mx-auto max-w-6xl space-y-8 px-4 py-8">
+        <Card className="border border-red-400/30 bg-red-950/20 p-6">
+          <div className="flex items-start gap-3">
+            <AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" />
+            <div>
+              <h2 className="font-semibold text-red-100">CDN management is unavailable</h2>
+              <p className="mt-1 text-sm leading-6 text-red-100/80">
+                The previous screen exposed feature cards and fabricated active-user, transaction, success-rate, and response-time metrics, but no verified CDN provider, distribution, origin, cache, telemetry, certificate, permission, or audit integration was connected. Those claims were removed because this route cannot establish that a delivery network exists or that any operational metric is current.
+              </p>
             </div>
           </div>
         </Card>
-        
-        {/* Stats Section */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Active Users</p>
-              <p className="text-2xl font-bold">802K+</p>
+
+        <Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8">
+          <div className="space-y-6">
+            <div className="flex items-start gap-4">
+              <div className="rounded-xl bg-primary/15 p-3"><Globe aria-hidden="true" className="h-8 w-8 text-primary" /></div>
+              <div>
+                <h2 className="text-3xl font-bold">Delivery-network readiness</h2>
+                <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">
+                  Production CDN management requires a verified provider, account and distribution identifiers, origin ownership, cache and invalidation policy, TLS and certificate lifecycle, access controls, edge telemetry, deployment coordination, rate limits, incident response, cost visibility, and auditable change history. None of those controls are available through this route.
+                </p>
+              </div>
             </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Total Transactions</p>
-              <p className="text-2xl font-bold">2.4M</p>
+
+            <div className="grid gap-4 md:grid-cols-3">
+              <Card className="border border-primary/30 bg-background/80 p-4"><Server aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><h3 className="font-semibold">No distribution claim</h3><p className="mt-1 text-sm text-muted-foreground">No provider, distribution, origin, region, cache rule, invalidation, deploy, or edge configuration is displayed or changed.</p></Card>
+              <Card className="border border-primary/30 bg-background/80 p-4"><Database aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><h3 className="font-semibold">No telemetry claim</h3><p className="mt-1 text-sm text-muted-foreground">No request volume, bandwidth, cache hit rate, error rate, latency, availability, or cost metric is calculated or reported.</p></Card>
+              <Card className="border border-primary/30 bg-background/80 p-4"><LockKeyhole aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><h3 className="font-semibold">No security claim</h3><p className="mt-1 text-sm text-muted-foreground">No certificate, secret, access policy, origin protection, WAF rule, permission, or audit result is asserted.</p></Card>
             </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Success Rate</p>
-              <p className="text-2xl font-bold">99.9%</p>
+
+            <div className="flex flex-wrap gap-4 pt-2">
+              <Link href="/system-status"><Button size="lg" className="bg-primary hover:bg-primary/90">View system status</Button></Link>
+              <Link href="/security-dashboard"><Button size="lg" variant="outline">View security status</Button></Link>
+              <Link href="/contact-us-form"><Button size="lg" variant="ghost">Ask about CDN access</Button></Link>
             </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Avg Response Time</p>
-              <p className="text-2xl font-bold">45ms</p>
-            </div>
-          </Card>
-        </div>
-      </div>
+          </div>
+        </Card>
+
+        <section aria-labelledby="cdn-state-heading">
+          <h2 id="cdn-state-heading" className="mb-4 text-xl font-semibold">Current CDN evidence</h2>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+            {cdnStates.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-border/50 bg-card p-4"><p className="text-sm text-muted-foreground">{label}</p><div className="mt-2 flex items-center gap-2"><Icon aria-hidden="true" className="h-4 w-4 text-muted-foreground" /><p className="font-semibold">{value}</p></div></Card>)}
+          </div>
+        </section>
+
+        <Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><FileWarning aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">Do not enter API keys, origin credentials, certificate material, private keys, access tokens, internal hostnames, or confidential infrastructure details here. An unavailable CDN page is not evidence that traffic is routed, cached, protected, current, or available.</p></div></Card>
+        <Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><LockKeyhole aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">Providers, distributions, origins, cache, TLS, WAF, observability, billing, permissions, and deployment remain separate integrations. This screen does not replace any of them.</p></div></Card>
+      </main>
     </div>
   );
 }
