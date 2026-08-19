@@ -1,130 +1,25 @@
-import { Bot, TrendingUp, Zap, BarChart3, Shield, Activity } from "lucide-react";
+import { AlertTriangle, BarChart3, Bot, CandlestickChart, Coins, LockKeyhole, ShieldCheck, Zap } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { trpc } from "@/lib/trpc";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
 
-const tradingFeatures = [
-  {
-    icon: Bot,
-    title: "AI Signal Engine",
-    description: "Machine learning models analyze market patterns and generate high-confidence trading signals in real-time.",
-    status: "Active",
-  },
-  {
-    icon: TrendingUp,
-    title: "Automated Strategies",
-    description: "Deploy pre-built or custom trading strategies that execute automatically based on AI recommendations.",
-    status: "Active",
-  },
-  {
-    icon: BarChart3,
-    title: "Portfolio Analytics",
-    description: "Deep portfolio analysis with risk scoring, correlation mapping, and performance attribution.",
-    status: "Active",
-  },
-  {
-    icon: Shield,
-    title: "Risk Management",
-    description: "Automated stop-loss, position sizing, and exposure limits protect your capital around the clock.",
-    status: "Active",
-  },
-  {
-    icon: Zap,
-    title: "Flash Execution",
-    description: "Sub-second trade execution with smart order routing across multiple liquidity pools.",
-    status: "Active",
-  },
-  {
-    icon: Activity,
-    title: "Market Intelligence",
-    description: "Real-time sentiment analysis, whale tracking, and on-chain metrics for informed decisions.",
-    status: "Active",
-  },
+const capabilities = [
+  { icon: Bot, title: "Signal engine", description: "No verified market data, model, signal methodology, timestamp, or confidence calibration is connected." },
+  { icon: CandlestickChart, title: "Strategies and orders", description: "No strategy, exchange, broker, liquidity venue, order router, or execution service is available." },
+  { icon: BarChart3, title: "Portfolio analytics", description: "No portfolio, balance, price, position, risk, attribution, or performance record is loaded." },
+  { icon: ShieldCheck, title: "Risk controls", description: "No stop-loss, sizing, exposure, suitability, human approval, or loss-protection control is verified." },
+  { icon: Zap, title: "Execution", description: "No order, trade, settlement, transaction hash, latency, or completion state can be created or reported." },
+  { icon: Coins, title: "Market intelligence", description: "No sentiment, whale, on-chain, research, price, return, or financial recommendation is calculated." },
 ];
 
-const performanceMetrics = [
-  { label: "Win Rate", value: "67.3%", color: "text-cyber-green" },
-  { label: "Avg Return", value: "+4.2%", color: "text-primary" },
-  { label: "Sharpe Ratio", value: "2.14", color: "text-cyber-purple" },
-  { label: "Max Drawdown", value: "-8.7%", color: "text-cyber-orange" },
+const states = [
+  { label: "Market data, models, and signals", value: "Unavailable", icon: CandlestickChart },
+  { label: "Portfolio, balances, and positions", value: "Not connected", icon: BarChart3 },
+  { label: "Orders, execution, and settlement", value: "Disabled", icon: Zap },
+  { label: "Risk, custody, and authorization", value: "Not verified", icon: ShieldCheck },
 ];
 
 export default function AITrading() {
-  // Real AI trading analysis from LLM backend
-  const { data: tokenMetrics } = trpc.token.metrics.useQuery();
-
-  return (
-    <div className="min-h-screen">
-      {/* Header */}
-      <section className="relative py-20 overflow-hidden">
-        <div className="absolute inset-0 cyber-grid opacity-20" />
-        <div className="absolute inset-0 bg-gradient-to-b from-cyber-blue/5 to-transparent" />
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-blue-500/30 bg-blue-500/5 mb-6">
-              <Bot className="h-3 w-3 text-blue-400" />
-              <span className="text-xs font-mono text-blue-400">AI-POWERED</span>
-            </div>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              AI <span className="text-primary">Trading</span> Engine
-            </h1>
-            <p className="text-lg text-muted-foreground">
-              Advanced machine learning algorithms power automated trading strategies with institutional-grade risk management.
-            </p>
-          </div>
-
-          {/* Performance Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10">
-            {performanceMetrics.map((metric) => (
-              <div key={metric.label} className="stat-card text-center">
-                <div className={`text-2xl font-bold font-mono ${metric.color}`}>{metric.value}</div>
-                <div className="text-xs text-muted-foreground mt-1">{metric.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Features Grid */}
-      <section className="pb-16">
-        <div className="container mx-auto px-4">
-          <h2 className="text-2xl font-bold mb-6">Trading Capabilities</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {tradingFeatures.map((feature) => {
-              const Icon = feature.icon;
-              return (
-                <div key={feature.title} className="stat-card">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center border border-primary/20">
-                      <Icon className="h-5 w-5 text-primary" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold">{feature.title}</h3>
-                      <span className="text-xs text-purple-400 font-mono">{feature.status}</span>
-                    </div>
-                  </div>
-                  <p className="text-sm text-muted-foreground">{feature.description}</p>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="pb-24">
-        <div className="container mx-auto px-4">
-          <div className="stat-card cyber-glow text-center py-12 px-8 max-w-2xl mx-auto">
-            <Bot className="h-12 w-12 text-primary mx-auto mb-4" />
-            <h2 className="text-2xl font-bold mb-3">Start AI Trading</h2>
-            <p className="text-muted-foreground mb-6">
-              Connect your wallet and let our AI engine optimize your portfolio with automated strategies.
-            </p>
-            <Button className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold px-8">
-              Launch Trading Dashboard
-            </Button>
-          </div>
-        </div>
-      </section>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={CandlestickChart} title="AI Trading" subtitle="AI trading services are not connected in this deployment. No trading model, signal, price, portfolio, order, return, or financial action is being reported." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">AI trading is unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous screen claimed AI-powered automated trading with institutional-grade risk management and displayed a 67.3% win rate, +4.2% average return, 2.14 Sharpe ratio, and -8.7% maximum drawdown. It also claimed active signals, automated strategies, portfolio analytics, capital protection, flash execution, real-time intelligence, and offered wallet connection and a trading dashboard. No verified market-data source, model, backtest methodology, live account, execution venue, custody control, timestamp, risk disclosure, or audit evidence was connected. Those claims and actions were removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><CandlestickChart aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Trading-integration readiness</h2><p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">A production trading system requires authenticated accounts, verified market data, instrument and network validation, reproducible strategy evidence, backtest/live separation, fees and slippage, suitability and risk controls, idempotent order submission, confirmations and failure handling, custody boundaries, audit logs, and human approval where required. None are available through this route. No market is analyzed and no trade can occur.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">{capabilities.map(({ icon: Icon, title, description }) => <Card key={title} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><h3 className="font-semibold">{title}</h3><p className="mt-1 text-sm text-muted-foreground">{description}</p></Card>)}</div><div className="mt-6 flex flex-wrap gap-4"><Link href="/crypto-hub"><Button>View crypto status</Button></Link><Link href="/portfolio"><Button variant="outline">View portfolio status</Button></Link><Link href="/contact-us-form"><Button variant="ghost">Ask about trading access</Button></Link></div></Card><section aria-labelledby="trading-state-heading"><h2 id="trading-state-heading" className="mb-4 text-xl font-semibold">Current trading evidence</h2><div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">{states.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-border/50 bg-card p-4"><p className="text-sm text-muted-foreground">{label}</p><div className="mt-2 flex items-center gap-2"><Icon aria-hidden="true" className="h-4 w-4 text-muted-foreground" /><p className="font-semibold">{value}</p></div></Card>)}</div></section><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><LockKeyhole aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">Do not treat an unavailable trading page as investment research, a price feed, a strategy result, a risk control, a performance record, or financial advice. Do not enter passwords, access tokens, seed phrases, private keys, wallet credentials, or payment details here. Trading involves risk of loss.</p></div></Card></main></div>;
 }
