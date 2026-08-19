@@ -1,64 +1,16 @@
-import { useRoute } from "wouter";
-import { Bot, Activity, Clock, CheckCircle, TrendingUp, Settings, Play, Pause } from "lucide-react";
+import { Activity, Bot, Database, FileCheck2, LockKeyhole, Play, ShieldAlert, ShieldCheck, Settings, Users } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
 
-const AGENTS: Record<string, { name: string; desc: string; color: string; tasks: number; uptime: string; category: string }> = {
-  "hope-ai": { name: "HOPE AI", desc: "Your personal AI companion with voice, chat, and autonomous task execution", color: "from-teal-500 to-cyan-600", tasks: 1247, uptime: "99.9%", category: "Social" },
-  "oracle": { name: "Oracle", desc: "Real-time price oracle and market signal generator for all major crypto pairs", color: "from-amber-500 to-orange-600", tasks: 8934, uptime: "...", category: "Trading" },
-  "shield": { name: "Shield", desc: "Security monitoring, fraud detection, and threat prevention across the platform", color: "from-red-500 to-rose-600", tasks: 3421, uptime: "100%", category: "Security" },
-};
+const states = [
+  { label: "Agent identity, owner, and model", value: "Unavailable", icon: Bot },
+  { label: "Tools, permissions, and execution", value: "Not configured", icon: ShieldCheck },
+  { label: "Tasks, outputs, and activity", value: "Not measured", icon: Activity },
+  { label: "Deployment, uptime, and audit", value: "Disabled", icon: FileCheck2 },
+];
 
 export default function AgentDetail() {
-  const [, params] = useRoute("/agents/:id");
-  const id = params?.id ?? "hope-ai";
-  const agent = AGENTS[id] ?? AGENTS["hope-ai"];
-  return (
-    <div className="min-h-screen bg-[#0a0a0f] text-white pb-24">
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <div className="rounded-2xl border border-slate-800/60 bg-slate-900/40 p-8 mb-6">
-          <div className="flex items-start justify-between mb-6">
-            <div className="flex items-center gap-4">
-              <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${agent.color} flex items-center justify-center`}>
-                <Bot className="h-8 w-8 text-white" />
-              </div>
-              <div>
-                <h1 className="text-2xl font-black text-white">{agent.name}</h1>
-                <Badge className="bg-emerald-500/15 text-emerald-400 border-0 mt-1">● Active</Badge>
-              </div>
-            </div>
-            <div className="flex gap-3">
-              <Button variant="outline" className="border-slate-700 text-slate-300 gap-2"><Settings className="h-4 w-4" /> Configure</Button>
-              <Button className="bg-gradient-to-r from-cyan-500 to-purple-600 border-0 text-white gap-2"><Play className="h-4 w-4" /> Run Task</Button>
-            </div>
-          </div>
-          <p className="text-slate-400 mb-6">{agent.desc}</p>
-          <div className="grid grid-cols-3 gap-4">
-            {[
-              { label: "Tasks Run", value: agent.tasks.toLocaleString(), color: "text-cyan-400" },
-              { label: "Uptime", value: agent.uptime, color: "text-emerald-400" },
-              { label: "Category", value: agent.category, color: "text-purple-400" },
-            ].map(s => (
-              <div key={s.label} className="rounded-xl bg-slate-950/60 p-4">
-                <div className="text-xs text-slate-500 mb-1">{s.label}</div>
-                <div className={`text-xl font-black ${s.color}`}>{s.value}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-        <div className="rounded-2xl border border-slate-800/60 bg-slate-900/40 p-6">
-          <h2 className="font-bold text-white mb-4">Recent Activity</h2>
-          <div className="space-y-3">
-            {["Task completed: Market analysis", "Signal generated: BTC breakout", "Report saved to vault", "Notification sent to 847 users"].map((a, i) => (
-              <div key={i} className="flex items-center gap-3 text-sm">
-                <CheckCircle className="h-4 w-4 text-emerald-400 shrink-0" />
-                <span className="text-slate-300">{a}</span>
-                <span className="text-slate-600 ml-auto">{i + 1}m ago</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Bot} title="Agent Detail" subtitle="Agent records and execution services are not connected in this deployment. No agent identity, model, task, output, activity, market signal, security result, uptime, or autonomous action is being reported or performed." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><ShieldAlert aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Agent detail is unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous route presented a static HOPE AI profile as active, claimed voice, chat, autonomous task execution, 1,247 tasks, 99.9% uptime, market analysis, BTC breakout signals, reports saved to a vault, notifications sent to 847 users, and Run Task/Configure controls. It also had fallback Oracle and Shield profiles claiming crypto price signals and security monitoring. No agent registry, model provider, task ledger, tool permission, wallet, security source, storage, notification service, uptime monitor, or audit contract was connected. Those records and controls were removed rather than implying live autonomous capabilities.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Bot aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Agent-detail readiness</h2><p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">A production agent-detail view requires authenticated ownership, typed agent and model metadata, explicit capability and tool permissions, isolated execution, secret controls, task receipts, output provenance, user consent, privacy filtering, rate and cost limits, deployment state, health semantics, audit, and clear failure, cancellation, and shutdown states. None are available through this screen.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{states.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div><div className="mt-6 flex flex-wrap gap-4"><Link href="/agent-builder"><Button>View agent-builder status</Button></Link><Link href="/ai-governance"><Button variant="outline">View AI governance</Button></Link><Link href="/security"><Button variant="ghost">View security status</Button></Link></div></Card><section aria-labelledby="agent-detail-state-heading"><h2 id="agent-detail-state-heading" className="mb-4 text-xl font-semibold">Current agent evidence</h2><div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">{states.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-border/50 bg-card p-4"><p className="text-sm text-muted-foreground">{label}</p><div className="mt-2 flex items-center gap-2"><Icon aria-hidden="true" className="h-4 w-4 text-muted-foreground" /><p className="font-semibold">{value}</p></div></Card>)}</div></section><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><LockKeyhole aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">Do not enter passwords, access tokens, private keys, seed phrases, wallet credentials, confidential prompts, proprietary code, or sensitive personal information here. An unavailable agent page is not evidence of ownership, model access, tool execution, task completion, output quality, trading, security monitoring, uptime, or delivery.</p></div></Card><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><Database aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No Configure, Run Task, pause, message, market signal, notification, vault write, wallet transaction, security action, or external API call is performed by this page.</p></div></Card><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><Users aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">Verify future agent identity, permissions, outputs, and activity through independently trusted server-side records before relying on them.</p></div></Card><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><Settings aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No model version, category, task count, uptime, performance score, status, or deployment state is fabricated as a fallback.</p></div></Card><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><Play aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No autonomous task can be started from this screen.</p></div></Card></main></div>;
 }
