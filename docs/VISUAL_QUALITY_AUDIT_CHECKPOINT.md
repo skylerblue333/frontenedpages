@@ -95,3 +95,7 @@ The local ActivityTracking hardening commit is `32525a5`. Its push was rejected 
 ## Eighteenth visual-upgrade batch
 
 `BudgetPlanner.tsx` now uses the shared production visual pattern with explicit unavailable boundary, budget-readiness explanation, evidence grid, portfolio/analytics/security navigation, and security disclosure. Unsupported financial claims and the generic New/Search/Settings shell have been removed while preserving the registered route.
+
+## Nineteenth visual-upgrade batch
+
+`BugReporting.tsx` now uses the shared production visual pattern with explicit unavailable boundary, incident-reporting explanation, evidence grid, support/system/security navigation, and security disclosure. The generic New/Search/Settings shell has been removed while preserving the registered route.

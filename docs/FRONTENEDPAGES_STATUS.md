@@ -670,3 +670,7 @@ BridgeTransactions was upgraded from a generic authenticated New/Search/Settings
 ## Visual quality batch: BudgetPlanner
 
 BudgetPlanner was upgraded from a generic authenticated New/Search/Settings/empty shell to a polished, truthful financial-planning readiness screen. It now defines the missing accounts, transactions, categories, budgets, forecasts, goals, recommendations, alerts, privacy, security, and audit boundaries, with responsive evidence cards and route-preserving next steps. Focused TypeScript validation reported no diagnostics for `BudgetPlanner.tsx`, and `git diff --check` passed.
+
+## Visual quality batch: BugReporting
+
+BugReporting was upgraded from a generic authenticated New/Search/Settings/empty shell to a polished, truthful incident-reporting readiness screen. It now defines the missing issue tracker, reporter identity, environment, reproduction, severity, ownership, SLA, attachments, security intake, notifications, releases, privacy, and audit boundaries, with responsive evidence cards and route-preserving next steps. Focused TypeScript validation reported no diagnostics for `BugReporting.tsx`, and `git diff --check` passed.
