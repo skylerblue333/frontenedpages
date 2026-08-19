@@ -1,98 +1,16 @@
-import React, { useState } from 'react';
-import { trpc } from '@/lib/trpc';
-import { Card } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Spinner } from '@/components/ui/spinner';
+import { AlertTriangle, Bot, Coins, Database, LockKeyhole, ShieldCheck, Workflow } from "lucide-react";
+import { Link } from "wouter";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const states = [
+  { label: "Agents, owners, and permissions", value: "Unavailable", icon: Bot },
+  { label: "Tasks, actions, and execution", value: "Not configured", icon: Workflow },
+  { label: "Rewards, balances, and settlements", value: "Not measured", icon: Coins },
+  { label: "Audit, custody, and safety controls", value: "Not verified", icon: ShieldCheck },
+];
 
 export default function AIAgentEconomy() {
-  const { data: goals, isLoading } = trpc.enterprise.freeWill.goals.useQuery();
-  const { data: actionLog = [] } = trpc.enterprise.freeWill.actionLog.useQuery({});
-  const [selectedAgent, setSelectedAgent] = useState<string | null>(null);
-
-
-  const agentTypes = [
-    { id: 'research', name: 'Research Agent', icon: '🔬', color: 'bg-blue-500' },
-    { id: 'trading', name: 'Trading Agent', icon: '📈', color: 'bg-green-500' },
-    { id: 'creator', name: 'Creator Agent', icon: '🎨', color: 'bg-purple-500' },
-    { id: 'governance', name: 'Governance Agent', icon: '⚖️', color: 'bg-amber-500' },
-    { id: 'developer', name: 'Developer Agent', icon: '💻', color: 'bg-indigo-500' },
-  ];
-
-  if (isLoading) return <Spinner />;
-
-  return (
-    <div className="min-h-screen bg-black text-white p-8">
-      <div className="max-w-7xl mx-auto">
-        <div className="mb-12">
-          <h1 className="text-4xl font-bold mb-2">AGENT CITY</h1>
-          <p className="text-gray-400">Your autonomous AI workforce — earning on your behalf</p>
-        </div>
-
-        {/* Agent Marketplace */}
-        <div className="grid grid-cols-5 gap-4 mb-12">
-          {agentTypes.map((type) => (
-            <Card key={type.id} className="bg-gray-900 border-gray-800 p-6 cursor-pointer hover:border-cyan-500 transition" onClick={() => setSelectedAgent(type.id)}>
-              <div className="text-4xl mb-3">{type.icon}</div>
-              <h3 className="font-bold text-lg">{type.name}</h3>
-              <p className="text-sm text-gray-400 mt-2">Deploy & earn</p>
-            </Card>
-          ))}
-        </div>
-
-        {/* Active Agents Grid */}
-        <div className="mb-12">
-          <h2 className="text-2xl font-bold mb-6">ACTIVE AGENTS ({goals?.length || 0})</h2>
-          <div className="grid grid-cols-3 gap-6">
-            {goals?.map((agent: any) => (
-              <Card key={agent.id} className="bg-gray-900 border-gray-800 p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-bold text-lg">{agent.name}</h3>
-                  <Badge className={agent.status === 'working' ? 'bg-green-500' : 'bg-gray-600'}>{agent.status}</Badge>
-                </div>
-                <div className="space-y-3">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-gray-400">Level</span>
-                    <span className="font-bold">{agent.level}</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-gray-400">Tasks Today</span>
-                    <span className="font-bold text-cyan-400">{agent.tasksToday}</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-gray-400">Earned Today</span>
-                    <span className="font-bold text-yellow-400">+{agent.earnedToday} SKY</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-gray-400">Efficiency</span>
-                    <span className="font-bold">{agent.efficiency}%</span>
-                  </div>
-                </div>
-                <Button className="w-full mt-4 bg-cyan-600 hover:bg-cyan-700">View Activity</Button>
-              </Card>
-            ))}
-          </div>
-        </div>
-
-        {/* Task Queue */}
-        <div>
-          <h2 className="text-2xl font-bold mb-6">TASK QUEUE ({actionLog?.length || 0})</h2>
-          <div className="space-y-3">
-            {actionLog?.slice(0, 5).map((task: any) => (
-              <Card key={task.id} className="bg-gray-900 border-gray-800 p-4 flex items-center justify-between">
-                <div>
-                  <h4 className="font-bold">{task.title}</h4>
-                  <p className="text-sm text-gray-400">{task.description}</p>
-                </div>
-                <div className="text-right">
-                  <Badge className="bg-purple-600 mb-2">{task.reward} SKY</Badge>
-                  <p className="text-xs text-gray-400">{task.assignedAgents} agents</p>
-                </div>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Bot} title="AI Agent Economy" subtitle="AI-agent economy services are not connected in this deployment. No autonomous agent, task, reward, balance, execution, or marketplace result is being reported." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">AI-agent economy is unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous screen queried enterprise FreeWill data and presented an autonomous AI workforce, agent marketplace, active-agent counts, levels, task totals, SKY earnings, efficiency percentages, rewards, and activity. No verified agent registry, owner authorization, execution runtime, task ledger, reward settlement, token or balance source, custody control, or audit evidence was connected. Those queries and claims were removed because this route cannot establish that an agent acted or that any economic value exists.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Bot aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Agent-economy readiness</h2><p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">A production agent economy requires verified identity and ownership, scoped tools, isolated execution, prompt-injection defenses, human approval, task and action provenance, idempotency, rate and cost limits, safety review, transparent reward rules, double-entry accounting, settlement finality, custody controls, dispute handling, revocation, and complete audit logs. None of these controls are available through this screen. No agent is deployed, instructed, paid, or allowed to act.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-3"><Card className="border border-primary/30 bg-background/80 p-4"><Workflow aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><h3 className="font-semibold">No autonomy claim</h3><p className="mt-1 text-sm text-muted-foreground">No agent, model, task, action, tool call, execution, status, efficiency, or completed work is created or reported.</p></Card><Card className="border border-primary/30 bg-background/80 p-4"><Coins aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><h3 className="font-semibold">No economic claim</h3><p className="mt-1 text-sm text-muted-foreground">No reward, SKY balance, earning, transaction, settlement, price, fee, payout, or financial outcome is calculated.</p></Card><Card className="border border-primary/30 bg-background/80 p-4"><LockKeyhole aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><h3 className="font-semibold">No custody claim</h3><p className="mt-1 text-sm text-muted-foreground">No wallet, private key, treasury, token transfer, permission, marketplace listing, or autonomous financial action is available.</p></Card></div><div className="mt-6 flex flex-wrap gap-4"><Link href="/ai-control-center"><Button>View AI controls</Button></Link><Link href="/crypto-hub"><Button variant="outline">View crypto status</Button></Link><Link href="/contact-us-form"><Button variant="ghost">Ask about agent access</Button></Link></div></Card><section aria-labelledby="agent-state-heading"><h2 id="agent-state-heading" className="mb-4 text-xl font-semibold">Current agent-economy evidence</h2><div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">{states.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-border/50 bg-card p-4"><p className="text-sm text-muted-foreground">{label}</p><div className="mt-2 flex items-center gap-2"><Icon aria-hidden="true" className="h-4 w-4 text-muted-foreground" /><p className="font-semibold">{value}</p></div></Card>)}</div></section><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><Database aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">Do not enter passwords, access tokens, seed phrases, private keys, wallet credentials, proprietary prompts, or confidential task data here. An unavailable agent-economy screen is not evidence of autonomous work, earnings, balances, transactions, or safe custody.</p></div></Card></main></div>;
 }
