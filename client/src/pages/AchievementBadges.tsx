@@ -1,20 +1,16 @@
-import React from "react";
+import { Award, CheckCircle2, GraduationCap, LockKeyhole, ShieldCheck, Sparkles, Trophy, Users } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
 
-const AchievementBadges = () => {
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 p-6">
-      <div className="mx-auto max-w-6xl">
-        <h1 className="mb-6 text-4xl font-bold text-white">AchievementBadges</h1>
-        <Card className="border-purple-600 bg-slate-800 p-6">
-          <p className="text-gray-300">
-            AchievementBadges feature coming soon...
-          </p>
-        </Card>
-      </div>
-    </div>
-  );
-};
+const states = [
+  { label: "Badge catalog and criteria", value: "Not published", icon: Award },
+  { label: "User achievement records", value: "Unavailable", icon: Users },
+  { label: "Reward or token issuance", value: "Disabled", icon: Trophy },
+  { label: "Certificate or credential verification", value: "Not connected", icon: GraduationCap },
+];
 
-export default AchievementBadges;
+export default function AchievementBadges() {
+  return <div className="min-h-screen bg-background"><PageHeader icon={Award} title="Achievement Badges" subtitle="Achievement records and badge issuance are not connected in this deployment. No badge, progress, reward, certificate, or user status is being reported." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><Sparkles aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Achievement badges are unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous screen only said “feature coming soon,” without defining badge criteria, ownership, progress, issuance, revocation, rewards, certificate verification, or privacy boundaries. No achievement service or user record is connected, so no badge gallery, earned status, leaderboard, reward, or certification claim is shown.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Award aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Badge-system readiness</h2><p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">A production badge system requires published criteria, event provenance, duplicate and replay protection, user consent, ownership and identity rules, issuance and revocation semantics, accessible presentation, moderation, reward separation, credential verification, privacy controls, and audit evidence. Those integrations are not available through this route.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{states.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div><div className="mt-6 flex flex-wrap gap-4"><Link href="/achievements"><Button>View achievement status</Button></Link><Link href="/certifications"><Button variant="outline">View certification status</Button></Link><Link href="/contact-us-form"><Button variant="ghost">Ask about badge access</Button></Link></div></Card><section aria-labelledby="badge-state-heading"><h2 id="badge-state-heading" className="mb-4 text-xl font-semibold">Current badge evidence</h2><div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">{states.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-border/50 bg-card p-4"><p className="text-sm text-muted-foreground">{label}</p><div className="mt-2 flex items-center gap-2"><Icon aria-hidden="true" className="h-4 w-4 text-muted-foreground" /><p className="font-semibold">{value}</p></div></Card>)}</div></section><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><LockKeyhole aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">Do not treat an unavailable badge screen as evidence of achievement, reputation, education, employment, certification, eligibility, reward, token ownership, or user activity. Never enter passwords, access tokens, private keys, seed phrases, or sensitive personal data here.</p></div></Card><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><ShieldCheck aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">A future implementation should make criteria, evidence, issuer, timestamps, verification, revocation, and privacy controls visible before badges are used for consequential decisions.</p></div></Card><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No badge issuance, progress calculation, reward mutation, or certificate claim is performed by this page.</p></div></Card></main></div>;
+}
