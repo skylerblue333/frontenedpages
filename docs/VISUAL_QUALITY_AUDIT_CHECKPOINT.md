@@ -51,3 +51,7 @@ The local ActivityTracking hardening commit is `32525a5`. Its push was rejected 
 ## Seventh visual-upgrade batch
 
 `AudioLibrary.tsx` now uses the shared production visual pattern with explicit unavailable boundary, readiness explanation, evidence grid, media/analytics/privacy navigation, and security disclosure. The generic New/Search/Settings shell has been removed while preserving the registered route.
+
+## Eighth visual-upgrade batch
+
+`AutoResponder.tsx` now uses the shared production visual pattern with explicit unavailable boundary, readiness explanation, evidence grid, notifications/AI/privacy navigation, and security disclosure. The generic New/Search/Settings shell has been removed while preserving the registered route.
