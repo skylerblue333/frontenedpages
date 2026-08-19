@@ -39,3 +39,7 @@ The local ActivityTracking hardening commit is `32525a5`. Its push was rejected 
 ## Fourth visual-upgrade batch
 
 `AttributionModeling.tsx` now uses the shared production visual pattern with an explicit unavailable boundary, readiness explanation, evidence grid, analytics/privacy navigation, and security disclosure. The generic New/Search/Settings shell has been removed while preserving the registered route.
+
+## Fifth visual-upgrade batch
+
+`AudienceSegmentation.tsx` now uses the shared production visual pattern with explicit unavailable boundary, readiness explanation, evidence grid, analytics/privacy navigation, and security disclosure. The generic New/Search/Settings shell has been removed while preserving the registered route.

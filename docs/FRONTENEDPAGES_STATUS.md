@@ -614,3 +614,7 @@ AssignmentTracker was upgraded from a generic authenticated New/Search/Settings/
 ## Visual quality batch: AttributionModeling
 
 AttributionModeling was upgraded from a generic authenticated New/Search/Settings/empty shell to a polished, truthful attribution-readiness screen. It now defines the missing event, identity, consent, touchpoint, model, conversion, revenue, campaign, privacy, export, and audit boundaries, with responsive evidence cards and route-preserving next steps. Focused TypeScript validation reported no diagnostics for `AttributionModeling.tsx`, and `git diff --check` passed.
+
+## Visual quality batch: AudienceSegmentation
+
+AudienceSegmentation was upgraded from a generic authenticated New/Search/Settings/empty shell to a polished, truthful audience-readiness screen. It now defines the missing profile, event, consent, identity, segment, cohort, targeting, activation, suppression, privacy, retention, and audit boundaries, with responsive evidence cards and route-preserving next steps. Focused TypeScript validation reported no diagnostics for `AudienceSegmentation.tsx`, and `git diff --check` passed.
