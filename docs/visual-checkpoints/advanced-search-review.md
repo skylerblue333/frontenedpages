@@ -1,14 +1,7 @@
 # AdvancedSearch visual checkpoint
 
-## Desktop
+AdvancedSearch was already hardened to a truthful unavailable search boundary. The previous authenticated shell, New/Search/Settings controls, loading branch, and empty-item behavior were removed because no verified index, searchable entity contract, permission filter, ranking policy, pagination model, query service, or audit boundary was connected. No content, user, course, wallet, transaction, marketplace, social, administrative index, query, result, filter, ranking, relevance score, count, suggestion, pagination total, private field, search history, profile, or audit event is queried, generated, or stored.
 
-The browser-rendered desktop checkpoint shows the upgraded Advanced Search page with a truthful unavailable boundary, explicit search-readiness requirements, evidence cards, privacy disclosure, and action links. No fabricated query, result, ranking, count, or privacy decision is presented.
+Files: `advanced-search-desktop.webp`, `advanced-search-mobile.png`.
 
-## Mobile
-
-The first 390px Chromium capture reached the app’s `Loading...` fallback because the lazy route was captured before the module finished rendering. After adding an 8-second virtual-time wait, the route rendered correctly. The reviewed mobile checkpoint shows readable heading and boundary copy, stacked content, and no horizontal overflow in the captured viewport.
-
-## Files
-
-- `advanced-search-desktop.webp`
-- `advanced-search-mobile.png` (accepted after delayed recapture and visual review)
+The 390px capture was reviewed for readable wrapped search disclosure, stacked index/result/privacy cards, visible search/privacy/contact links, sensitive-data warning, and absence of horizontal overflow.
