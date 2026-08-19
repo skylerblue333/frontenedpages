@@ -1,20 +1,16 @@
-import React from "react";
+import { FileCheck2, Fingerprint, Globe2, LockKeyhole, ShieldAlert, UserCheck } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
 
-const AgeVerification = () => {
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 p-6">
-      <div className="mx-auto max-w-6xl">
-        <h1 className="mb-6 text-4xl font-bold text-white">AgeVerification</h1>
-        <Card className="border-purple-600 bg-slate-800 p-6">
-          <p className="text-gray-300">
-            AgeVerification feature coming soon...
-          </p>
-        </Card>
-      </div>
-    </div>
-  );
-};
+const states = [
+  { label: "Verification provider and identity match", value: "Unavailable", icon: UserCheck },
+  { label: "Document, biometric, and liveness checks", value: "Not configured", icon: Fingerprint },
+  { label: "Jurisdiction, consent, and retention", value: "Not verified", icon: Globe2 },
+  { label: "Compliance evidence and reviewer audit", value: "Disabled", icon: FileCheck2 },
+];
 
-export default AgeVerification;
+export default function AgeVerification() {
+  return <div className="min-h-screen bg-background"><PageHeader icon={UserCheck} title="Age Verification" subtitle="Identity and age-verification services are not connected in this deployment. No identity, document, biometric, jurisdiction, consent, or compliance result is being reported." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><ShieldAlert aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Age verification is unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous screen was a generic Coming Soon placeholder. No verification provider, identity match, document review, biometric or liveness check, jurisdiction rule, consent record, content-custodian record, retention policy, or compliance audit contract was connected. This route does not collect identity documents or claim to verify a person’s age.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><UserCheck aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Verification readiness</h2><p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">A production verification flow requires a qualified provider, explicit purpose and consent, data minimization, document authenticity and liveness semantics, jurisdiction-specific rules, secure handoff, encryption, retention and deletion, age-result scope, denial and retry states, vendor governance, audit evidence, and legal review. None are available through this screen.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{states.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div><div className="mt-6 flex flex-wrap gap-4"><Link href="/age-gate"><Button>View self-attestation status</Button></Link><Link href="/privacy"><Button variant="outline">View privacy status</Button></Link><Link href="/contact-us-form"><Button variant="ghost">Ask about verification access</Button></Link></div></Card><section aria-labelledby="verification-state-heading"><h2 id="verification-state-heading" className="mb-4 text-xl font-semibold">Current verification evidence</h2><div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">{states.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-border/50 bg-card p-4"><p className="text-sm text-muted-foreground">{label}</p><div className="mt-2 flex items-center gap-2"><Icon aria-hidden="true" className="h-4 w-4 text-muted-foreground" /><p className="font-semibold">{value}</p></div></Card>)}</div></section><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><LockKeyhole aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">Never upload identity documents, selfies, biometric data, passwords, access tokens, private keys, seed phrases, or sensitive personal information to this page. Do not treat a local self-attestation or an unavailable screen as identity or age verification, legal compliance, or proof of lawful access.</p></div></Card><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><FileCheck2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">Use a qualified verification provider and obtain jurisdiction-specific legal advice before relying on age-gating or identity-verification results.</p></div></Card></main></div>;
+}
