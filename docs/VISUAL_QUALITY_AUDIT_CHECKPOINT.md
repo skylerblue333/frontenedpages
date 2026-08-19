@@ -63,3 +63,7 @@ The local ActivityTracking hardening commit is `32525a5`. Its push was rejected 
 ## Tenth visual-upgrade batch
 
 `AuditTrail.tsx` now uses the shared production visual pattern with explicit unavailable boundary, readiness explanation, evidence grid, audit/compliance/security navigation, and security disclosure. The generic New/Search/Settings shell has been removed while preserving the registered route.
+
+## Eleventh visual-upgrade batch
+
+`BackupManagement.tsx` now uses the shared production visual pattern with explicit unavailable boundary, recovery-readiness explanation, evidence grid, security/audit navigation, and security disclosure. Fabricated metrics, generic feature cards, and unverified action buttons have been removed while preserving the registered route.
