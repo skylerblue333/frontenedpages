@@ -111,3 +111,7 @@ The local ActivityTracking hardening commit is `32525a5`. Its push was rejected 
 ## Twenty-second visual-upgrade batch
 
 `CCPA.tsx` now uses the shared production visual pattern with explicit unavailable boundary, privacy-rights readiness explanation, evidence grid, privacy/data/security navigation, legal disclaimer, and security disclosure. Unsupported compliance claims and the generic New/Search/Settings shell have been removed while preserving the registered route.
+
+## Twenty-third visual-upgrade batch
+
+`Calculator.tsx` now uses the shared production visual pattern with explicit unavailable boundary, calculation-readiness explanation, evidence grid, analytics/budget/privacy navigation, and professional-advice disclaimer. Unsupported result claims and the generic New/Search/Settings shell have been removed while preserving the registered route.
