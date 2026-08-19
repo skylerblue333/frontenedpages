@@ -119,3 +119,7 @@ The local ActivityTracking hardening commit is `32525a5`. Its push was rejected 
 ## Twenty-fourth visual-upgrade batch
 
 `Calendar.tsx` now uses the shared production visual pattern with explicit unavailable boundary, scheduling-readiness explanation, evidence grid, notifications/automation/privacy navigation, and security disclosure. The generic New/Search/Settings shell has been removed while preserving the registered route.
+
+## Twenty-fifth visual-upgrade batch
+
+`CampaignAnalytics.tsx` now uses the shared production visual pattern with explicit unavailable boundary, campaign-analytics explanation, evidence grid, attribution/audience/analytics navigation, and security disclosure. Fabricated campaign metrics and the generic New/Search/Settings shell have been removed while preserving the registered route.
