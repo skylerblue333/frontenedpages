@@ -1,25 +1,16 @@
-import { useState } from "react";
+import { Activity, AlertTriangle, Database, FileClock, LockKeyhole, Network, ShieldCheck } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const states = [
+  { label: "Request and response records", value: "Unavailable", icon: Network },
+  { label: "Status, latency, and error evidence", value: "Not measured", icon: Activity },
+  { label: "Payload redaction and retention", value: "Not configured", icon: ShieldCheck },
+  { label: "Audit export and log access", value: "Disabled", icon: FileClock },
+];
 
 export default function APILogs() {
-  const [state, setState] = useState(false);
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 to-black p-4">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">APILogs</h1>
-        <p className="text-slate-400 mb-8">API logs</p>
-        
-        <Card className="bg-slate-900 border-slate-800 p-8">
-          <div className="space-y-6">
-            <p className="text-slate-300">Content for APILogs page</p>
-            <Button onClick={() => setState(!state)}>
-              {state ? "Deactivate" : "Activate"}
-            </Button>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={FileClock} title="API Logs" subtitle="API observability is not connected in this deployment. No request, response, status, latency, payload, error, retention, or audit record is being reported." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">API logs are unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous screen contained only a generic API logs placeholder and an inert Activate/Deactivate toggle. No telemetry collector, request correlation, response store, status source, payload-redaction policy, retention rule, access control, export path, or audit contract was connected. The placeholder and toggle were removed rather than implying that API traffic is observed or healthy.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Activity aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">API observability readiness</h2><p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">Production API logging requires request correlation, structured status and timing fields, safe payload handling, secret and personal-data redaction, access controls, retention and deletion, sampling, error classification, alerting, trace linkage, export, and auditability. None are available through this route. No traffic is collected, displayed, activated, or exported.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{states.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div><div className="mt-6 flex flex-wrap gap-4"><Link href="/api-monitoring"><Button>View API monitoring</Button></Link><Link href="/api-status"><Button variant="outline">View API status</Button></Link><Link href="/contact-us-form"><Button variant="ghost">Ask about log access</Button></Link></div></Card><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><LockKeyhole aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">Do not enter passwords, access tokens, private keys, seed phrases, request payloads, personal data, or confidential headers here. An unavailable log page is not evidence that an API request succeeded, failed, was secure, was retained, or was audited.</p></div></Card><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><Database aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">Use only a reviewed server-side telemetry integration with explicit redaction and retention controls for production observability. This frontend route does not replace one.</p></div></Card></main></div>;
 }
