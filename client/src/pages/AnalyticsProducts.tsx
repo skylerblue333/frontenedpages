@@ -1,143 +1,16 @@
-/**
- * AnalyticsProducts — Phase 10 Data Economy
- * Monetizable analytics products built on the data lake
- */
-import { useState } from "react";
+import { BarChart3, CircleDollarSign, Database, LockKeyhole, PackageSearch, ShieldAlert, Users } from "lucide-react";
 import { Link } from "wouter";
-import { ArrowLeft, BarChart2, TrendingUp, Users, DollarSign, Eye, Zap, ShoppingBag, Star, Globe } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
 
-const PRODUCTS = [
-  {
-    name: "Creator Insights Pro",
-    desc: "Deep analytics for content creators — audience demographics, optimal posting times, revenue attribution",
-    price: "49 SKY/mo",
-    subscribers: 1240,
-    category: "creator",
-    icon: BarChart2,
-    color: "text-blue-400",
-    bg: "bg-blue-500/10",
-  },
-  {
-    name: "Trend Intelligence",
-    desc: "Real-time trending topics, viral content prediction, and market sentiment analysis",
-    price: "29 SKY/mo",
-    subscribers: 890,
-    category: "market",
-    icon: TrendingUp,
-    color: "text-green-400",
-    bg: "bg-green-500/10",
-  },
-  {
-    name: "Audience Builder",
-    desc: "Find and target your ideal audience using behavioral signals and interest graphs",
-    price: "39 SKY/mo",
-    subscribers: 620,
-    category: "growth",
-    icon: Users,
-    color: "text-purple-400",
-    bg: "bg-purple-500/10",
-  },
-  {
-    name: "Revenue Attribution",
-    desc: "Track which content, actions, and channels drive your SKY earnings",
-    price: "59 SKY/mo",
-    subscribers: 340,
-    category: "monetization",
-    icon: DollarSign,
-    color: "text-yellow-400",
-    bg: "bg-yellow-500/10",
-  },
-  {
-    name: "Community Intelligence",
-    desc: "Health scores, engagement heatmaps, and growth forecasts for community managers",
-    price: "35 SKY/mo",
-    subscribers: 480,
-    category: "community",
-    icon: Globe,
-    color: "text-cyan-400",
-    bg: "bg-cyan-500/10",
-  },
-  {
-    name: "Token Analytics",
-    desc: "On-chain analytics, holder distribution, staking patterns, and DeFi flow analysis",
-    price: "79 SKY/mo",
-    subscribers: 210,
-    category: "defi",
-    icon: Zap,
-    color: "text-orange-400",
-    bg: "bg-orange-500/10",
-  },
+const evidence = [
+  { label: "Product catalog and ownership", value: "Unavailable", icon: PackageSearch },
+  { label: "Analytics sources and entitlements", value: "Not configured", icon: Database },
+  { label: "Subscribers, pricing, and revenue", value: "Not measured", icon: Users },
+  { label: "Checkout, billing, and delivery", value: "Disabled", icon: CircleDollarSign },
 ];
 
 export default function AnalyticsProducts() {
-  const [activeCategory, setActiveCategory] = useState("all");
-  const categories = ["all", "creator", "market", "growth", "monetization", "community", "defi"];
-  const filtered = activeCategory === "all" ? PRODUCTS : PRODUCTS.filter(p => p.category === activeCategory);
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="sticky top-0 z-10 bg-background/80 backdrop-blur-sm border-b border-border/50 px-4 py-3 flex items-center gap-3">
-        <Link href="/" className="p-2 rounded-lg hover:bg-secondary/50 transition-colors text-muted-foreground">
-          <ArrowLeft className="w-4 h-4" />
-        </Link>
-        <div>
-          <h1 className="font-bold text-lg">Analytics Products</h1>
-          <p className="text-xs text-muted-foreground">Data-powered intelligence products</p>
-        </div>
-      </div>
-
-      <div className="max-w-2xl mx-auto p-4 space-y-4">
-        <div className="grid grid-cols-3 gap-3">
-          {[
-            { label: "Active Products", value: "6", icon: ShoppingBag, color: "text-blue-400" },
-            { label: "Total Subscribers", value: "3.8K", icon: Users, color: "text-green-400" },
-            { label: "Monthly Revenue", value: "142K SKY", icon: DollarSign, color: "text-yellow-400" },
-          ].map(stat => (
-            <div key={stat.label} className="card p-3 text-center">
-              <stat.icon className={`w-5 h-5 ${stat.color} mx-auto mb-1`} />
-              <div className="font-bold text-sm">{stat.value}</div>
-              <div className="text-xs text-muted-foreground">{stat.label}</div>
-            </div>
-          ))}
-        </div>
-
-        {/* Category filter */}
-        <div className="flex gap-2 overflow-x-auto pb-1">
-          {categories.map(cat => (
-            <button key={cat} onClick={() => setActiveCategory(cat)}
-              className={`px-3 py-1.5 rounded-xl text-xs font-medium capitalize whitespace-nowrap transition-colors ${activeCategory === cat ? "bg-primary text-primary-foreground" : "bg-secondary/50 text-muted-foreground hover:text-foreground"}`}>
-              {cat}
-            </button>
-          ))}
-        </div>
-
-        <div className="space-y-3">
-          {filtered.map(product => (
-            <div key={product.name} className="card p-4">
-              <div className="flex items-start gap-3">
-                <div className={`w-10 h-10 rounded-xl ${product.bg} flex items-center justify-center shrink-0`}>
-                  <product.icon className={`w-5 h-5 ${product.color}`} />
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-start justify-between gap-2">
-                    <div>
-                      <div className="font-semibold text-sm">{product.name}</div>
-                      <div className="text-xs text-muted-foreground mt-0.5">{product.desc}</div>
-                    </div>
-                    <div className="text-right shrink-0">
-                      <div className="font-bold text-sm text-primary">{product.price}</div>
-                      <div className="text-xs text-muted-foreground">{product.subscribers.toLocaleString()} subs</div>
-                    </div>
-                  </div>
-                  <button className="mt-3 w-full py-2 bg-primary/10 hover:bg-primary/20 text-primary rounded-xl text-xs font-medium transition-colors">
-                    Subscribe
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={BarChart3} title="Analytics Products" subtitle="Analytics-product catalog and billing services are not connected in this deployment. No product, subscriber, price, revenue, entitlement, checkout, or delivered insight is being reported." /><main className="mx-auto max-w-5xl space-y-8 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><ShieldAlert aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Analytics-product catalog is unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous screen claimed 6 active products, 3.8K subscribers, 142K SKY monthly revenue, prices, and subscriptions for Creator Insights Pro, Trend Intelligence, Audience Builder, Revenue Attribution, Community Intelligence, and Token Analytics. It also claimed audience demographics, optimal posting, revenue attribution, trending topics, viral prediction, market sentiment, behavioral targeting, community health, growth forecasts, on-chain holders, staking patterns, and DeFi flows. No verified catalog, entitlement system, analytics source, billing provider, wallet, market-data source, or content-delivery contract was connected. Those claims and Subscribe controls were removed rather than initiating a financial or data-product transaction.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><BarChart3 aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Product-catalog readiness</h2><p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">A production analytics-product catalog requires authenticated ownership, typed product and feature definitions, source provenance, entitlement checks, privacy and consent controls, period and unit semantics, billing and tax treatment, payment confirmation, refund and cancellation states, usage limits, delivery evidence, support ownership, and auditable server-side records. None are available through this screen.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{evidence.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div><div className="mt-6 flex flex-wrap gap-3"><Link href="/analytics"><Button>View analytics status</Button></Link><Link href="/billing"><Button variant="outline">View billing status</Button></Link><Link href="/api-status"><Button variant="ghost">View API status</Button></Link></div></Card><section aria-labelledby="products-evidence-heading"><h2 id="products-evidence-heading" className="mb-4 text-xl font-semibold">Current product evidence</h2><div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">{evidence.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-border/50 bg-card p-4"><p className="text-sm text-muted-foreground">{label}</p><div className="mt-2 flex items-center gap-2"><Icon aria-hidden="true" className="h-4 w-4 text-muted-foreground" /><p className="font-semibold">{value}</p></div></Card>)}</div></section><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><LockKeyhole aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">Do not enter passwords, access tokens, private keys, seed phrases, payment credentials, confidential business data, proprietary analytics, or sensitive personal information here. An unavailable product catalog is not evidence of a product, subscriber, price, revenue, entitlement, insight quality, market condition, or billing status.</p></div></Card><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><CircleDollarSign aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No catalog query, category filter, subscription, checkout, charge, refund, entitlement, analytics computation, token or market lookup, notification, report, or external API call is read, written, sent, stored, or simulated by this page.</p></div></Card><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><Users aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No active-product count, subscriber total, SKY revenue, price, conversion, retention, usage, audience, engagement, market, staking, DeFi, or delivery metric is fabricated as a fallback. Verify future product and billing records through independently trusted server-side systems.</p></div></Card><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><Database aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">Analytics, billing, wallet, market data, content, and entitlement services remain separate integrations. This screen does not replace any of them.</p></div></Card></main></div>;
 }
