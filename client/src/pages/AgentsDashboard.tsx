@@ -1,104 +1,16 @@
-import { useState } from "react";
+import { Activity, BarChart3, Bot, Database, LockKeyhole, Network, Plus, ShieldAlert, ShieldCheck, Sparkles, Users, Zap } from "lucide-react";
 import { Link } from "wouter";
-import { Bot, Zap, TrendingUp, Shield, Brain, Code, Heart, Globe, ChevronRight, Play, Pause, Settings, Plus, Activity } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { trpc } from "@/lib/trpc";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
 
-const AGENT_CATEGORIES = [
-  { id: "all", label: "All Agents" },
-  { id: "trading", label: "Trading" },
-  { id: "social", label: "Social" },
-  { id: "security", label: "Security" },
-  { id: "analytics", label: "Analytics" },
-  { id: "content", label: "Content" },
-];
-
-const FEATURED_AGENTS = [
-  { id: "hope-ai", name: "HOPE AI", desc: "Your personal AI companion — voice, chat, and autonomous tasks", icon: Brain, color: "from-teal-500 to-cyan-600", status: "active", tasks: 1247, category: "social" },
-  { id: "oracle", name: "Oracle", desc: "Real-time price oracle and market signal generator", icon: TrendingUp, color: "from-amber-500 to-orange-600", status: "active", tasks: 8934, category: "trading" },
-  { id: "shield", name: "Shield", desc: "Security monitoring, fraud detection, and threat prevention", icon: Shield, color: "from-red-500 to-rose-600", status: "active", tasks: 3421, category: "security" },
-  { id: "nexus", name: "Nexus", desc: "API gateway and data pipeline orchestrator", icon: Globe, color: "from-purple-500 to-violet-600", status: "active", tasks: 2109, category: "analytics" },
-  { id: "forge", name: "Forge", desc: "Content generation, copywriting, and creative AI", icon: Code, color: "from-blue-500 to-indigo-600", status: "idle", tasks: 567, category: "content" },
-  { id: "atlas", name: "Atlas", desc: "Smart contract deployment and blockchain automation", icon: Zap, color: "from-emerald-500 to-green-600", status: "active", tasks: 4892, category: "trading" },
-  { id: "echo", name: "Echo", desc: "Real-time event streaming and notification routing", icon: Activity, color: "from-pink-500 to-fuchsia-600", status: "active", tasks: 12043, category: "social" },
-  { id: "titan", name: "Titan", desc: "Task orchestration and workflow automation engine", icon: Bot, color: "from-slate-500 to-gray-600", status: "idle", tasks: 789, category: "analytics" },
+const states = [
+  { label: "Agent catalog, ownership, and capabilities", value: "Unavailable", icon: Bot },
+  { label: "Models, tools, permissions, and runtime", value: "Not configured", icon: ShieldCheck },
+  { label: "Tasks, outputs, performance, and uptime", value: "Not measured", icon: Activity },
+  { label: "Marketplace, deployment, and automation", value: "Disabled", icon: Network },
 ];
 
 export default function AgentsDashboard() {
-  const [category, setCategory] = useState("all");
-  const filtered = category === "all" ? FEATURED_AGENTS : FEATURED_AGENTS.filter(a => a.category === category);
-
-  return (
-    <div className="min-h-screen bg-[#0a0a0f] text-white pb-24">
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-black text-white mb-1">AI Agents</h1>
-            <p className="text-slate-400">44 autonomous agents powering your ecosystem</p>
-          </div>
-          <div className="flex gap-3">
-            <Link href="/agents/marketplace">
-              <Button variant="outline" className="border-slate-700 text-slate-300 hover:bg-slate-800">Marketplace</Button>
-            </Link>
-            <Link href="/agents/builder">
-              <Button className="bg-gradient-to-r from-cyan-500 to-purple-600 border-0 text-white gap-2">
-                <Plus className="h-4 w-4" /> Build Agent
-              </Button>
-            </Link>
-          </div>
-        </div>
-
-        {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          {[
-            { label: "Active Agents", value: "38", color: "text-emerald-400" },
-            { label: "Tasks Today", value: "34,002", color: "text-cyan-400" },
-            { label: "Avg Response", value: "142ms", color: "text-purple-400" },
-            { label: "Uptime", value: "...", color: "text-amber-400" },
-          ].map(s => (
-            <div key={s.label} className="rounded-2xl border border-slate-800/60 bg-slate-900/40 p-4">
-              <div className="text-xs text-slate-500 mb-1">{s.label}</div>
-              <div className={`text-2xl font-black ${s.color}`}>{s.value}</div>
-            </div>
-          ))}
-        </div>
-
-        {/* Category Filter */}
-        <div className="flex gap-2 mb-6 overflow-x-auto pb-1">
-          {AGENT_CATEGORIES.map(c => (
-            <button key={c.id} onClick={() => setCategory(c.id)}
-              className={`px-4 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition-all ${category === c.id ? "bg-cyan-500/20 text-cyan-400 border border-cyan-500/30" : "bg-slate-900/60 text-slate-400 border border-slate-800/60 hover:border-slate-700"}`}>
-              {c.label}
-            </button>
-          ))}
-        </div>
-
-        {/* Agent Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {filtered.map(agent => (
-            <Link key={agent.id} href={`/agents/${agent.id}`}>
-              <div className="rounded-2xl border border-slate-800/60 bg-slate-900/40 p-5 hover:border-slate-700 transition-all cursor-pointer group">
-                <div className="flex items-start justify-between mb-4">
-                  <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${agent.color} flex items-center justify-center`}>
-                    <agent.icon className="h-6 w-6 text-white" />
-                  </div>
-                  <Badge className={`text-xs border-0 ${agent.status === "active" ? "bg-emerald-500/15 text-emerald-400" : "bg-slate-700/50 text-slate-400"}`}>
-                    {agent.status === "active" ? "● Active" : "○ Idle"}
-                  </Badge>
-                </div>
-                <h3 className="font-bold text-white mb-1 group-hover:text-cyan-400 transition-colors">{agent.name}</h3>
-                <p className="text-xs text-slate-500 mb-3 line-clamp-2">{agent.desc}</p>
-                <div className="flex items-center justify-between text-xs">
-                  <span className="text-slate-500">{agent.tasks.toLocaleString()} tasks run</span>
-                  <ChevronRight className="h-4 w-4 text-slate-600 group-hover:text-cyan-400 transition-colors" />
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Bot} title="AI Agents" subtitle="Agent catalog and runtime services are not connected in this deployment. No agent, model, task, output, performance, uptime, marketplace, deployment, or autonomous-action result is being reported." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><ShieldAlert aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Agent catalog is unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous screen claimed 44 autonomous agents, 38 active agents, 34,002 tasks today, 142ms average response, and an agent roster including HOPE AI, Oracle, Shield, Nexus, Forge, Atlas, Echo, and Titan. It also claimed personal AI, real-time price signals, security monitoring, API orchestration, content generation, smart-contract deployment, event routing, workflow automation, Marketplace, Build Agent, categories, activity, and task totals. No verified catalog, model provider, task ledger, permission boundary, runtime, blockchain source, security telemetry, marketplace, or deployment contract was connected. Those records and controls were removed rather than implying live autonomous capabilities.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Bot aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Agent-catalog readiness</h2><p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">A production agent catalog requires authenticated ownership, typed model and capability metadata, provider and version disclosure, explicit tool permissions, isolated runtime, secret and network controls, safety review, task and output provenance, performance definitions, cost and rate limits, deployment lifecycle, marketplace governance, audit, and safe shutdown. None are available through this screen.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{states.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div><div className="mt-6 flex flex-wrap gap-4"><Link href="/agent-marketplace"><Button><Sparkles className="mr-2 h-4 w-4" />View marketplace status</Button></Link><Link href="/agent-builder"><Button variant="outline"><Plus className="mr-2 h-4 w-4" />View builder status</Button></Link><Link href="/agent-coordination-hub"><Button variant="ghost">View orchestration status</Button></Link></div></Card><section aria-labelledby="agents-state-heading"><h2 id="agents-state-heading" className="mb-4 text-xl font-semibold">Current agent evidence</h2><div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">{states.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-border/50 bg-card p-4"><p className="text-sm text-muted-foreground">{label}</p><div className="mt-2 flex items-center gap-2"><Icon aria-hidden="true" className="h-4 w-4 text-muted-foreground" /><p className="font-semibold">{value}</p></div></Card>)}</div></section><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><LockKeyhole aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">Do not enter passwords, access tokens, private keys, seed phrases, confidential prompts, proprietary code, wallet credentials, or sensitive personal information here. An unavailable agent dashboard is not evidence of an agent, model access, task completion, output quality, trading, security monitoring, uptime, or deployment.</p></div></Card><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><Database aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No agent registration, category filter, task refresh, model call, tool call, marketplace purchase, deployment, blockchain action, notification, or external API call is read, written, or simulated by this page.</p></div></Card><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><Users aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">Verify future agent identity, permissions, outputs, activity, and performance through independently trusted server-side records before relying on them.</p></div></Card><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><BarChart3 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No agent count, task total, response time, uptime, performance score, status, ranking, earnings, or capacity metric is fabricated as a fallback.</p></div></Card><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><Zap aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No autonomous task, scheduled run, workflow, transaction, security action, or social publication can be started from this screen.</p></div></Card></main></div>;
 }
