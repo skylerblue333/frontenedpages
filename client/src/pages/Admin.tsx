@@ -1,158 +1,19 @@
-import { useAuth } from "@/_core/hooks/useAuth";
-import { trpc } from "@/lib/trpc";
+import { Activity, AlertTriangle, Database, Eye, LockKeyhole, Server, Shield, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import {
-  Shield, Users, Activity, Lock, Database, Eye, Loader2,
-  AlertTriangle, CheckCircle, Clock, Server
-} from "lucide-react";
-import { getLoginUrl } from "@/const";
+import { Card } from "@/components/ui/card";
+import { Link } from "wouter";
+import { PageHeader } from "@/components/PageHeader";
+import { useAuth } from "@/_core/hooks/useAuth";
+
+const states = [
+  { label: "Administrator identity and role", value: "Unavailable", icon: Users },
+  { label: "Platform health and version", value: "Not verified", icon: Server },
+  { label: "Moderation queue and decisions", value: "Not connected", icon: Shield },
+  { label: "Audit logs and privileged actions", value: "Disabled", icon: Eye },
+];
 
 export default function Admin() {
-  const { user, isAuthenticated, loading } = useAuth();
-  const { data: stats, isLoading: statsLoading } = trpc.platform.stats.useQuery();
-  const { data: health } = trpc.platform.health.useQuery();
-  const { data: modStats } = trpc.moderation.stats.useQuery(undefined, { enabled: isAuthenticated && user?.role === "admin" });
-  const { data: modLogs } = trpc.moderation.logs.useQuery(undefined, { enabled: isAuthenticated && user?.role === "admin" });
-
-  if (!isAuthenticated && !loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="stat-card p-12 text-center max-w-md">
-          <Lock className="w-12 h-12 text-red-500 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold mb-2">Admin Access Required</h2>
-          <p className="text-muted-foreground mb-6">This area is restricted to platform administrators.</p>
-          <a href={getLoginUrl()}>
-            <Button className="bg-red-500 hover:bg-red-600 text-white font-semibold">Sign In</Button>
-          </a>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen py-16">
-      <div className="container max-w-6xl">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold mb-2">
-              Admin <span className="text-red-500">Panel</span>
-            </h1>
-            <p className="text-muted-foreground">Platform administration and moderation dashboard</p>
-          </div>
-          <Badge variant="outline" className="border-purple-500/30 text-purple-400 flex items-center gap-1.5">
-            <div className="h-1.5 w-1.5 rounded-full bg-purple-600 animate-pulse" />
-            {health?.status === "healthy" ? "HEALTHY" : "CHECKING"}
-          </Badge>
-        </div>
-
-        {statsLoading ? (
-          <div className="flex justify-center py-20">
-            <Loader2 className="w-8 h-8 animate-spin text-primary" />
-          </div>
-        ) : (
-          <>
-            {/* Platform Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-              <div className="stat-card">
-                <div className="flex items-center gap-2 mb-2">
-                  <Users className="w-4 h-4 text-primary" />
-                  <span className="text-xs text-muted-foreground">Users</span>
-                </div>
-                <div className="text-2xl font-bold font-mono">{(stats?.totalUsers || 0).toLocaleString()}</div>
-              </div>
-              <div className="stat-card">
-                <div className="flex items-center gap-2 mb-2">
-                  <Activity className="w-4 h-4 text-cyber-blue" />
-                  <span className="text-xs text-muted-foreground">Posts</span>
-                </div>
-                <div className="text-2xl font-bold font-mono">{(stats?.totalPosts || 0).toLocaleString()}</div>
-              </div>
-              <div className="stat-card">
-                <div className="flex items-center gap-2 mb-2">
-                  <Server className="w-4 h-4 text-cyber-green" />
-                  <span className="text-xs text-muted-foreground">Uptime</span>
-                </div>
-                <div className="text-2xl font-bold font-mono">{stats?.uptime || 99.97}%</div>
-              </div>
-              <div className="stat-card">
-                <div className="flex items-center gap-2 mb-2">
-                  <Database className="w-4 h-4 text-cyber-purple" />
-                  <span className="text-xs text-muted-foreground">Version</span>
-                </div>
-                <div className="text-2xl font-bold font-mono">{stats?.version || "1.0.0"}</div>
-              </div>
-            </div>
-
-            {/* Moderation Stats */}
-            {modStats && (
-              <div className="stat-card mb-6">
-                <div className="flex items-center gap-3 mb-4">
-                  <Shield className="w-5 h-5 text-red-500" />
-                  <h3 className="font-semibold">AI Moderation</h3>
-                  <Badge variant="outline" className="text-xs ml-auto">Powered by LLM</Badge>
-                </div>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div className="bg-background/50 rounded-lg p-3 border border-border/30">
-                    <div className="text-xs text-muted-foreground mb-1">Total Actions</div>
-                    <div className="font-bold font-mono">{modStats.totalActions || 0}</div>
-                  </div>
-                  <div className="bg-background/50 rounded-lg p-3 border border-border/30">
-                    <div className="text-xs text-muted-foreground mb-1">Auto-flagged</div>
-                    <div className="font-bold font-mono">{modStats.autoModerated || 0}</div>
-                  </div>
-                  <div className="bg-background/50 rounded-lg p-3 border border-border/30">
-                    <div className="text-xs text-muted-foreground mb-1">AI Accuracy</div>
-                    <div className="font-bold font-mono">{modStats.accuracy ? `${(modStats.accuracy * 100).toFixed(1)}%` : "N/A"}</div>
-                  </div>
-                  <div className="bg-background/50 rounded-lg p-3 border border-border/30">
-                    <div className="text-xs text-muted-foreground mb-1">Last 24h</div>
-                    <div className="font-bold font-mono">{modStats.manualReviews || 0}</div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Recent Moderation Logs */}
-            <div className="stat-card">
-              <div className="flex items-center gap-3 mb-4">
-                <Eye className="w-5 h-5 text-red-500" />
-                <h3 className="font-semibold">Recent Moderation Logs</h3>
-              </div>
-              {modLogs && modLogs.length > 0 ? (
-                <div className="space-y-2 max-h-80 overflow-y-auto">
-                  {modLogs.slice(0, 15).map((log: any, i: number) => (
-                    <div key={log.id || i} className="flex items-center gap-3 p-3 rounded-lg bg-background/50 border border-border/20">
-                      {log.action === "auto_flag" || log.action === "auto_remove" ? (
-                        <AlertTriangle className="w-4 h-4 text-yellow-500 shrink-0" />
-                      ) : (
-                        <CheckCircle className="w-4 h-4 text-purple-400 shrink-0" />
-                      )}
-                      <div className="flex-1 min-w-0">
-                        <div className="text-sm font-medium truncate">{log.reason || "No reason"}</div>
-                        <div className="text-xs text-muted-foreground flex items-center gap-2">
-                          <Badge variant="outline" className="text-[10px] px-1.5 py-0">{log.contentType}</Badge>
-                          <span>{log.action}</span>
-                          {log.isAuto && <Badge variant="outline" className="text-[10px] px-1.5 py-0 border-primary/30 text-primary">AI</Badge>}
-                        </div>
-                      </div>
-                      <div className="text-xs text-muted-foreground flex items-center gap-1">
-                        <Clock className="w-3 h-3" />
-                        {log.createdAt ? new Date(log.createdAt).toLocaleDateString() : "—"}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-8 text-muted-foreground">
-                  <Shield className="w-8 h-8 mx-auto mb-3 opacity-50" />
-                  <p className="text-sm">No moderation logs yet. The AI will log actions as content is scanned.</p>
-                </div>
-              )}
-            </div>
-          </>
-        )}
-      </div>
-    </div>
-  );
+  const { isAuthenticated, user, loading } = useAuth();
+  const signIn = () => { window.location.href = "/api/oauth/login"; };
+  return <div className="min-h-screen bg-background"><PageHeader icon={Shield} title="Admin Panel" subtitle="Administrative controls and operational evidence are not connected in this deployment. No administrator role, platform metric, moderation decision, or privileged mutation is being reported or changed." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8">{!isAuthenticated && !loading && <Card className="border border-primary/30 bg-primary/5 p-6"><div className="flex items-start gap-3"><LockKeyhole aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-primary" /><div><h2 className="font-semibold">Administrator access required</h2><p className="mt-1 text-sm leading-6 text-muted-foreground">A secure authenticated session and server-side administrator authorization are required. This page does not infer privilege from frontend state, and signing in does not imply that admin services are available.</p><Button className="mt-4" onClick={signIn}>Sign in securely</Button></div></div></Card>}{isAuthenticated && <Card className="border border-primary/30 bg-primary/5 p-6"><div className="flex items-start gap-3"><Shield aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-primary" /><div><h2 className="font-semibold">Authenticated session detected; admin authorization is still unverified</h2><p className="mt-1 text-sm leading-6 text-muted-foreground">{user?.role ? `The session exposes a role value (${String(user.role)}), but no server-side authorization decision or admin control is claimed by this screen.` : "No role value is exposed to this screen."}</p></div></div></Card>}<Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Administrative evidence is unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous route crashed while constructing a login URL when its configuration was incomplete. It also queried platform and moderation data, defaulted to unsupported uptime and version values, displayed user and post counts, exposed AI moderation accuracy, and rendered untyped moderation logs. Those runtime and truthfulness hazards were removed. No admin control, moderation decision, platform statistic, health result, version, log, or privileged mutation is exposed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Shield aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Admin readiness</h2><p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">A production admin panel requires server-side role and object authorization, deny-by-default routing, scoped privileged actions, audit records, confirmation and idempotency, moderation policy and reviewer accountability, health and deployment sources, typed API contracts, redacted logs, rate limits, and independent security testing. None are available through this screen.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{states.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div><div className="mt-6 flex flex-wrap gap-4"><Link href="/security"><Button>View security status</Button></Link><Link href="/audit-logs"><Button variant="outline">View audit status</Button></Link><Link href="/contact-us-form"><Button variant="ghost">Ask about admin access</Button></Link></div></Card><section aria-labelledby="admin-state-heading"><h2 id="admin-state-heading" className="mb-4 text-xl font-semibold">Current administrative evidence</h2><div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">{states.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-border/50 bg-card p-4"><p className="text-sm text-muted-foreground">{label}</p><div className="mt-2 flex items-center gap-2"><Icon aria-hidden="true" className="h-4 w-4 text-muted-foreground" /><p className="font-semibold">{value}</p></div></Card>)}</div></section><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><Database aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">Do not treat this client screen as protection for an endpoint, account, wallet, asset, moderation decision, or administrative action. Never enter passwords, access tokens, private keys, seed phrases, or sensitive personal information here.</p></div></Card><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><Activity aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No platform statistics, uptime, version, moderation accuracy, log history, or operational health result is fabricated as a fallback.</p></div></Card></main></div>;
 }
