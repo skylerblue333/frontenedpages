@@ -1,25 +1,16 @@
-import { useState } from "react";
+import { AlertTriangle, CreditCard, LockKeyhole, Receipt, ShieldCheck, WalletCards } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const states = [
+  { label: "Payment provider and hosted fields", value: "Not connected", icon: CreditCard },
+  { label: "Tokenization and card verification", value: "Unavailable", icon: ShieldCheck },
+  { label: "Authorization, billing, and receipts", value: "Not reported", icon: Receipt },
+  { label: "Saved payment methods and deletion", value: "Disabled", icon: LockKeyhole },
+];
 
 export default function AddCreditCard() {
-  const [state, setState] = useState(false);
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 to-black p-4">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">AddCreditCard</h1>
-        <p className="text-slate-400 mb-8">add credit card</p>
-        
-        <Card className="bg-slate-900 border-slate-800 p-8">
-          <div className="space-y-6">
-            <p className="text-slate-300">Content for AddCreditCard page</p>
-            <Button onClick={() => setState(!state)}>
-              {state ? "Deactivate" : "Activate"}
-            </Button>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={CreditCard} title="Add a Credit Card" subtitle="Card linking is not available in this deployment. No card, token, verification, authorization, billing, receipt, or saved payment method is being reported or changed." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Card linking is unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous screen was a generic placeholder with an inert Activate control. No payment processor, hosted-field or tokenization flow, card verification, consent, billing, authorization, receipt, fraud control, refund, or financial-data deletion contract was connected. This route does not collect or store card details and does not simulate activation.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><CreditCard aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Secure payment-method readiness</h2><p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">A production card-linking flow requires a PCI-scoped provider or hosted fields, server-side token exchange, explicit consent, least-privilege access, masking, 3-D Secure or equivalent verification where applicable, authorization and idempotency, webhooks, refund and dispute handling, receipts, fraud controls, audit records, retention and deletion, and clear failure states. None are available through this screen.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{states.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div><div className="mt-6 flex flex-wrap gap-4"><Link href="/payment-methods"><Button>View payment status</Button></Link><Link href="/billing"><Button variant="outline">View billing status</Button></Link><Link href="/contact-us-form"><Button variant="ghost">Ask about payment access</Button></Link></div></Card><section aria-labelledby="card-state-heading"><h2 id="card-state-heading" className="mb-4 text-xl font-semibold">Current card-link evidence</h2><div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">{states.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-border/50 bg-card p-4"><p className="text-sm text-muted-foreground">{label}</p><div className="mt-2 flex items-center gap-2"><Icon aria-hidden="true" className="h-4 w-4 text-muted-foreground" /><p className="font-semibold">{value}</p></div></Card>)}</div></section><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><LockKeyhole aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">Never enter full card numbers, security codes, PINs, one-time codes, banking credentials, seed phrases, private keys, or payment credentials into this page. Do not treat this screen as proof of tokenization, verification, authorization, billing, receipt, refund, or saved-card capability.</p></div></Card><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><WalletCards aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">Use your card issuer or a verified payment provider’s official secure flow until reviewed payment integrations are connected and independently tested.</p></div></Card></main></div>;
 }
