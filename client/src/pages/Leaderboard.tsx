@@ -1,146 +1,23 @@
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/_core/hooks/useAuth";
+import { AlertTriangle, BarChart3, CheckCircle2, Gamepad2, KeyRound, LockKeyhole, ShieldAlert, Star, Trophy, UsersRound } from "lucide-react";
 import { Link } from "wouter";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Badge } from "@/components/ui/badge";
-import { TableSkeleton } from "@/components/PageSkeleton";
-import { EmptyState } from "@/components/EmptyState";
-import {
-  Trophy, Zap, MessageSquare, Users, TrendingUp,
-  Crown, Medal, Award, Star
-} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
 
-const RANK_STYLES = [
-  { bg: 'linear-gradient(135deg, oklch(0.80 0.18 70), oklch(0.72 0.24 40))', icon: <Crown className="w-4 h-4 text-white" />, label: "#1" },
-  { bg: 'linear-gradient(135deg, oklch(0.75 0.05 270), oklch(0.65 0.05 270))', icon: <Medal className="w-4 h-4 text-white" />, label: "#2" },
-  { bg: 'linear-gradient(135deg, oklch(0.62 0.24 40), oklch(0.55 0.20 40))', icon: <Award className="w-4 h-4 text-white" />, label: "#3" },
+const boundaries = [
+  { label: "Authenticated participant, organization, community, metric, and ranking authorization scope", value: "Not connected", icon: KeyRound },
+  { label: "User identity, consent, visibility, event source, period, deduplication, and metric provenance", value: "Unavailable", icon: UsersRound },
+  { label: "Ranking algorithm, tie-breaking, moderation, anti-gaming, appeals, rewards, and update controls", value: "Not verified", icon: Trophy },
+  { label: "Profile, social graph, behavioral, gaming, privacy, retention, security, and least-privilege safeguards", value: "Not configured", icon: ShieldAlert },
 ];
 
-function LeaderRow({ rank, user, value, label }: { rank: number; user: any; value: string | number; label: string }) {
-  const isTop3 = rank <= 3;
-  const style = isTop3 ? RANK_STYLES[rank - 1] : null;
-
-  return (
-    <div
-      className="flex items-center gap-3 p-3 rounded-xl transition-all hover:scale-[1.01]"
-      style={{
-        background: isTop3 ? 'oklch(0.72 0.28 305 / 0.08)' : 'oklch(0.10 0.025 270)',
-        border: `1px solid ${isTop3 ? 'oklch(0.72 0.28 305 / 0.30)' : 'oklch(0.18 0.025 270)'}`,
-      }}
-    >
-      {/* Rank badge */}
-      <div
-        className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 text-sm font-bold"
-        style={style ? { background: style.bg } : { background: 'oklch(0.15 0.025 270)', color: 'oklch(0.55 0.025 275)' }}
-      >
-        {isTop3 ? style!.icon : rank}
-      </div>
-
-      {/* Avatar */}
-      <div className="w-9 h-9 rounded-full flex-shrink-0 flex items-center justify-center text-sm font-bold text-white overflow-hidden"
-        style={{ background: 'linear-gradient(135deg, oklch(0.72 0.28 305), oklch(0.72 0.28 340))' }}>
-        {user.avatar ? <img src={user.avatar} alt="" className="w-full h-full object-cover" /> : (user.displayName || user.name || "?")[0].toUpperCase()}
-      </div>
-
-      {/* Name */}
-      <div className="flex-1 min-w-0">
-        <Link href={`/profile/${user.id}`}>
-          <p className="text-white text-sm font-semibold truncate hover:underline cursor-pointer">
-            {user.displayName || user.name || "Unknown"}
-            {user.verified && <span className="ml-1 text-xs" style={{ color: 'oklch(0.72 0.28 305)' }}>✓</span>}
-          </p>
-        </Link>
-        <p className="text-xs truncate" style={{ color: 'oklch(0.55 0.025 275)' }}>
-          @{user.username || `user${user.id}`} · Level {user.level || 1}
-        </p>
-      </div>
-
-      {/* Value */}
-      <div className="text-right flex-shrink-0">
-        <p className="text-sm font-bold" style={{ color: isTop3 ? 'oklch(0.85 0.25 305)' : 'white' }}>
-          {typeof value === "number" ? value.toLocaleString() : value}
-        </p>
-        <p className="text-xs" style={{ color: 'oklch(0.50 0.020 275)' }}>{label}</p>
-      </div>
-    </div>
-  );
-}
+const surfaces = [
+  { title: "Metric definitions and source", scope: "XP, posts, followers, reputation, contribution events, period, denominator, timestamps, deduplication, and provenance", status: "Unavailable", icon: BarChart3 },
+  { title: "Identity and visibility", scope: "Authenticated subject, display name, profile visibility, consent, pseudonymization, access, and deletion", status: "Not connected", icon: UsersRound },
+  { title: "Ranking and competition", scope: "Algorithm, tie-breaking, freshness, moderation adjustments, gaming detection, appeals, and reproducibility", status: "Not verified", icon: Trophy },
+  { title: "Privacy and reward safety", scope: "Social graph, behavioral data, gaming rewards, age safeguards, retention, security, fairness, and authorization", status: "Not configured", icon: LockKeyhole },
+];
 
 export default function Leaderboard() {
-  const { user } = useAuth();
-  const [tab, setTab] = useState("xp");
-
-  const { data: users, isLoading } = trpc.user.leaderboard.useQuery({ type: tab as any, limit: 50 });
-
-  const tabConfig = [
-    { id: "xp", label: "XP", icon: Zap, valueKey: "xp", valueLabel: "XP" },
-    { id: "posts", label: "Posts", icon: MessageSquare, valueKey: "postCount", valueLabel: "posts" },
-    { id: "followers", label: "Followers", icon: Users, valueKey: "followerCount", valueLabel: "followers" },
-    { id: "reputation", label: "Rep", icon: Star, valueKey: "reputation", valueLabel: "rep" },
-  ];
-
-  return (
-    <div className="min-h-screen" style={{ background: 'oklch(0.08 0.025 270)' }}>
-      {/* Hero */}
-      <div className="relative overflow-hidden py-12 px-4 text-center" style={{ background: 'linear-gradient(180deg, oklch(0.12 0.025 270), oklch(0.08 0.025 270))' }}>
-        <div className="absolute inset-0 opacity-20" style={{ background: 'radial-gradient(ellipse at 50% 0%, oklch(0.72 0.28 305), transparent 70%)' }} />
-        <div className="relative">
-          <div className="text-5xl mb-3">🏆</div>
-          <h1 className="text-3xl font-bold text-white mb-2">Leaderboard</h1>
-          <p className="text-sm" style={{ color: 'oklch(0.55 0.025 275)' }}>Top creators, earners, and contributors on SKYCOIN4444</p>
-        </div>
-      </div>
-
-      <div className="max-w-2xl mx-auto px-4 pb-16">
-        <Tabs value={tab} onValueChange={setTab} className="space-y-4">
-          <TabsList className="w-full" style={{ background: 'oklch(0.12 0.025 270)' }}>
-            {tabConfig.map(t => (
-              <TabsTrigger key={t.id} value={t.id} className="flex-1 gap-1 text-xs">
-                <t.icon className="w-3.5 h-3.5" /> {t.label}
-              </TabsTrigger>
-            ))}
-          </TabsList>
-
-          {tabConfig.map(t => (
-            <TabsContent key={t.id} value={t.id} className="space-y-2">
-              {isLoading ? (
-                <TableSkeleton rows={10} />
-              ) : !users || users.length === 0 ? (
-                <EmptyState
-                  icon="🏆"
-                  title="No rankings yet"
-                  description="Be the first to earn XP and claim the top spot!"
-                />
-              ) : (
-                users.map((u: any, i: number) => (
-                  <LeaderRow
-                    key={u.id}
-                    rank={i + 1}
-                    user={u}
-                    value={u[t.valueKey] || 0}
-                    label={t.valueLabel}
-                  />
-                ))
-              )}
-            </TabsContent>
-          ))}
-        </Tabs>
-
-        {/* Your rank */}
-        {user && users && users.length > 0 && (
-          <div className="mt-6 p-4 rounded-2xl" style={{ background: 'oklch(0.72 0.28 305 / 0.10)', border: '1px solid oklch(0.72 0.28 305 / 0.30)' }}>
-            <p className="text-white text-sm font-semibold mb-1">Your Rank</p>
-            {(() => {
-              const myRank = users.findIndex((u: any) => u.id === (user as any).id);
-              if (myRank === -1) return <p className="text-sm" style={{ color: 'oklch(0.55 0.025 275)' }}>Post more to appear on the leaderboard!</p>;
-              const myUser = users[myRank];
-              const tabConf = tabConfig.find(t => t.id === tab)!;
-              return <LeaderRow rank={myRank + 1} user={myUser} value={(myUser as any)[tabConf.valueKey] || 0} label={tabConf.valueLabel} />;
-            })()}
-          </div>
-        )}
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Trophy} title="Leaderboard" subtitle="Community-ranking readiness status; no authenticated user directory, score source, ranking algorithm, rewards program, or production leaderboard service is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Leaderboard is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen queried a user leaderboard, rendered any-typed identities, exposed profile links, displayed XP, posts, followers, reputation, ranks, and a personal-rank claim, and implied top creators, earners, contributors, and competitive rewards without metric provenance, consent, visibility, fairness, moderation, anti-gaming, privacy, or authorization controls. Those unsupported queries, records, rankings, links, and claims were removed. No user, score, rank, follower count, reputation, reward, or competition result is displayed or calculated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Trophy aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Community-ranking readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A trustworthy leaderboard requires explicit metric definitions, source-backed event data, authenticated identity and visibility consent, reproducible ranking rules, tie-breaking, freshness, moderation adjustments, anti-gaming review, fair participation, appeals, age safeguards, privacy, and clear treatment of rewards or competition. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="leaderboard-surfaces-heading"><h2 id="leaderboard-surfaces-heading" className="mb-4 text-xl font-semibold">Ranking surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No user, score, rank, follower count, reputation, reward, competition, identity, privacy, security, gaming, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="leaderboard-boundaries-heading"><h2 id="leaderboard-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No ranking operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, user query, score calculation, event aggregation, ranking, profile lookup, personal-rank calculation, reward calculation, search, API request, database read or write, notification, export, deletion, or personal-data operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Gaming, social, identity, privacy, fairness, security, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not treat this page as evidence of a person’s rank, reputation, popularity, contribution, skill, earnings, rewards, or social standing. Verify identity, event source, metric period, algorithm, gaming controls, moderation, age safeguards, visibility consent, privacy, and appeal rights before relying on rankings.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/leaderboards"><Button variant="outline"><Trophy aria-hidden="true" className="mr-2 h-4 w-4" />Review leaderboard status</Button></Link><Link href="/community"><Button variant="outline"><UsersRound aria-hidden="true" className="mr-2 h-4 w-4" />Review community</Button></Link><Link href="/gaming"><Button variant="outline"><Gamepad2 aria-hidden="true" className="mr-2 h-4 w-4" />Review gaming status</Button></Link><Link href="/analytics"><Button variant="outline"><BarChart3 aria-hidden="true" className="mr-2 h-4 w-4" />Review analytics</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link><Link href="/security-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No auth check, user query, score calculation, event aggregation, ranking, profile lookup, personal-rank calculation, reward calculation, search, API request, database read or write, notification, export, deletion, or personal-data operation is performed. This page is not evidence of a person’s rank, reputation, popularity, contribution, skill, earnings, rewards, or social standing.</p></Card></main></div>;
 }
