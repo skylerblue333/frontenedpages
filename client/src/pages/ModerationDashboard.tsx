@@ -1,75 +1,23 @@
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/_core/hooks/useAuth";
+import { AlertTriangle, CheckCircle2, FileWarning, Fingerprint, Gavel, KeyRound, LockKeyhole, MessageSquareWarning, Search, ShieldAlert, Users } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
-import { Loader2, Plus, Search, Settings } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Authenticated reviewer, subject, organization, case, report, queue, and authorization scope", value: "Not connected", icon: KeyRound },
+  { label: "Report, content, account, evidence, policy, severity, decision, appeal, and timestamp provenance", value: "Unavailable", icon: FileWarning },
+  { label: "Queue, search, AI classification, reviewer action, enforcement, escalation, and user-control behavior", value: "Not verified", icon: Gavel },
+  { label: "Personal data, sensitive content, safety, privacy, security, accessibility, and least-privilege safeguards", value: "Not configured", icon: LockKeyhole },
+];
+
+const surfaces = [
+  { title: "Reviewer, subject, and case scope", scope: "Authenticated reviewer, subject, organization, report, case, queue, role, consent, and authorization", status: "Unavailable", icon: Users },
+  { title: "Evidence and policy provenance", scope: "Report, content, account, media, evidence, policy version, severity, source, timestamp, retention, and integrity", status: "Not connected", icon: FileWarning },
+  { title: "Decision, enforcement, appeals, and AI", scope: "Queue, search, classification, reviewer decision, warning, restriction, removal, escalation, appeal, and model limitation", status: "Not verified", icon: Gavel },
+  { title: "Privacy, safety, and access controls", scope: "Sensitive content, identity, abuse response, evidence minimization, export, deletion, accessibility, security, privacy, and access", status: "Not configured", icon: ShieldAlert },
+];
 
 export default function ModerationDashboard() {
-  const { isAuthenticated } = useAuth();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>ModerationDashboard</CardTitle>
-            <CardDescription>Sign in to access this feature</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full">Sign In</Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold">ModerationDashboard</h1>
-            <p className="text-muted-foreground mt-2">Moderation tools</p>
-          </div>
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            New
-          </Button>
-        </div>
-
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Search className="w-4 h-4 text-muted-foreground" />
-              <Input
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="max-w-sm"
-              />
-              <Button variant="outline" size="icon">
-                <Settings className="w-4 h-4" />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {isLoading ? (
-              <div className="flex justify-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
-              </div>
-            ) : (
-              <div className="text-center py-12 text-muted-foreground">
-                <p>No data available. Start by creating a new item.</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={ShieldAlert} title="Moderation Dashboard" subtitle="Moderation-readiness status; no authenticated reviewer or subject, report intake, case queue, content-evidence store, policy engine, AI classifier, enforcement service, appeals workflow, audit ledger, or production safety backend is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Moderation operations are unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen presented an authenticated-only shell with inert Sign In, New, search, settings, tabs, and loading controls but did not connect reviewers, subjects, reports, cases, queues, content evidence, policy versions, AI classification, enforcement, appeals, abuse response, privacy, or authorization. The incomplete workflow was replaced with this explicit readiness boundary. No reviewer, subject, report, case, queue item, content, score, decision, restriction, appeal, metric, or availability state is displayed, queried, created, classified, enforced, stored, or mutated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><ShieldAlert aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Moderation and safety readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Trustworthy moderation requires authenticated reviewer roles, subject and case ownership, report and evidence provenance, versioned policy, human review, constrained AI assistance, consistent enforcement semantics, appeals and correction paths, abuse escalation, privacy-preserving evidence handling, accessibility, and least-privilege authorization. A report, severity, queue count, AI score, enforcement decision, or safety metric is not a fact without a verified case record. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="moderation-surfaces-heading"><h2 id="moderation-surfaces-heading" className="mb-4 text-xl font-semibold">Moderation control surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No reviewer, subject, report, case, queue, evidence, score, decision, appeal, privacy, security, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="moderation-boundaries-heading"><h2 id="moderation-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No moderation operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, reviewer or subject query, report intake, case or queue lookup, content or evidence read, search, AI classification, reviewer decision, enforcement, escalation, appeal, audit event, API request, database read or write, export, deletion, or moderation operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Safety, privacy, AI, security, accessibility, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not enter private messages, identity documents, passwords, authentication codes, financial details, wallet credentials, seed phrases, private keys, precise location, or sensitive evidence here. Do not treat this page as evidence of a report, queue, user identity, content decision, AI score, restriction, removal, appeal, safety metric, moderation response, or privacy protection. Verify report source, evidence integrity, policy version, reviewer role, human oversight, appeal path, retention, privacy, accessibility, security, and authorization before taking action.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/safety-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review safety status</Button></Link><Link href="/reports"><Button variant="outline"><MessageSquareWarning aria-hidden="true" className="mr-2 h-4 w-4" />Review reports</Button></Link><Link href="/security"><Button variant="outline"><Fingerprint aria-hidden="true" className="mr-2 h-4 w-4" />Review security</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link><Link href="/message-search"><Button variant="outline"><Search aria-hidden="true" className="mr-2 h-4 w-4" />Review message search</Button></Link><Link href="/users"><Button variant="outline"><Users aria-hidden="true" className="mr-2 h-4 w-4" />Review user status</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No auth check, reviewer or subject query, report intake, case or queue lookup, content or evidence read, search, AI classification, reviewer decision, enforcement, escalation, appeal, audit event, API request, database read or write, export, deletion, or moderation operation is performed. This page is not evidence of a report, queue, user identity, content decision, AI score, restriction, removal, appeal, safety metric, moderation response, or privacy protection.</p></Card></main></div>;
 }
