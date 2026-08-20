@@ -1,151 +1,23 @@
-/**
- * CrossChainInterop — Phase 11 Cross-Chain Interoperability
- * Multi-chain bridge, asset transfers, protocol interoperability
- */
-import { useState } from "react";
+import { AlertTriangle, ArrowRightLeft, CheckCircle2, Globe, LockKeyhole, Network, ShieldAlert, WalletCards } from "lucide-react";
 import { Link } from "wouter";
-import { ArrowLeft, ArrowRightLeft, Globe, Zap, Shield, TrendingUp } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
 
-const CHAINS = [
-  { name: "Ethereum", symbol: "ETH", color: "text-blue-400", bg: "bg-blue-500/10", status: "active", tvl: "$1.2M" },
-  { name: "Polygon", symbol: "MATIC", color: "text-purple-400", bg: "bg-purple-500/10", status: "active", tvl: "$340K" },
-  { name: "BNB Chain", symbol: "BNB", color: "text-yellow-400", bg: "bg-yellow-500/10", status: "active", tvl: "$180K" },
-  { name: "Solana", symbol: "SOL", color: "text-green-400", bg: "bg-green-500/10", status: "coming", tvl: "—" },
-  { name: "Arbitrum", symbol: "ARB", color: "text-cyan-400", bg: "bg-cyan-500/10", status: "coming", tvl: "—" },
+const readiness = [
+  { label: "Supported networks, assets, contracts, and RPC providers", value: "Not verified", icon: Globe },
+  { label: "Wallet ownership, balances, custody, and address validation", value: "Not connected", icon: WalletCards },
+  { label: "Bridge route, quote, fee, slippage, and transaction lifecycle", value: "Unavailable", icon: ArrowRightLeft },
+  { label: "Security review, monitoring, confirmations, and recovery", value: "Not configured", icon: LockKeyhole },
 ];
 
-const RECENT_BRIDGES = [
-  { from: "ETH", to: "SKY", amount: "0.5 ETH", value: "$1,250", time: "2m ago", status: "completed" },
-  { from: "MATIC", to: "SKY", amount: "500 MATIC", value: "$320", time: "8m ago", status: "completed" },
-  { from: "SKY", to: "ETH", amount: "10,000 SKY", value: "$2,100", time: "15m ago", status: "completed" },
-  { from: "BNB", to: "SKY", amount: "2 BNB", value: "$840", time: "22m ago", status: "pending" },
+const boundaries = [
+  { title: "No chain or TVL claim", description: "No network, token, contract, chain status, total value locked, active-chain count, price, balance, liquidity, bridge capacity, or protocol availability is read or displayed.", icon: Globe },
+  { title: "No bridge or transaction action", description: "No wallet connection, address validation, asset selection, quote, fee, slippage, approval, signature, bridge submission, transaction hash, confirmation, completion, failure, or refund can be initiated here.", icon: ArrowRightLeft },
+  { title: "No history claim", description: "No bridge history, amount, currency value, timestamp, pending state, completed state, sender, recipient, or transaction status is read, generated, or simulated.", icon: Network },
+  { title: "Crypto warn-and-proceed", description: "Cross-chain transfers can permanently lose assets and involve irreversible signatures, fees, slippage, contract risk, and tax consequences. Verify network and address details and obtain qualified advice before acting.", icon: AlertTriangle },
 ];
 
 export default function CrossChainInterop() {
-  const [fromChain, setFromChain] = useState("ETH");
-  const [toChain, setToChain] = useState("SKY");
-  const [amount, setAmount] = useState("");
-  const [tab, setTab] = useState<"bridge" | "chains" | "history">("bridge");
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="sticky top-0 z-10 bg-background/80 backdrop-blur-sm border-b border-border/50 px-4 py-3 flex items-center gap-3">
-        <Link href="/" className="p-2 rounded-lg hover:bg-secondary/50 transition-colors text-muted-foreground">
-          <ArrowLeft className="w-4 h-4" />
-        </Link>
-        <div>
-          <h1 className="font-bold text-lg flex items-center gap-2">
-            <Globe className="w-5 h-5 text-cyan-400" />
-            Cross-Chain Bridge
-          </h1>
-          <p className="text-xs text-muted-foreground">Multi-chain interoperability — Phase 11</p>
-        </div>
-      </div>
-
-      <div className="max-w-2xl mx-auto p-4 space-y-4">
-        <div className="grid grid-cols-3 gap-2">
-          {[
-            { label: "Total TVL", value: "$1.72M", icon: TrendingUp, color: "text-green-400" },
-            { label: "Active Chains", value: "3", icon: Globe, color: "text-blue-400" },
-            { label: "Avg Bridge Time", value: "45s", icon: Zap, color: "text-yellow-400" },
-          ].map(s => (
-            <div key={s.label} className="card p-3 text-center">
-              <s.icon className={`w-4 h-4 ${s.color} mx-auto mb-1`} />
-              <div className="font-bold text-sm">{s.value}</div>
-              <div className="text-xs text-muted-foreground">{s.label}</div>
-            </div>
-          ))}
-        </div>
-
-        <div className="flex gap-1 bg-secondary/30 rounded-xl p-1">
-          {(["bridge", "chains", "history"] as const).map(t => (
-            <button key={t} onClick={() => setTab(t)}
-              className={`flex-1 py-2 rounded-lg text-xs font-medium capitalize transition-colors ${tab === t ? "bg-background text-foreground shadow-sm" : "text-muted-foreground"}`}>
-              {t}
-            </button>
-          ))}
-        </div>
-
-        {tab === "bridge" && (
-          <div className="space-y-3">
-            <div className="card p-4 space-y-3">
-              <div className="space-y-2">
-                <label className="text-xs text-muted-foreground">From</label>
-                <select value={fromChain} onChange={e => setFromChain(e.target.value)}
-                  className="w-full bg-secondary/50 border border-border/50 rounded-lg px-3 py-2 text-sm">
-                  {["ETH", "MATIC", "BNB", "SKY"].map(c => <option key={c}>{c}</option>)}
-                </select>
-              </div>
-              <div className="flex justify-center">
-                <button onClick={() => { setFromChain(toChain); setToChain(fromChain); }}
-                  className="p-2 rounded-full bg-secondary/50 hover:bg-secondary transition-colors">
-                  <ArrowRightLeft className="w-4 h-4 text-primary" />
-                </button>
-              </div>
-              <div className="space-y-2">
-                <label className="text-xs text-muted-foreground">To</label>
-                <select value={toChain} onChange={e => setToChain(e.target.value)}
-                  className="w-full bg-secondary/50 border border-border/50 rounded-lg px-3 py-2 text-sm">
-                  {["SKY", "ETH", "MATIC", "BNB"].map(c => <option key={c}>{c}</option>)}
-                </select>
-              </div>
-              <div className="space-y-2">
-                <label className="text-xs text-muted-foreground">Amount</label>
-                <input value={amount} onChange={e => setAmount(e.target.value)} placeholder="0.00"
-                  className="w-full bg-secondary/50 border border-border/50 rounded-lg px-3 py-2 text-sm" />
-              </div>
-              <div className="flex items-center gap-2 text-xs text-muted-foreground p-2 bg-secondary/30 rounded-lg">
-                <Shield className="w-3.5 h-3.5 text-green-400" />
-                <span>Bridge fee: 0.1% · Estimated time: ~45 seconds</span>
-              </div>
-              <button className="w-full py-3 bg-primary text-primary-foreground rounded-xl font-semibold text-sm hover:opacity-90 transition-opacity">
-                Bridge {fromChain} → {toChain}
-              </button>
-            </div>
-          </div>
-        )}
-
-        {tab === "chains" && (
-          <div className="space-y-2">
-            {CHAINS.map(c => (
-              <div key={c.name} className="card p-4 flex items-center gap-3">
-                <div className={`w-9 h-9 rounded-full ${c.bg} flex items-center justify-center font-bold text-xs ${c.color}`}>
-                  {c.symbol}
-                </div>
-                <div className="flex-1">
-                  <div className="font-medium text-sm">{c.name}</div>
-                  <div className="text-xs text-muted-foreground">TVL: {c.tvl}</div>
-                </div>
-                <span className={`text-xs px-2 py-0.5 rounded-full ${c.status === "active" ? "bg-green-500/20 text-green-400" : "bg-secondary text-muted-foreground"}`}>
-                  {c.status}
-                </span>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {tab === "history" && (
-          <div className="space-y-2">
-            {RECENT_BRIDGES.map((b, i) => (
-              <div key={i} className="card p-3 flex items-center gap-3">
-                <div className="text-xs font-mono text-center">
-                  <div className="text-primary">{b.from}</div>
-                  <div className="text-muted-foreground">→</div>
-                  <div className="text-primary">{b.to}</div>
-                </div>
-                <div className="flex-1">
-                  <div className="text-sm font-medium">{b.amount}</div>
-                  <div className="text-xs text-muted-foreground">{b.value}</div>
-                </div>
-                <div className="text-right">
-                  <div className={`text-xs ${b.status === "completed" ? "text-green-400" : "text-yellow-400"}`}>{b.status}</div>
-                  <div className="text-xs text-muted-foreground">{b.time}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader backHref="/crypto-hub" icon={Globe} title="Cross-Chain Interoperability" subtitle="Cross-chain readiness status; no live bridge, wallet, network, token, quote, fee, balance, transaction, or blockchain history is available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><ShieldAlert aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Cross-chain operations are unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous screen fabricated chain statuses and TVL, recent bridge transactions, bridge fees and timing, and a transfer form with a bridge action. No verified wallet, network, asset, contract, RPC, quote, security, or transaction integration was connected, so those data and controls were removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><ArrowRightLeft aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Cross-chain readiness status</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Production cross-chain infrastructure requires verified networks and contracts, wallet ownership, address and asset validation, quote and slippage semantics, allowance and signature handling, replay and duplicate protection, transaction monitoring, confirmation and recovery, custody boundaries, security review, and auditable hashes. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{readiness.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="cross-chain-boundaries-heading"><h2 id="cross-chain-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2">{boundaries.map(({ title, description, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><Icon aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p></Card>)}</div></section><div className="flex flex-wrap gap-3"><Link href="/crypto-hub"><Button variant="outline">View crypto status</Button></Link><Link href="/wallet"><Button variant="outline">View wallet status</Button></Link><Link href="/contact-us-form"><Button variant="outline">Ask about availability</Button></Link></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No bridge tab, chain selector, asset selector, amount, quote, fee, timing estimate, wallet connection, approval, signature, transaction, API request, database read or write, notification, balance, TVL, history, currency amount, contract interaction, or financial recommendation is performed. This page is not evidence of blockchain support, custody, liquidity, bridge completion, or asset transfer.</p></div></Card></main></div>;
 }
