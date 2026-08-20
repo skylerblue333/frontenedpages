@@ -1,75 +1,23 @@
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/_core/hooks/useAuth";
+import { AlertTriangle, CheckCircle2, ClipboardCheck, GitBranch, LockKeyhole, Network, Search, ShieldAlert } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
-import { Loader2, Plus, Search, Settings } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const readiness = [
+  { label: "Repository and lockfile inventory, package managers, versions, and transitive graph", value: "Not connected", icon: Network },
+  { label: "Vulnerability advisories, licenses, provenance, integrity, and policy evaluation", value: "Unavailable", icon: ShieldAlert },
+  { label: "Dependency updates, remediation, approvals, tests, and reproducible CI", value: "Not configured", icon: GitBranch },
+  { label: "Authenticated project scope, audit history, exceptions, and recovery", value: "Not verified", icon: LockKeyhole },
+];
+
+const boundaries = [
+  { title: "No dependency inventory or graph claim", description: "No package, version, direct or transitive dependency, graph edge, license, vulnerability, maintenance state, provenance, integrity, or project result is fetched, displayed, calculated, or simulated.", icon: Network },
+  { title: "No engineering mutation", description: "No sign-in, package installation, lockfile update, version change, upgrade, downgrade, patch, approval, settings change, API request, database read or write, repository mutation, or CI job can be initiated here.", icon: GitBranch },
+  { title: "No security or compliance claim", description: "No vulnerability scan, severity, exploitability, license compatibility, supply-chain trust, SBOM, policy exception, security status, remediation result, or compliance outcome is asserted.", icon: ClipboardCheck },
+  { title: "Engineering and supply-chain warn-and-proceed", description: "Dependency changes can introduce vulnerabilities, license obligations, breaking behavior, malware, compromised packages, and reproducibility failures. Verify package sources, checksums, advisories, licenses, tests, review, and rollback before acting.", icon: ShieldAlert },
+];
 
 export default function DependencyGraph() {
-  const { isAuthenticated } = useAuth();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>DependencyGraph</CardTitle>
-            <CardDescription>Sign in to access this feature</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full">Sign In</Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold">DependencyGraph</h1>
-            <p className="text-muted-foreground mt-2">Task dependency visualization</p>
-          </div>
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            New
-          </Button>
-        </div>
-
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Search className="w-4 h-4 text-muted-foreground" />
-              <Input
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="max-w-sm"
-              />
-              <Button variant="outline" size="icon">
-                <Settings className="w-4 h-4" />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {isLoading ? (
-              <div className="flex justify-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
-              </div>
-            ) : (
-              <div className="text-center py-12 text-muted-foreground">
-                <p>No data available. Start by creating a new item.</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader backHref="/enterprise" icon={Network} title="Dependency Graph" subtitle="Dependency-evidence status; no package inventory, graph, vulnerability scan, license result, update, or repository mutation is available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Dependency evidence is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen presented sign-in, New, settings, search, a local loading state, and a generic empty state without repository scope, package inventory, lockfile analysis, graph generation, vulnerability or license data, provenance, or remediation workflow. Those controls and implied evidence were removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Network aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Dependency-evidence status</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A production dependency graph requires repository and lockfile scope, reproducible package resolution, direct and transitive graphing, vulnerability and license sources, package provenance and integrity, policy evaluation, reviewed remediation, tests, CI, audit history, and rollback. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{readiness.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="dependency-boundaries-heading"><h2 id="dependency-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2">{boundaries.map(({ title, description, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><Icon aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p></Card>)}</div></section><div className="flex flex-wrap gap-3"><Link href="/enterprise"><Button variant="outline">View enterprise status</Button></Link><Link href="/security-center"><Button variant="outline">View security status</Button></Link><Link href="/system-status"><Button variant="outline"><Search aria-hidden="true" className="mr-2 h-4 w-4" />View system status</Button></Link><Link href="/contact-us-form"><Button variant="outline">Ask about evidence</Button></Link></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No package, version, direct or transitive dependency, graph edge, license, vulnerability, maintenance state, provenance, integrity, project result, package installation, lockfile update, version change, upgrade, downgrade, patch, approval, repository mutation, CI job, vulnerability scan, severity, SBOM, security status, remediation result, compliance outcome, API request, database read or write, or financial claim is performed. This page is not evidence of dependency health, security, licensing, supply-chain trust, compliance, or reproducibility.</p></div></Card></main></div>;
 }
