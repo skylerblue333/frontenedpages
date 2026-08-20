@@ -1,25 +1,23 @@
-import { useState } from "react";
+import { AlertTriangle, CheckCircle2, FileCheck2, KeyRound, LockKeyhole, Search, Settings2, ShieldAlert, SlidersHorizontal, UserRound } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Authenticated owner, organization, profile, device, integration, and least-privilege settings scope", value: "Not connected", icon: KeyRound },
+  { label: "Versioned preference schema, defaults, validation, persistence, synchronization, and rollback", value: "Unavailable", icon: Settings2 },
+  { label: "Notifications, privacy, security, accessibility, integrations, consent, retention, and data rights", value: "Not verified", icon: SlidersHorizontal },
+  { label: "Authorization, sensitive data, account recovery, audit, and operational safety safeguards", value: "Not configured", icon: ShieldAlert },
+];
+
+const surfaces = [
+  { title: "Account and profile", scope: "Identity, profile, organization, devices, locale, timezone, accessibility, defaults, and account recovery", status: "Unavailable", icon: UserRound },
+  { title: "Privacy and notifications", scope: "Consent, visibility, personal data, retention, export, deletion, sharing, notifications, and communication preferences", status: "Not verified", icon: LockKeyhole },
+  { title: "Security and access", scope: "Sessions, authentication factors, roles, permissions, trusted devices, recovery, audit, and security notifications", status: "Not configured", icon: ShieldAlert },
+  { title: "Integrations and operations", scope: "Connected services, API permissions, webhooks, data transfers, rate limits, incident response, and least privilege", status: "Not connected", icon: FileCheck2 },
+];
 
 export default function GeneralSettings() {
-  const [state, setState] = useState(false);
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 to-black p-4">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">GeneralSettings</h1>
-        <p className="text-slate-400 mb-8">general settings</p>
-        
-        <Card className="bg-slate-900 border-slate-800 p-8">
-          <div className="space-y-6">
-            <p className="text-slate-300">Content for GeneralSettings page</p>
-            <Button onClick={() => setState(!state)}>
-              {state ? "Deactivate" : "Activate"}
-            </Button>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Settings2} title="General Settings" subtitle="Account-settings readiness status; no authenticated owner, organization, profile, preference, notification, privacy, security, integration, or personal-data service is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Account settings are not connected</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen was only a generic activate/deactivate placeholder and did not establish an authenticated owner, organization, preference schema, persistence, notifications, privacy, security, integrations, consent, retention, or authorization boundary. No setting is active, changed, or implied here.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Settings2 aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Settings-readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Trustworthy account settings require authenticated owner and organization scope, versioned schemas, validated defaults, secure persistence and synchronization, audit and rollback, explicit privacy, security, accessibility, notification, integration, consent, data-rights, retention, and least-privilege controls. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="general-settings-surfaces-heading"><h2 id="general-settings-surfaces-heading" className="mb-4 text-xl font-semibold">Settings surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No setting, preference, notification, security, privacy, integration, financial, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="general-settings-boundaries-heading"><h2 id="general-settings-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No account or setting claim</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, profile lookup, preference read, preference write, notification change, privacy change, security change, accessibility change, integration permission, API request, database read or write, notification, export, deletion, or personal-data operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Identity, privacy, security, integration, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not treat this page as evidence that an account, profile, privacy, security, accessibility, notification, integration, or data-rights control is active. Verify identity, scope, consent, defaults, persistence, audit, sensitive-data handling, recovery, and human review before changing or relying on settings.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/game-settings"><Button variant="outline"><Settings2 aria-hidden="true" className="mr-2 h-4 w-4" />Review game settings</Button></Link><Link href="/profile"><Button variant="outline"><UserRound aria-hidden="true" className="mr-2 h-4 w-4" />Review profile</Button></Link><Link href="/security-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link><Link href="/documentation"><Button variant="outline"><FileCheck2 aria-hidden="true" className="mr-2 h-4 w-4" />Review documentation</Button></Link><Link href="/contact-us-form"><Button variant="outline"><Search aria-hidden="true" className="mr-2 h-4 w-4" />Ask about settings</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No auth check, profile lookup, preference read, preference write, notification change, privacy change, security change, accessibility change, integration permission, API request, database read or write, notification, export, deletion, or personal-data operation is performed. This page is not evidence of active account settings, privacy, security, notifications, integrations, data rights, or production control functionality.</p></Card></main></div>;
 }
