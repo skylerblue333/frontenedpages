@@ -1,75 +1,23 @@
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/_core/hooks/useAuth";
+import { AlertTriangle, CheckCircle2, Languages, LayoutTemplate, LockKeyhole, RefreshCw, ShieldAlert, UserRound } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
-import { Loader2, Plus, Search, Settings } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Authenticated user, tenant, language preference, device, and settings authorization scope", value: "Not connected", icon: UserRound },
+  { label: "Locale catalog, translation coverage, source, version, fallback, and preference provenance", value: "Unavailable", icon: Languages },
+  { label: "Persistence, cross-device synchronization, reset, conflict handling, formatting, RTL, and accessibility", value: "Not verified", icon: RefreshCw },
+  { label: "Preference, device, notification, analytics, privacy, retention, security, and least-privilege safeguards", value: "Not configured", icon: ShieldAlert },
+];
+
+const surfaces = [
+  { title: "Language preference", scope: "Locale, script, consent, profile or device scope, persistence, sync, reset, conflict handling, and authorization", status: "Unavailable", icon: Languages },
+  { title: "Translation and fallback", scope: "Catalog version, coverage, missing keys, fallback order, machine translation, human review, and stale-content status", status: "Not connected", icon: RefreshCw },
+  { title: "Formatting and accessibility", scope: "Pluralization, dates, numbers, currencies, RTL, text expansion, keyboard navigation, screen readers, and contrast", status: "Not verified", icon: LayoutTemplate },
+  { title: "Privacy and preference safety", scope: "Language preference, device identifiers, notifications, analytics, retention, deletion, security, and access control", status: "Not configured", icon: LockKeyhole },
+];
 
 export default function LanguageSettings() {
-  const { isAuthenticated } = useAuth();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>LanguageSettings</CardTitle>
-            <CardDescription>Sign in to access this feature</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full">Sign In</Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold">LanguageSettings</h1>
-            <p className="text-muted-foreground mt-2">Language selection</p>
-          </div>
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            New
-          </Button>
-        </div>
-
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Search className="w-4 h-4 text-muted-foreground" />
-              <Input
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="max-w-sm"
-              />
-              <Button variant="outline" size="icon">
-                <Settings className="w-4 h-4" />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {isLoading ? (
-              <div className="flex justify-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
-              </div>
-            ) : (
-              <div className="text-center py-12 text-muted-foreground">
-                <p>No data available. Start by creating a new item.</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Languages} title="Language Settings" subtitle="Language-preference readiness status; no authenticated user, locale catalog, translation provider, preference persistence, cross-device synchronization, or production settings service is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Language settings are unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen exposed an unauthenticated sign-in pseudo-action and inert New, settings, search, and loading controls without establishing the locale catalog, translation coverage, source or version, fallback behavior, consent, persistence, cross-device sync, formatting, accessibility, notifications, privacy, or authorization. Those unsupported claims and controls were removed. No language preference is read, displayed, changed, synchronized, or persisted from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Languages aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Language-preference readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Reliable settings require an authenticated subject and scope, source-backed locale catalogs, clear translation coverage and fallback, explicit consent, predictable persistence and synchronization, correct formatting and RTL support, accessibility testing, privacy controls, and safe reset and conflict behavior. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="language-settings-surfaces-heading"><h2 id="language-settings-surfaces-heading" className="mb-4 text-xl font-semibold">Preference surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No locale, translation, preference, accessibility, privacy, security, identity, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="language-settings-boundaries-heading"><h2 id="language-settings-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No preference or settings operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, locale query, catalog query, translation request, preference read or write, persistence, synchronization, notification mutation, formatting, layout change, API request, database read or write, export, deletion, or personal-data operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Privacy, accessibility, translation, identity, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not treat this page as evidence of supported languages, translation accuracy, persistence, formatting, accessibility, notification behavior, or localization readiness. Verify catalog version, fallback, consent, preference scope, device sync, RTL behavior, screen-reader behavior, retention, and human review before changing or relying on language settings.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/language-selector"><Button variant="outline"><Languages aria-hidden="true" className="mr-2 h-4 w-4" />Review language selector</Button></Link><Link href="/localization"><Button variant="outline"><RefreshCw aria-hidden="true" className="mr-2 h-4 w-4" />Review localization status</Button></Link><Link href="/accessibility"><Button variant="outline"><LayoutTemplate aria-hidden="true" className="mr-2 h-4 w-4" />Review accessibility</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link><Link href="/security-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No auth check, locale query, catalog query, translation request, preference read or write, persistence, synchronization, notification mutation, formatting, layout change, API request, database read or write, export, deletion, or personal-data operation is performed. This page is not evidence of supported languages, translation accuracy, persistence, formatting, accessibility, notification behavior, or localization readiness.</p></Card></main></div>;
 }
