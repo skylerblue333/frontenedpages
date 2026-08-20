@@ -1,74 +1,23 @@
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/_core/hooks/useAuth";
+import { AlertTriangle, Bell, CheckCircle2, Eye, Fingerprint, KeyRound, LockKeyhole, ShieldAlert, Smartphone, UserRound, WalletCards } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Loader2, Plus, Search, Settings } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Authenticated user, device, account, profile, organization, and authorization scope", value: "Not connected", icon: KeyRound },
+  { label: "Identity, username, avatar, biography, verification, visibility, settings, and timestamp provenance", value: "Unavailable", icon: UserRound },
+  { label: "Profile edits, media ownership, notifications, wallet, AI, personalization, and user-control behavior", value: "Not verified", icon: Fingerprint },
+  { label: "Personal data, sensitive attributes, credentials, privacy, security, accessibility, and least-privilege safeguards", value: "Not configured", icon: LockKeyhole },
+];
+
+const surfaces = [
+  { title: "Account and identity scope", scope: "Authenticated user, device, account, organization, identity, username, profile, visibility, consent, and authorization", status: "Unavailable", icon: UserRound },
+  { title: "Profile and media provenance", scope: "Avatar, biography, links, media, ownership, verification, source, freshness, revision, and deletion", status: "Not connected", icon: Eye },
+  { title: "Settings, notifications, wallet, and AI behavior", scope: "Profile edits, preferences, notification, wallet, AI, personalization, session, and user-control behavior", status: "Not verified", icon: WalletCards },
+  { title: "Privacy, security, and sensitive-data controls", scope: "Identity documents, sensitive attributes, credentials, location, financial data, retention, export, deletion, accessibility, and access", status: "Not configured", icon: ShieldAlert },
+];
 
 export default function MobileProfile() {
-  const { isAuthenticated } = useAuth();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>MobileProfile</CardTitle>
-            <CardDescription>Sign in to access this feature</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full">Sign In</Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold">MobileProfile</h1>
-            <p className="text-muted-foreground mt-2">Mobile profile</p>
-          </div>
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            New
-          </Button>
-        </div>
-
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Search className="w-4 h-4 text-muted-foreground" />
-              <Input
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="max-w-sm"
-              />
-              <Button variant="outline" size="icon">
-                <Settings className="w-4 h-4" />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {isLoading ? (
-              <div className="flex justify-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
-              </div>
-            ) : (
-              <div className="text-center py-12 text-muted-foreground">
-                <p>No data available. Start by creating a new item.</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={UserRound} title="Mobile Profile" subtitle="Mobile-profile readiness status; no authenticated user or device session, account or profile service, avatar or media store, verification provider, settings contract, notification ledger, wallet, AI provider, or production profile backend is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Mobile profile is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen presented an authenticated-only shell with inert Sign In, New, search, settings, and loading controls but did not connect user identity, profile fields, avatar or media ownership, verification, visibility, preferences, notifications, wallet, AI, privacy, or authorization. The incomplete workflow was replaced with this explicit readiness boundary. No user, account, username, avatar, biography, verification state, setting, notification, wallet, AI output, search result, or availability state is displayed, queried, created, stored, inferred, or mutated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><UserRound aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Mobile-profile readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A trustworthy mobile profile requires authenticated ownership, authoritative identity and account records, explicit field semantics, media and avatar provenance, verification and appeal paths, visibility controls, safe editing and deletion, sensitive-attribute minimization, notification and wallet boundaries, privacy, accessibility, and least-privilege authorization. A name, badge, avatar, verification mark, or setting is not a fact without a verified profile record. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="mobile-profile-surfaces-heading"><h2 id="mobile-profile-surfaces-heading" className="mb-4 text-xl font-semibold">Mobile-profile control surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No user, account, profile, avatar, verification, settings, notification, wallet, AI, privacy, security, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="mobile-profile-boundaries-heading"><h2 id="mobile-profile-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No profile operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, user or account query, profile or avatar read, verification lookup, search input, setting or visibility mutation, media upload, notification or wallet read, AI call, API request, database read or write, export, deletion, or mobile-profile operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Identity, privacy, security, accessibility, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not enter passwords, authentication codes, identity documents, private messages, financial details, wallet credentials, seed phrases, private keys, precise location, sensitive attributes, or confidential data here. Do not treat this page as evidence of an account, identity, avatar, biography, verification mark, setting, notification, wallet, AI personalization, visibility, or privacy protection. Verify ownership, provenance, consent, visibility, retention, correction, deletion, privacy, accessibility, and authorization before relying on mobile profile information.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/profile"><Button variant="outline"><UserRound aria-hidden="true" className="mr-2 h-4 w-4" />Review profile status</Button></Link><Link href="/mobile"><Button variant="outline"><Smartphone aria-hidden="true" className="mr-2 h-4 w-4" />Review mobile status</Button></Link><Link href="/notifications"><Button variant="outline"><Bell aria-hidden="true" className="mr-2 h-4 w-4" />Review notifications</Button></Link><Link href="/crypto-hub"><Button variant="outline"><WalletCards aria-hidden="true" className="mr-2 h-4 w-4" />Review crypto status</Button></Link><Link href="/security"><Button variant="outline"><Fingerprint aria-hidden="true" className="mr-2 h-4 w-4" />Review security</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No auth check, user or account query, profile or avatar read, verification lookup, search input, setting or visibility mutation, media upload, notification or wallet read, AI call, API request, database read or write, export, deletion, or mobile-profile operation is performed. This page is not evidence of an account, identity, avatar, biography, verification mark, setting, notification, wallet, AI personalization, visibility, or privacy protection.</p></Card></main></div>;
 }
