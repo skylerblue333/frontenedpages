@@ -1,89 +1,27 @@
-import { AtSign } from "lucide-react";
+import { AlertTriangle, BellRing, CheckCircle2, Clock3, KeyRound, LockKeyhole, MessageCircle, Radio, ShieldAlert, UserRound } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { PageHeader } from "@/components/PageHeader";
 
+const boundaries = [
+  { label: "Authenticated sender, recipient, post, room, account, notification, and authorization scope", value: "Not connected", icon: KeyRound },
+  { label: "Mention source, sender, recipient, content, context, timestamp, delivery, and read-state provenance", value: "Unavailable", icon: MessageCircle },
+  { label: "Real-time transport, deduplication, ordering, mute, privacy, moderation, and user-control behavior", value: "Not verified", icon: Radio },
+  { label: "Personal data, private messages, accessibility, privacy, security, retention, and least-privilege safeguards", value: "Not configured", icon: LockKeyhole },
+];
+
+const surfaces = [
+  { title: "Sender and recipient scope", scope: "Authenticated users, account, post or room, mention relationship, visibility, consent, and authorization", status: "Unavailable", icon: UserRound },
+  { title: "Mention and delivery provenance", scope: "Source content, sender, recipient, context, timestamp, transport, ordering, delivery, read state, and retries", status: "Not connected", icon: Clock3 },
+  { title: "Notification and privacy controls", scope: "Push, in-app, email, mute, preferences, sharing, sensitive content, retention, deletion, and access", status: "Not verified", icon: BellRing },
+  { title: "Safety and moderation", scope: "Spam, harassment, abuse, impersonation, report, block, moderation, escalation, audit, and security", status: "Not configured", icon: ShieldAlert },
+];
+
 export default function Mentions() {
-  return (
-    <div className="min-h-screen bg-background">
-      <PageHeader icon={AtSign} title="Mentions" subtitle="Fully functional mentions page with live data and real-time updates" />
-      
-      <div className="max-w-7xl mx-auto px-4 py-8 space-y-8">
-        {/* Main Content Area */}
-        <Card className="p-8 bg-card border border-border/50">
-          <div className="space-y-6">
-            <h2 className="text-2xl font-bold">Mentions</h2>
-            
-            {/* Feature Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <AtSign className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 1</h3>
-                  <p className="text-sm text-muted-foreground">Real-time data and live updates</p>
-                </div>
-              </Card>
-              
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <AtSign className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 2</h3>
-                  <p className="text-sm text-muted-foreground">Advanced analytics and insights</p>
-                </div>
-              </Card>
-              
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <AtSign className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 3</h3>
-                  <p className="text-sm text-muted-foreground">Seamless integration and automation</p>
-                </div>
-              </Card>
-            </div>
-            
-            {/* Action Buttons */}
-            <div className="flex gap-4 flex-wrap pt-4">
-              <Button className="bg-primary hover:bg-primary/90">
-                Get Started
-              </Button>
-              <Button variant="outline">
-                Learn More
-              </Button>
-              <Button variant="ghost">
-                Documentation
-              </Button>
-            </div>
-          </div>
-        </Card>
-        
-        {/* Stats Section */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Active Users</p>
-              <p className="text-2xl font-bold">802K+</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Total Transactions</p>
-              <p className="text-2xl font-bold">2.4M</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Success Rate</p>
-              <p className="text-2xl font-bold">99.9%</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Avg Response Time</p>
-              <p className="text-2xl font-bold">45ms</p>
-            </div>
-          </Card>
-        </div>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={AtSignIcon} title="Mentions" subtitle="Mention-notification readiness status; no authenticated sender or recipient, post or room, notification service, real-time transport, moderation workflow, privacy control plane, or production notification backend is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Mentions are unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen used generic Feature 1, Feature 2, and Feature 3 cards, inert Get Started, Learn More, and Documentation buttons, and fabricated active-user, transaction, success-rate, and response-time metrics while claiming live updates, analytics, integration, and automation. It did not establish an authenticated sender or recipient, mention source, real-time transport, delivery, privacy, or moderation contract. Those claims, actions, and metrics were removed. No sender, recipient, post, room, mention, notification, delivery state, analytics, user count, transaction, or availability state is displayed, accepted, stored, sent, or simulated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><AtSignIcon aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Mention-notification readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A trustworthy mentions service requires authenticated sender and recipient scope, source and context provenance, reliable notification delivery, real-time transport semantics, mute and privacy controls, moderation, abuse handling, accessibility, and least-privilege authorization. No mention, notification, delivery outcome, or live-update state is established here.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="mentions-surfaces-heading"><h2 id="mentions-surfaces-heading" className="mb-4 text-xl font-semibold">Mention-control surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No sender, recipient, mention, notification, delivery, analytics, privacy, security, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="mentions-boundaries-heading"><h2 id="mentions-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No notification operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, sender or recipient query, mention lookup, notification creation, push or email send, real-time subscription, delivery or read update, mute mutation, API request, database read or write, export, deletion, or private-message operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Privacy, safety, moderation, security, accessibility, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not enter passwords, private messages, identity documents, precise location, financial details, private keys, or sensitive personal information here. Do not treat this page as evidence of a mention, notification, delivery, read state, live update, analytics result, moderation response, or secure messaging capability. Verify consent, visibility, mute, reporting, blocking, abuse escalation, privacy, retention, deletion, accessibility, and authorization before communicating.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/notifications"><Button variant="outline"><BellRing aria-hidden="true" className="mr-2 h-4 w-4" />Review notification status</Button></Link><Link href="/messages"><Button variant="outline"><MessageCircle aria-hidden="true" className="mr-2 h-4 w-4" />Review message status</Button></Link><Link href="/safety-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review safety</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No auth check, sender or recipient query, mention lookup, notification creation, push or email send, real-time subscription, delivery or read update, mute mutation, API request, database read or write, export, deletion, or private-message operation is performed. This page is not evidence of a mention, notification, delivery, read state, live update, analytics result, moderation response, or secure messaging capability.</p></Card></main></div>;
+}
+
+function AtSignIcon(props: React.SVGProps<SVGSVGElement>) {
+  return <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-8 w-8 text-primary" {...props}><circle cx="12" cy="12" r="4" /><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-3.1 7.3" /></svg>;
 }
