@@ -9,7 +9,7 @@ const BLOCK_COLORS = [
   "bg-red-500", "bg-pink-500", "bg-cyan-500", "bg-orange-500",
 ];
 
-const BLOCK_LABELS = ["BTC", "ETH", "SOL", "BNB", "ADA", "DOT", "LINK", "MATIC"];
+const BLOCK_LABELS = ["BLOCK A", "BLOCK B", "BLOCK C", "BLOCK D", "BLOCK E", "BLOCK F", "BLOCK G", "BLOCK H"];
 
 type Block = { id: number; color: string; label: string; width: number };
 type StackedBlock = Block & { offset: number; perfect: boolean };
@@ -120,8 +120,8 @@ export default function GameBlockBuilder() {
           <Button variant="ghost" size="sm" className="gap-1 text-muted-foreground"><ChevronLeft className="h-4 w-4" />Back</Button>
         </Link>
         <span className="text-lg">🏗️</span>
-        <span className="font-bold text-sm">Block Builder</span>
-        <Badge variant="outline" className="text-purple-400 border-purple-500/30 text-xs">Puzzle</Badge>
+        <span className="font-bold text-sm">Block Builder · Local Puzzle</span>
+        <Badge variant="outline" className="text-purple-400 border-purple-500/30 text-xs">Local puzzle · no chain</Badge>
         <div className="flex-1" />
         {gameState === "playing" && (
             <div className="flex items-center gap-2">
@@ -135,7 +135,7 @@ export default function GameBlockBuilder() {
           <div className="text-center">
             <div className="text-7xl mb-6">🏗️</div>
             <h1 className="text-3xl font-bold mb-3">Block Builder</h1>
-            <p className="text-muted-foreground mb-6 max-w-sm mx-auto">Stack blockchain blocks as high as possible. Tap or press Space to drop each block; precise drops preserve more width. This is a local puzzle score only. No token, XP, donation, or charity settlement is issued.</p>
+            <p className="text-muted-foreground mb-6 max-w-sm mx-auto">Stack colorful puzzle blocks as high as possible. Tap or press Space to drop each block; precise drops preserve more width. This is a local puzzle score only. No token, XP, donation, or charity settlement is issued.</p>
             <div className="grid grid-cols-2 gap-4 mb-8 max-w-xs mx-auto">
               {[{ label: "Precise Drop", value: "Keep width" }, { label: "Miss", value: "Game Over" }].map(s => (
                 <div key={s.label} className="rounded-xl border border-border/50 bg-card/30 p-3 text-center">
@@ -200,7 +200,7 @@ export default function GameBlockBuilder() {
             </div>
             <div className="rounded-xl border border-border/50 bg-card/30 p-4 mb-6">
               <p className="text-sm font-semibold text-muted-foreground mb-1">Local score only</p>
-              <p className="text-xs text-muted-foreground">This game does not transfer tokens, award XP, or make charitable donations.</p>
+              <p className="text-xs text-muted-foreground">This game does not connect to a blockchain, mine, transfer tokens, award XP, maintain a leaderboard, issue prizes, make payments, or make charitable donations. The score has no financial value.</p>
             </div>
             <div className="flex items-center justify-center gap-3">
               <Button onClick={startGame} variant="outline" className="gap-2"><RotateCcw className="h-4 w-4" />Play Again</Button>
