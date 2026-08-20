@@ -1,25 +1,23 @@
-import { useState } from "react";
+import { AlertTriangle, CheckCircle2, Download, FileCheck2, FileText, FolderOpen, KeyRound, Search, Share2, ShieldAlert, Upload, UserRound } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Authenticated subject, organization scope, ownership, folder permissions, and least privilege", value: "Not connected", icon: KeyRound },
+  { label: "File and folder identity, source, metadata, version, checksum, storage provider, and availability", value: "Unavailable", icon: FolderOpen },
+  { label: "Encryption, malware scanning, upload/download, sharing, deletion, retention, and recovery", value: "Not verified", icon: ShieldAlert },
+  { label: "Personal, financial, crypto, legal, health, AI, confidential, and third-party data controls", value: "Not configured", icon: FileCheck2 },
+];
+
+const surfaces = [
+  { title: "Files and folders", scope: "Name, type, size, owner, source, folder, version, checksum, metadata, visibility, availability, and deletion state", status: "Unavailable", icon: FolderOpen },
+  { title: "Upload and download", scope: "File validation, content limits, malware scanning, encryption, secure delivery, access expiration, audit, and retry safety", status: "Not verified", icon: Upload },
+  { title: "Search and sharing", scope: "Index scope, metadata exposure, permission inheritance, link access, recipients, revocation, and third-party privacy", status: "Not configured", icon: Share2 },
+  { title: "Sensitive files", scope: "Personal, financial, crypto, wallet, legal, health, AI, security, and confidential organizational records", status: "Not connected", icon: UserRound },
+];
 
 export default function FileBrowser() {
-  const [state, setState] = useState(false);
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 to-black p-4">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">FileBrowser</h1>
-        <p className="text-slate-400 mb-8">file browser</p>
-        
-        <Card className="bg-slate-900 border-slate-800 p-8">
-          <div className="space-y-6">
-            <p className="text-slate-300">Content for FileBrowser page</p>
-            <Button onClick={() => setState(!state)}>
-              {state ? "Deactivate" : "Activate"}
-            </Button>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={FolderOpen} title="File Browser" subtitle="File-management readiness status; no authenticated file, folder, owner, permission, storage provider, metadata, upload, download, search, share, or personal-data record is available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">File browser is not verified</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen exposed a generic activate/deactivate control and vague file-browser wording without an authenticated subject, storage provider, file schema, ownership, permission, encryption, malware, search, sharing, deletion, or authorization boundary. No file or folder evidence was available, so the control was removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><FolderOpen aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">File-management readiness</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A safe file browser requires authenticated scope, explicit ownership and permissions, authoritative storage provenance, encrypted transport and storage, file validation and malware scanning, metadata minimization, secure upload and download, revocable sharing, deletion and retention, audit, recovery, and special handling for personal, financial, crypto, legal, health, AI, security, or confidential files. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="file-browser-surfaces-heading"><h2 id="file-browser-surfaces-heading" className="mb-4 text-xl font-semibold">File surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No file capability, ownership, permission, storage, privacy property, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="file-browser-boundaries-heading"><h2 id="file-browser-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><FileCheck2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No file or transfer claim</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, file lookup, folder lookup, metadata read, search, upload, download, share, rename, move, delete, notification, API request, database read or write, or personal-data operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Privacy, security, legal, finance, crypto, and safety warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Files may contain personal, financial, crypto, wallet, legal, health, AI, security, or confidential organizational information. Verify owner, recipient, permission, encryption, malware screening, retention, revocation, audit, recovery, and support boundaries before accessing or transferring a file.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/document-management"><Button variant="outline"><FileText aria-hidden="true" className="mr-2 h-4 w-4" />Review document status</Button></Link><Link href="/file-sharing"><Button variant="outline"><Share2 aria-hidden="true" className="mr-2 h-4 w-4" />Review sharing status</Button></Link><Link href="/file-upload-form"><Button variant="outline"><Upload aria-hidden="true" className="mr-2 h-4 w-4" />Review upload status</Button></Link><Link href="/security-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security status</Button></Link><Link href="/contact-us-form"><Button variant="outline"><Search aria-hidden="true" className="mr-2 h-4 w-4" />Ask about files</Button></Link></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No auth check, file lookup, folder lookup, metadata read, search, upload, download, sharing, permission change, deletion, API request, database read or write, notification, export, or personal-data operation is performed. This page is not evidence of file storage, secure transfer, access control, encryption, malware scanning, or production file-management functionality.</p></div></Card></main></div>;
 }
