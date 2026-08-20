@@ -1,78 +1,23 @@
+import { AlertTriangle, BarChart3, CheckCircle2, CircleDollarSign, Coins, FileText, LockKeyhole, Search, ShieldAlert, TrendingUp, WalletCards } from "lucide-react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
 import { PageHeader } from "@/components/PageHeader";
-import { StatCard } from "@/components/StatCard";
-import { BarChart3, TrendingUp, DollarSign, Coins, PieChart, ArrowRight, Zap, Lock, Flame, Users } from "lucide-react";
 
-const TOKENOMICS = [
-  { label: "Community Rewards", pct: 35, color: "bg-primary" },
-  { label: "Development Fund", pct: 20, color: "bg-accent" },
-  { label: "Treasury Reserve", pct: 20, color: "bg-success" },
-  { label: "Team & Advisors", pct: 10, color: "bg-warning" },
-  { label: "Marketing", pct: 10, color: "bg-destructive" },
-  { label: "Liquidity Pool", pct: 5, color: "bg-cyber-gold" },
+const readiness = [
+  { label: "Verified token contract, chain, supply, allocation, vesting, burns, and treasury provenance", value: "Not connected", icon: Coins },
+  { label: "Authenticated market data, price history, liquidity, volume, holders, staking, and freshness", value: "Unavailable", icon: TrendingUp },
+  { label: "Utility, governance, payments, rewards, donations, marketplace, and game integrations", value: "Not configured", icon: WalletCards },
+  { label: "Custody, disclosures, privacy, audit, tax, market risk, and independent verification", value: "Not verified", icon: LockKeyhole },
 ];
 
-const METRICS = [
-  { icon: Coins, label: "Total Supply", value: "444,444,444", color: "primary" as const },
-  { icon: Flame, label: "Burned", value: "12,345,678", color: "destructive" as const },
-  { icon: Lock, label: "Staked", value: "89,234,567", color: "success" as const },
-  { icon: Users, label: "Holders", value: "24,891", color: "accent" as const },
+const boundaries = [
+  { title: "No tokenomics or market-data claim", description: "No token, contract, chain, supply, burned amount, staked amount, holder count, allocation percentage, treasury, price, volume, liquidity, market cap, chart, utility, or economic metric is fetched, displayed, calculated, or simulated.", icon: BarChart3 },
+  { title: "No economic action", description: "No sign-in, wallet connection, purchase, trade, stake, governance vote, payment, donation, subscription, reward claim, transfer, liquidity action, search, API request, database read or write, or account mutation can be initiated here.", icon: WalletCards },
+  { title: "No investment, utility, or governance claim", description: "No token value, allocation, scarcity, burn, staking reward, liquidity, utility, payment acceptance, governance authority, charity, gaming reward, market performance, financial return, or future outcome is asserted.", icon: ShieldAlert },
+  { title: "Token-economics and financial warn-and-proceed", description: "Token information can influence financial decisions and expose wallets, funds, personal data, and irreversible transactions. Verify the contract and chain independently, review supply and allocation documents, liquidity and custody, fees, disclosures, tax treatment, and qualified financial advice before relying on token information or transacting.", icon: AlertTriangle },
 ];
 
 export default function Economics() {
-  return (
-    <div className="container py-8 max-w-5xl animate-page-in">
-      <PageHeader backHref="/token" icon={BarChart3} title="Token Economics" subtitle="SKY444 tokenomics, distribution, and live market data" badge="Live" />
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-        {METRICS.map(m => <StatCard key={m.label} icon={m.icon} label={m.label} value={m.value} color={m.color} />)}
-      </div>
-      <div className="grid md:grid-cols-2 gap-6 mb-8">
-        <div className="card p-6">
-          <h3 className="font-semibold mb-4 flex items-center gap-2"><PieChart className="w-5 h-5 text-primary" />Token Distribution</h3>
-          <div className="space-y-3">
-            {TOKENOMICS.map(t => (
-              <div key={t.label}>
-                <div className="flex justify-between text-sm mb-1"><span>{t.label}</span><span className="font-mono text-muted-foreground">{t.pct}%</span></div>
-                <div className="h-2 bg-secondary rounded-full overflow-hidden">
-                  <div className={`h-full ${t.color} rounded-full transition-all duration-700`} style={{ width: `${t.pct}%` }} />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-        <div className="card p-6">
-          <h3 className="font-semibold mb-4 flex items-center gap-2"><TrendingUp className="w-5 h-5 text-primary" />Price History</h3>
-          <div className="flex items-center justify-center h-40 text-muted-foreground text-sm">
-            <div className="text-center">
-              <BarChart3 className="w-12 h-12 mx-auto mb-2 opacity-30" />
-              <p>Live chart loading...</p>
-              <Link href="/trading"><Button size="sm" className="mt-3 btn-primary">View Trading</Button></Link>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="card p-6">
-        <h3 className="font-semibold mb-4 flex items-center gap-2"><Zap className="w-5 h-5 text-primary" />Utility & Use Cases</h3>
-        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-3">
-          {[
-            { label: "Governance Voting", href: "/governance" },
-            { label: "Staking Rewards", href: "/staking" },
-            { label: "Marketplace Payments", href: "/marketplace" },
-            { label: "Premium Features", href: "/subscriptions" },
-            { label: "Charity Donations", href: "/charity" },
-            { label: "Gaming Rewards", href: "/arcade" },
-          ].map(u => (
-            <Link key={u.label} href={u.href}>
-              <div className="flex items-center justify-between p-3 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors cursor-pointer">
-                <span className="text-sm">{u.label}</span>
-                <ArrowRight className="w-4 h-4 text-muted-foreground" />
-              </div>
-            </Link>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={BarChart3} title="Token Economics" subtitle="Token-economics readiness status; no verified token contract, supply, allocation, market data, price history, utility, staking, governance, treasury, or financial data is available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Token-economics data is unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous screen labeled itself Live, displayed fabricated supply, burned, staked, and holder metrics, presented unverified allocation percentages, implied a live price chart, and linked to staking, governance, payments, donations, subscriptions, and gaming rewards without verified integrations. Those claims and action paths were removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Coins aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Token-economics readiness</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Trustworthy token economics require verified contract and chain provenance, supply and allocation evidence, market-data sources, liquidity and custody controls, staking and reward rules, treasury and governance authority, utility integrations, disclosures, tax handling, privacy, auditability, and independent verification. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{readiness.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="economics-boundaries-heading"><h2 id="economics-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2">{boundaries.map(({ title, description, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><Icon aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p></Card>)}</div></section><div className="flex flex-wrap gap-3"><Link href="/crypto-hub"><Button variant="outline"><CircleDollarSign aria-hidden="true" className="mr-2 h-4 w-4" />View crypto status</Button></Link><Link href="/economic-layer"><Button variant="outline"><Coins aria-hidden="true" className="mr-2 h-4 w-4" />View economic-layer status</Button></Link><Link href="/documentation"><Button variant="outline"><FileText aria-hidden="true" className="mr-2 h-4 w-4" />Review source status</Button></Link><Link href="/contact-us-form"><Button variant="outline"><Search aria-hidden="true" className="mr-2 h-4 w-4" />Ask about economics availability</Button></Link></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No token, contract, chain, supply, burned amount, staked amount, holder count, allocation percentage, treasury, price, volume, liquidity, market cap, chart, utility, economic metric, sign-in, wallet connection, purchase, trade, stake, governance vote, payment, donation, subscription, reward claim, transfer, liquidity action, search, API request, database read or write, token value, allocation, scarcity, burn, staking reward, liquidity, utility, payment acceptance, governance authority, charity, gaming reward, market performance, financial return, or future outcome is performed. This page is not evidence of token value, supply, utility, staking, governance, market performance, or financial return.</p></div></Card></main></div>;
 }
