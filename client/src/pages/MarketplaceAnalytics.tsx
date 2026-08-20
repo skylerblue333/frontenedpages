@@ -1,74 +1,23 @@
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/_core/hooks/useAuth";
+import { AlertTriangle, BarChart3, CheckCircle2, Database, FileCheck2, KeyRound, LockKeyhole, PackageSearch, ReceiptText, ShieldAlert, Store } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Loader2, Plus, Search, Settings } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Authenticated organization, seller, buyer, marketplace, listing, channel, and analytics authorization scope", value: "Not connected", icon: KeyRound },
+  { label: "Listings, inventory, GMV, orders, fees, payouts, refunds, currency, tax, ratings, and timestamp provenance", value: "Unavailable", icon: Database },
+  { label: "Metric definitions, cohort and attribution windows, identity resolution, reconciliation, uncertainty, and validation", value: "Not verified", icon: FileCheck2 },
+  { label: "Payments, personal data, privacy, fraud, financial reporting, retention, security, and least-privilege safeguards", value: "Not configured", icon: LockKeyhole },
+];
+
+const surfaces = [
+  { title: "Marketplace and seller scope", scope: "Organization, seller, buyer, marketplace, listing, category, channel, region, and authorization", status: "Unavailable", icon: Store },
+  { title: "Commerce and financial provenance", scope: "Inventory, order, GMV, revenue, fee, payout, refund, currency, tax, settlement, vendor, and timestamp source", status: "Not connected", icon: ReceiptText },
+  { title: "Analytics methodology", scope: "Metric definition, cohort, conversion, attribution, identity resolution, ratings integrity, reconciliation, uncertainty, and validation", status: "Not verified", icon: BarChart3 },
+  { title: "Privacy and controls", scope: "Payment data, personal data, consent, fraud, audit, retention, deletion, security, and access", status: "Not configured", icon: ShieldAlert },
+];
 
 export default function MarketplaceAnalytics() {
-  const { isAuthenticated } = useAuth();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>MarketplaceAnalytics</CardTitle>
-            <CardDescription>Sign in to access this feature</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full">Sign In</Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold">MarketplaceAnalytics</h1>
-            <p className="text-muted-foreground mt-2">Marketplace stats</p>
-          </div>
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            New
-          </Button>
-        </div>
-
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Search className="w-4 h-4 text-muted-foreground" />
-              <Input
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="max-w-sm"
-              />
-              <Button variant="outline" size="icon">
-                <Settings className="w-4 h-4" />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {isLoading ? (
-              <div className="flex justify-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
-              </div>
-            ) : (
-              <div className="text-center py-12 text-muted-foreground">
-                <p>No data available. Start by creating a new item.</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={BarChart3} title="Marketplace Analytics" subtitle="Marketplace-analytics readiness status; no authenticated organization, seller, buyer, listing registry, order ledger, inventory source, payment provider, payout service, rating source, or production analytics backend is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Marketplace analytics is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen presented an authenticated-only shell with inert Sign In, New, search, settings, and loading controls but did not connect marketplace, listing, inventory, order, payment, payout, rating, or analytics data. The incomplete workflow was replaced with this explicit readiness boundary. No listing, inventory, seller, buyer, order, GMV, revenue, fee, payout, rating, conversion, customer, or financial result is displayed, queried, created, calculated, or mutated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><BarChart3 aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Marketplace-analytics readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A trustworthy marketplace analytics service requires authoritative marketplace and order ledgers, inventory and price source of truth, reconciled payments and payouts, stable metric definitions, consent-aware identity resolution, refund and tax handling, ratings integrity, privacy, and least-privilege authorization. GMV, revenue, conversion, and seller metrics are not established here. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="marketplace-analytics-surfaces-heading"><h2 id="marketplace-analytics-surfaces-heading" className="mb-4 text-xl font-semibold">Analytics-control surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No listing, inventory, seller, buyer, order, GMV, revenue, fee, payout, rating, conversion, privacy, security, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="marketplace-analytics-boundaries-heading"><h2 id="marketplace-analytics-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No analytics operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, marketplace or listing query, inventory lookup, order or payment query, GMV or revenue calculation, seller or buyer resolution, rating calculation, API request, database read or write, listing creation, export, deletion, or financial-data operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Commerce, finance, privacy, fraud, security, accessibility, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not treat this page as evidence of listings, inventory, seller counts, buyer counts, GMV, revenue, fees, payouts, conversion, ratings, customer data, payment reconciliation, or financial reporting. Verify source ledgers, currency, tax, refunds, attribution, consent, privacy, security, retention, and authorization before acting on marketplace analytics.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/marketplace"><Button variant="outline"><Store aria-hidden="true" className="mr-2 h-4 w-4" />Review marketplace status</Button></Link><Link href="/admin-orders"><Button variant="outline"><ReceiptText aria-hidden="true" className="mr-2 h-4 w-4" />Review order status</Button></Link><Link href="/payments"><Button variant="outline"><PackageSearch aria-hidden="true" className="mr-2 h-4 w-4" />Review payment status</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No auth check, marketplace or listing query, inventory lookup, order or payment query, GMV or revenue calculation, seller or buyer resolution, rating calculation, API request, database read or write, listing creation, export, deletion, or financial-data operation is performed. This page is not evidence of listings, inventory, seller counts, buyer counts, GMV, revenue, fees, payouts, conversion, ratings, customer data, payment reconciliation, or financial reporting.</p></Card></main></div>;
 }
