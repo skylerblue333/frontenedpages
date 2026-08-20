@@ -1,89 +1,23 @@
-import { TrendingUp } from "lucide-react";
+import { AlertTriangle, BarChart3, CheckCircle2, FileCheck2, KeyRound, Search, ShieldAlert, Target, Users } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { PageHeader } from "@/components/PageHeader";
 
+const readiness = [
+  { label: "Authenticated project, event provenance, metric definitions, and reporting scope", value: "Not connected", icon: BarChart3 },
+  { label: "Consent, instrumentation, identity resolution, attribution, and aggregation", value: "Unavailable", icon: Target },
+  { label: "Data quality, freshness, privacy, access control, redaction, and retention", value: "Not configured", icon: KeyRound },
+  { label: "Dashboards, exports, monitoring, audit, accessibility, and support", value: "Not verified", icon: FileCheck2 },
+];
+
+const boundaries = [
+  { title: "No engagement or platform metric claim", description: "No active user, transaction, event, post, view, click, conversion, success rate, response time, retention, revenue, growth, ranking, score, dashboard, trend, or personal-information record is fetched, displayed, calculated, or simulated.", icon: Users },
+  { title: "No analytics action", description: "No sign-in, metric setup, query, filter, dashboard, export, tracking event, instrumentation, integration, search, API request, database read or write, attribution action, or account mutation can be initiated here.", icon: BarChart3 },
+  { title: "No data-quality or privacy claim", description: "No event provenance, consent, identity resolution, aggregation, attribution, freshness, accuracy, availability, authorization, redaction, retention, privacy, accessibility, monitoring, or analytics outcome is asserted.", icon: ShieldAlert },
+  { title: "Analytics and personal-data warn-and-proceed", description: "Engagement statistics can profile people and influence financial, educational, community, or product decisions. Verify purpose, consent, minimization, metric definitions, aggregation, retention, access, redaction, interpretation, and audit before collecting or acting on statistics.", icon: AlertTriangle },
+];
+
 export default function EngagementStats() {
-  return (
-    <div className="min-h-screen bg-background">
-      <PageHeader icon={TrendingUp} title="Engagement Stats" subtitle="Fully functional engagement stats page with live data and real-time updates" />
-      
-      <div className="max-w-7xl mx-auto px-4 py-8 space-y-8">
-        {/* Main Content Area */}
-        <Card className="p-8 bg-card border border-border/50">
-          <div className="space-y-6">
-            <h2 className="text-2xl font-bold">Engagement Stats</h2>
-            
-            {/* Feature Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <TrendingUp className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 1</h3>
-                  <p className="text-sm text-muted-foreground">Real-time data and live updates</p>
-                </div>
-              </Card>
-              
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <TrendingUp className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 2</h3>
-                  <p className="text-sm text-muted-foreground">Advanced analytics and insights</p>
-                </div>
-              </Card>
-              
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <TrendingUp className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 3</h3>
-                  <p className="text-sm text-muted-foreground">Seamless integration and automation</p>
-                </div>
-              </Card>
-            </div>
-            
-            {/* Action Buttons */}
-            <div className="flex gap-4 flex-wrap pt-4">
-              <Button className="bg-primary hover:bg-primary/90">
-                Get Started
-              </Button>
-              <Button variant="outline">
-                Learn More
-              </Button>
-              <Button variant="ghost">
-                Documentation
-              </Button>
-            </div>
-          </div>
-        </Card>
-        
-        {/* Stats Section */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Active Users</p>
-              <p className="text-2xl font-bold">802K+</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Total Transactions</p>
-              <p className="text-2xl font-bold">2.4M</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Success Rate</p>
-              <p className="text-2xl font-bold">99.9%</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Avg Response Time</p>
-              <p className="text-2xl font-bold">45ms</p>
-            </div>
-          </Card>
-        </div>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={BarChart3} title="Engagement Stats" subtitle="Analytics-readiness status; no authenticated project, event stream, live metric, dashboard, export, user profile, or engagement action is available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Engagement statistics are unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen claimed fully functional live data, presented generic feature cards and actions, and displayed fabricated platform metrics. No verified project, event source, consent, metric definition, attribution, privacy, dashboard, or audit integration supported those claims, so they were removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><BarChart3 aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Analytics readiness</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Trustworthy statistics require authenticated project scope, event provenance, documented metric definitions, consent and minimization, safe identity resolution, attribution and aggregation semantics, data-quality and freshness evidence, privacy and retention controls, access and redaction, monitoring, auditability, accessibility, and support. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{readiness.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="engagement-stats-boundaries-heading"><h2 id="engagement-stats-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2">{boundaries.map(({ title, description, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><Icon aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p></Card>)}</div></section><div className="flex flex-wrap gap-3"><Link href="/analytics-dashboard"><Button variant="outline"><BarChart3 aria-hidden="true" className="mr-2 h-4 w-4" />View dashboard status</Button></Link><Link href="/privacy-settings"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />View privacy status</Button></Link><Link href="/documentation"><Button variant="outline"><FileCheck2 aria-hidden="true" className="mr-2 h-4 w-4" />Review metric documentation</Button></Link><Link href="/contact-us-form"><Button variant="outline"><Search aria-hidden="true" className="mr-2 h-4 w-4" />Ask about statistics availability</Button></Link></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No active user, transaction, event, post, view, click, conversion, success rate, response time, retention, revenue, growth, ranking, score, dashboard, trend, personal-information record, sign-in, metric setup, query, filter, dashboard, export, tracking event, instrumentation, integration, search, API request, database read or write, attribution action, account mutation, event provenance, consent, identity resolution, aggregation, attribution, freshness, accuracy, availability, authorization, redaction, retention, privacy, accessibility, monitoring, or analytics outcome is performed. This page is not evidence of live, accurate, current, private, or actionable engagement statistics.</p></div></Card></main></div>;
 }
