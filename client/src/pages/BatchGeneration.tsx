@@ -1,20 +1,16 @@
-import React from "react";
+import { Boxes, Database, FileOutput, KeyRound, LockKeyhole, ShieldAlert, Sparkles } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
 
-const BatchGeneration = () => {
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 p-6">
-      <div className="mx-auto max-w-6xl">
-        <h1 className="mb-6 text-4xl font-bold text-white">BatchGeneration</h1>
-        <Card className="border-purple-600 bg-slate-800 p-6">
-          <p className="text-gray-300">
-            BatchGeneration feature coming soon...
-          </p>
-        </Card>
-      </div>
-    </div>
-  );
-};
+const evidence = [
+  { label: "Input assets, prompts, and validation", value: "Unavailable", icon: Boxes },
+  { label: "Models, providers, credentials, and quotas", value: "Not configured", icon: KeyRound },
+  { label: "Queues, progress, retries, and cancellation", value: "Not connected", icon: Database },
+  { label: "Outputs, rights, billing, and audit", value: "Disabled", icon: FileOutput },
+];
 
-export default BatchGeneration;
+export default function BatchGeneration() {
+  return <div className="min-h-screen bg-background"><PageHeader icon={Sparkles} title="Batch Generation" subtitle="Batch-generation services are not connected in this deployment. No input, prompt, model, job, queue, output, cost, or completion result is being reported or created." /><main className="mx-auto max-w-5xl space-y-8 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><ShieldAlert aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Batch generation is unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous screen was only a generic Coming Soon placeholder. No asset intake, prompt contract, model or provider configuration, credential scope, content-safety policy, job queue, quota, cancellation path, output store, usage meter, billing contract, licensing record, or audit service was connected. The placeholder is replaced with explicit status rather than implying that content can be generated or that a batch job exists.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Sparkles aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Generation readiness</h2><p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">A production batch-generation workflow requires validated inputs, explicit model and provider selection, safe prompt handling, authenticated ownership, consent and rights checks, predictable quotas, isolated jobs, durable queue state, retries and cancellation, content moderation, output provenance, storage lifecycle, cost disclosure, and auditable delivery. None are available through this route.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{evidence.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div><div className="mt-6 flex flex-wrap gap-3"><Link href="/ai-tools-hub"><Button>View AI status</Button></Link><Link href="/media-library"><Button variant="outline">View media status</Button></Link><Link href="/privacy"><Button variant="ghost">View privacy status</Button></Link></div></Card><section aria-labelledby="generation-evidence-heading"><h2 id="generation-evidence-heading" className="mb-4 text-xl font-semibold">Current generation evidence</h2><div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">{evidence.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-border/50 bg-card p-4"><p className="text-sm text-muted-foreground">{label}</p><div className="mt-2 flex items-center gap-2"><Icon aria-hidden="true" className="h-4 w-4 text-muted-foreground" /><p className="font-semibold">{value}</p></div></Card>)}</div></section><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><LockKeyhole aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">Do not enter passwords, access tokens, private keys, seed phrases, confidential prompts, copyrighted source material, identity documents, or sensitive personal information here. An unavailable batch-generation page is not evidence that a model ran, content was created, rights were cleared, or output was delivered.</p></div></Card><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><Database aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No asset upload, prompt submission, model invocation, moderation decision, queue insertion, retry, cancellation, output write, download, notification, usage calculation, billing event, or external AI-provider call is read, written, sent, stored, or simulated by this page.</p></div></Card><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><FileOutput aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No batch count, item count, progress percentage, ETA, success rate, cost, token usage, model name, output URL, quality score, safety result, license, or completion claim is fabricated as a fallback. Verify future generation records through independently trusted server-side systems.</p></div></Card></main></div>;
+}
