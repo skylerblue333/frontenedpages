@@ -1,135 +1,23 @@
-import { useState, useEffect } from "react";
+import { AlertTriangle, CheckCircle2, Clock3, FileCheck2, KeyRound, Mail, Search, ShieldAlert, UserRound } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { toast } from "sonner";
-import { useLocation } from "wouter";
-import { Mail, CheckCircle, Loader2, AlertCircle } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
 
-export function EmailVerification() {
-  const [, setLocation] = useLocation();
-  const [loading, setLoading] = useState(false);
-  const [verified, setVerified] = useState(false);
-  const [code, setCode] = useState("");
-  const [resendCooldown, setResendCooldown] = useState(0);
-  const email = localStorage.getItem("user_email") || "";
+const readiness = [
+  { label: "Authenticated account and server-issued challenge bound to the intended email", value: "Not connected", icon: Mail },
+  { label: "Expiry, one-time use, replay protection, attempt limits, and resend controls", value: "Unavailable", icon: Clock3 },
+  { label: "Provider delivery, bounce, suppression, abuse prevention, and privacy", value: "Not configured", icon: ShieldAlert },
+  { label: "Session activation, audit, recovery, support, and account-state integrity", value: "Not verified", icon: KeyRound },
+];
 
-  useEffect(() => {
-    if (resendCooldown > 0) {
-      const timer = setTimeout(() => setResendCooldown(resendCooldown - 1), 1000);
-      return () => clearTimeout(timer);
-    }
-  }, [resendCooldown]);
+const boundaries = [
+  { title: "No verification or identity claim", description: "No email address, account, challenge, code, token, delivery state, expiry, verification result, session, account activation, or identity record is fetched, displayed, calculated, stored, or simulated.", icon: UserRound },
+  { title: "No verification action", description: "No sign-in, code input, code acceptance, resend, localStorage write, provider send, session change, account activation, search, API request, database read or write, redirect, or account mutation can be initiated here.", icon: Mail },
+  { title: "No delivery or security claim", description: "No challenge delivery, sender authenticity, token secrecy, expiry enforcement, replay protection, rate limiting, abuse prevention, privacy, session security, or verification outcome is asserted.", icon: ShieldAlert },
+  { title: "Identity and account-security warn-and-proceed", description: "Email verification can activate accounts and change access to personal data. Verify the intended address, server-side challenge, expiry, one-time use, attempt limits, resend behavior, recovery, privacy, and audit before accepting a verification result.", icon: AlertTriangle },
+];
 
-  const handleVerify = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      if (!code || code.length !== 6) {
-        toast.error("Please enter a valid 6-digit code");
-        setLoading(false);
-        return;
-      }
-      // Mock verification
-      setVerified(true);
-      localStorage.setItem("email_verified", "true");
-      toast.success("Email verified successfully! 🎉");
-      setTimeout(() => setLocation("/"), 2000);
-    } catch (error) {
-      toast.error("Verification failed");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleResend = async () => {
-    setLoading(true);
-    try {
-      toast.success("Verification code sent to " + email);
-      setResendCooldown(60);
-    } catch (error) {
-      toast.error("Failed to resend code");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  if (verified) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-4">
-        <Card className="w-full max-w-md border-green-500/20 bg-slate-900/80 backdrop-blur text-center">
-          <CardContent className="pt-8">
-            <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
-            <h2 className="text-2xl font-bold text-white mb-2">Email Verified!</h2>
-            <p className="text-slate-400 mb-6">Your email has been confirmed. Redirecting...</p>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-4">
-      <Card className="w-full max-w-md border-purple-500/20 bg-slate-900/80 backdrop-blur">
-        <CardHeader className="space-y-2 text-center">
-          <Mail className="w-12 h-12 text-purple-400 mx-auto" />
-          <CardTitle className="text-xl text-white">Verify Your Email</CardTitle>
-          <p className="text-sm text-slate-400">We sent a code to {email}</p>
-        </CardHeader>
-
-        <CardContent>
-          <form onSubmit={handleVerify} className="space-y-4">
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-slate-300">Verification Code</label>
-              <Input
-                type="text"
-                placeholder="000000"
-                value={code}
-                onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
-                maxLength={6}
-                className="text-center text-2xl tracking-widest bg-slate-800 border-slate-700 text-white"
-                disabled={loading}
-              />
-              <p className="text-xs text-slate-500">Enter the 6-digit code from your email</p>
-            </div>
-
-            <Button
-              type="submit"
-              disabled={loading || code.length !== 6}
-              className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
-            >
-              {loading ? (
-                <>
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Verifying...
-                </>
-              ) : (
-                "Verify Email"
-              )}
-            </Button>
-
-            <div className="text-center">
-              <p className="text-sm text-slate-400 mb-2">Didn't receive the code?</p>
-              <Button
-                type="button"
-                variant="ghost"
-                disabled={loading || resendCooldown > 0}
-                onClick={handleResend}
-                className="text-purple-400 hover:text-purple-300"
-              >
-                {resendCooldown > 0 ? `Resend in ${resendCooldown}s` : "Resend Code"}
-              </Button>
-            </div>
-
-            <div className="bg-slate-800 border border-slate-700 rounded p-3 flex gap-2">
-              <AlertCircle className="w-4 h-4 text-blue-400 flex-shrink-0 mt-0.5" />
-              <p className="text-xs text-slate-300">Check your spam folder if you don't see the email</p>
-            </div>
-          </form>
-        </CardContent>
-      </Card>
-    </div>
-  );
+export default function EmailVerification() {
+  return <div className="min-h-screen bg-background"><PageHeader icon={Mail} title="Email Verification" subtitle="Email-verification readiness status; no authenticated account, server challenge, email delivery, code validation, session activation, or account mutation is available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Email verification is unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous screen accepted any six-digit code through a mock path, wrote a localStorage flag, showed a fake success message, simulated resend delivery, and redirected without a server-issued challenge, authenticated account, expiry, replay protection, or provider integration. Those actions and claims were removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Mail aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Email-verification readiness</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Trustworthy verification requires a server-issued one-time challenge bound to an authenticated account and intended address, delivery and bounce handling, expiry and replay protection, attempt and resend limits, abuse prevention, session and account-state integrity, privacy, recovery, auditability, and support. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{readiness.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="email-verification-boundaries-heading"><h2 id="email-verification-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2">{boundaries.map(({ title, description, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><Icon aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p></Card>)}</div></section><div className="flex flex-wrap gap-3"><Link href="/email-configuration"><Button variant="outline"><Mail aria-hidden="true" className="mr-2 h-4 w-4" />View provider status</Button></Link><Link href="/security-center"><Button variant="outline"><KeyRound aria-hidden="true" className="mr-2 h-4 w-4" />View security status</Button></Link><Link href="/documentation"><Button variant="outline"><FileCheck2 aria-hidden="true" className="mr-2 h-4 w-4" />Review verification status</Button></Link><Link href="/contact-us-form"><Button variant="outline"><Search aria-hidden="true" className="mr-2 h-4 w-4" />Ask about verification availability</Button></Link></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No email address, account, challenge, code, token, delivery state, expiry, verification result, session, account activation, identity record, sign-in, code input, code acceptance, resend, localStorage write, provider send, session change, account activation, search, API request, database read or write, redirect, account mutation, challenge delivery, sender authenticity, token secrecy, expiry enforcement, replay protection, rate limiting, abuse prevention, privacy, session security, or verification outcome is performed. This page is not evidence of a verified email, active session, activated account, or identity result.</p></div></Card></main></div>;
 }
-
-export default EmailVerification;
