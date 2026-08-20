@@ -1,75 +1,23 @@
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/_core/hooks/useAuth";
+import { AlertTriangle, CheckCircle2, Globe2, MapPinned, Search, ShieldAlert, Ticket, Wifi } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
-import { Loader2, Plus, Search, Settings } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const readiness = [
+  { label: "Destination sources, freshness, editorial ownership, maps, routes, and local conditions", value: "Not connected", icon: Globe2 },
+  { label: "Availability, prices, currency, taxes, inventory, schedules, and partner links", value: "Unavailable", icon: Ticket },
+  { label: "Safety, accessibility, visa, health, weather, disruption, and emergency information", value: "Not configured", icon: ShieldAlert },
+  { label: "Authenticated itinerary scope, booking, payment, support, and privacy handling", value: "Not verified", icon: Wifi },
+];
+
+const boundaries = [
+  { title: "No destination or listing claim", description: "No destination, attraction, venue, route, map, distance, opening time, schedule, availability, price, tax, currency, rating, review, partner, or local-condition result is fetched, displayed, calculated, or simulated.", icon: MapPinned },
+  { title: "No travel action", description: "No sign-in, destination creation, search request, itinerary, reservation, ticket, booking, payment, cancellation, map navigation, partner redirect, API request, database read or write, or account mutation can be initiated here.", icon: Ticket },
+  { title: "No safety or suitability claim", description: "No visa, passport, health, weather, disruption, emergency, crime, accessibility, insurance, travel-advisory, recommendation, or suitability outcome is asserted.", icon: ShieldAlert },
+  { title: "Travel-information warn-and-proceed", description: "Travel information changes and can affect safety, money, identity, accessibility, and legal entry. Independently verify official government, carrier, venue, health, accessibility, and booking sources before relying on or paying for any travel plan.", icon: AlertTriangle },
+];
 
 export default function DestinationGuide() {
-  const { isAuthenticated } = useAuth();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>DestinationGuide</CardTitle>
-            <CardDescription>Sign in to access this feature</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full">Sign In</Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold">DestinationGuide</h1>
-            <p className="text-muted-foreground mt-2">Destination info</p>
-          </div>
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            New
-          </Button>
-        </div>
-
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Search className="w-4 h-4 text-muted-foreground" />
-              <Input
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="max-w-sm"
-              />
-              <Button variant="outline" size="icon">
-                <Settings className="w-4 h-4" />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {isLoading ? (
-              <div className="flex justify-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
-              </div>
-            ) : (
-              <div className="text-center py-12 text-muted-foreground">
-                <p>No data available. Start by creating a new item.</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader backHref="/" icon={Globe2} title="Destination Guide" subtitle="Travel-information readiness status; no destinations, listings, maps, schedules, prices, availability, safety, booking, payment, or itinerary state are available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Destination information is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen presented sign-in, New, settings, search, a local loading state, and a generic empty state without destination sources, freshness, maps, availability, prices, partner data, travel safety, accessibility, booking, payment, or support integration. Those controls and implied travel workflow were removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Globe2 aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Travel-information readiness status</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A trustworthy destination service requires current and attributed sources, map and route provenance, transparent availability and pricing, official safety and entry information, accessibility detail, partner and booking boundaries, payment safeguards, privacy, support, and clear timestamps. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{readiness.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="destination-boundaries-heading"><h2 id="destination-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2">{boundaries.map(({ title, description, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><Icon aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p></Card>)}</div></section><div className="flex flex-wrap gap-3"><Link href="/travel"><Button variant="outline">View travel status</Button></Link><Link href="/maps"><Button variant="outline"><MapPinned aria-hidden="true" className="mr-2 h-4 w-4" />View map status</Button></Link><Link href="/privacy-policy"><Button variant="outline">Review privacy status</Button></Link><Link href="/contact-us-form"><Button variant="outline"><Search aria-hidden="true" className="mr-2 h-4 w-4" />Ask about availability</Button></Link></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No destination, attraction, venue, route, map, distance, opening time, schedule, availability, price, tax, currency, rating, review, partner, local-condition result, sign-in, destination creation, search request, itinerary, reservation, ticket, booking, payment, cancellation, map navigation, partner redirect, API request, database read or write, visa, passport, health, weather, disruption, emergency, crime, accessibility, insurance, recommendation, or travel result is performed. This page is not evidence of travel accuracy, safety, availability, accessibility, booking, payment, or legal entry.</p></div></Card></main></div>;
 }
