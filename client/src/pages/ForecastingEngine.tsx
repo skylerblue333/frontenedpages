@@ -1,74 +1,23 @@
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/_core/hooks/useAuth";
+import { AlertTriangle, BarChart3, CheckCircle2, FileCheck2, KeyRound, Search, ShieldAlert, SlidersHorizontal, UserRound } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Loader2, Plus, Search, Settings } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Authenticated organization, dataset, role, approval authority, and least privilege", value: "Not connected", icon: KeyRound },
+  { label: "Target, period, currency, source provenance, data quality, and actual-versus-forecast semantics", value: "Unavailable", icon: FileCheck2 },
+  { label: "Model version, assumptions, scenarios, uncertainty, backtesting, drift, bias, and AI oversight", value: "Not verified", icon: SlidersHorizontal },
+  { label: "Revenue, financial, privacy, legal, tax, crypto, confidential-data, and human-review safeguards", value: "Not configured", icon: ShieldAlert },
+];
+
+const surfaces = [
+  { title: "Forecast inputs", scope: "Organization, dataset, target, horizon, period, currency, source documents, missingness, quality, reconciliation, and access control", status: "Unavailable", icon: FileCheck2 },
+  { title: "Model evidence", scope: "Model and feature version, assumptions, baseline, backtesting, error measures, uncertainty, drift, bias, explainability, and reproducibility", status: "Not verified", icon: SlidersHorizontal },
+  { title: "Scenarios and decisions", scope: "Actual-versus-forecast semantics, scenarios, materiality, revenue, budget, investment, staffing, risk, rollback, and human approval", status: "Not configured", icon: BarChart3 },
+  { title: "Sensitive data and AI", scope: "Personal, financial, crypto, legal, tax, health, employment, confidential organizational records, AI inference, privacy, and audit", status: "Not connected", icon: UserRound },
+];
 
 export default function ForecastingEngine() {
-  const { isAuthenticated } = useAuth();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>ForecastingEngine</CardTitle>
-            <CardDescription>Sign in to access this feature</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full">Sign In</Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold">ForecastingEngine</h1>
-            <p className="text-muted-foreground mt-2">Sales forecasting</p>
-          </div>
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            New
-          </Button>
-        </div>
-
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Search className="w-4 h-4 text-muted-foreground" />
-              <Input
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="max-w-sm"
-              />
-              <Button variant="outline" size="icon">
-                <Settings className="w-4 h-4" />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {isLoading ? (
-              <div className="flex justify-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
-              </div>
-            ) : (
-              <div className="text-center py-12 text-muted-foreground">
-                <p>No data available. Start by creating a new item.</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={BarChart3} title="Forecasting Engine" subtitle="Forecasting-readiness status; no authenticated organization, dataset, target, model, scenario, forecast, revenue figure, financial record, or personal-data record is available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Forecasting is not verified</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen exposed a sign-in path and generic new, settings, search, loading, and empty-state controls without a connected organization, dataset, target, time horizon, currency, model evidence, assumptions, uncertainty, backtesting, drift, AI oversight, financial, privacy, or authorization boundary. No forecast, metric, scenario, or business decision evidence was available, so forecasting controls were removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><BarChart3 aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Forecasting readiness</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Trustworthy forecasting requires authenticated organization and dataset scope, target and period definitions, currency and source provenance, data-quality and reconciliation checks, documented model and feature versions, assumptions, scenarios, uncertainty, backtesting, drift and bias monitoring, AI oversight, reproducibility, privacy, auditability, and human review before revenue, budget, investment, staffing, risk, tax, crypto, legal, or governance decisions. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="forecasting-engine-surfaces-heading"><h2 id="forecasting-engine-surfaces-heading" className="mb-4 text-xl font-semibold">Forecasting surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No forecast, model performance, financial metric, AI property, privacy property, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="forecasting-engine-boundaries-heading"><h2 id="forecasting-engine-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No prediction or metric claim</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, dataset lookup, forecast calculation, model invocation, chart, confidence, accuracy, revenue, ROI, risk, scenario, API request, database read or write, notification, export, or personal-data operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Finance, tax, legal, crypto, AI, privacy, and safety warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Forecasts may influence financial, tax, investment, crypto, legal, employment, health, safety, or governance decisions. Verify source authority, period, currency, assumptions, model evidence, uncertainty, bias, drift, access, audit, professional review, and human approval before relying on or acting on a forecast.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/financial-reports"><Button variant="outline"><FileCheck2 aria-hidden="true" className="mr-2 h-4 w-4" />Review report status</Button></Link><Link href="/enterprise-analytics"><Button variant="outline"><BarChart3 aria-hidden="true" className="mr-2 h-4 w-4" />Review analytics status</Button></Link><Link href="/experiment-factory"><Button variant="outline"><SlidersHorizontal aria-hidden="true" className="mr-2 h-4 w-4" />Review evaluation status</Button></Link><Link href="/security-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security status</Button></Link><Link href="/contact-us-form"><Button variant="outline"><Search aria-hidden="true" className="mr-2 h-4 w-4" />Ask about forecasts</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No auth check, dataset lookup, forecast calculation, model invocation, chart, confidence, accuracy, revenue, ROI, risk, scenario, API request, database read or write, notification, export, deletion, or personal-data operation is performed. This page is not evidence of forecasts, model accuracy, financial advice, revenue prediction, AI capability, tax compliance, crypto analysis, or production forecasting functionality.</p></Card></main></div>;
 }
