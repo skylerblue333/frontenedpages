@@ -1,89 +1,23 @@
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle, BellRing, CheckCircle2, ClipboardCheck, Clock3, FileWarning, KeyRound, LockKeyhole, ShieldAlert, UsersRound } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { PageHeader } from "@/components/PageHeader";
 
+const boundaries = [
+  { label: "Authenticated operator, tenant, service, incident, and administrative authorization scope", value: "Not connected", icon: KeyRound },
+  { label: "Incident source, severity, timeline, owner, status, evidence, remediation, and audit provenance", value: "Unavailable", icon: FileWarning },
+  { label: "On-call, escalation, notification, acknowledgement, SLA, communications, and recovery controls", value: "Not configured", icon: BellRing },
+  { label: "Security, privacy, personal data, access logs, retention, compliance, and least-privilege safeguards", value: "Not verified", icon: ShieldAlert },
+];
+
+const surfaces = [
+  { title: "Incident record and evidence", scope: "Service, environment, source, detection, severity, impact, start time, timeline, owner, evidence, status, and audit history", status: "Unavailable", icon: FileWarning },
+  { title: "Response and remediation", scope: "Acknowledgement, responder assignment, containment, mitigation, recovery, root cause, follow-up, and change control", status: "Not connected", icon: ClipboardCheck },
+  { title: "Communications and SLA", scope: "On-call, escalation, internal and external notification, status page, stakeholder updates, SLA, and post-incident review", status: "Not configured", icon: BellRing },
+  { title: "Privacy and security", scope: "Sensitive logs, credentials, personal data, security events, access, retention, deletion, legal hold, and authorization", status: "Not verified", icon: LockKeyhole },
+];
+
 export default function IncidentManagement() {
-  return (
-    <div className="min-h-screen bg-background">
-      <PageHeader icon={AlertTriangle} title="Incident Management" subtitle="Fully functional incident management page with live data and real-time updates" />
-      
-      <div className="max-w-7xl mx-auto px-4 py-8 space-y-8">
-        {/* Main Content Area */}
-        <Card className="p-8 bg-card border border-border/50">
-          <div className="space-y-6">
-            <h2 className="text-2xl font-bold">Incident Management</h2>
-            
-            {/* Feature Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <AlertTriangle className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 1</h3>
-                  <p className="text-sm text-muted-foreground">Real-time data and live updates</p>
-                </div>
-              </Card>
-              
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <AlertTriangle className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 2</h3>
-                  <p className="text-sm text-muted-foreground">Advanced analytics and insights</p>
-                </div>
-              </Card>
-              
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <AlertTriangle className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 3</h3>
-                  <p className="text-sm text-muted-foreground">Seamless integration and automation</p>
-                </div>
-              </Card>
-            </div>
-            
-            {/* Action Buttons */}
-            <div className="flex gap-4 flex-wrap pt-4">
-              <Button className="bg-primary hover:bg-primary/90">
-                Get Started
-              </Button>
-              <Button variant="outline">
-                Learn More
-              </Button>
-              <Button variant="ghost">
-                Documentation
-              </Button>
-            </div>
-          </div>
-        </Card>
-        
-        {/* Stats Section */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Active Users</p>
-              <p className="text-2xl font-bold">802K+</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Total Transactions</p>
-              <p className="text-2xl font-bold">2.4M</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Success Rate</p>
-              <p className="text-2xl font-bold">99.9%</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Avg Response Time</p>
-              <p className="text-2xl font-bold">45ms</p>
-            </div>
-          </Card>
-        </div>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={AlertTriangle} title="Incident Management" subtitle="Operational incident-readiness status; no authenticated incident, service, alert, responder, timeline, status, notification, SLA, or production incident-management service is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Incident management is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen asserted live data and real-time updates, exposed generic feature promises, included inert action buttons, and displayed fabricated active-user, transaction, success-rate, and response-time figures. Those unsupported claims and controls were removed. No incident, service health, alert, responder, timeline, severity, status, remediation, notification, SLA, or production metric is displayed or initiated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><AlertTriangle aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Incident-readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Reliable incident management requires authenticated service scope, trustworthy detection and evidence, severity and impact criteria, ownership and escalation, protected timelines, responder acknowledgement, containment and recovery workflows, communications and SLA handling, post-incident review, privacy and security controls, auditability, retention, legal-hold handling, and human authorization. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="incident-surfaces-heading"><h2 id="incident-surfaces-heading" className="mb-4 text-xl font-semibold">Incident surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No incident, service, alert, responder, timeline, status, notification, SLA, privacy, security, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="incident-boundaries-heading"><h2 id="incident-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No incident operation or metric claim</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, incident query, service-health query, alert subscription, metric calculation, responder assignment, status mutation, notification, escalation, API request, database read or write, log access, export, deletion, or personal-data operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Operational, security, privacy, compliance, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not treat this page as evidence of uptime, active users, transaction volume, success rate, response time, incidents, alerts, service health, remediation, SLA compliance, security posture, or production operations. Verify source, scope, timestamps, access authorization, evidence, impact, and owner before making operational or public statements.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/system-health"><Button variant="outline"><Clock3 aria-hidden="true" className="mr-2 h-4 w-4" />Review system health</Button></Link><Link href="/status"><Button variant="outline"><CheckCircle2 aria-hidden="true" className="mr-2 h-4 w-4" />Review status</Button></Link><Link href="/notifications"><Button variant="outline"><BellRing aria-hidden="true" className="mr-2 h-4 w-4" />Review notifications</Button></Link><Link href="/security-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link><Link href="/documentation"><Button variant="outline"><UsersRound aria-hidden="true" className="mr-2 h-4 w-4" />Review documentation</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No auth check, incident query, service-health query, alert subscription, metric calculation, responder assignment, status mutation, notification, escalation, API request, database read or write, log access, export, deletion, or personal-data operation is performed. This page is not evidence of uptime, active users, transaction volume, success rate, response time, incidents, alerts, service health, remediation, SLA compliance, security posture, or production operations.</p></Card></main></div>;
 }
