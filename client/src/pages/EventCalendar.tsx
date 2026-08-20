@@ -1,75 +1,23 @@
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/_core/hooks/useAuth";
+import { AlertTriangle, CalendarDays, CheckCircle2, FileCheck2, KeyRound, Search, ShieldAlert, Users } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
-import { Loader2, Plus, Search, Settings } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Authenticated organizer, event ownership, venue provenance, calendar scope, and access control", value: "Not connected", icon: KeyRound },
+  { label: "Dates, time zones, recurrence, capacity, registration, attendance, invitations, and reminders", value: "Unavailable", icon: CalendarDays },
+  { label: "Tickets, payments, fees, refunds, taxes, payouts, and reconciliation", value: "Not verified", icon: FileCheck2 },
+  { label: "Accessibility, privacy, safety, moderation, retention, notifications, and incident response", value: "Not configured", icon: ShieldAlert },
+];
+
+const surfaces = [
+  { title: "Event inventory", scope: "Event identity, organizer, venue, location, dates, time zones, recurrence, capacity, dependencies, status, and change history", status: "Unavailable" },
+  { title: "Registration and attendance", scope: "Invitations, registrations, waitlists, check-ins, cancellations, reminders, consent, accessibility, and attendance provenance", status: "Not configured" },
+  { title: "Ticketing and finance", scope: "Ticket prices, payment processor, fees, taxes, refunds, payouts, disputes, and financial reconciliation", status: "Not verified" },
+  { title: "Calendar governance", scope: "Calendar integration, notifications, privacy, venue safety, moderation, exports, retention, audit, and support", status: "Not connected" },
+];
 
 export default function EventCalendar() {
-  const { isAuthenticated } = useAuth();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>EventCalendar</CardTitle>
-            <CardDescription>Sign in to access this feature</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full">Sign In</Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold">EventCalendar</h1>
-            <p className="text-muted-foreground mt-2">Browse upcoming events</p>
-          </div>
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            New
-          </Button>
-        </div>
-
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Search className="w-4 h-4 text-muted-foreground" />
-              <Input
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="max-w-sm"
-              />
-              <Button variant="outline" size="icon">
-                <Settings className="w-4 h-4" />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {isLoading ? (
-              <div className="flex justify-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
-              </div>
-            ) : (
-              <div className="text-center py-12 text-muted-foreground">
-                <p>No data available. Start by creating a new item.</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={CalendarDays} title="Event Calendar" subtitle="Event-calendar readiness status; no authenticated organizer, event, venue, date, attendee, registration, ticket, reminder, or calendar integration is available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Event calendar is not verified</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen exposed a sign-in path and generic new, settings, search, loading, and empty-state controls without a connected calendar or event source and without documented organizer, attendee, privacy, or ticketing boundaries. No event, venue, date, attendance, registration, ticket, reminder, or integration evidence was available, so calendar controls were removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><CalendarDays aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Event calendar readiness</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A trustworthy event calendar requires authenticated organizer scope, event and venue provenance, correct dates and time zones, capacity and registration evidence, consent and privacy, accessibility and safety, reliable reminders and notifications, ticketing and financial reconciliation, least privilege, audit, and incident response. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="event-calendar-surfaces-heading"><h2 id="event-calendar-surfaces-heading" className="mb-4 text-xl font-semibold">Calendar surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><CalendarDays aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No event capability, date, attendance, financial state, privacy property, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="event-calendar-boundaries-heading"><h2 id="event-calendar-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><FileCheck2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No event or calendar claim</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No sign-in, event, organizer, venue, location, date, time zone, recurrence, capacity, registration, attendee, invitation, waitlist, reminder, calendar event, ticket, payment, refund, or notification record is read, calculated, displayed, exported, or simulated.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Scheduling, privacy, safety, accessibility, and finance warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Calendar data can reveal locations, relationships, preferences, and personal schedules, while ticketing can create financial obligations. Verify organizer authority, venue and time-zone accuracy, consent, accessibility, safety, privacy, ticketing evidence, reconciliation, and audit before enabling or acting on events.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/event-planner"><Button variant="outline"><CalendarDays aria-hidden="true" className="mr-2 h-4 w-4" />Review event status</Button></Link><Link href="/event-analytics"><Button variant="outline"><Users aria-hidden="true" className="mr-2 h-4 w-4" />Review event analytics</Button></Link><Link href="/security-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security status</Button></Link><Link href="/contact-us-form"><Button variant="outline"><Search aria-hidden="true" className="mr-2 h-4 w-4" />Ask about calendar availability</Button></Link></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No auth check, sign-in, event query, calendar lookup, venue lookup, search, creation, registration, invitation, reminder, ticketing, payment, refund, API request, database read or write, calendar synchronization, notification, export, or personal-data operation is performed. This page is not evidence of events, schedules, attendance, ticketing, reminders, calendar integrations, privacy, safety, accessibility, or production calendar functionality.</p></div></Card></main></div>;
 }
