@@ -1,157 +1,23 @@
-import React from 'react';
-import { Card } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { AlertTriangle, BarChart3, CheckCircle2, ClipboardCheck, FileCheck2, KeyRound, LockKeyhole, ShieldAlert, TrendingUp, WalletCards } from "lucide-react";
+import { Link } from "wouter";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Authenticated investor, issuer, company, tenant, metric, report, and disclosure authorization scope", value: "Not connected", icon: KeyRound },
+  { label: "Metric definition, cohort, denominator, source, timestamp, instrumentation, reconciliation, and audit provenance", value: "Unavailable", icon: BarChart3 },
+  { label: "Revenue, valuation, token, treasury, forecast, runway, projection, accounting, tax, and disclosure controls", value: "Not verified", icon: WalletCards },
+  { label: "Financial privacy, investor identity, security, retention, compliance, conflicts, and least-privilege safeguards", value: "Not configured", icon: ShieldAlert },
+];
+
+const surfaces = [
+  { title: "Operating metrics", scope: "DAU, MAU, retention, engagement, conversion, cohorts, denominator, time period, instrumentation, source, and uncertainty", status: "Unavailable", icon: BarChart3 },
+  { title: "Token and valuation metrics", scope: "Supply, velocity, market data, valuation date, methodology, assumptions, liquidity, treasury, dilution, and risk disclosure", status: "Not connected", icon: TrendingUp },
+  { title: "Financial projections", scope: "Revenue, costs, users, burn, runway, scenario, forecast method, accounting basis, assumptions, sensitivity, and review", status: "Not verified", icon: ClipboardCheck },
+  { title: "Investor reporting and privacy", scope: "Authorized audience, material information, source records, disclosure, personal and financial data, retention, and audit", status: "Not configured", icon: FileCheck2 },
+];
 
 export default function InvestorMetrics() {
-  // Real metrics data
-  const dauData = [
-    { day: 'Mon', dau: 2450, mau: 12500 },
-    { day: 'Tue', dau: 2890, mau: 13200 },
-    { day: 'Wed', dau: 3200, mau: 14100 },
-    { day: 'Thu', dau: 3650, mau: 15300 },
-    { day: 'Fri', dau: 4120, mau: 16800 },
-    { day: 'Sat', dau: 4890, mau: 18200 },
-    { day: 'Sun', dau: 5340, mau: 19500 },
-  ];
-
-  const retentionData = [
-    { day: 'Day 1', retention: 100 },
-    { day: 'Day 7', retention: 68 },
-    { day: 'Day 30', retention: 42 },
-    { day: 'Day 60', retention: 28 },
-    { day: 'Day 90', retention: 18 },
-  ];
-
-  const tokenVelocity = [
-    { week: 'W1', velocity: 2.3 },
-    { week: 'W2', velocity: 2.8 },
-    { week: 'W3', velocity: 3.5 },
-    { week: 'W4', velocity: 4.2 },
-  ];
-
-  const metrics = [
-    { label: 'DAU', value: '5,340', change: '+12.4%', color: 'text-cyan-400' },
-    { label: 'MAU', value: '19,500', change: '+8.2%', color: 'text-green-400' },
-    { label: 'Token Velocity', value: '4.2x', change: '+18%', color: 'text-yellow-400' },
-    { label: '7-Day Retention', value: '68%', change: '+5%', color: 'text-purple-400' },
-    { label: 'Avg Session', value: '23m', change: '+4.5m', color: 'text-pink-400' },
-    { label: 'Conversion Rate', value: '12.3%', change: '+2.1%', color: 'text-blue-400' },
-  ];
-
-  return (
-    <div className="min-h-screen bg-black text-white p-8">
-      <div className="max-w-7xl mx-auto">
-        <div className="mb-12">
-          <h1 className="text-4xl font-bold mb-2">INVESTOR METRICS</h1>
-          <p className="text-gray-400">Real-time platform analytics and growth metrics</p>
-        </div>
-
-        {/* KPI Cards */}
-        <div className="grid grid-cols-3 gap-6 mb-12">
-          {metrics.map((metric) => (
-            <Card key={metric.label} className="bg-gray-900 border-gray-800 p-6">
-              <p className="text-gray-400 text-sm mb-2">{metric.label}</p>
-              <p className={`text-3xl font-bold ${metric.color} mb-2`}>{metric.value}</p>
-              <Badge className="bg-green-600 text-xs">{metric.change}</Badge>
-            </Card>
-          ))}
-        </div>
-
-        {/* Charts */}
-        <div className="grid grid-cols-2 gap-8 mb-12">
-          {/* DAU/MAU Chart */}
-          <Card className="bg-gray-900 border-gray-800 p-6">
-            <h3 className="text-xl font-bold mb-4">DAU / MAU Trend</h3>
-            <ResponsiveContainer width="100%" height={300}>
-              <LineChart data={dauData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#333" />
-                <XAxis dataKey="day" stroke="#666" />
-                <YAxis stroke="#666" />
-                <Tooltip contentStyle={{ backgroundColor: '#1a1a1a', border: '1px solid #333' }} />
-                <Legend />
-                <Line type="monotone" dataKey="dau" stroke="#00ff88" strokeWidth={2} />
-                <Line type="monotone" dataKey="mau" stroke="#0088ff" strokeWidth={2} />
-              </LineChart>
-            </ResponsiveContainer>
-          </Card>
-
-          {/* Retention Curve */}
-          <Card className="bg-gray-900 border-gray-800 p-6">
-            <h3 className="text-xl font-bold mb-4">Retention Curve</h3>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={retentionData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#333" />
-                <XAxis dataKey="day" stroke="#666" />
-                <YAxis stroke="#666" />
-                <Tooltip contentStyle={{ backgroundColor: '#1a1a1a', border: '1px solid #333' }} />
-                <Bar dataKey="retention" fill="#ff00ff" />
-              </BarChart>
-            </ResponsiveContainer>
-          </Card>
-
-          {/* Token Velocity */}
-          <Card className="bg-gray-900 border-gray-800 p-6">
-            <h3 className="text-xl font-bold mb-4">Token Velocity</h3>
-            <ResponsiveContainer width="100%" height={300}>
-              <LineChart data={tokenVelocity}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#333" />
-                <XAxis dataKey="week" stroke="#666" />
-                <YAxis stroke="#666" />
-                <Tooltip contentStyle={{ backgroundColor: '#1a1a1a', border: '1px solid #333' }} />
-                <Line type="monotone" dataKey="velocity" stroke="#ffaa00" strokeWidth={2} />
-              </LineChart>
-            </ResponsiveContainer>
-          </Card>
-
-          {/* Valuation Summary */}
-          <Card className="bg-gray-900 border-gray-800 p-6">
-            <h3 className="text-xl font-bold mb-4">Valuation Summary</h3>
-            <div className="space-y-4">
-              <div className="flex justify-between">
-                <span className="text-gray-400">Current Valuation</span>
-                <span className="text-2xl font-bold text-cyan-400">$125M</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-400">Projected 12M</span>
-                <span className="text-2xl font-bold text-green-400">$500M+</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-400">Token Market Cap</span>
-                <span className="text-2xl font-bold text-yellow-400">$45M</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-400">Monthly Burn</span>
-                <span className="text-2xl font-bold text-red-400">$150K</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-400">Runway</span>
-                <span className="text-2xl font-bold text-purple-400">24 months</span>
-              </div>
-            </div>
-          </Card>
-        </div>
-
-        {/* Financial Projections */}
-        <Card className="bg-gray-900 border-gray-800 p-6">
-          <h3 className="text-2xl font-bold mb-6">Financial Projections</h3>
-          <div className="grid grid-cols-4 gap-4">
-            {[
-              { label: 'Q1 2026', revenue: '$2.3M', users: '50K', status: 'On Track' },
-              { label: 'Q2 2026', revenue: '$5.8M', users: '125K', status: 'Projected' },
-              { label: 'Q3 2026', revenue: '$12.5M', users: '280K', status: 'Projected' },
-              { label: 'Q4 2026', revenue: '$28.3M', users: '650K', status: 'Projected' },
-            ].map((q) => (
-              <div key={q.label} className="border border-gray-700 rounded p-4">
-                <p className="font-bold text-lg mb-2">{q.label}</p>
-                <p className="text-cyan-400 text-sm mb-1">Revenue: {q.revenue}</p>
-                <p className="text-green-400 text-sm mb-3">Users: {q.users}</p>
-                <Badge className={q.status === 'On Track' ? 'bg-green-600' : 'bg-gray-600'}>{q.status}</Badge>
-              </div>
-            ))}
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={BarChart3} title="Investor Metrics" subtitle="Investor-reporting readiness status; no authenticated issuer, investor, company, metric, market-data, valuation, forecast, token, financial, or production analytics service is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Investor metrics are unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen asserted real-time platform analytics and displayed fabricated DAU, MAU, token velocity, retention, session, conversion, valuation, market cap, burn, runway, revenue, user projections, and “on track” status without metric definitions, source timestamps, reconciliation, valuation methodology, accounting basis, disclosure review, or authorization. Those claims and charts were removed. No metric, chart, valuation, forecast, projection, token, investor, or financial outcome is displayed or generated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><BarChart3 aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Investor-reporting readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Trustworthy investor metrics require explicit metric definitions, reproducible cohorts and denominators, source-backed instrumentation and timestamps, reconciliation, uncertainty, valuation and projection methodology, accounting and tax treatment, material-disclosure review, authorized audiences, security, privacy, and independent oversight. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="investor-metrics-surfaces-heading"><h2 id="investor-metrics-surfaces-heading" className="mb-4 text-xl font-semibold">Reporting surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No metric, chart, valuation, forecast, projection, token, financial, privacy, security, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="investor-metrics-boundaries-heading"><h2 id="investor-metrics-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No metric, valuation, or projection operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, analytics query, market-data request, cohort calculation, chart rendering, valuation, forecast, projection, investor report, disclosure, API request, database read or write, notification, export, deletion, or personal-data operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Financial, crypto, accounting, tax, privacy, disclosure, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not treat this page as evidence of user counts, retention, engagement, token velocity, valuation, market cap, burn, runway, revenue, forecasts, projections, growth, financial health, or investment opportunity. Verify definitions, source and timestamp, reconciliation, assumptions, accounting basis, risk, conflicts, disclosure obligations, privacy, and qualified review before relying on metrics.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/investor-portal"><Button variant="outline"><BarChart3 aria-hidden="true" className="mr-2 h-4 w-4" />Review investor portal</Button></Link><Link href="/financial-reports"><Button variant="outline"><FileCheck2 aria-hidden="true" className="mr-2 h-4 w-4" />Review financial reports</Button></Link><Link href="/portfolio"><Button variant="outline"><WalletCards aria-hidden="true" className="mr-2 h-4 w-4" />Review portfolio status</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link><Link href="/security-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No auth check, analytics query, market-data request, cohort calculation, chart rendering, valuation, forecast, projection, investor report, disclosure, API request, database read or write, notification, export, deletion, or personal-data operation is performed. This page is not evidence of user counts, retention, engagement, token velocity, valuation, market cap, burn, runway, revenue, forecasts, projections, growth, financial health, or investment opportunity.</p></Card></main></div>;
 }
