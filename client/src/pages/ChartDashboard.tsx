@@ -1,25 +1,14 @@
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { BarChart3, Database, FileCheck2, LockKeyhole, ShieldAlert } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const readinessItems = [
+  { label: "Chart data source and refresh schedule", status: "Not connected", icon: Database },
+  { label: "Dashboard permissions and workspace scope", status: "Not configured", icon: LockKeyhole },
+  { label: "Metric definitions, calculations, and validation", status: "Unavailable", icon: BarChart3 },
+  { label: "Export, audit, and retention controls", status: "Not configured", icon: FileCheck2 },
+];
 
 export default function ChartDashboard() {
-  const [state, setState] = useState(false);
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 to-black p-4">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">ChartDashboard</h1>
-        <p className="text-slate-400 mb-8">chart dashboard</p>
-        
-        <Card className="bg-slate-900 border-slate-800 p-8">
-          <div className="space-y-6">
-            <p className="text-slate-300">Content for ChartDashboard page</p>
-            <Button onClick={() => setState(!state)}>
-              {state ? "Deactivate" : "Activate"}
-            </Button>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={BarChart3} title="Chart Dashboard" subtitle="Dashboard integration status; no chart, metric, account, or operational result is available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><ShieldAlert aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Dashboard data is unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">This route previously showed generic placeholder content and an Activate/Deactivate control without a connected chart source, persisted state, access policy, calculation, or audit record. The control and placeholder copy were removed rather than implying that a dashboard was activated or that any chart result exists.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><BarChart3 aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Dashboard-readiness status</h2><p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">A production dashboard requires a named source of truth, documented dimensions and measures, bounded queries, permission checks, loading and error states, calculation tests, data freshness, and auditable export behavior. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{readinessItems.map(({ label, status, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{status}</p></Card>)}</div></Card><section aria-labelledby="dashboard-boundary-heading"><h2 id="dashboard-boundary-heading" className="mb-4 text-xl font-semibold">Current boundary</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><LockKeyhole aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No user, transaction, financial, market, blockchain, AI, operational, or system metric is read, calculated, charted, exported, cached, or simulated by this page. Do not treat this unavailable state as a report.</p></div></Card><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><FileCheck2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No activation, deactivation, dashboard mutation, notification, API request, database write, account change, permission change, or external integration call is performed by this page.</p></div></Card></div></section></main></div>;
 }
