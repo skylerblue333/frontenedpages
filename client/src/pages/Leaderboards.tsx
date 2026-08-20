@@ -1,75 +1,23 @@
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/_core/hooks/useAuth";
+import { AlertTriangle, BarChart3, CheckCircle2, Gamepad2, KeyRound, LockKeyhole, ShieldAlert, Target, Trophy, UsersRound } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
-import { Loader2, Plus, Search, Settings } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Authenticated player, game, season, leaderboard, moderator, and ranking authorization scope", value: "Not connected", icon: KeyRound },
+  { label: "Score source, game rules, event timestamp, player identity, season, region, and result provenance", value: "Unavailable", icon: Target },
+  { label: "Ranking, tie-breaking, anti-cheat, moderation, appeals, rewards, payouts, and update controls", value: "Not verified", icon: Trophy },
+  { label: "Player profile, behavioral, gaming, reward, age, privacy, retention, security, and access safeguards", value: "Not configured", icon: ShieldAlert },
+];
+
+const surfaces = [
+  { title: "Scores and source events", scope: "Game, mode, ruleset, player, score, timestamp, season, region, replay evidence, and event integrity", status: "Unavailable", icon: Target },
+  { title: "Ranking and anti-cheat", scope: "Algorithm, tie-breaking, latency, duplicate prevention, anomaly detection, review, suspension, and appeals", status: "Not connected", icon: ShieldAlert },
+  { title: "Rewards and competition", scope: "Prize terms, eligibility, age and jurisdiction, custody, payout, tax, disputes, and responsible gaming controls", status: "Not verified", icon: Trophy },
+  { title: "Privacy and player safety", scope: "Identity, profile, behavior, location, chat, retention, deletion, moderation, security, and authorization", status: "Not configured", icon: LockKeyhole },
+];
 
 export default function Leaderboards() {
-  const { isAuthenticated } = useAuth();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>Leaderboards</CardTitle>
-            <CardDescription>Sign in to access this feature</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full">Sign In</Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold">Leaderboards</h1>
-            <p className="text-muted-foreground mt-2">High scores</p>
-          </div>
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            New
-          </Button>
-        </div>
-
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Search className="w-4 h-4 text-muted-foreground" />
-              <Input
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="max-w-sm"
-              />
-              <Button variant="outline" size="icon">
-                <Settings className="w-4 h-4" />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {isLoading ? (
-              <div className="flex justify-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
-              </div>
-            ) : (
-              <div className="text-center py-12 text-muted-foreground">
-                <p>No data available. Start by creating a new item.</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Trophy} title="Leaderboards" subtitle="Competition-ranking readiness status; no authenticated player, game, season, score source, anti-cheat service, rewards program, or production leaderboard service is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Leaderboards are unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen exposed an unauthenticated sign-in pseudo-action and inert New, settings, search, and loading controls without establishing game identity, score source, rules, season, ranking methodology, anti-cheat, moderation, appeals, rewards, age safeguards, privacy, or authorization. Those unsupported claims and controls were removed. No player, score, rank, high score, prize, payout, game result, or competition state is displayed or calculated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Trophy aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Competition-ranking readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A trustworthy game leaderboard requires authoritative score events, explicit rules and seasons, authenticated player identity, replay or event integrity, anti-cheat detection, human moderation, appeals, transparent tie-breaking, clear prize and payout terms, age and jurisdiction safeguards, privacy, and responsible gaming controls. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="leaderboards-surfaces-heading"><h2 id="leaderboards-surfaces-heading" className="mb-4 text-xl font-semibold">Competition surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No player, score, rank, high score, prize, payout, game result, competition, identity, privacy, security, gaming, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="leaderboards-boundaries-heading"><h2 id="leaderboards-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No competition operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, player query, game query, score calculation, ranking, anti-cheat analysis, moderation, reward or payout calculation, search, settings mutation, API request, database read or write, notification, export, deletion, or personal-data operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Gaming, financial, age, privacy, security, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not treat this page as evidence of a player’s score, rank, skill, prize, payout, eligibility, anti-cheat status, or competition result. Verify rules, score source, season, replay evidence, anti-cheat, moderation, age and jurisdiction, prize terms, taxes, payout custody, privacy, and appeal rights before relying on or acting on rankings.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/leaderboard"><Button variant="outline"><Trophy aria-hidden="true" className="mr-2 h-4 w-4" />Review community rankings</Button></Link><Link href="/gaming"><Button variant="outline"><Gamepad2 aria-hidden="true" className="mr-2 h-4 w-4" />Review gaming status</Button></Link><Link href="/analytics"><Button variant="outline"><BarChart3 aria-hidden="true" className="mr-2 h-4 w-4" />Review analytics</Button></Link><Link href="/community"><Button variant="outline"><UsersRound aria-hidden="true" className="mr-2 h-4 w-4" />Review community</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link><Link href="/security-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No auth check, player query, game query, score calculation, ranking, anti-cheat analysis, moderation, reward or payout calculation, search, settings mutation, API request, database read or write, notification, export, deletion, or personal-data operation is performed. This page is not evidence of a player’s score, rank, skill, prize, payout, eligibility, anti-cheat status, or competition result.</p></Card></main></div>;
 }
