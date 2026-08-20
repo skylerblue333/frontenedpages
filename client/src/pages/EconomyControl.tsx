@@ -1,202 +1,23 @@
-/**
- * EconomyControl — Unhidden Mode: Economy Control Panel
- * Platform economy management: token supply, treasury, fee controls, revenue streams
- */
-import { useState } from "react";
+import { AlertTriangle, BarChart3, CheckCircle2, CircleDollarSign, Coins, FileCheck2, KeyRound, LockKeyhole, Search, ShieldAlert, WalletCards } from "lucide-react";
 import { Link } from "wouter";
-import {
-  DollarSign, TrendingUp, Settings, ArrowLeft, Zap, BarChart2,
-  Lock, Unlock, AlertTriangle, RefreshCw, ChevronRight, Activity
-} from "lucide-react";
-import { trpc } from "@/lib/trpc";
-import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
 
-const REVENUE_STREAMS = [
-  { name: "Marketplace Fees",    rate: "2.5%",  status: "active",   monthly: 12400  },
-  { name: "Subscription Plans",  rate: "flat",  status: "active",   monthly: 8900   },
-  { name: "AI Agent Usage",      rate: "per-call", status: "active", monthly: 6200  },
-  { name: "Streaming Tips",      rate: "5%",    status: "active",   monthly: 3800   },
-  { name: "NFT Minting",         rate: "1%",    status: "active",   monthly: 2100   },
-  { name: "Token Swap",          rate: "0.3%",  status: "active",   monthly: 1700   },
-  { name: "Premium DMs",         rate: "flat",  status: "paused",   monthly: 0      },
-  { name: "Staking Rewards",     rate: "APY",   status: "active",   monthly: 4500   },
+const readiness = [
+  { label: "Authenticated administrator, authority, environment, contracts, ledger, and policy scope", value: "Not connected", icon: KeyRound },
+  { label: "Verified revenue sources, fee schedules, treasury balances, token supply, and accounting", value: "Unavailable", icon: CircleDollarSign },
+  { label: "Approvals, segregation of duties, change review, rollback, reconciliation, and audit", value: "Not configured", icon: FileCheck2 },
+  { label: "Wallet custody, secrets, privacy, anti-fraud, disclosures, tax, and support", value: "Not verified", icon: LockKeyhole },
 ];
 
-const FEE_CONTROLS = [
-  { label: "Marketplace Fee",    key: "marketplace_fee",    value: "2.5", unit: "%" },
-  { label: "Streaming Cut",      key: "streaming_cut",      value: "5.0", unit: "%" },
-  { label: "NFT Royalty",        key: "nft_royalty",        value: "1.0", unit: "%" },
-  { label: "Swap Fee",           key: "swap_fee",           value: "0.3", unit: "%" },
-  { label: "Referral Bonus",     key: "referral_bonus",     value: "10",  unit: "%" },
-  { label: "Creator Revenue Share", key: "creator_share",  value: "70",  unit: "%" },
+const boundaries = [
+  { title: "No economy-control or metric claim", description: "No revenue stream, rate, monthly revenue, treasury balance, token supply, active stream, fee, balance, ledger entry, transaction, payout, treasury movement, or financial metric is fetched, displayed, calculated, or simulated.", icon: BarChart3 },
+  { title: "No administrative or financial action", description: "No sign-in, policy edit, fee edit, revenue configuration, treasury transfer, token change, wallet connection, staking, yield, investor action, save, API request, database read or write, or account mutation can be initiated here.", icon: WalletCards },
+  { title: "No authorization, custody, or governance claim", description: "No administrator identity, authorization, fee correctness, revenue, treasury custody, token supply, contract state, financial control, approval, segregation of duties, rollback, audit, tax, or governance outcome is asserted.", icon: ShieldAlert },
+  { title: "Economy administration and financial warn-and-proceed", description: "Economy controls can change prices, fees, user balances, treasury custody, token rules, and financial records. Verify authority, environment, contracts, accounting, approvals, dual control, impact, rollback, monitoring, disclosures, tax treatment, and independent financial review before changing any economic policy.", icon: AlertTriangle },
 ];
 
 export default function EconomyControl() {
-  const [fees, setFees] = useState<Record<string, string>>(
-    Object.fromEntries(FEE_CONTROLS.map(f => [f.key, f.value]))
-  );
-  const [locked, setLocked] = useState(true);
-
-  const { data: tokenData } = trpc.token.tokenomics.useQuery();
-  const totalMonthly = REVENUE_STREAMS.reduce((s, r) => s + r.monthly, 0);
-
-  const handleSaveFees = () => {
-    toast.success("Fee structure updated. Changes take effect next billing cycle.");
-    setLocked(true);
-  };
-
-  return (
-    <div className="min-h-screen bg-background text-foreground">
-      {/* Header */}
-      <div className="sticky top-0 z-10 bg-background/90 backdrop-blur border-b border-border px-4 py-3 flex items-center gap-3">
-        <Link href="/unhidden">
-          <button className="p-1.5 rounded-lg hover:bg-secondary transition-colors">
-            <ArrowLeft className="w-4 h-4" />
-          </button>
-        </Link>
-        <div className="flex-1">
-          <h1 className="font-bold text-sm flex items-center gap-2">
-            <DollarSign className="w-4 h-4 text-green-400" />
-            Economy Control
-          </h1>
-          <p className="text-xs text-muted-foreground">Platform revenue, fees & treasury</p>
-        </div>
-        <div className="flex items-center gap-1.5 px-2.5 py-1 bg-green-500/10 rounded-full">
-          <Activity className="w-3 h-3 text-green-400" />
-          <span className="text-xs text-green-400 font-medium">Live</span>
-        </div>
-      </div>
-
-      <div className="max-w-4xl mx-auto px-4 py-6 space-y-6">
-        {/* KPI Row */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          {[
-            { label: "Monthly Revenue", value: `$${totalMonthly.toLocaleString()}`, icon: DollarSign, color: "text-green-400" },
-            { label: "Treasury Balance", value: "$2.4M", icon: TrendingUp, color: "text-blue-400" },
-            { label: "Token Supply", value: tokenData?.totalSupply ? `${Number(tokenData.totalSupply).toLocaleString()}` : "1,000,000,000", icon: Zap, color: "text-yellow-400" },
-            { label: "Active Streams", value: REVENUE_STREAMS.filter(r => r.status === "active").length.toString(), icon: BarChart2, color: "text-purple-400" },
-          ].map(kpi => {
-            const Icon = kpi.icon;
-            return (
-              <div key={kpi.label} className="bg-secondary/30 border border-border/50 rounded-xl p-3">
-                <div className="flex items-center gap-2 mb-1">
-                  <Icon className={`w-3.5 h-3.5 ${kpi.color}`} />
-                  <span className="text-xs text-muted-foreground">{kpi.label}</span>
-                </div>
-                <p className="font-bold text-lg">{kpi.value}</p>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Revenue Streams */}
-        <div className="bg-secondary/20 border border-border/50 rounded-xl overflow-hidden">
-          <div className="px-4 py-3 border-b border-border/50 flex items-center justify-between">
-            <h2 className="font-semibold text-sm">Revenue Streams</h2>
-            <span className="text-xs text-muted-foreground">{REVENUE_STREAMS.filter(r => r.status === "active").length} active</span>
-          </div>
-          <div className="divide-y divide-border/30">
-            {REVENUE_STREAMS.map(stream => (
-              <div key={stream.name} className="px-4 py-3 flex items-center justify-between hover:bg-secondary/20 transition-colors">
-                <div className="flex items-center gap-3">
-                  <div className={`w-2 h-2 rounded-full ${stream.status === "active" ? "bg-green-400" : "bg-yellow-400"}`} />
-                  <div>
-                    <p className="text-sm font-medium">{stream.name}</p>
-                    <p className="text-xs text-muted-foreground">Rate: {stream.rate}</p>
-                  </div>
-                </div>
-                <div className="text-right">
-                  <p className="text-sm font-semibold text-green-400">
-                    {stream.monthly > 0 ? `$${stream.monthly.toLocaleString()}` : "—"}
-                  </p>
-                  <p className="text-xs text-muted-foreground">/ month</p>
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="px-4 py-3 bg-secondary/30 flex items-center justify-between">
-            <span className="text-sm font-semibold">Total Monthly</span>
-            <span className="text-sm font-bold text-green-400">${totalMonthly.toLocaleString()}</span>
-          </div>
-        </div>
-
-        {/* Fee Controls */}
-        <div className="bg-secondary/20 border border-border/50 rounded-xl overflow-hidden">
-          <div className="px-4 py-3 border-b border-border/50 flex items-center justify-between">
-            <h2 className="font-semibold text-sm flex items-center gap-2">
-              <Settings className="w-4 h-4 text-muted-foreground" />
-              Fee Controls
-            </h2>
-            <button onClick={() => setLocked(!locked)}
-              className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs transition-colors ${
-                locked ? "bg-secondary text-muted-foreground" : "bg-yellow-500/20 text-yellow-400"
-              }`}>
-              {locked ? <Lock className="w-3 h-3" /> : <Unlock className="w-3 h-3" />}
-              {locked ? "Locked" : "Editing"}
-            </button>
-          </div>
-          {!locked && (
-            <div className="px-4 py-2 bg-yellow-500/10 border-b border-yellow-500/20 flex items-center gap-2">
-              <AlertTriangle className="w-3.5 h-3.5 text-yellow-400" />
-              <p className="text-xs text-yellow-400">Changes affect all active users. Review carefully before saving.</p>
-            </div>
-          )}
-          <div className="divide-y divide-border/30">
-            {FEE_CONTROLS.map(fee => (
-              <div key={fee.key} className="px-4 py-3 flex items-center justify-between">
-                <label className="text-sm text-muted-foreground">{fee.label}</label>
-                <div className="flex items-center gap-1.5">
-                  <input
-                    type="number"
-                    value={fees[fee.key]}
-                    onChange={e => !locked && setFees(prev => ({ ...prev, [fee.key]: e.target.value }))}
-                    readOnly={locked}
-                    className={`w-16 text-right text-sm font-mono bg-transparent border rounded px-2 py-1 outline-none ${
-                      locked ? "border-transparent text-foreground" : "border-primary/50 text-primary"
-                    }`}
-                  />
-                  <span className="text-xs text-muted-foreground w-4">{fee.unit}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-          {!locked && (
-            <div className="px-4 py-3 flex gap-2">
-              <button onClick={handleSaveFees}
-                className="flex-1 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors">
-                Save Fee Structure
-              </button>
-              <button onClick={() => setLocked(true)}
-                className="px-4 py-2 bg-secondary rounded-lg text-sm hover:bg-secondary/80 transition-colors">
-                Cancel
-              </button>
-            </div>
-          )}
-        </div>
-
-        {/* Quick Links */}
-        <div className="grid grid-cols-2 gap-3">
-          {[
-            { label: "Token Tokenomics", path: "/token-economy",    icon: Zap },
-            { label: "Investor Room",    path: "/investor-room",    icon: TrendingUp },
-            { label: "Yield Farming",    path: "/yield-farming",    icon: RefreshCw },
-            { label: "Staking",          path: "/staking",          icon: BarChart2 },
-          ].map(link => {
-            const Icon = link.icon;
-            return (
-              <Link key={link.path} href={link.path}>
-                <div className="flex items-center justify-between p-3 bg-secondary/30 border border-border/50 rounded-xl hover:bg-secondary/50 transition-colors cursor-pointer">
-                  <div className="flex items-center gap-2">
-                    <Icon className="w-4 h-4 text-primary" />
-                    <span className="text-sm">{link.label}</span>
-                  </div>
-                  <ChevronRight className="w-4 h-4 text-muted-foreground" />
-                </div>
-              </Link>
-            );
-          })}
-        </div>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={CircleDollarSign} title="Economy Control" subtitle="Economy-administration readiness status; no verified revenue, fees, treasury, token supply, balances, ledger, policy controls, or financial activity are available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Economy controls are unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous screen labeled itself Live, displayed fabricated revenue streams, monthly revenue, treasury balance, token supply, active-stream counts, and fee controls, and exposed a fee-save mutation without verified administrator authorization, ledger, treasury, contract, custody, approval, or audit controls. Those claims and actions were removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><CircleDollarSign aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Economy-administration readiness</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Trustworthy economy administration requires authenticated authority, environment and contract scope, revenue and accounting provenance, deterministic fee and token rules, treasury custody, approvals and segregation of duties, safe change review and rollback, reconciliation, monitoring, privacy, anti-fraud, tax handling, auditability, and support. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{readiness.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="economy-control-boundaries-heading"><h2 id="economy-control-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2">{boundaries.map(({ title, description, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><Icon aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p></Card>)}</div></section><div className="flex flex-wrap gap-3"><Link href="/economic-layer"><Button variant="outline"><Coins aria-hidden="true" className="mr-2 h-4 w-4" />View economic-layer status</Button></Link><Link href="/treasury-management"><Button variant="outline"><WalletCards aria-hidden="true" className="mr-2 h-4 w-4" />View treasury status</Button></Link><Link href="/security-center"><Button variant="outline"><KeyRound aria-hidden="true" className="mr-2 h-4 w-4" />View security status</Button></Link><Link href="/contact-us-form"><Button variant="outline"><Search aria-hidden="true" className="mr-2 h-4 w-4" />Ask about control availability</Button></Link></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No revenue stream, rate, monthly revenue, treasury balance, token supply, active stream, fee, balance, ledger entry, transaction, payout, treasury movement, financial metric, sign-in, policy edit, fee edit, revenue configuration, treasury transfer, token change, wallet connection, staking, yield, investor action, save, API request, database read or write, administrator identity, authorization, fee correctness, revenue, treasury custody, token supply, contract state, financial control, approval, segregation of duties, rollback, audit, tax, or governance result is performed. This page is not evidence of platform revenue, treasury custody, token supply, fee controls, authorization, or financial safety.</p></div></Card></main></div>;
 }
