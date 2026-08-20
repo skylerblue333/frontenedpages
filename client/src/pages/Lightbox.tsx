@@ -1,25 +1,23 @@
-import { useState } from "react";
+import { AlertTriangle, CheckCircle2, Download, Eye, FileImage, KeyRound, LockKeyhole, Share2, ShieldAlert } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Authenticated viewer, asset owner, workspace, visibility, and media authorization scope", value: "Not connected", icon: KeyRound },
+  { label: "Asset identity, source, ownership, consent, dimensions, metadata, version, and integrity provenance", value: "Unavailable", icon: FileImage },
+  { label: "Zoom, transform, download, sharing, export, watermark, audit, and revocation controls", value: "Not verified", icon: Download },
+  { label: "Personal, confidential, biometric, location, copyright, privacy, retention, security, and access safeguards", value: "Not configured", icon: ShieldAlert },
+];
+
+const surfaces = [
+  { title: "Asset and metadata provenance", scope: "Asset identity, source, owner, license, consent, dimensions, EXIF, location, version, checksum, and integrity", status: "Unavailable", icon: FileImage },
+  { title: "Viewer and transformation", scope: "Authenticated access, zoom, crop, rotation, transform, rendering, caching, thumbnails, and client-side exposure", status: "Not connected", icon: Eye },
+  { title: "Download and sharing", scope: "Download authorization, export format, watermark, recipient, link expiry, revocation, audit, and abuse controls", status: "Not verified", icon: Share2 },
+  { title: "Privacy and media safety", scope: "Personal, confidential, biometric, location, copyright, retention, deletion, encryption, and least-privilege access", status: "Not configured", icon: LockKeyhole },
+];
 
 export default function Lightbox() {
-  const [state, setState] = useState(false);
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 to-black p-4">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">Lightbox</h1>
-        <p className="text-slate-400 mb-8">lightbox</p>
-        
-        <Card className="bg-slate-900 border-slate-800 p-8">
-          <div className="space-y-6">
-            <p className="text-slate-300">Content for Lightbox page</p>
-            <Button onClick={() => setState(!state)}>
-              {state ? "Deactivate" : "Activate"}
-            </Button>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={FileImage} title="Lightbox" subtitle="Media-viewer readiness status; no authenticated asset, image, owner, source, metadata, visibility policy, sharing service, download authorization, or production media repository is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Lightbox is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen was a generic media placeholder with an inert Activate/Deactivate control and did not establish asset identity, source, owner, license, consent, visibility, metadata, transformation, download, sharing, privacy, retention, security, or authorization controls. The placeholder and local state mutation were removed. No asset, image, metadata, preview, transform, download, share link, or media access is displayed or initiated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><FileImage aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Media-viewer readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A trustworthy lightbox requires asset and owner provenance, consent and license scope, authenticated visibility, safe metadata handling, protected rendering, authorized transformations, download and sharing controls, expiry and revocation, audit, privacy, copyright, and secure deletion. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="lightbox-surfaces-heading"><h2 id="lightbox-surfaces-heading" className="mb-4 text-xl font-semibold">Viewer surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No asset, image, metadata, preview, transform, download, share link, media access, privacy, security, copyright, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="lightbox-boundaries-heading"><h2 id="lightbox-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No media operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No asset query, image load, metadata read, preview, rendering, transform, download, export, share-link creation, upload, deletion, API request, database read or write, notification, or personal-data operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Privacy, copyright, biometric, security, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not treat this page as evidence that an asset exists, is authentic, is owned by a person, is licensed, is private or public, is safe to download, or may be shared. Verify owner, consent, license, metadata, recipient, expiry, revocation, security, and authorization before viewing or distributing media.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/image-gallery"><Button variant="outline"><FileImage aria-hidden="true" className="mr-2 h-4 w-4" />Review gallery status</Button></Link><Link href="/image-viewer"><Button variant="outline"><Eye aria-hidden="true" className="mr-2 h-4 w-4" />Review viewer status</Button></Link><Link href="/image-editor"><Button variant="outline"><Download aria-hidden="true" className="mr-2 h-4 w-4" />Review editor status</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link><Link href="/security-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No asset query, image load, metadata read, preview, rendering, transform, download, export, share-link creation, upload, deletion, API request, database read or write, notification, or personal-data operation is performed. This page is not evidence that an asset exists, is authentic, is owned by a person, is licensed, is private or public, is safe to download, or may be shared.</p></Card></main></div>;
 }
