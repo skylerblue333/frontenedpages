@@ -1,20 +1,21 @@
-import React from "react";
-import { Button } from "@/components/ui/button";
+import { CircleDollarSign, FileCheck2, HandCoins, KeyRound, LockKeyhole, ShieldAlert, Vote, WalletCards } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
 
-const ContributionInterface = () => {
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 p-6">
-      <div className="mx-auto max-w-6xl">
-        <h1 className="mb-6 text-4xl font-bold text-white">ContributionInterface</h1>
-        <Card className="border-purple-600 bg-slate-800 p-6">
-          <p className="text-gray-300">
-            ContributionInterface feature coming soon...
-          </p>
-        </Card>
-      </div>
-    </div>
-  );
-};
+const contributionStates = [
+  { label: "Contribution purpose, recipient, ownership, and eligibility", value: "Not connected", icon: HandCoins },
+  { label: "Amount, currency, quote, fees, and payment reconciliation", value: "Unavailable", icon: CircleDollarSign },
+  { label: "Wallet, custody, signature, transaction, and confirmation", value: "Not configured", icon: WalletCards },
+  { label: "Receipt, donor record, governance weight, and audit evidence", value: "Not verified", icon: FileCheck2 },
+];
 
-export default ContributionInterface;
+const boundaries = [
+  { title: "Contribution identity", description: "No campaign, recipient, organization, donor, contributor, eligibility, purpose, tax status, receipt, or governance record is read, stored, displayed, or simulated.", icon: HandCoins },
+  { title: "Financial transaction", description: "No amount, currency, price, quote, fee, payment method, exchange rate, balance, token, donation, purchase, transfer, or settlement is calculated or asserted.", icon: CircleDollarSign },
+  { title: "Wallet and signing", description: "No wallet connection, account identity, private key, seed phrase, custody, approval, signature, transaction hash, confirmation, or failure recovery path is connected.", icon: WalletCards },
+  { title: "Governance and privacy", description: "No contribution weight, vote, entitlement, consent, privacy notice, retention rule, audit trail, or irreversible-action confirmation is available. Do not enter keys or payment details here.", icon: LockKeyhole },
+];
+
+export default function ContributionInterface() {
+  return <div className="min-h-screen bg-background"><PageHeader icon={HandCoins} title="Contribution Interface" subtitle="Contribution and payment-integration status; no donation, purchase, transfer, wallet, token, governance, or financial submission is available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><ShieldAlert aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Contribution actions are unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous screen was a “coming soon” placeholder with no verified campaign, recipient, payment processor, wallet provider, token contract, governance system, receipt service, or financial safety boundary. It has been replaced with an explicit readiness state rather than implying that money, tokens, donations, purchases, or voting power can be contributed here.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><HandCoins aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Contribution-readiness status</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Production contribution infrastructure requires verified recipient ownership, lawful purpose, eligibility, payment or wallet authorization, transparent amounts and fees, secure signing, settlement reconciliation, duplicate prevention, refunds or failure handling, receipts, privacy, audit evidence, and clear confirmation before an irreversible action. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{contributionStates.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="contribution-boundaries-heading"><h2 id="contribution-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2">{boundaries.map(({ title, description, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><Icon aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p></Card>)}</div></section><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><KeyRound aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No contribute, donate, purchase, connect, approve, transfer, sign, vote, submit, refresh, API request, database write, account mutation, external payment or RPC call, transaction, receipt, balance, or financial recommendation is performed. This page is not evidence of recipient legitimacy, contribution amount, tax treatment, governance power, or transaction success.</p></div></Card></main></div>;
+}
