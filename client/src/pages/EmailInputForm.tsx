@@ -1,25 +1,23 @@
-import { useState } from "react";
+import { AlertTriangle, CheckCircle2, FileCheck2, KeyRound, Mail, Search, Send, ShieldAlert, Users } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const readiness = [
+  { label: "Field purpose, sender and recipient scope, consent, and authenticated account", value: "Not connected", icon: Mail },
+  { label: "Format validation, normalization, duplicate handling, and accessibility", value: "Unavailable", icon: FileCheck2 },
+  { label: "Provider delivery, retries, bounce, unsubscribe, retention, and audit", value: "Not configured", icon: Send },
+  { label: "Privacy, authorization, secrets, abuse prevention, and support", value: "Not verified", icon: KeyRound },
+];
+
+const boundaries = [
+  { title: "No email data claim", description: "No sender, recipient, address, subject, message, consent, validation result, delivery status, provider, bounce, unsubscribe, notification, or personal-information record is collected, displayed, calculated, stored, or simulated.", icon: Mail },
+  { title: "No input or submission action", description: "No sign-in, field input, address validation, normalization, upload, save, send, subscribe, unsubscribe, search, API request, database read or write, or account mutation can be initiated here.", icon: Send },
+  { title: "No privacy or deliverability claim", description: "No consent, authorization, confidentiality, retention, encryption, provider security, deliverability, abuse prevention, accessibility, or notification outcome is asserted.", icon: ShieldAlert },
+  { title: "Personal-data and communications warn-and-proceed", description: "Email addresses and message content are personal data. Verify purpose, audience, consent, field handling, provider, retention, unsubscribe, rate limits, authorization, and delivery state before collecting or sending email.", icon: AlertTriangle },
+];
 
 export default function EmailInputForm() {
-  const [state, setState] = useState(false);
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 to-black p-4">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">EmailInputForm</h1>
-        <p className="text-slate-400 mb-8">email input form</p>
-        
-        <Card className="bg-slate-900 border-slate-800 p-8">
-          <div className="space-y-6">
-            <p className="text-slate-300">Content for EmailInputForm page</p>
-            <Button onClick={() => setState(!state)}>
-              {state ? "Deactivate" : "Activate"}
-            </Button>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Mail} title="Email Input Form" subtitle="Email-input readiness status; no sender, recipient, address, message, validation, provider, storage, delivery, or submission workflow is available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Email input is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen presented placeholder copy and an ambiguous Activate/Deactivate toggle rather than a verified email field, purpose, consent, validation, privacy, provider, storage, or submission workflow. The toggle and implied email action were removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Mail aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Email-input readiness</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Trustworthy email input requires a documented purpose, sender and recipient scope, consent, authenticated account, validation and normalization, accessible labels and errors, provider delivery, bounce and unsubscribe handling, privacy and retention, abuse prevention, and audit. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{readiness.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="email-input-boundaries-heading"><h2 id="email-input-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2">{boundaries.map(({ title, description, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><Icon aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p></Card>)}</div></section><div className="flex flex-wrap gap-3"><Link href="/email-configuration"><Button variant="outline"><KeyRound aria-hidden="true" className="mr-2 h-4 w-4" />View provider status</Button></Link><Link href="/email-campaigns"><Button variant="outline"><Send aria-hidden="true" className="mr-2 h-4 w-4" />View campaign status</Button></Link><Link href="/privacy-settings"><Button variant="outline"><Users aria-hidden="true" className="mr-2 h-4 w-4" />View privacy status</Button></Link><Link href="/contact-us-form"><Button variant="outline"><Search aria-hidden="true" className="mr-2 h-4 w-4" />Ask about email availability</Button></Link></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No sender, recipient, address, subject, message, consent, validation result, delivery status, provider, bounce, unsubscribe, notification, personal-information record, sign-in, field input, address validation, normalization, upload, save, send, subscribe, unsubscribe, search, API request, database read or write, account mutation, consent, authorization, confidentiality, retention, encryption, provider security, deliverability, abuse prevention, accessibility, or notification outcome is performed. This page is not evidence that email addresses can be safely collected, validated, stored, or delivered.</p></div></Card></main></div>;
 }
