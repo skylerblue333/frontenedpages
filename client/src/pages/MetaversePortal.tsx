@@ -1,84 +1,23 @@
-import { Globe } from "lucide-react";
+import { AlertTriangle, Bot, CheckCircle2, Globe2, KeyRound, Layers3, LockKeyhole, Network, ShieldAlert, Sparkles, UserRound, WalletCards } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { PageHeader } from "@/components/PageHeader";
 
+const boundaries = [
+  { label: "Authenticated participant, avatar, world, room, event, asset, wallet, and authorization scope", value: "Not connected", icon: KeyRound },
+  { label: "World, room, presence, avatar, asset, ownership, transaction, AI, and timestamp provenance", value: "Unavailable", icon: Globe2 },
+  { label: "Real-time transport, performance, moderation, content safety, custody, settlement, and user-control behavior", value: "Not verified", icon: Network },
+  { label: "Personal data, location, voice/video, private keys, payments, privacy, security, accessibility, and least-privilege safeguards", value: "Not configured", icon: LockKeyhole },
+];
+
+const surfaces = [
+  { title: "Participant and world scope", scope: "Authenticated participant, avatar, world, room, event, presence, age assurance, consent, and authorization", status: "Unavailable", icon: UserRound },
+  { title: "World and asset provenance", scope: "Room, asset, creator, ownership, license, virtual good, wallet, transaction, source, and timestamp", status: "Not connected", icon: Layers3 },
+  { title: "AI, performance, and real-time controls", scope: "AI provider, model, latency, uptime, throughput, presence, moderation, transport, freshness, and evidence", status: "Not verified", icon: Bot },
+  { title: "Safety, privacy, and custody", scope: "Personal data, location, voice/video, payments, private keys, reporting, blocking, retention, deletion, security, and access", status: "Not configured", icon: ShieldAlert },
+];
+
 export default function MetaversePortal() {
-  return (
-    <div className="min-h-screen bg-background">
-      <PageHeader icon={Globe} title="Metaverse Portal" subtitle="Advanced metaverse portal with cutting-edge technology" />
-      
-      <div className="max-w-7xl mx-auto px-4 py-8 space-y-8">
-        {/* Main Content Area */}
-        <Card className="p-8 bg-gradient-to-br from-primary/10 to-secondary/10 border border-primary/20">
-          <div className="space-y-6">
-            <h2 className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Metaverse Portal</h2>
-            
-            {/* Advanced Features */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <Card className="p-4 bg-background/80 border border-primary/30 hover:border-primary/80 transition-all cursor-pointer hover:shadow-lg hover:shadow-primary/20">
-                <div className="space-y-3">
-                  <Globe className="w-8 h-8 text-primary" />
-                  <h3 className="font-bold text-lg">Advanced Analytics</h3>
-                  <p className="text-sm text-muted-foreground">Real-time data processing with AI insights</p>
-                  <Button size="sm" variant="outline" className="w-full">Explore</Button>
-                </div>
-              </Card>
-              
-              <Card className="p-4 bg-background/80 border border-primary/30 hover:border-primary/80 transition-all cursor-pointer hover:shadow-lg hover:shadow-primary/20">
-                <div className="space-y-3">
-                  <Globe className="w-8 h-8 text-primary" />
-                  <h3 className="font-bold text-lg">Automation Engine</h3>
-                  <p className="text-sm text-muted-foreground">Autonomous operations with intelligent decision making</p>
-                  <Button size="sm" variant="outline" className="w-full">Configure</Button>
-                </div>
-              </Card>
-              
-              <Card className="p-4 bg-background/80 border border-primary/30 hover:border-primary/80 transition-all cursor-pointer hover:shadow-lg hover:shadow-primary/20">
-                <div className="space-y-3">
-                  <Globe className="w-8 h-8 text-primary" />
-                  <h3 className="font-bold text-lg">Security First</h3>
-                  <p className="text-sm text-muted-foreground">Robust encryption and protection</p>
-                  <Button size="sm" variant="outline" className="w-full">Secure</Button>
-                </div>
-              </Card>
-            </div>
-            
-            {/* Performance Metrics */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4">
-              <div className="p-4 bg-background/50 rounded-lg border border-border/50">
-                <p className="text-xs text-muted-foreground">Processing Speed</p>
-                <p className="text-2xl font-bold text-primary">99.9%</p>
-              </div>
-              <div className="p-4 bg-background/50 rounded-lg border border-border/50">
-                <p className="text-xs text-muted-foreground">Uptime</p>
-                <p className="text-2xl font-bold text-primary">24/7</p>
-              </div>
-              <div className="p-4 bg-background/50 rounded-lg border border-border/50">
-                <p className="text-xs text-muted-foreground">Latency</p>
-                <p className="text-2xl font-bold text-primary">&lt;50ms</p>
-              </div>
-              <div className="p-4 bg-background/50 rounded-lg border border-border/50">
-                <p className="text-xs text-muted-foreground">Throughput</p>
-                <p className="text-2xl font-bold text-primary">10K+/s</p>
-              </div>
-            </div>
-            
-            {/* Action Section */}
-            <div className="flex gap-4 flex-wrap pt-6">
-              <Button size="lg" className="bg-primary hover:bg-primary/90">
-                Get Started Now
-              </Button>
-              <Button size="lg" variant="outline">
-                View Documentation
-              </Button>
-              <Button size="lg" variant="ghost">
-                Schedule Demo
-              </Button>
-            </div>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Globe2} title="Metaverse Portal" subtitle="Virtual-world and digital-asset readiness status; no authenticated participant, world or room service, avatar and presence layer, AI provider, asset registry, wallet custody, transaction service, moderation workflow, or production metaverse backend is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Metaverse portal is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen presented generic Advanced Analytics, Automation Engine, and Security First cards with inert Explore, Configure, Secure, Get Started, Documentation, and Schedule Demo actions. It claimed AI insights, autonomous decision-making, robust encryption, 99.9% processing speed, 24/7 uptime, less-than-50ms latency, and 10K+/s throughput without an authenticated participant, world or room, asset, AI, performance, security, moderation, wallet, or transaction service. Those claims, metrics, and actions were removed. No participant, avatar, world, room, presence, asset, wallet, transaction, AI output, performance result, or availability state is displayed, accepted, stored, purchased, transferred, or simulated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Globe2 aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Virtual-world readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A trustworthy metaverse service requires authenticated participants, authoritative world and room provenance, safe avatar and presence controls, accessible real-time transport, transparent AI and performance evidence, asset ownership and licensing, wallet and transaction boundaries, moderation, privacy, safety, and least-privilege authorization. A world, asset, performance metric, AI capability, ownership record, or transaction is not a fact unless backed by a verified service record. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="metaverse-surfaces-heading"><h2 id="metaverse-surfaces-heading" className="mb-4 text-xl font-semibold">Metaverse-control surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No participant, world, room, asset, wallet, transaction, AI, performance, privacy, security, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="metaverse-boundaries-heading"><h2 id="metaverse-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No metaverse operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, world or room query, avatar or presence lookup, AI inference, performance measurement, asset or ownership lookup, wallet connection, transaction, payment, API request, database read or write, media permission request, export, deletion, or virtual-world operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">AI, crypto, payments, privacy, safety, security, accessibility, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not enter passwords, identity documents, precise location, voice or video, financial details, wallet credentials, seed phrases, or private keys here. Do not treat this page as evidence of a world, avatar, presence, AI capability, performance metric, encryption, asset ownership, payment, crypto custody, transaction, moderation, or metaverse security. Verify participants, permissions, content, age, location, devices, wallets, terms, custody, privacy, safety, accessibility, and authorization before entering a virtual environment or transacting.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/virtual-worlds"><Button variant="outline"><Globe2 aria-hidden="true" className="mr-2 h-4 w-4" />Review world status</Button></Link><Link href="/ai-tools-hub"><Button variant="outline"><Sparkles aria-hidden="true" className="mr-2 h-4 w-4" />Review AI status</Button></Link><Link href="/crypto-hub"><Button variant="outline"><WalletCards aria-hidden="true" className="mr-2 h-4 w-4" />Review crypto status</Button></Link><Link href="/safety-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review safety</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No auth check, world or room query, avatar or presence lookup, AI inference, performance measurement, asset or ownership lookup, wallet connection, transaction, payment, API request, database read or write, media permission request, export, deletion, or virtual-world operation is performed. This page is not evidence of a world, avatar, presence, AI capability, performance metric, encryption, asset ownership, payment, crypto custody, transaction, moderation, or metaverse security.</p></Card></main></div>;
 }
