@@ -1,165 +1,23 @@
-// @ts-nocheck
-import { useState } from 'react';
-import { trpc } from '@/lib/trpc';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { ShoppingCart, Search, Filter } from 'lucide-react';
-import { useAuth } from '@/_core/hooks/useAuth';
+import { AlertTriangle, CheckCircle2, FileCheck2, KeyRound, Search, ShieldAlert, ShoppingCart, WalletCards } from "lucide-react";
+import { Link } from "wouter";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Authenticated marketplace, buyer/seller identity, listing ownership, item provenance, and authorization", value: "Not connected", icon: KeyRound },
+  { label: "Payment processor, escrow custody, crypto network, wallet control, settlement, and transaction finality", value: "Not verified", icon: WalletCards },
+  { label: "Pricing, currency, inventory, taxes, sanctions, fees, refunds, disputes, and reconciliation", value: "Unavailable", icon: FileCheck2 },
+  { label: "Privacy, moderation, fraud controls, delivery, support, audit, and recovery", value: "Not configured", icon: ShieldAlert },
+];
+
+const surfaces = [
+  { title: "Marketplace listings", scope: "Seller identity, item ownership, description, authenticity, availability, images, category, price, currency, stock, and terms", status: "Unavailable" },
+  { title: "Escrow and settlement", scope: "Contract, custodian, processor, wallet, network, funding, release conditions, signatures, finality, fees, and reconciliation", status: "Not verified" },
+  { title: "Buyer and seller protection", scope: "Verification, moderation, fraud prevention, delivery, disputes, refunds, chargebacks, appeals, support, and jurisdiction", status: "Not configured" },
+  { title: "Commerce governance", scope: "Privacy, taxes, sanctions, prohibited goods, financial records, audit, retention, access, and incident response", status: "Not connected" },
+];
 
 export default function EscrowShop() {
-  const { user } = useAuth();
-  const [category, setCategory] = useState<string>('');
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCurrency, setSelectedCurrency] = useState<'SKY444' | 'DODGE' | 'TRUMP'>('SKY444');
-
-  const { data: listings, isLoading } = trpc.escrow.listListings.useQuery({ category, limit: 20 });
-  const initiateTx = trpc.escrow.initiateTransaction.useMutation();
-
-  const categories = ['Electronics', 'Art', 'Services', 'Digital', 'Collectibles', 'Gaming'];
-
-  const handlePurchase = (listingId: number) => {
-    initiateTx.mutate({ listingId, currency: selectedCurrency });
-  };
-
-  const filteredListings = listings?.filter(
-    (item: any) =>
-      item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.description?.toLowerCase().includes(searchTerm.toLowerCase())
-  ) || [];
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-black via-purple-950/20 to-black p-6">
-      <div className="max-w-6xl mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-white mb-2 flex items-center gap-3">
-            <ShoppingCart className="w-10 h-10 text-cyan-400" />
-            Escrow Marketplace
-          </h1>
-          <p className="text-gray-400">Buy, sell, and trade with secure escrow protection</p>
-        </div>
-
-        {/* Search & Filter */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-          <div className="md:col-span-2 relative">
-            <Search className="absolute left-3 top-3 w-5 h-5 text-gray-500" />
-            <Input
-              placeholder="Search listings..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 bg-gray-900 border-gray-700 text-white"
-            />
-          </div>
-          <select
-            value={selectedCurrency}
-            onChange={(e) => setSelectedCurrency(e.target.value as any)}
-            className="bg-gray-900 border border-gray-700 text-white rounded-lg px-4 py-2"
-          >
-            <option value="SKY444">SKY444</option>
-            <option value="DODGE">DODGE</option>
-            <option value="TRUMP">TRUMP</option>
-          </select>
-        </div>
-
-        {/* Categories */}
-        <div className="flex gap-2 mb-8 overflow-x-auto pb-2">
-          <Button
-            onClick={() => setCategory('')}
-            variant={category === '' ? 'default' : 'outline'}
-            className="whitespace-nowrap"
-          >
-            All
-          </Button>
-          {categories.map((cat) => (
-            <Button
-              key={cat}
-              onClick={() => setCategory(cat)}
-              variant={category === cat ? 'default' : 'outline'}
-              className="whitespace-nowrap"
-            >
-              {cat}
-            </Button>
-          ))}
-        </div>
-
-        {/* Listings Grid */}
-        {isLoading ? (
-          <div className="text-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-400 mx-auto"></div>
-          </div>
-        ) : filteredListings.length === 0 ? (
-          <Card className="bg-gray-900 border-gray-700 p-12 text-center">
-            <p className="text-gray-400">No listings found. Be the first to sell!</p>
-          </Card>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredListings.map((listing: any) => (
-              <Card
-                key={listing.id}
-                className="bg-gradient-to-br from-gray-900 to-gray-950 border-gray-700 overflow-hidden hover:border-cyan-500/50 transition-all"
-              >
-                {/* Image Placeholder */}
-                <div className="w-full h-40 bg-gradient-to-br from-cyan-600/20 to-purple-600/20 flex items-center justify-center">
-                  {listing.imageUrl ? (
-                    <img src={listing.imageUrl} alt={listing.title} className="w-full h-full object-cover" />
-                  ) : (
-                    <ShoppingCart className="w-12 h-12 text-gray-600" />
-                  )}
-                </div>
-
-                {/* Content */}
-                <div className="p-4">
-                  <h3 className="text-lg font-bold text-white mb-1">{listing.title}</h3>
-                  <p className="text-sm text-gray-400 mb-3 line-clamp-2">{listing.description}</p>
-
-                  {/* Prices */}
-                  <div className="grid grid-cols-3 gap-2 mb-4 text-sm">
-                    <div className="bg-gray-800 rounded p-2 text-center">
-                      <div className="text-cyan-400 font-bold">{listing.priceSky}</div>
-                      <div className="text-gray-500 text-xs">SKY444</div>
-                    </div>
-                    <div className="bg-gray-800 rounded p-2 text-center">
-                      <div className="text-purple-400 font-bold">{listing.priceDodge}</div>
-                      <div className="text-gray-500 text-xs">DODGE</div>
-                    </div>
-                    <div className="bg-gray-800 rounded p-2 text-center">
-                      <div className="text-yellow-400 font-bold">{listing.priceTrump}</div>
-                      <div className="text-gray-500 text-xs">TRUMP</div>
-                    </div>
-                  </div>
-
-                  {/* Category & Stock */}
-                  <div className="flex justify-between items-center mb-4 text-xs">
-                    <span className="bg-purple-900/50 text-purple-300 px-2 py-1 rounded">
-                      {listing.category}
-                    </span>
-                    <span className="text-gray-400">Stock: {listing.quantity}</span>
-                  </div>
-
-                  {/* Buy Button */}
-                  <Button
-                    onClick={() => handlePurchase(listing.id)}
-                    disabled={!user || initiateTx.isPending}
-                    className="w-full bg-gradient-to-r from-cyan-600 to-purple-600 hover:from-cyan-700 hover:to-purple-700"
-                  >
-                    {initiateTx.isPending ? 'Processing...' : `Buy with ${selectedCurrency}`}
-                  </Button>
-                </div>
-              </Card>
-            ))}
-          </div>
-        )}
-
-        {/* Seller Info */}
-        <Card className="bg-gray-900 border-gray-700 p-6 mt-8">
-          <h3 className="text-xl font-bold text-white mb-3">Want to Sell?</h3>
-          <p className="text-gray-400 mb-4">
-            List your items on the escrow marketplace. Buyers and sellers are protected with secure escrow transactions.
-          </p>
-          <Button className="bg-gradient-to-r from-cyan-600 to-purple-600">Create Listing</Button>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={ShoppingCart} title="Escrow Marketplace" subtitle="Commerce-readiness status; no authenticated marketplace, listing, seller, buyer, price, currency, inventory, escrow custodian, payment processor, wallet, or transaction is available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Escrow commerce is not verified</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen used an unchecked TypeScript escape, queried an unverified listing service, displayed arbitrary crypto currencies, prices, inventory, and a secure-escrow claim, and exposed buy and create-listing actions. No authenticated marketplace, item, seller, buyer, processor, custodian, wallet, network, contract, dispute, refund, tax, or reconciliation evidence supported those claims, so commerce controls were removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><ShoppingCart aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Commerce and escrow readiness</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Safe escrow commerce requires authenticated buyer and seller authority, item and listing provenance, legal terms, payment and custody controls, supported crypto network validation, transaction signing and finality, taxes and sanctions screening, fraud and moderation controls, disputes and refunds, privacy, least privilege, audit, reconciliation, and support. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="escrow-surfaces-heading"><h2 id="escrow-surfaces-heading" className="mb-4 text-xl font-semibold">Commerce surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><ShoppingCart aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No commercial capability, amount, asset, transaction state, security property, or financial outcome is asserted.</p></Card>)}</div></section><section aria-labelledby="escrow-boundaries-heading"><h2 id="escrow-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><FileCheck2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No listing or transaction claim</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No listing, image, seller, buyer, item, price, currency, inventory, stock, escrow, payment, wallet, contract, fee, tax, order, shipment, refund, dispute, chargeback, or settlement is read, calculated, displayed, offered, created, or simulated.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Commerce, finance, crypto, privacy, and legal warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Commerce and escrow actions can create financial, contractual, privacy, and custody consequences. Verify identity, authority, item provenance, processor/custodian, network, signatures, finality, fees, taxes, sanctions, disputes, refunds, privacy, and jurisdiction before enabling or acting on a transaction.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/mega-marketplace"><Button variant="outline"><ShoppingCart aria-hidden="true" className="mr-2 h-4 w-4" />Review marketplace status</Button></Link><Link href="/crypto-hub"><Button variant="outline"><WalletCards aria-hidden="true" className="mr-2 h-4 w-4" />Review crypto status</Button></Link><Link href="/security-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security status</Button></Link><Link href="/contact-us-form"><Button variant="outline"><Search aria-hidden="true" className="mr-2 h-4 w-4" />Ask about commerce availability</Button></Link></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No auth check, sign-in, listing query, search, category filter, currency selection, purchase, escrow initiation, seller listing, payment, wallet operation, network request, contract interaction, database read or write, transaction, financial calculation, or personal-data operation is performed. This page is not evidence of a marketplace, secure escrow, custody, payment processor, crypto support, buyer/seller protection, or financial outcome.</p></div></Card></main></div>;
 }
