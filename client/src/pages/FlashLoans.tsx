@@ -1,84 +1,23 @@
-import { Zap } from "lucide-react";
+import { AlertTriangle, CheckCircle2, FileCheck2, KeyRound, LockKeyhole, Search, ShieldAlert, Zap } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { PageHeader } from "@/components/PageHeader";
 
+const boundaries = [
+  { label: "Chain, lender, borrower, contract, token, wallet, and authorization provenance", value: "Not connected", icon: KeyRound },
+  { label: "Liquidity, fees, atomic repayment, collateral, oracle, price, slippage, and liquidation semantics", value: "Unavailable", icon: Zap },
+  { label: "Simulation, signature, nonce, MEV, finality, failure, custody, and duplicate-submission controls", value: "Not verified", icon: LockKeyhole },
+  { label: "Legal, tax, privacy, sanctions, financial-risk, and third-party protocol safeguards", value: "Not configured", icon: ShieldAlert },
+];
+
+const surfaces = [
+  { title: "Protocol and contract", scope: "Network, lender, borrower, contract address, token addresses, ABI, deployment, upgrade authority, audit evidence, and pause state", status: "Unavailable" },
+  { title: "Loan economics", scope: "Liquidity, fee, amount, atomic repayment, collateral, oracle, price, slippage, liquidation, gas, MEV, and risk parameters", status: "Not verified" },
+  { title: "Transaction lifecycle", scope: "Wallet custody, simulation, approval, signature, nonce, submission, confirmation, finality, failure, rollback, and audit trail", status: "Not configured" },
+  { title: "Sensitive decisions", scope: "Financial, crypto, legal, tax, sanctions, custody, privacy, security, and material-loss considerations", status: "Not connected" },
+];
+
 export default function FlashLoans() {
-  return (
-    <div className="min-h-screen bg-background">
-      <PageHeader icon={Zap} title="Flash Loans" subtitle="Advanced flash loans with cutting-edge technology" />
-      
-      <div className="max-w-7xl mx-auto px-4 py-8 space-y-8">
-        {/* Main Content Area */}
-        <Card className="p-8 bg-gradient-to-br from-primary/10 to-secondary/10 border border-primary/20">
-          <div className="space-y-6">
-            <h2 className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Flash Loans</h2>
-            
-            {/* Advanced Features */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <Card className="p-4 bg-background/80 border border-primary/30 hover:border-primary/80 transition-all cursor-pointer hover:shadow-lg hover:shadow-primary/20">
-                <div className="space-y-3">
-                  <Zap className="w-8 h-8 text-primary" />
-                  <h3 className="font-bold text-lg">Advanced Analytics</h3>
-                  <p className="text-sm text-muted-foreground">Real-time data processing with AI insights</p>
-                  <Button size="sm" variant="outline" className="w-full">Explore</Button>
-                </div>
-              </Card>
-              
-              <Card className="p-4 bg-background/80 border border-primary/30 hover:border-primary/80 transition-all cursor-pointer hover:shadow-lg hover:shadow-primary/20">
-                <div className="space-y-3">
-                  <Zap className="w-8 h-8 text-primary" />
-                  <h3 className="font-bold text-lg">Automation Engine</h3>
-                  <p className="text-sm text-muted-foreground">Autonomous operations with intelligent decision making</p>
-                  <Button size="sm" variant="outline" className="w-full">Configure</Button>
-                </div>
-              </Card>
-              
-              <Card className="p-4 bg-background/80 border border-primary/30 hover:border-primary/80 transition-all cursor-pointer hover:shadow-lg hover:shadow-primary/20">
-                <div className="space-y-3">
-                  <Zap className="w-8 h-8 text-primary" />
-                  <h3 className="font-bold text-lg">Security First</h3>
-                  <p className="text-sm text-muted-foreground">Robust encryption and protection</p>
-                  <Button size="sm" variant="outline" className="w-full">Secure</Button>
-                </div>
-              </Card>
-            </div>
-            
-            {/* Performance Metrics */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4">
-              <div className="p-4 bg-background/50 rounded-lg border border-border/50">
-                <p className="text-xs text-muted-foreground">Processing Speed</p>
-                <p className="text-2xl font-bold text-primary">99.9%</p>
-              </div>
-              <div className="p-4 bg-background/50 rounded-lg border border-border/50">
-                <p className="text-xs text-muted-foreground">Uptime</p>
-                <p className="text-2xl font-bold text-primary">24/7</p>
-              </div>
-              <div className="p-4 bg-background/50 rounded-lg border border-border/50">
-                <p className="text-xs text-muted-foreground">Latency</p>
-                <p className="text-2xl font-bold text-primary">&lt;50ms</p>
-              </div>
-              <div className="p-4 bg-background/50 rounded-lg border border-border/50">
-                <p className="text-xs text-muted-foreground">Throughput</p>
-                <p className="text-2xl font-bold text-primary">10K+/s</p>
-              </div>
-            </div>
-            
-            {/* Action Section */}
-            <div className="flex gap-4 flex-wrap pt-6">
-              <Button size="lg" className="bg-primary hover:bg-primary/90">
-                Get Started Now
-              </Button>
-              <Button size="lg" variant="outline">
-                View Documentation
-              </Button>
-              <Button size="lg" variant="ghost">
-                Schedule Demo
-              </Button>
-            </div>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Zap} title="Flash Loans" subtitle="Flash-loan readiness status; no authenticated wallet, chain, protocol, contract, liquidity source, loan quote, transaction, balance, or financial record is available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Flash-loan execution is not verified</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen presented unsupported AI and automation claims, fabricated processing speed, uptime, latency, and throughput metrics, and generic demo actions without a connected chain, protocol, contract, lender, wallet, quote, simulation, signature, or finality boundary. Those claims and actions were removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Zap aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Flash-loan readiness</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Safe flash-loan infrastructure requires verified chain and contract provenance, lender and borrower authority, token and liquidity evidence, atomic repayment semantics, fees, oracle and slippage controls, liquidation and MEV analysis, wallet custody, simulation, explicit signing, nonce and duplicate protection, transaction finality, failure handling, auditability, and legal, tax, privacy, sanctions, and material-loss review. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="flash-loans-surfaces-heading"><h2 id="flash-loans-surfaces-heading" className="mb-4 text-xl font-semibold">Flash-loan surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Zap aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No loan capability, quote, balance, transaction, performance metric, security property, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="flash-loans-boundaries-heading"><h2 id="flash-loans-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><FileCheck2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No loan or transaction claim</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, wallet connection, chain query, contract lookup, liquidity query, quote, balance, approval, simulation, signature, transaction submission, notification, API request, database read or write, or financial action is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Finance, crypto, legal, tax, privacy, and safety warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Flash loans can create rapid, material, and irreversible losses through contract bugs, oracle failure, liquidation, MEV, fees, chain reorganization, or custody mistakes. Verify code, network, lender, token, wallet, simulation, fee, slippage, finality, counterparty, sanctions, tax, and professional-review boundaries before considering any transaction.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/defi"><Button variant="outline"><Zap aria-hidden="true" className="mr-2 h-4 w-4" />Review DeFi status</Button></Link><Link href="/ethereum-pool-selector"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review pool status</Button></Link><Link href="/execution-history"><Button variant="outline"><FileCheck2 aria-hidden="true" className="mr-2 h-4 w-4" />Review execution status</Button></Link><Link href="/security-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security status</Button></Link><Link href="/contact-us-form"><Button variant="outline"><Search aria-hidden="true" className="mr-2 h-4 w-4" />Ask about flash loans</Button></Link></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No auth check, wallet connection, chain or contract lookup, liquidity query, quote, balance, approval, simulation, signature, transaction submission, API request, database read or write, notification, export, or financial action is performed. This page is not evidence of flash-loan availability, liquidity, profitability, security, custody, audit, or production DeFi functionality.</p></div></Card></main></div>;
 }
