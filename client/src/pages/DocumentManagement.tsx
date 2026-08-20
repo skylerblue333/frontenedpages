@@ -1,20 +1,23 @@
-import React from "react";
+import { AlertTriangle, CheckCircle2, FileStack, FolderLock, KeyRound, LockKeyhole, Share2, ShieldAlert, Users } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
 
-const DocumentManagement = () => {
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 p-6">
-      <div className="mx-auto max-w-6xl">
-        <h1 className="mb-6 text-4xl font-bold text-white">DocumentManagement</h1>
-        <Card className="border-purple-600 bg-slate-800 p-6">
-          <p className="text-gray-300">
-            DocumentManagement feature coming soon...
-          </p>
-        </Card>
-      </div>
-    </div>
-  );
-};
+const readiness = [
+  { label: "Authenticated document inventory, owners, teams, roles, permissions, and scope", value: "Not connected", icon: FileStack },
+  { label: "Storage, versions, metadata, search, sharing, links, exports, and access history", value: "Unavailable", icon: FolderLock },
+  { label: "Retention, deletion, legal holds, recovery, classification, and data-loss controls", value: "Not configured", icon: ShieldAlert },
+  { label: "Encryption, key management, audit, revocation, privacy, and support", value: "Not verified", icon: LockKeyhole },
+];
 
-export default DocumentManagement;
+const boundaries = [
+  { title: "No document inventory or ownership claim", description: "No document, owner, team, folder, tag, permission, version, metadata, storage location, link, export, access event, retention state, legal hold, or document count is fetched, displayed, calculated, or simulated.", icon: FileStack },
+  { title: "No administration action", description: "No sign-in, document creation, upload, move, rename, share, permission change, download, export, restore, retention change, deletion, search, API request, database read or write, or account mutation can be initiated here.", icon: Share2 },
+  { title: "No storage, privacy, or legal-record claim", description: "No storage durability, encryption, key management, access control, version integrity, backup, recovery, retention, legal hold, classification, confidentiality, compliance, or audit outcome is asserted.", icon: ShieldAlert },
+  { title: "Document administration and sensitive-data warn-and-proceed", description: "Document administration can expose credentials, personal data, contracts, financial records, intellectual property, and legal evidence. Verify owners, authority, permissions, storage, encryption, retention, legal holds, exports, revocation, recovery, and audit history before changing document access or lifecycle.", icon: AlertTriangle },
+];
+
+export default function DocumentManagement() {
+  return <div className="min-h-screen bg-background"><PageHeader icon={FileStack} title="Document Management" subtitle="Document-administration readiness status; no document inventory, owners, folders, permissions, storage, versions, retention, sharing, or lifecycle data is available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Document management is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">This route previously presented only a generic coming-soon message and has no verified document inventory, ownership, permissions, storage, version, sharing, retention, legal-hold, deletion, privacy, recovery, or audit workflow. No document lifecycle or administrative action is being implied.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><FileStack aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Document-administration readiness</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Trustworthy document administration requires authenticated ownership and authority, complete inventory and scope, secure storage, version and access history, least-privilege sharing, encryption and key management, backups and recovery, retention and legal holds, data-loss prevention, deletion, revocation, auditability, accessibility, and support. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{readiness.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="management-boundaries-heading"><h2 id="management-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2">{boundaries.map(({ title, description, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><Icon aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p></Card>)}</div></section><div className="flex flex-wrap gap-3"><Link href="/document-editor"><Button variant="outline"><FileStack aria-hidden="true" className="mr-2 h-4 w-4" />View editor status</Button></Link><Link href="/document-sharing"><Button variant="outline"><Share2 aria-hidden="true" className="mr-2 h-4 w-4" />View sharing status</Button></Link><Link href="/security-center"><Button variant="outline"><KeyRound aria-hidden="true" className="mr-2 h-4 w-4" />View security status</Button></Link><Link href="/contact-us-form"><Button variant="outline"><Users aria-hidden="true" className="mr-2 h-4 w-4" />Ask about management availability</Button></Link></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No document, owner, team, folder, tag, permission, version, metadata, storage location, link, export, access event, retention state, legal hold, document count, sign-in, document creation, upload, move, rename, share, permission change, download, export, restore, retention change, deletion, search, API request, database read or write, storage durability, encryption, access control, version integrity, backup, recovery, confidentiality, compliance, or audit result is performed. This page is not evidence of document inventory, storage, permissions, retention, legal holds, privacy, security, or lifecycle integrity.</p></div></Card></main></div>;
+}
