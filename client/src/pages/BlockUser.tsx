@@ -1,25 +1,16 @@
-import { useState } from "react";
+import { Bell, FileCheck2, LockKeyhole, ShieldAlert, ShieldOff, UserRound } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const evidence = [
+  { label: "Target identity and block authority", value: "Unavailable", icon: UserRound },
+  { label: "Reason, scope, duration, and reversibility", value: "Not configured", icon: ShieldOff },
+  { label: "Notices, appeals, and enforcement state", value: "Not connected", icon: Bell },
+  { label: "Permissions, privacy, and audit", value: "Disabled", icon: FileCheck2 },
+];
 
 export default function BlockUser() {
-  const [state, setState] = useState(false);
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 to-black p-4">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">BlockUser</h1>
-        <p className="text-slate-400 mb-8">block user</p>
-        
-        <Card className="bg-slate-900 border-slate-800 p-8">
-          <div className="space-y-6">
-            <p className="text-slate-300">Content for BlockUser page</p>
-            <Button onClick={() => setState(!state)}>
-              {state ? "Deactivate" : "Activate"}
-            </Button>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={ShieldOff} title="Block User" subtitle="User-blocking services are not connected in this deployment. No target identity, block state, reason, duration, notification, appeal, or audit result is being reported or changed." /><main className="mx-auto max-w-5xl space-y-8 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><ShieldAlert aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Blocking action is unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous screen was a generic block-user placeholder with an Activate/Deactivate control. No authenticated user lookup, block-list service, policy or report evidence, moderator or account-owner authorization, scope and duration semantics, reversible state, notice, appeal workflow, privacy model, or audit contract was connected. The control was removed rather than implying that a person was blocked, unblocked, notified, or reviewed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><ShieldOff aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Blocking readiness</h2><p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">A production blocking workflow requires verified target identity, authenticated actor and least-privilege authorization, clear personal-safety and community-policy grounds, scope and expiration, conflict-of-interest safeguards, user notice, appeal and review paths, reversible transitions, abuse prevention, privacy controls, and independently auditable server-side records. None are available through this route.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{evidence.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div><div className="mt-6 flex flex-wrap gap-3"><Link href="/blocked-users"><Button>View blocked-user status</Button></Link><Link href="/moderation-center"><Button variant="outline">View moderation status</Button></Link><Link href="/audit-logs"><Button variant="ghost">View audit status</Button></Link></div></Card><section aria-labelledby="block-evidence-heading"><h2 id="block-evidence-heading" className="mb-4 text-xl font-semibold">Current block evidence</h2><div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">{evidence.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-border/50 bg-card p-4"><p className="text-sm text-muted-foreground">{label}</p><div className="mt-2 flex items-center gap-2"><Icon aria-hidden="true" className="h-4 w-4 text-muted-foreground" /><p className="font-semibold">{value}</p></div></Card>)}</div></section><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><LockKeyhole aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">Do not enter passwords, access tokens, private keys, seed phrases, private messages, identity documents, or sensitive personal information here. An unavailable blocking page is not evidence that a person was blocked, unblocked, notified, or given due process.</p></div></Card><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><UserRound aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No user lookup, account mutation, block, unblock, mute, report, reason assignment, evidence attachment, notice, appeal, notification, session change, or moderation API call is read, written, sent, stored, or simulated by this page.</p></div></Card><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><FileCheck2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No blocked-user count, target, reason, scope, duration, expiration, actor, appeal result, notification status, policy decision, safety conclusion, or audit event is fabricated as a fallback. Verify future block records through independently trusted server-side systems.</p></div></Card></main></div>;
 }
