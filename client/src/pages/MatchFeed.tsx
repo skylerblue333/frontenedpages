@@ -1,212 +1,23 @@
-/**
- * MatchFeed — Dating System Matches List
- * Conversation previews, safety filters, engagement scoring
- */
-import { useState } from "react";
-import { Heart, MessageCircle, Search, Filter, Star, Shield, Clock, Flame } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
+import { AlertTriangle, CheckCircle2, Clock3, Filter, Heart, KeyRound, LockKeyhole, MessageCircle, ShieldAlert, Star, UserRound } from "lucide-react";
 import { Link } from "wouter";
-import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
 
-const MATCHES = [
-  {
-    id: 1,
-    name: "Alex Rivera",
-    age: 26,
-    lastMessage: "That DeFi protocol you mentioned sounds interesting...",
-    lastMessageTime: "2m ago",
-    unread: 2,
-    compatibility: 94,
-    isOnline: true,
-    isVerified: true,
-    engagementScore: 87,
-    conversationStage: "active",
-  },
-  {
-    id: 2,
-    name: "Jordan Kim",
-    age: 29,
-    lastMessage: "I'd love to hear more about your AI research!",
-    lastMessageTime: "1h ago",
-    unread: 0,
-    compatibility: 88,
-    isOnline: false,
-    isVerified: true,
-    engagementScore: 72,
-    conversationStage: "warm",
-  },
-  {
-    id: 3,
-    name: "Sam Chen",
-    age: 24,
-    lastMessage: "You: Hey! Loved your profile 👋",
-    lastMessageTime: "3h ago",
-    unread: 0,
-    compatibility: 82,
-    isOnline: true,
-    isVerified: false,
-    engagementScore: 45,
-    conversationStage: "new",
-  },
-  {
-    id: 4,
-    name: "Riley Park",
-    age: 27,
-    lastMessage: "Match! Say hello 💜",
-    lastMessageTime: "1d ago",
-    unread: 0,
-    compatibility: 79,
-    isOnline: false,
-    isVerified: false,
-    engagementScore: 20,
-    conversationStage: "new",
-  },
+const boundaries = [
+  { label: "Authenticated participant, match relationship, age assurance, consent, profile, and authorization scope", value: "Not connected", icon: KeyRound },
+  { label: "Profile, match, message preview, presence, verification, timestamp, and ranking provenance", value: "Unavailable", icon: UserRound },
+  { label: "Recommendation methodology, compatibility uncertainty, moderation, reporting, blocking, and user-control behavior", value: "Not verified", icon: ShieldAlert },
+  { label: "Private messages, personal data, precise location, safety, privacy, security, and least-privilege safeguards", value: "Not configured", icon: LockKeyhole },
 ];
 
-const STAGE_COLORS: Record<string, string> = {
-  active: "text-green-400",
-  warm: "text-yellow-400",
-  new: "text-blue-400",
-};
-
-const STAGE_LABELS: Record<string, string> = {
-  active: "Active",
-  warm: "Warming up",
-  new: "New match",
-};
+const surfaces = [
+  { title: "Participant and match scope", scope: "Authenticated participant, profile, age assurance, match relationship, mutual consent, and authorization", status: "Unavailable", icon: UserRound },
+  { title: "Conversation and presence", scope: "Message preview, recipient, delivery, read state, presence, timestamps, media, and retention", status: "Not connected", icon: MessageCircle },
+  { title: "Recommendations and verification", scope: "Compatibility definition, ranking, profile provenance, verification, bias, uncertainty, and validation", status: "Not verified", icon: Star },
+  { title: "Safety and privacy controls", scope: "Report, block, moderation, abuse response, sensitive data, location, deletion, security, and access", status: "Not configured", icon: ShieldAlert },
+];
 
 export default function MatchFeed() {
-  const [search, setSearch] = useState("");
-  const [filter, setFilter] = useState<"all" | "unread" | "online">("all");
-
-  const filtered = MATCHES.filter(m => {
-    if (filter === "unread" && m.unread === 0) return false;
-    if (filter === "online" && !m.isOnline) return false;
-    if (search && !m.name.toLowerCase().includes(search.toLowerCase())) return false;
-    return true;
-  });
-
-  return (
-    <div className="min-h-screen bg-background p-4 max-w-lg mx-auto space-y-4">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-xl font-bold flex items-center gap-2">
-            <Heart className="w-5 h-5 text-pink-500" />
-            My Matches
-          </h1>
-          <p className="text-xs text-muted-foreground">{MATCHES.length} connections</p>
-        </div>
-        <Button variant="outline" size="sm" onClick={() => toast("Filters coming soon")}>
-          <Filter className="w-4 h-4" />
-        </Button>
-      </div>
-
-      {/* Search */}
-      <div className="relative">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-        <Input
-          placeholder="Search matches..."
-          value={search}
-          onChange={e => setSearch(e.target.value)}
-          className="pl-9"
-        />
-      </div>
-
-      {/* Filter tabs */}
-      <div className="flex gap-1 p-1 bg-secondary/50 rounded-xl">
-        {(["all", "unread", "online"] as const).map(f => (
-          <button
-            key={f}
-            onClick={() => setFilter(f)}
-            className={`flex-1 py-1.5 rounded-lg text-xs font-medium transition-all capitalize ${filter === f ? "bg-background shadow text-foreground" : "text-muted-foreground hover:text-foreground"}`}
-          >
-            {f}
-          </button>
-        ))}
-      </div>
-
-      {/* New matches row */}
-      <div>
-        <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">New Matches</h2>
-        <div className="flex gap-3 overflow-x-auto pb-1">
-          {MATCHES.filter(m => m.conversationStage === "new").map(m => (
-            <Link key={m.id} href={`/dating/chat/${m.id}`}>
-              <div className="flex flex-col items-center gap-1 cursor-pointer">
-                <div className="relative">
-                  <div className="w-14 h-14 rounded-full bg-gradient-to-br from-pink-500 to-purple-500 flex items-center justify-center text-xl font-bold text-white">
-                    {m.name[0]}
-                  </div>
-                  {m.isOnline && <div className="absolute bottom-0.5 right-0.5 w-3 h-3 rounded-full bg-green-500 border-2 border-background" />}
-                </div>
-                <span className="text-xs text-muted-foreground">{m.name.split(" ")[0]}</span>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </div>
-
-      {/* Conversations */}
-      <div>
-        <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Conversations</h2>
-        <div className="space-y-2">
-          {filtered.map(match => (
-            <Link key={match.id} href={`/dating/chat/${match.id}`}>
-              <div className="card p-3 flex items-center gap-3 hover:bg-secondary/30 transition-colors cursor-pointer">
-                {/* Avatar */}
-                <div className="relative shrink-0">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-pink-500 to-purple-500 flex items-center justify-center text-lg font-bold text-white">
-                    {match.name[0]}
-                  </div>
-                  {match.isOnline && <div className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-green-500 border-2 border-background" />}
-                </div>
-
-                {/* Content */}
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-1.5 mb-0.5">
-                    <span className="font-semibold text-sm">{match.name}</span>
-                    {match.isVerified && <Shield className="w-3 h-3 text-blue-400" />}
-                    <span className={`text-xs ml-auto ${STAGE_COLORS[match.conversationStage]}`}>
-                      {STAGE_LABELS[match.conversationStage]}
-                    </span>
-                  </div>
-                  <p className="text-xs text-muted-foreground truncate">{match.lastMessage}</p>
-                  <div className="flex items-center gap-2 mt-0.5">
-                    <Clock className="w-2.5 h-2.5 text-muted-foreground" />
-                    <span className="text-xs text-muted-foreground">{match.lastMessageTime}</span>
-                    <span className="text-xs text-green-400 ml-auto">{match.compatibility}% match</span>
-                  </div>
-                </div>
-
-                {/* Unread badge */}
-                {match.unread > 0 && (
-                  <Badge className="bg-pink-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full p-0 shrink-0">
-                    {match.unread}
-                  </Badge>
-                )}
-              </div>
-            </Link>
-          ))}
-
-          {filtered.length === 0 && (
-            <div className="text-center py-8">
-              <Heart className="w-10 h-10 text-pink-500/30 mx-auto mb-2" />
-              <p className="text-sm text-muted-foreground">No matches found</p>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Engagement tip */}
-      <div className="card p-3 bg-gradient-to-r from-orange-500/10 to-pink-500/10 border-orange-500/20 flex items-center gap-3">
-        <Flame className="w-6 h-6 text-orange-400 shrink-0" />
-        <div className="flex-1 text-xs">
-          <span className="font-semibold">Pro tip:</span>
-          <span className="text-muted-foreground"> Matches with 80%+ compatibility are 3x more likely to respond within 1 hour.</span>
-        </div>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Heart} title="Match Feed" subtitle="Dating-match readiness status; no authenticated participant, match registry, age-assurance control, consent record, profile source, presence service, message preview service, recommendation model, or production dating backend is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Match feed is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen displayed fabricated names, ages, profiles, matches, message previews, timestamps, unread counts, online presence, verification badges, compatibility percentages, conversation stages, and a response-rate claim. It allowed local filtering and linked to simulated chats without authenticated participant scope, consent, age assurance, message provenance, moderation, or safety controls. Those identities, metrics, filters, links, and engagement claim were removed. No participant, match, profile, presence, message, recommendation, verification, safety state, or availability state is displayed, accepted, stored, or simulated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Heart aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Dating-match readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A trustworthy match feed requires authenticated participant and match scope, age assurance, mutual consent, profile provenance, safe recommendation methodology, uncertainty, presence and message provenance, verification integrity, reporting and blocking, moderation, privacy, and least-privilege authorization. No participant, match, recommendation, safety status, or response outcome is established here.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="match-feed-surfaces-heading"><h2 id="match-feed-surfaces-heading" className="mb-4 text-xl font-semibold">Match-feed control surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No participant, match, profile, message, presence, recommendation, verification, safety, privacy, security, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="match-feed-boundaries-heading"><h2 id="match-feed-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No match-feed operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, participant or match query, profile lookup, presence query, message preview, recommendation or compatibility calculation, verification check, filter, report, block, API request, database read or write, export, deletion, or private-data operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Dating, safety, privacy, age assurance, AI, security, accessibility, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not enter passwords, intimate content, identity documents, precise location, financial details, private keys, or personal contact information here. Do not treat this page as evidence of a participant, match, consent, profile identity, online presence, verification, recommendation, compatibility, safety response, or secure dating capability. Verify consent, age, reporting, blocking, moderation, abuse escalation, privacy, retention, deletion, and authorization before communicating.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/dating"><Button variant="outline"><Heart aria-hidden="true" className="mr-2 h-4 w-4" />Review dating status</Button></Link><Link href="/dating/matches"><Button variant="outline"><MessageCircle aria-hidden="true" className="mr-2 h-4 w-4" />Review chat status</Button></Link><Link href="/safety-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review safety</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link><Link href="/filter-settings"><Button variant="outline"><Filter aria-hidden="true" className="mr-2 h-4 w-4" />Review filter status</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No auth check, participant or match query, profile lookup, presence query, message preview, recommendation or compatibility calculation, verification check, filter, report, block, API request, database read or write, export, deletion, or private-data operation is performed. This page is not evidence of a participant, match, consent, profile identity, online presence, verification, recommendation, compatibility, safety response, or secure dating capability.</p></Card></main></div>;
 }
