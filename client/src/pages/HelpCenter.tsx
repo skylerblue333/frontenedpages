@@ -1,75 +1,23 @@
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/_core/hooks/useAuth";
+import { AlertTriangle, BookOpenCheck, CheckCircle2, FileCheck2, Headphones, KeyRound, LockKeyhole, Search, ShieldAlert, Ticket, UserRound } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
-import { Loader2, Plus, Search, Settings } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Authenticated requester, organization, support agent, workspace, and ticket authorization scope", value: "Not connected", icon: KeyRound },
+  { label: "Documentation source, version, support channel, issue, severity, status, and response provenance", value: "Unavailable", icon: BookOpenCheck },
+  { label: "Ticket intake, routing, SLA, notifications, escalation, retention, export, and deletion controls", value: "Not verified", icon: Ticket },
+  { label: "Privacy, security, accessibility, sensitive-data, abuse, and least-privilege safeguards", value: "Not configured", icon: ShieldAlert },
+];
+
+const surfaces = [
+  { title: "Documentation and search", scope: "Help source, version, coverage, freshness, query processing, relevance, troubleshooting, and correction provenance", status: "Unavailable", icon: BookOpenCheck },
+  { title: "Support intake and routing", scope: "Requester identity, issue, severity, product scope, attachments, routing, ticket status, escalation, and response commitments", status: "Not verified", icon: Ticket },
+  { title: "Privacy and security", scope: "Personal data, secrets, sensitive content, access, retention, deletion, audit, abuse, and incident handling", status: "Not configured", icon: LockKeyhole },
+  { title: "Operations and accessibility", scope: "Support availability, channels, notifications, localization, accessibility, errors, status, and authorization", status: "Not connected", icon: Headphones },
+];
 
 export default function HelpCenter() {
-  const { isAuthenticated } = useAuth();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>HelpCenter</CardTitle>
-            <CardDescription>Sign in to access this feature</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full">Sign In</Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold">HelpCenter</h1>
-            <p className="text-muted-foreground mt-2">Help documentation</p>
-          </div>
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            New
-          </Button>
-        </div>
-
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Search className="w-4 h-4 text-muted-foreground" />
-              <Input
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="max-w-sm"
-              />
-              <Button variant="outline" size="icon">
-                <Settings className="w-4 h-4" />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {isLoading ? (
-              <div className="flex justify-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
-              </div>
-            ) : (
-              <div className="text-center py-12 text-muted-foreground">
-                <p>No data available. Start by creating a new item.</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Headphones} title="Help Center" subtitle="Support-readiness status; no authenticated support scope, documentation index, ticket intake, response commitment, or production support service is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Help and support data is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen exposed a sign-in path and generic new, settings, search, loading, and empty-state controls without a documentation source, support channel, authenticated requester scope, ticket intake, severity, response commitment, privacy, retention, security, or authorization boundary. Those unsupported controls were removed. No support request is created from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Headphones aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Support-readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Trustworthy support requires source-backed documentation, authenticated requester and organization scope, safe ticket intake, severity and routing definitions, honest response commitments, privacy and secret handling, retention and deletion, accessibility, escalation, incident response, and qualified security and operations review. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="help-surfaces-heading"><h2 id="help-surfaces-heading" className="mb-4 text-xl font-semibold">Support surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No documentation, support agent, ticket, severity, status, SLA, response-time, privacy, security, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="help-boundaries-heading"><h2 id="help-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No support or SLA claim</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, documentation lookup, search, ticket creation, issue submission, attachment upload, severity classification, routing, notification, API request, database read or write, export, deletion, or personal-data operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Privacy, security, sensitive-data, accessibility, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not treat this page as evidence of documentation completeness, support availability, ticket intake, response times, SLAs, escalation, incident response, or data protection. Verify channel, identity, issue scope, secret handling, severity, retention, accessibility, and human authorization before submitting support information.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/documentation"><Button variant="outline"><BookOpenCheck aria-hidden="true" className="mr-2 h-4 w-4" />Review documentation</Button></Link><Link href="/contact-us-form"><Button variant="outline"><Headphones aria-hidden="true" className="mr-2 h-4 w-4" />Review contact status</Button></Link><Link href="/status"><Button variant="outline"><Ticket aria-hidden="true" className="mr-2 h-4 w-4" />Review status</Button></Link><Link href="/security-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link><Link href="/profile"><Button variant="outline"><UserRound aria-hidden="true" className="mr-2 h-4 w-4" />Review identity</Button></Link><Link href="/contact-us-form"><Button variant="outline"><Search aria-hidden="true" className="mr-2 h-4 w-4" />Ask about support</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No auth check, documentation lookup, search, ticket creation, issue submission, attachment upload, severity classification, routing, notification, API request, database read or write, export, deletion, or personal-data operation is performed. This page is not evidence of documentation completeness, support availability, ticket intake, response times, SLAs, escalation, incident response, data protection, or production support functionality.</p></Card></main></div>;
 }
