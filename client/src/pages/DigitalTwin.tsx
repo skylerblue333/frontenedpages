@@ -1,157 +1,23 @@
-import React, { useState } from 'react';
-import { trpc } from '@/lib/trpc';
-import { Card } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Spinner } from '@/components/ui/spinner';
+import { AlertTriangle, Brain, CheckCircle2, Fingerprint, LockKeyhole, Network, ShieldAlert, Sparkles, Target, UserRound } from "lucide-react";
+import { Link } from "wouter";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const readiness = [
+  { label: "Authenticated identity, consent, data provenance, profile scope, and retention", value: "Not connected", icon: Fingerprint },
+  { label: "Personality, growth, skill, relationship, behavioral, and preference model validation", value: "Unavailable", icon: Brain },
+  { label: "Predictions, uncertainty, fairness, explainability, human review, and user control", value: "Not configured", icon: Target },
+  { label: "Privacy, deletion, correction, access, security, and audit handling", value: "Not verified", icon: LockKeyhole },
+];
+
+const boundaries = [
+  { title: "No personal profile or score claim", description: "No identity, archetype, level, XP, personality trait, score, achievement, growth timeline, relationship, network, companion, preference, behavioral, or user statistic is fetched, displayed, calculated, or simulated.", icon: UserRound },
+  { title: "No tracking, inference, or prediction action", description: "No profile query, memory access, event tracking, personality inference, relationship analysis, future probability, recommendation, AI action, API request, database read or write, or account mutation can be initiated here.", icon: Brain },
+  { title: "No consequential suitability claim", description: "No personal, educational, career, financial, health, civic, social, identity, relationship, or life-outcome recommendation, classification, ranking, diagnosis, or suitability result is asserted.", icon: Target },
+  { title: "Personal-data and AI warn-and-proceed", description: "Digital-twin systems can create sensitive inferences and affect identity, privacy, relationships, opportunity, money, and wellbeing. Do not provide sensitive data or rely on a profile, score, prediction, or relationship inference without explicit consent, independent evidence, correction rights, and qualified human review.", icon: ShieldAlert },
+];
 
 export default function DigitalTwin() {
-  const { data: twin, isLoading } = trpc.hopeIntelligence.twin.get.useQuery();
-  const [activeTab, setActiveTab] = useState<'growth' | 'predictions' | 'relationships'>('growth');
-
-  if (isLoading) return <Spinner />;
-
-  const growthTimeline = [
-    { month: 'Jun 2026', level: 1, achievements: 3, xp: 150 },
-    { month: 'Jul 2026', level: 2, achievements: 8, xp: 520 },
-    { month: 'Aug 2026', level: 3, achievements: 15, xp: 1200 },
-    { month: 'Sep 2026', level: 4, achievements: 24, xp: 2100 },
-    { month: 'Oct 2026', level: 5, achievements: 35, xp: 3500 },
-  ];
-
-  const predictions = [
-    { title: 'Wealth Architect', probability: 85, timeframe: '6 months' },
-    { title: 'Master Builder', probability: 72, timeframe: '9 months' },
-    { title: 'Ecosystem Legend', probability: 58, timeframe: '12 months' },
-  ];
-
-  return (
-    <div className="min-h-screen bg-black text-white p-8">
-      <div className="max-w-7xl mx-auto">
-        <div className="mb-12">
-          <h1 className="text-4xl font-bold mb-2">DIGITAL TWIN</h1>
-          <p className="text-gray-400">Your AI reflection — personality, growth, and future paths</p>
-        </div>
-
-        {/* Twin Profile */}
-        <div className="grid grid-cols-3 gap-8 mb-12">
-          <Card className="bg-gray-900 border-gray-800 p-8 col-span-1">
-            <div className="text-center">
-              <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-gradient-to-br from-cyan-500 to-purple-500 flex items-center justify-center text-4xl">
-                🤖
-              </div>
-              <h2 className="text-2xl font-bold mb-2">{'Your Twin'}</h2>
-              <Badge className="bg-cyan-600 mb-4">Level {(twin as any)?.level || 1}</Badge>
-              <p className="text-gray-400 text-sm mb-4">{(twin as any)?.archetype || 'Explorer'}</p>
-              <p className="text-sm text-gray-500">{(twin as any)?.xp || 0} XP</p>
-            </div>
-          </Card>
-
-          <Card className="bg-gray-900 border-gray-800 p-8 col-span-2">
-            <h3 className="text-xl font-bold mb-6">PERSONALITY TRAITS</h3>
-            <div className="grid grid-cols-3 gap-4">
-              {[
-                { trait: 'Curiosity', score: 85 },
-                { trait: 'Ambition', score: 92 },
-                { trait: 'Collaboration', score: 78 },
-                { trait: 'Innovation', score: 88 },
-                { trait: 'Resilience', score: 81 },
-                { trait: 'Leadership', score: 75 },
-              ].map((item) => (
-                <div key={item.trait}>
-                  <p className="text-sm text-gray-400 mb-2">{item.trait}</p>
-                  <div className="w-full bg-gray-700 rounded-full h-2">
-                    <div
-                      className="bg-cyan-500 h-2 rounded-full"
-                      style={{ width: `${item.score}%` }}
-                    />
-                  </div>
-                  <p className="text-xs text-gray-500 mt-1">{item.score}%</p>
-                </div>
-              ))}
-            </div>
-          </Card>
-        </div>
-
-        {/* Tabs */}
-        <div className="flex gap-4 mb-8">
-          {(['growth', 'predictions', 'relationships'] as const).map((tab) => (
-            <Button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={tab === activeTab ? 'bg-cyan-600' : 'bg-gray-700'}
-            >
-              {tab.charAt(0).toUpperCase() + tab.slice(1)}
-            </Button>
-          ))}
-        </div>
-
-        {/* Content */}
-        {activeTab === 'growth' && (
-          <div className="space-y-6">
-            <h3 className="text-2xl font-bold">GROWTH TIMELINE</h3>
-            {growthTimeline.map((entry, i) => (
-              <Card key={i} className="bg-gray-900 border-gray-800 p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h4 className="font-bold text-lg">{entry.month}</h4>
-                    <p className="text-gray-400">Level {entry.level} • {entry.achievements} achievements</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-2xl font-bold text-cyan-400">+{entry.level * 100} XP</p>
-                  </div>
-                </div>
-              </Card>
-            ))}
-          </div>
-        )}
-
-        {activeTab === 'predictions' && (
-          <div className="space-y-6">
-            <h3 className="text-2xl font-bold">FUTURE PATHS</h3>
-            {predictions.map((pred, i) => (
-              <Card key={i} className="bg-gray-900 border-gray-800 p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h4 className="font-bold text-lg">{pred.title}</h4>
-                    <p className="text-gray-400">Projected: {pred.timeframe}</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-3xl font-bold text-purple-400">{pred.probability}%</p>
-                    <p className="text-xs text-gray-500">probability</p>
-                  </div>
-                </div>
-              </Card>
-            ))}
-          </div>
-        )}
-
-        {activeTab === 'relationships' && (
-          <div className="space-y-6">
-            <h3 className="text-2xl font-bold">KEY RELATIONSHIPS</h3>
-            {[
-              { name: 'HOPE AI', type: 'Companion', strength: 95 },
-              { name: 'Community', type: 'Network', strength: 72 },
-              { name: 'Mentors', type: 'Guides', strength: 68 },
-            ].map((rel, i) => (
-              <Card key={i} className="bg-gray-900 border-gray-800 p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h4 className="font-bold text-lg">{rel.name}</h4>
-                    <p className="text-gray-400">{rel.type}</p>
-                  </div>
-                  <div className="w-24 bg-gray-700 rounded-full h-3">
-                    <div
-                      className="bg-green-500 h-3 rounded-full"
-                      style={{ width: `${rel.strength}%` }}
-                    />
-                  </div>
-                </div>
-              </Card>
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader backHref="/hope-ai" icon={Sparkles} title="Digital Twin" subtitle="Personal-model readiness status; no identity profile, personality score, growth timeline, relationship inference, AI prediction, or personal outcome is available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Digital twin is unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous screen queried an untyped personal-twin endpoint, supplied fallback identity and progression values, hardcoded personality scores and growth history, predicted wealth and status outcomes, and inferred relationship strengths. No consent, provenance, validation, privacy, fairness, explainability, correction, or human-review boundary supported those claims, so they were removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Sparkles aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Personal-model readiness status</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A trustworthy personal model requires explicit consent, data minimization, authenticated scope, provenance, validated and calibrated methods, uncertainty, fairness, explainability, user control, privacy, correction and deletion, security, auditability, and human review for consequential decisions. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{readiness.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="twin-boundaries-heading"><h2 id="twin-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2">{boundaries.map(({ title, description, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><Icon aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p></Card>)}</div></section><div className="flex flex-wrap gap-3"><Link href="/hope-ai"><Button variant="outline"><Brain aria-hidden="true" className="mr-2 h-4 w-4" />View AI status</Button></Link><Link href="/privacy-policy"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy status</Button></Link><Link href="/data-privacy"><Button variant="outline"><Fingerprint aria-hidden="true" className="mr-2 h-4 w-4" />View data status</Button></Link><Link href="/contact-us-form"><Button variant="outline">Ask about availability</Button></Link></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No identity, archetype, level, XP, personality trait, score, achievement, growth timeline, relationship, network, companion, preference, behavioral statistic, profile query, memory access, event tracking, personality inference, relationship analysis, future probability, recommendation, AI action, API request, database read or write, personal, educational, career, financial, health, civic, social, identity, relationship, or life-outcome result is performed. This page is not evidence of AI profiling accuracy, privacy, fairness, security, consent, personal insight, or future outcomes.</p></div></Card></main></div>;
 }
