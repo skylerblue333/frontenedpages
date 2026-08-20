@@ -1,89 +1,23 @@
-import { Gauge } from "lucide-react";
+import { AlertTriangle, BarChart3, CheckCircle2, Gauge, KeyRound, LockKeyhole, Scale, ShieldAlert, WalletCards } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { PageHeader } from "@/components/PageHeader";
 
+const boundaries = [
+  { label: "Authenticated trader, account, jurisdiction, venue, instrument, suitability, and trading authorization scope", value: "Not connected", icon: KeyRound },
+  { label: "Collateral, leverage, margin, price, oracle, position, order, execution, liquidation, and custody provenance", value: "Unavailable", icon: Gauge },
+  { label: "Risk limits, liquidation, market disruption, settlement, fees, tax, disclosures, and financial-control behavior", value: "Not verified", icon: Scale },
+  { label: "Wallet, identity, financial, privacy, security, fraud, retention, and least-privilege safeguards", value: "Not configured", icon: LockKeyhole },
+];
+
+const surfaces = [
+  { title: "Account and suitability", scope: "Trader identity, account, jurisdiction, age, KYC/AML, suitability, risk disclosure, venue, instrument, and authorization", status: "Unavailable", icon: KeyRound },
+  { title: "Margin and position state", scope: "Collateral, leverage, initial and maintenance margin, balance, position, PnL, price source, oracle, and timestamp", status: "Not connected", icon: WalletCards },
+  { title: "Orders and liquidation", scope: "Order intent, validation, execution, fees, slippage, settlement, liquidation, market disruption, and idempotency", status: "Not verified", icon: Gauge },
+  { title: "Custody, privacy, and controls", scope: "Wallet and key custody, financial data, tax, fraud, limits, audit, privacy, retention, security, and authorization", status: "Not configured", icon: ShieldAlert },
+];
+
 export default function MarginTrading() {
-  return (
-    <div className="min-h-screen bg-background">
-      <PageHeader icon={Gauge} title="Margin Trading" subtitle="Fully functional margin trading page with live data and real-time updates" />
-      
-      <div className="max-w-7xl mx-auto px-4 py-8 space-y-8">
-        {/* Main Content Area */}
-        <Card className="p-8 bg-card border border-border/50">
-          <div className="space-y-6">
-            <h2 className="text-2xl font-bold">Margin Trading</h2>
-            
-            {/* Feature Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <Gauge className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 1</h3>
-                  <p className="text-sm text-muted-foreground">Real-time data and live updates</p>
-                </div>
-              </Card>
-              
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <Gauge className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 2</h3>
-                  <p className="text-sm text-muted-foreground">Advanced analytics and insights</p>
-                </div>
-              </Card>
-              
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <Gauge className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 3</h3>
-                  <p className="text-sm text-muted-foreground">Seamless integration and automation</p>
-                </div>
-              </Card>
-            </div>
-            
-            {/* Action Buttons */}
-            <div className="flex gap-4 flex-wrap pt-4">
-              <Button className="bg-primary hover:bg-primary/90">
-                Get Started
-              </Button>
-              <Button variant="outline">
-                Learn More
-              </Button>
-              <Button variant="ghost">
-                Documentation
-              </Button>
-            </div>
-          </div>
-        </Card>
-        
-        {/* Stats Section */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Active Users</p>
-              <p className="text-2xl font-bold">802K+</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Total Transactions</p>
-              <p className="text-2xl font-bold">2.4M</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Success Rate</p>
-              <p className="text-2xl font-bold">99.9%</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Avg Response Time</p>
-              <p className="text-2xl font-bold">45ms</p>
-            </div>
-          </Card>
-        </div>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Gauge} title="Margin Trading" subtitle="High-risk margin-trading readiness status; no authenticated trader, account, venue, instrument, market-data feed, risk engine, custody system, order service, liquidation process, or production financial backend is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Margin trading is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen claimed a fully functional margin-trading service with live data and real-time updates, presented generic feature promises and inert actions, and fabricated active users, transaction totals, success rate, and response time without a financial or trading control plane. Those claims and controls were removed. No leverage, collateral, balance, price, position, PnL, order, transaction, liquidation, custody, or trading result is displayed or initiated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Gauge aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Margin-trading readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A trustworthy margin-trading service requires authenticated account and jurisdiction scope, suitability and risk disclosures, authoritative prices and oracle controls, collateral and margin accounting, validated orders, safe execution and settlement, liquidation safeguards, secure custody, tax and fee treatment, fraud controls, privacy, audit, and least-privilege authorization. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="margin-surfaces-heading"><h2 id="margin-surfaces-heading" className="mb-4 text-xl font-semibold">Financial-control surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No leverage, collateral, balance, price, position, PnL, order, transaction, liquidation, custody, financial, privacy, security, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="margin-boundaries-heading"><h2 id="margin-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No trading operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, account or market-data query, price calculation, leverage or margin calculation, wallet access, order creation, execution, settlement, liquidation, payment, API request, database read or write, export, deletion, or financial-data operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Finance, crypto, legal, custody, privacy, fraud, security, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not enter credentials, seed phrases, private keys, wallet addresses, payment details, or trading instructions here. Do not treat this page as evidence of leverage, collateral, price, position, PnL, order execution, liquidation, custody, market access, suitability, or financial capability. Verify jurisdiction, identity, disclosures, risk limits, oracle and market-data provenance, custody, fees, tax, fraud controls, and authorization before acting.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/crypto-hub"><Button variant="outline"><WalletCards aria-hidden="true" className="mr-2 h-4 w-4" />Review crypto status</Button></Link><Link href="/exchange"><Button variant="outline"><Gauge aria-hidden="true" className="mr-2 h-4 w-4" />Review exchange status</Button></Link><Link href="/portfolio"><Button variant="outline"><BarChart3 aria-hidden="true" className="mr-2 h-4 w-4" />Review portfolio status</Button></Link><Link href="/risk-management"><Button variant="outline"><Scale aria-hidden="true" className="mr-2 h-4 w-4" />Review risk status</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No auth check, account or market-data query, price calculation, leverage or margin calculation, wallet access, order creation, execution, settlement, liquidation, payment, API request, database read or write, export, deletion, or financial-data operation is performed. This page is not evidence of leverage, collateral, price, position, PnL, order execution, liquidation, custody, market access, suitability, or financial capability.</p></Card></main></div>;
 }
