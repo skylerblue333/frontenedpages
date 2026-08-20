@@ -1,25 +1,23 @@
-import { useState } from "react";
+import { AlertTriangle, Bookmark, CheckCircle2, FileCheck2, KeyRound, Search, ShieldAlert, Sparkles, Users } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Authenticated account, organization scope, ownership, item permissions, and least privilege", value: "Not connected", icon: KeyRound },
+  { label: "Saved item, creator, post, media, product, event, wallet, and third-party provenance", value: "Unavailable", icon: Bookmark },
+  { label: "Privacy, consent, deletion, synchronization, retention, moderation, and export controls", value: "Not verified", icon: ShieldAlert },
+  { label: "Personalized ranking, AI inference, social safety, commerce, crypto, and financial boundaries", value: "Not configured", icon: FileCheck2 },
+];
+
+const surfaces = [
+  { title: "Saved items", scope: "Item identity, content source, creator, timestamp, collection, visibility, permissions, availability, and deletion state", status: "Unavailable" },
+  { title: "Synchronization and privacy", scope: "Account scope, device synchronization, consent, third-party data, retention, redaction, export, and access audit", status: "Not verified" },
+  { title: "Recommendations and AI", scope: "Personalized ranking, inferred interests, model identity, prompt/data boundaries, transparency, and user control", status: "Not configured" },
+  { title: "Sensitive saved content", scope: "Commerce, charity, event, dating, health, legal, financial, crypto, wallet, and safety moderation", status: "Not connected" },
+];
 
 export default function Favorites() {
-  const [state, setState] = useState(false);
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 to-black p-4">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">Favorites</h1>
-        <p className="text-slate-400 mb-8">favorites/bookmarks</p>
-        
-        <Card className="bg-slate-900 border-slate-800 p-8">
-          <div className="space-y-6">
-            <p className="text-slate-300">Content for Favorites page</p>
-            <Button onClick={() => setState(!state)}>
-              {state ? "Deactivate" : "Activate"}
-            </Button>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Bookmark} title="Favorites" subtitle="Saved-content readiness status; no authenticated bookmark, favorite, collection, creator, post, media, product, event, wallet, recommendation, or personal record is available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Favorites are not verified</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen exposed a generic activate/deactivate control and vague favorites wording without authenticating an account, identifying saved content, verifying ownership or permissions, or defining privacy, synchronization, deletion, moderation, ranking, or sensitive-domain boundaries. No saved record or mutation evidence was available, so the control was removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Bookmark aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Saved-content readiness</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Trustworthy favorites require authenticated ownership, item and creator provenance, access and visibility controls, consent and minimization, synchronization semantics, deletion and retention, moderation, transparent personalization, and special handling for commerce, charity, dating, health, legal, financial, crypto, wallet, and safety-related content. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="favorites-surfaces-heading"><h2 id="favorites-surfaces-heading" className="mb-4 text-xl font-semibold">Favorite surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Bookmark aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No saved-content capability, ownership, privacy property, AI property, financial state, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="favorites-boundaries-heading"><h2 id="favorites-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><FileCheck2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No saved-item claim</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No sign-in, favorite, bookmark, collection, creator, post, media, product, event, wallet, saved timestamp, visibility, recommendation, ranking, query, API request, database read or write, deletion, notification, or export operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Social, AI, commerce, crypto, privacy, and safety warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Saved content can reveal interests and may influence purchases, donations, relationships, health, legal decisions, or financial and crypto activity. Verify source, consent, visibility, moderation, AI ranking, wallet or marketplace provenance, privacy, and user controls before saving or relying on a favorite.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/explore"><Button variant="outline"><Search aria-hidden="true" className="mr-2 h-4 w-4" />Review discovery status</Button></Link><Link href="/entity-profile"><Button variant="outline"><Users aria-hidden="true" className="mr-2 h-4 w-4" />Review identity status</Button></Link><Link href="/ai-control-center"><Button variant="outline"><Sparkles aria-hidden="true" className="mr-2 h-4 w-4" />Review AI status</Button></Link><Link href="/security-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security status</Button></Link><Link href="/contact-us-form"><Button variant="outline"><Search aria-hidden="true" className="mr-2 h-4 w-4" />Ask about favorites</Button></Link></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No auth check, saved-item query, content lookup, creator lookup, recommendation, ranking, AI inference, wallet lookup, marketplace lookup, API request, database read or write, deletion, notification, export, or personal-data operation is performed. This page is not evidence of favorites, bookmarks, collections, synchronization, privacy controls, personalization, or production saved-content functionality.</p></div></Card></main></div>;
 }
