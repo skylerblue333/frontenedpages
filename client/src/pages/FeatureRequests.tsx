@@ -1,75 +1,23 @@
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/_core/hooks/useAuth";
+import { AlertTriangle, CheckCircle2, ClipboardList, FileCheck2, KeyRound, Search, ShieldAlert, Sparkles, Users } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
-import { Loader2, Plus, Search, Settings } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Authenticated requester, organization scope, ownership, moderation authority, and least privilege", value: "Not connected", icon: KeyRound },
+  { label: "Request provenance, duplicate detection, voting eligibility, abuse controls, and status history", value: "Unavailable", icon: ClipboardList },
+  { label: "Prioritization, roadmap ownership, accessibility, security, privacy, legal, finance, and crypto review", value: "Not verified", icon: ShieldAlert },
+  { label: "AI triage, transparency, audit, retention, incident response, delivery, and user notification", value: "Not configured", icon: FileCheck2 },
+];
+
+const surfaces = [
+  { title: "Request intake", scope: "Requester identity, organization, title, description, use case, attachments, source, consent, visibility, and sensitive-data redaction", status: "Unavailable" },
+  { title: "Voting and prioritization", scope: "Eligibility, duplicate detection, vote integrity, abuse prevention, impact, effort, accessibility, security, and roadmap decision authority", status: "Not verified" },
+  { title: "AI and sensitive features", scope: "Model/data requirements, safety, privacy, fairness, human review, legal/financial/crypto consequences, and misuse analysis", status: "Not configured" },
+  { title: "Delivery and status", scope: "Public status, ownership, target dates, release evidence, rollback, audit, support, retention, and incident response", status: "Not connected" },
+];
 
 export default function FeatureRequests() {
-  const { isAuthenticated } = useAuth();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>FeatureRequests</CardTitle>
-            <CardDescription>Sign in to access this feature</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full">Sign In</Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold">FeatureRequests</h1>
-            <p className="text-muted-foreground mt-2">Request features</p>
-          </div>
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            New
-          </Button>
-        </div>
-
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Search className="w-4 h-4 text-muted-foreground" />
-              <Input
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="max-w-sm"
-              />
-              <Button variant="outline" size="icon">
-                <Settings className="w-4 h-4" />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {isLoading ? (
-              <div className="flex justify-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
-              </div>
-            ) : (
-              <div className="text-center py-12 text-muted-foreground">
-                <p>No data available. Start by creating a new item.</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={ClipboardList} title="Feature Requests" subtitle="Product-feedback readiness status; no authenticated request, requester identity, vote, priority, roadmap commitment, AI triage, release status, or sensitive feature decision is available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Feature requests are not verified</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen exposed a sign-in path and generic new, settings, search, loading, and empty-state controls without a connected feedback registry or documented requester, moderation, voting, prioritization, roadmap, privacy, AI, or authorization boundary. No request, vote, count, priority, target date, or delivery evidence was available, so feedback controls were removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><ClipboardList aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Product-feedback readiness</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Trustworthy feature feedback requires authenticated scope, consent and redaction, source provenance, duplicate and abuse controls, fair voting, accessible prioritization, accountable roadmap ownership, security and privacy review, transparent AI assistance, and specialized review for legal, financial, crypto, safety, and high-impact features. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="feature-requests-surfaces-heading"><h2 id="feature-requests-surfaces-heading" className="mb-4 text-xl font-semibold">Feedback surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><ClipboardList aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No request capability, vote count, ranking, roadmap promise, AI property, financial outcome, privacy property, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="feature-requests-boundaries-heading"><h2 id="feature-requests-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><FileCheck2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No request or roadmap claim</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No sign-in, requester, request, attachment, vote, comment, duplicate check, priority, status, target date, roadmap, AI triage, release, notification, API request, database read or write, or personal-data operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Privacy, AI, security, legal, finance, crypto, and safety warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Feature requests can disclose personal or confidential information and can influence security, AI, pricing, financial, crypto, legal, safety, or accessibility outcomes. Verify requester authority, redaction, evidence, impact, abuse controls, human review, security, privacy, and delivery ownership before accepting or prioritizing a request.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/feedback"><Button variant="outline"><Users aria-hidden="true" className="mr-2 h-4 w-4" />Review feedback status</Button></Link><Link href="/experiment-factory"><Button variant="outline"><ClipboardList aria-hidden="true" className="mr-2 h-4 w-4" />Review experiment status</Button></Link><Link href="/ai-control-center"><Button variant="outline"><Sparkles aria-hidden="true" className="mr-2 h-4 w-4" />Review AI status</Button></Link><Link href="/security-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security status</Button></Link><Link href="/contact-us-form"><Button variant="outline"><Search aria-hidden="true" className="mr-2 h-4 w-4" />Ask about feedback</Button></Link></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No auth check, request lookup, user tracking, vote, comment, duplicate detection, prioritization, AI inference, roadmap mutation, release update, API request, database read or write, notification, export, or personal-data operation is performed. This page is not evidence of product feedback, vote integrity, roadmap commitments, AI triage, or production feature delivery functionality.</p></div></Card></main></div>;
 }
