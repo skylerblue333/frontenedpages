@@ -1,137 +1,23 @@
-import { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Activity, AlertTriangle, BarChart3, CheckCircle2, Code2, KeyRound, LockKeyhole, Network, ShieldAlert } from "lucide-react";
+import { Link } from "wouter";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const readiness = [
+  { label: "Authenticated project, repository, API contract, SDK, module, and integration inventory", value: "Not connected", icon: Network },
+  { label: "Agent definitions, tools, permissions, approvals, sandboxing, and execution history", value: "Unavailable", icon: KeyRound },
+  { label: "Authoritative logs, traces, tests, benchmarks, errors, latency, cache, and database telemetry", value: "Not configured", icon: Activity },
+  { label: "Secrets, least privilege, isolation, audit trail, privacy, and recovery", value: "Not verified", icon: LockKeyhole },
+];
+
+const boundaries = [
+  { title: "No developer inventory or status claim", description: "No router, module, SDK, API, integration, test, build, agent, tool, repository, version, framework, deployment, or project status is fetched, displayed, calculated, or simulated.", icon: Code2 },
+  { title: "No agent or engineering action", description: "No agent execution, code generation, tool call, log write, build, test, deployment, API request, database read or write, secret access, repository mutation, or account mutation can be initiated here.", icon: KeyRound },
+  { title: "No performance or observability claim", description: "No response time, cache hit rate, database query time, uptime, error rate, test count, pass rate, trace, log, metric, benchmark, or tRPC/type-safety outcome is asserted.", icon: BarChart3 },
+  { title: "Developer and AI security warn-and-proceed", description: "Developer tools and AI agents can access code, data, credentials, infrastructure, and production systems. Verify scope, authorization, sandboxing, secret isolation, review, logging, and rollback before enabling any tool or execution path.", icon: ShieldAlert },
+];
 
 export default function DeveloperArea() {
-  const [logs, setLogs] = useState<string[]>([]);
-  
-  return (
-    <div className="container py-8">
-      <h1 className="text-4xl font-bold mb-8">🛠️ Developer Area</h1>
-      
-      <Tabs defaultValue="dashboard" className="space-y-4">
-        <TabsList>
-          <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
-          <TabsTrigger value="agents">AI Agents</TabsTrigger>
-          <TabsTrigger value="logs">System Logs</TabsTrigger>
-          <TabsTrigger value="metrics">Metrics</TabsTrigger>
-        </TabsList>
-        
-        <TabsContent value="dashboard">
-          <Card>
-            <CardHeader>
-              <CardTitle>System Overview</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <Card>
-                  <CardContent className="pt-6">
-                    <div className="text-center">
-                      <div className="text-3xl font-bold">45+</div>
-                      <div className="text-sm text-gray-500">API Routers</div>
-                    </div>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardContent className="pt-6">
-                    <div className="text-center">
-                      <div className="text-3xl font-bold">12</div>
-                      <div className="text-sm text-gray-500">Modules</div>
-                    </div>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardContent className="pt-6">
-                    <div className="text-center">
-                      <div className="text-3xl font-bold">61</div>
-                      <div className="text-sm text-gray-500">Passing Tests</div>
-                    </div>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardContent className="pt-6">
-                    <div className="text-center">
-                      <div className="text-3xl font-bold">tRPC</div>
-                      <div className="text-sm text-gray-500">Type-safe API</div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-        
-        <TabsContent value="agents">
-          <Card>
-            <CardHeader>
-              <CardTitle>AI Agents</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {['Code Engineer', 'Data Analyst', 'Business Advisor', 'Security Expert'].map(agent => (
-                <div key={agent} className="flex justify-between items-center p-4 border rounded">
-                  <span>{agent}</span>
-                  <Button size="sm">Execute</Button>
-                </div>
-              ))}
-            </CardContent>
-          </Card>
-        </TabsContent>
-        
-        <TabsContent value="logs">
-          <Card>
-            <CardHeader>
-              <CardTitle>System Logs</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="bg-black text-purple-400 p-4 rounded font-mono text-sm h-64 overflow-y-auto">
-                {logs.length === 0 ? (
-                  <div>System ready. Waiting for events...</div>
-                ) : (
-                  logs.map((log, i) => <div key={i}>{log}</div>)
-                )}
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-        
-        <TabsContent value="metrics">
-          <Card>
-            <CardHeader>
-              <CardTitle>Performance Metrics</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <div className="flex justify-between">
-                  <span>API Response Time</span>
-                  <span className="font-bold">85ms</span>
-                </div>
-                <div className="w-full bg-gray-200 rounded h-2">
-                  <div className="bg-purple-600 h-2 rounded" style={{ width: '85%' }}></div>
-                </div>
-              </div>
-              <div className="space-y-2">
-                <div className="flex justify-between">
-                  <span>Cache Hit Rate</span>
-                  <span className="font-bold">92%</span>
-                </div>
-                <div className="w-full bg-gray-200 rounded h-2">
-                  <div className="bg-purple-600 h-2 rounded" style={{ width: '92%' }}></div>
-                </div>
-              </div>
-              <div className="space-y-2">
-                <div className="flex justify-between">
-                  <span>Database Query Time</span>
-                  <span className="font-bold">42ms</span>
-                </div>
-                <div className="w-full bg-gray-200 rounded h-2">
-                  <div className="bg-purple-600 h-2 rounded" style={{ width: '42%' }}></div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader backHref="/enterprise" icon={Code2} title="Developer Area" subtitle="Developer-platform readiness status; no APIs, SDKs, agents, logs, metrics, tools, project data, or executable engineering capability is available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Developer evidence is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen displayed hardcoded router, module, and passing-test counts, an unverified tRPC type-safety label, executable AI-agent buttons, a fake system-ready log, and fabricated API, cache, and database timings. No authenticated project inventory, agent permission boundary, telemetry source, test evidence, or secure execution environment supported those claims, so they were removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Code2 aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Developer-platform readiness status</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A trustworthy developer platform requires authenticated project scope, accurate API and dependency contracts, sandboxed tools, explicit agent permissions, human approvals, reproducible tests and builds, authoritative observability, secret isolation, least privilege, auditability, privacy, and rollback. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{readiness.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="developer-boundaries-heading"><h2 id="developer-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2">{boundaries.map(({ title, description, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><Icon aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p></Card>)}</div></section><div className="flex flex-wrap gap-3"><Link href="/enterprise"><Button variant="outline">View enterprise status</Button></Link><Link href="/dependency-graph"><Button variant="outline"><Network aria-hidden="true" className="mr-2 h-4 w-4" />View dependency status</Button></Link><Link href="/deployment-pipeline"><Button variant="outline">View release status</Button></Link><Link href="/security-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />View security status</Button></Link><Link href="/contact-us-form"><Button variant="outline">Ask about developer availability</Button></Link></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No router, module, SDK, API, integration, test, build, agent, tool, repository, version, deployment, project status, agent execution, code generation, tool call, log write, build, test, deployment, API request, database read or write, secret access, repository mutation, response time, cache hit rate, database query time, uptime, error rate, test count, pass rate, trace, log, metric, benchmark, or engineering result is performed. This page is not evidence of developer capability, agent safety, performance, type safety, observability, or production readiness.</p></div></Card></main></div>;
 }
