@@ -1,89 +1,16 @@
-import { Palette } from "lucide-react";
+import { FileCheck2, LockKeyhole, Palette, ShieldAlert, SlidersHorizontal, Users } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { PageHeader } from "@/components/PageHeader";
 
+const evidence = [
+  { label: "Channel owner, identity, membership, and access", value: "Unavailable", icon: Users },
+  { label: "Brand, content, moderation, and configuration source", value: "Not configured", icon: Palette },
+  { label: "Live events, analytics, automation, and integrations", value: "Not connected", icon: SlidersHorizontal },
+  { label: "Approval, privacy, permissions, and audit", value: "Disabled", icon: FileCheck2 },
+];
+
 export default function ChannelCustomization() {
-  return (
-    <div className="min-h-screen bg-background">
-      <PageHeader icon={Palette} title="Channel Customization" subtitle="Fully functional channel customization page with live data and real-time updates" />
-      
-      <div className="max-w-7xl mx-auto px-4 py-8 space-y-8">
-        {/* Main Content Area */}
-        <Card className="p-8 bg-card border border-border/50">
-          <div className="space-y-6">
-            <h2 className="text-2xl font-bold">Channel Customization</h2>
-            
-            {/* Feature Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <Palette className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 1</h3>
-                  <p className="text-sm text-muted-foreground">Real-time data and live updates</p>
-                </div>
-              </Card>
-              
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <Palette className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 2</h3>
-                  <p className="text-sm text-muted-foreground">Advanced analytics and insights</p>
-                </div>
-              </Card>
-              
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <Palette className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 3</h3>
-                  <p className="text-sm text-muted-foreground">Seamless integration and automation</p>
-                </div>
-              </Card>
-            </div>
-            
-            {/* Action Buttons */}
-            <div className="flex gap-4 flex-wrap pt-4">
-              <Button className="bg-primary hover:bg-primary/90">
-                Get Started
-              </Button>
-              <Button variant="outline">
-                Learn More
-              </Button>
-              <Button variant="ghost">
-                Documentation
-              </Button>
-            </div>
-          </div>
-        </Card>
-        
-        {/* Stats Section */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Active Users</p>
-              <p className="text-2xl font-bold">802K+</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Total Transactions</p>
-              <p className="text-2xl font-bold">2.4M</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Success Rate</p>
-              <p className="text-2xl font-bold">99.9%</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Avg Response Time</p>
-              <p className="text-2xl font-bold">45ms</p>
-            </div>
-          </Card>
-        </div>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Palette} title="Channel Customization" subtitle="Channel-governance services are not connected in this deployment. No channel, owner, member, brand asset, content, analytics, automation, or publishing result is being reported or created." /><main className="mx-auto max-w-5xl space-y-8 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><ShieldAlert aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Channel customization is unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous screen claimed a fully functional channel with real-time data, live updates, advanced analytics, seamless integration, automation, 802K+ active users, 2.4M transactions, a 99.9% success rate, and 45ms average response time. It exposed Get Started, Learn More, and Documentation controls. No verified channel registry, owner and member model, access policy, brand and content store, moderation workflow, event source, analytics pipeline, automation provider, transaction system, performance telemetry, or audit contract was connected. Those claims and controls were removed rather than presenting generic marketing text as channel evidence.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Palette aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Channel-governance readiness</h2><p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">A production channel-customization flow requires an authoritative channel and membership source, owner permissions, versioned brand and content configuration, moderation and publishing controls, event and analytics definitions, integration credentials, safe automation boundaries, accessibility, privacy, approval, retention, and audit records. None are available through this route.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{evidence.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div><div className="mt-6 flex flex-wrap gap-3"><Link href="/access-control"><Button>View access status</Button></Link><Link href="/brand-guidelines"><Button variant="outline">View brand status</Button></Link><Link href="/moderation"><Button variant="ghost">View moderation status</Button></Link></div></Card><section aria-labelledby="channel-evidence-heading"><h2 id="channel-evidence-heading" className="mb-4 text-xl font-semibold">Current channel evidence</h2><div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">{evidence.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-border/50 bg-card p-4"><p className="text-sm text-muted-foreground">{label}</p><div className="mt-2 flex items-center gap-2"><Icon aria-hidden="true" className="h-4 w-4 text-muted-foreground" /><p className="font-semibold">{value}</p></div></Card>)}</div></section><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><LockKeyhole aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">Do not enter passwords, access tokens, private keys, confidential channel content, unpublished campaigns, member exports, or sensitive personal information here. An unavailable channel page is not evidence that a channel exists, is owned, is private, is moderated, or is safe to publish to.</p></div></Card><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><SlidersHorizontal aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No channel lookup, member count, permission change, theme save, content publish, moderation action, event subscription, analytics query, automation run, notification, transaction, or external channel API call is read, written, sent, stored, or simulated by this page.</p></div></Card><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><FileCheck2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No user count, transaction count, success rate, response time, live-update status, analytics conclusion, automation result, publishing status, or governance decision is fabricated as a fallback. Verify future channel records through trusted server-side systems.</p></div></Card></main></div>;
 }
