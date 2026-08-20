@@ -1,145 +1,23 @@
-import { useState } from "react";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { AlertTriangle, CheckCircle2, Code2, FileCheck2, LockKeyhole, Package, ShieldAlert, ShoppingBag, WalletCards } from "lucide-react";
 import { Link } from "wouter";
-import { Package, Code2, Gamepad2, Bot, Star, Download, TrendingUp, Filter, Search, ShoppingCart, Zap, Globe, Shield, Database, Layers } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
 
-const CATEGORIES = [
-  { id: "all", label: "All Assets", icon: Layers },
-  { id: "saas", label: "SaaS Boilerplates", icon: Globe },
-  { id: "automation", label: "Automation Scripts", icon: Bot },
-  { id: "ui", label: "UI Components", icon: Code2 },
-  { id: "games", label: "Game Assets", icon: Gamepad2 },
-  { id: "security", label: "Security Tools", icon: Shield },
-  { id: "data", label: "Data Pipelines", icon: Database },
+const readiness = [
+  { label: "Authenticated catalog, creator identity, asset provenance, versions, and availability", value: "Not connected", icon: Package },
+  { label: "License terms, malware review, dependency disclosure, security testing, and support", value: "Unavailable", icon: FileCheck2 },
+  { label: "Prices, taxes, currency, payments, delivery, downloads, refunds, and entitlements", value: "Not configured", icon: WalletCards },
+  { label: "Moderation, disputes, revenue accounting, privacy, and audit history", value: "Not verified", icon: LockKeyhole },
 ];
 
-const ASSETS = [
-  { id: 1, name: "Next.js SaaS Starter", cat: "saas", price: 149, stars: 4.9, downloads: 8420, lang: "TypeScript", desc: "Full auth, Stripe billing, DB, admin panel. Production-ready in minutes.", badge: "BESTSELLER", color: "from-blue-600 to-cyan-600" },
-  { id: 2, name: "Stripe + Webhook Engine", cat: "saas", price: 89, stars: 4.8, downloads: 5231, lang: "TypeScript", desc: "Idempotent webhook handler, subscription management, usage-based billing.", badge: "HOT", color: "from-purple-600 to-pink-600" },
-  { id: 3, name: "Reddit Sentiment Scraper", cat: "automation", price: 49, stars: 4.7, downloads: 3891, lang: "Python", desc: "Kafka ingestion + NLP scoring. Alerts via Discord webhook.", badge: null, color: "from-orange-600 to-red-600" },
-  { id: 4, name: "Slack + Notion Sync Bot", cat: "automation", price: 39, stars: 4.6, downloads: 2847, lang: "Python", desc: "Bi-directional sync between Slack channels and Notion databases.", badge: null, color: "from-green-600 to-teal-600" },
-  { id: 5, name: "Shadcn UI Pro Kit", cat: "ui", price: 129, stars: 5.0, downloads: 12400, lang: "TypeScript", desc: "200+ production-grade components. Dark/light, accessible, animated.", badge: "TOP RATED", color: "from-violet-600 to-purple-600" },
-  { id: 6, name: "Phaser.js Game Starter", cat: "games", price: 79, stars: 4.8, downloads: 1923, lang: "TypeScript", desc: "Platformer template with physics, tilemaps, particle systems, score.", badge: null, color: "from-amber-600 to-orange-600" },
-  { id: 7, name: "Unity Cyberpunk Pack", cat: "games", price: 199, stars: 4.9, downloads: 876, lang: "C#", desc: "50+ cyberpunk assets, shaders, particle effects, UI prefabs.", badge: "PREMIUM", color: "from-cyan-600 to-blue-600" },
-  { id: 8, name: "Pentest Automation Suite", cat: "security", price: 299, stars: 4.7, downloads: 1247, lang: "Python", desc: "OWASP Top 10 scanner, SQLi/XSS/CSRF detectors, report generator.", badge: "ENTERPRISE", color: "from-red-600 to-rose-600" },
-  { id: 9, name: "Kafka + PostgreSQL Pipeline", cat: "data", price: 119, stars: 4.8, downloads: 2341, lang: "Python", desc: "Time-series partitioning, composite indexes, aiokafka consumer.", badge: null, color: "from-teal-600 to-emerald-600" },
-  { id: 10, name: "Multi-tenant SaaS Template", cat: "saas", price: 249, stars: 4.9, downloads: 3102, lang: "TypeScript", desc: "Org management, RBAC, SSO, SOC 2 ready. Robust.", badge: "NEW", color: "from-indigo-600 to-blue-600" },
-  { id: 11, name: "AI Chatbot Boilerplate", cat: "automation", price: 99, stars: 4.8, downloads: 4567, lang: "TypeScript", desc: "OpenAI/Claude streaming, memory, RAG, function calling.", badge: "HOT", color: "from-pink-600 to-rose-600" },
-  { id: 12, name: "Web3 dApp Starter", cat: "saas", price: 179, stars: 4.7, downloads: 1893, lang: "TypeScript", desc: "RainbowKit, wagmi, Hardhat, ERC-20/721 contracts, IPFS.", badge: null, color: "from-amber-600 to-yellow-600" },
+const boundaries = [
+  { title: "No marketplace inventory or metric claim", description: "No asset, creator, package, version, language, description, price, currency, tax, rating, review, download count, badge, category, availability, revenue share, audience, or payout result is fetched, displayed, calculated, or simulated.", icon: Package },
+  { title: "No purchase, delivery, or creator action", description: "No preview, buy, cart, checkout, payment, download, license grant, entitlement, refund, dispute, upload, publish, sell, payout, API request, database read or write, or account mutation can be initiated here.", icon: ShoppingBag },
+  { title: "No code-safety or license claim", description: "No production-ready, secure, accessible, audited, malware-free, compatible, supported, dependency-safe, license-compliant, or creator-verified outcome is asserted.", icon: FileCheck2 },
+  { title: "Marketplace and software-supply-chain warn-and-proceed", description: "Developer assets can contain malware, vulnerable dependencies, license conflicts, secrets, data collection, and unsupported code. Verify creator identity, provenance, license, dependencies, source review, payment terms, delivery, refund rules, and security before downloading or using any asset.", icon: ShieldAlert },
 ];
 
 export default function DeveloperMarketplace() {
-  const [cat, setCat] = useState("all");
-  const [search, setSearch] = useState("");
-  const [cart, setCart] = useState<number[]>([]);
-
-  const filtered = ASSETS.filter(a =>
-    (cat === "all" || a.cat === cat) &&
-    (search === "" || a.name.toLowerCase().includes(search.toLowerCase()) || a.desc.toLowerCase().includes(search.toLowerCase()))
-  );
-
-  const addToCart = (id: number) => setCart(p => p.includes(id) ? p : [...p, id]);
-  const cartTotal = cart.reduce((sum, id) => sum + (ASSETS.find(a => a.id === id)?.price ?? 0), 0);
-
-  return (
-    <div className="min-h-screen bg-[#0a0a0f] text-slate-100">
-      <div className="border-b border-slate-800/60 bg-[#0d0d14]/90 backdrop-blur sticky top-0 z-20">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between flex-wrap gap-3">
-          <div className="flex items-center gap-3">
-            <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-600 flex items-center justify-center">
-              <Package className="h-5 w-5 text-white" />
-            </div>
-            <div>
-              <h1 className="font-bold text-white text-lg leading-none">Developer Asset Marketplace</h1>
-              <p className="text-xs text-slate-500 mt-0.5">SaaS Boilerplates · Automation Scripts · UI/Game Assets · Security Tools</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            {cart.length > 0 && (
-              <Button size="sm" className="bg-emerald-600 hover:bg-emerald-700 text-white">
-                <ShoppingCart className="h-3.5 w-3.5 mr-1.5" />{cart.length} items · ${cartTotal}
-              </Button>
-            )}
-          </div>
-        </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 py-6 space-y-6">
-        {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {[
-            { label: "Total Assets", value: ASSETS.length.toString(), icon: Package, color: "text-emerald-400", bg: "bg-emerald-500/10" },
-            { label: "Total Downloads", value: "48.7K", icon: Download, color: "text-blue-400", bg: "bg-blue-500/10" },
-            { label: "Avg Rating", value: "4.8★", icon: Star, color: "text-amber-400", bg: "bg-amber-500/10" },
-            { label: "Revenue Share", value: "70%", icon: TrendingUp, color: "text-purple-400", bg: "bg-purple-500/10" },
-          ].map(s => (
-            <div key={s.label} className={`rounded-xl border border-slate-800/60 p-4 ${s.bg}`}>
-              <div className="flex items-center gap-2 mb-2"><s.icon className={`h-4 w-4 ${s.color}`} /><span className="text-xs text-slate-500">{s.label}</span></div>
-              <div className={`text-2xl font-black ${s.color}`}>{s.value}</div>
-            </div>
-          ))}
-        </div>
-
-        {/* Search + Filter */}
-        <div className="flex flex-col md:flex-row gap-3">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
-            <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search assets..." className="w-full bg-slate-900/60 border border-slate-700 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500" />
-          </div>
-          <div className="flex gap-1 flex-wrap">
-            {CATEGORIES.map(c => (
-              <button key={c.id} onClick={() => setCat(c.id)}
-                className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium transition-all ${cat===c.id?"bg-emerald-600 text-white":"bg-slate-900/60 text-slate-400 hover:text-slate-200 border border-slate-800"}`}>
-                <c.icon className="h-3 w-3" />{c.label}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Asset Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filtered.map(asset => (
-            <div key={asset.id} className="bg-slate-900/40 rounded-2xl border border-slate-800/60 overflow-hidden hover:border-slate-700 transition-all group">
-              <div className={`h-2 bg-gradient-to-r ${asset.color}`} />
-              <div className="p-5">
-                <div className="flex items-start justify-between mb-3">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <h3 className="font-bold text-white text-sm">{asset.name}</h3>
-                      {asset.badge && <Badge className={`text-xs border-0 px-1.5 py-0 ${asset.badge==="BESTSELLER"?"bg-amber-500/15 text-amber-400":asset.badge==="HOT"?"bg-rose-500/15 text-rose-400":asset.badge==="TOP RATED"?"bg-purple-500/15 text-purple-400":asset.badge==="ENTERPRISE"?"bg-blue-500/15 text-blue-400":asset.badge==="PREMIUM"?"bg-violet-500/15 text-violet-400":"bg-emerald-500/15 text-emerald-400"}`}>{asset.badge}</Badge>}
-                    </div>
-                    <p className="text-xs text-slate-500 leading-relaxed">{asset.desc}</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3 mb-4">
-                  <Badge className="bg-slate-800 text-slate-400 border-0 text-xs">{asset.lang}</Badge>
-                  <span className="text-xs text-amber-400">★ {asset.stars}</span>
-                  <span className="text-xs text-slate-600">{asset.downloads.toLocaleString()} downloads</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-xl font-black text-white">${asset.price}</span>
-                  <div className="flex gap-2">
-                    <Button size="sm" variant="outline" className="border-slate-700 text-slate-400 hover:text-white text-xs">Preview</Button>
-                    <Button size="sm" onClick={() => addToCart(asset.id)} className={`text-xs ${cart.includes(asset.id)?"bg-emerald-700 text-white":"bg-emerald-600 hover:bg-emerald-700 text-white"}`}>
-                      {cart.includes(asset.id) ? "✓ Added" : <><ShoppingCart className="h-3 w-3 mr-1" />Buy</>}
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Sell CTA */}
-        <div className="bg-gradient-to-br from-emerald-950/30 to-teal-950/20 rounded-2xl border border-emerald-800/30 p-6 text-center">
-          <h3 className="font-bold text-white text-lg mb-2">Sell Your Assets</h3>
-          <p className="text-sm text-slate-400 mb-4">Keep 70% revenue. Reach 50,000+ developers. Instant payouts in SKY444 or USDT.</p>
-          <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
-            <Zap className="h-4 w-4 mr-2" />Start Selling
-          </Button>
-        </div>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader backHref="/developer-area" icon={Package} title="Developer Asset Marketplace" subtitle="Marketplace-readiness status; no assets, creators, prices, ratings, downloads, licenses, payments, purchases, payouts, or delivered code are available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Developer marketplace is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen presented a hardcoded catalog of assets, prices, ratings, download counts, badges, production-ready and security descriptions, a cart and Buy actions, and creator claims about revenue share, developer reach, and instant payouts. No verified catalog, creator, license, malware review, payment, delivery, refund, entitlement, moderation, or payout integration supported those claims, so they were removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Package aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Marketplace-readiness status</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A trustworthy developer marketplace requires authenticated creators and buyers, catalog and version provenance, clear licenses, dependency and malware review, security and accessibility evidence, accurate pricing and taxes, processor-backed payments, secure delivery, entitlements, refunds and disputes, moderation, privacy, accounting, and support. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{readiness.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="marketplace-boundaries-heading"><h2 id="marketplace-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2">{boundaries.map(({ title, description, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><Icon aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p></Card>)}</div></section><div className="flex flex-wrap gap-3"><Link href="/developer-area"><Button variant="outline"><Code2 aria-hidden="true" className="mr-2 h-4 w-4" />View developer status</Button></Link><Link href="/ai-marketplace"><Button variant="outline">View AI marketplace status</Button></Link><Link href="/payment-processing"><Button variant="outline"><WalletCards aria-hidden="true" className="mr-2 h-4 w-4" />View payment status</Button></Link><Link href="/contact-us-form"><Button variant="outline">Ask about marketplace availability</Button></Link></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No asset, creator, package, version, language, description, price, currency, tax, rating, review, download count, badge, category, availability, revenue share, audience, payout, preview, buy, cart, checkout, payment, download, license grant, entitlement, refund, dispute, upload, publish, sell, API request, database read or write, production-ready claim, security result, accessibility result, audit, malware review, license result, or delivered code is performed. This page is not evidence of marketplace inventory, code safety, licensing, payment security, delivery, refund rights, creator earnings, or software quality.</p></div></Card></main></div>;
 }
