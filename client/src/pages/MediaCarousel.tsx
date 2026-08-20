@@ -1,25 +1,23 @@
-import { useState } from "react";
+import { AlertTriangle, CheckCircle2, Captions, FileImage, KeyRound, Layers3, LockKeyhole, PlayCircle, ShieldAlert } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Authenticated user, organization, asset, collection, media item, and content authorization scope", value: "Not connected", icon: KeyRound },
+  { label: "Asset source, owner, license, format, resolution, caption, transcript, thumbnail, and timestamp provenance", value: "Unavailable", icon: FileImage },
+  { label: "Playback, loading, external requests, storage, moderation, takedown, export, and user-control behavior", value: "Not verified", icon: PlayCircle },
+  { label: "Private media, personal data, unsafe content, accessibility, privacy, security, retention, and least-privilege safeguards", value: "Not configured", icon: LockKeyhole },
+];
+
+const surfaces = [
+  { title: "Asset and collection scope", scope: "Asset identity, owner, organization, collection, source, license, format, and authorization", status: "Unavailable", icon: FileImage },
+  { title: "Playback and accessibility", scope: "Image, video, audio, caption, transcript, alt text, controls, keyboard access, and loading behavior", status: "Not connected", icon: Captions },
+  { title: "External media and moderation", scope: "Remote source, request policy, embed, script, unsafe content, report, moderation, takedown, and audit", status: "Not verified", icon: ShieldAlert },
+  { title: "Privacy and storage controls", scope: "Personal media, metadata, location, sharing, retention, deletion, export, security, and access", status: "Not configured", icon: LockKeyhole },
+];
 
 export default function MediaCarousel() {
-  const [state, setState] = useState(false);
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 to-black p-4">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">MediaCarousel</h1>
-        <p className="text-slate-400 mb-8">media carousel</p>
-        
-        <Card className="bg-slate-900 border-slate-800 p-8">
-          <div className="space-y-6">
-            <p className="text-slate-300">Content for MediaCarousel page</p>
-            <Button onClick={() => setState(!state)}>
-              {state ? "Deactivate" : "Activate"}
-            </Button>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Layers3} title="Media Carousel" subtitle="Media-service readiness status; no authenticated asset, collection, media source, storage service, playback provider, caption pipeline, moderation workflow, or production media backend is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Media carousel is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen contained only generic MediaCarousel text and an inert Activate/Deactivate toggle. It did not establish an authenticated asset or collection, source or license provenance, image/video/audio handling, captions, transcripts, playback, external requests, storage, moderation, privacy, accessibility, security, or authorization contract. The toggle and unsupported media implication were removed. No asset, collection, media item, user, caption, transcript, playback, moderation state, or availability state is displayed, fetched, stored, or changed from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Layers3 aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Media-service readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A trustworthy media carousel requires authorized asset ownership, source and license provenance, safe storage and delivery, accessible captions and transcripts, deterministic playback behavior, external-request controls, moderation and takedown, privacy, and least-privilege authorization. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="media-carousel-surfaces-heading"><h2 id="media-carousel-surfaces-heading" className="mb-4 text-xl font-semibold">Media-control surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No asset, collection, media item, user, caption, transcript, playback, moderation, privacy, security, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="media-carousel-boundaries-heading"><h2 id="media-carousel-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No media operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, asset or collection query, media fetch, playback, caption or transcript generation, external request, script or embed execution, upload, database read or write, export, deletion, or media-data operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Media, privacy, copyright, safety, accessibility, security, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not upload or share identity documents, private media, personal location, intimate content, copyrighted assets, credentials, private keys, or confidential files here. Do not treat this page as evidence of media ownership, licensing, storage, playback, captions, transcripts, moderation, takedown, accessibility, privacy, or production media capability. Verify consent, source, license, accessibility, abuse controls, retention, deletion, and authorization before displaying or sharing media.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/media-gallery"><Button variant="outline"><FileImage aria-hidden="true" className="mr-2 h-4 w-4" />Review gallery status</Button></Link><Link href="/content-management"><Button variant="outline"><Layers3 aria-hidden="true" className="mr-2 h-4 w-4" />Review content status</Button></Link><Link href="/accessibility"><Button variant="outline"><Captions aria-hidden="true" className="mr-2 h-4 w-4" />Review accessibility</Button></Link><Link href="/safety-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review safety</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No auth check, asset or collection query, media fetch, playback, caption or transcript generation, external request, script or embed execution, upload, database read or write, export, deletion, or media-data operation is performed. This page is not evidence of media ownership, licensing, storage, playback, captions, transcripts, moderation, takedown, accessibility, privacy, or production media capability.</p></Card></main></div>;
 }
