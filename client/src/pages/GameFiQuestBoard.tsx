@@ -1,174 +1,23 @@
-import { useState } from "react";
-import { Sword, Star, Zap, Trophy, Clock, CheckCircle, Lock, Gift, TrendingUp } from "lucide-react";
+import { AlertTriangle, CheckCircle2, FileCheck2, Gamepad2, KeyRound, LockKeyhole, Search, ShieldAlert, Sword, Trophy, WalletCards } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { toast } from "sonner";
+import { Card } from "@/components/ui/card";
 import { PageHeader } from "@/components/PageHeader";
 
-const quests = [
-  { id: "q1", title: "First Blood", desc: "Win your first tournament match", reward: 50, rewardToken: "SKY444", xp: 100, progress: 1, total: 1, completed: true, category: "tournament", difficulty: "easy" },
-  { id: "q2", title: "Social Butterfly", desc: "Make 10 posts and get 50 likes", reward: 25, rewardToken: "SKY444", xp: 75, progress: 7, total: 10, completed: false, category: "social", difficulty: "easy" },
-  { id: "q3", title: "Diamond Hands", desc: "Stake SKY444 for 30 days without unstaking", reward: 500, rewardToken: "SKY444", xp: 500, progress: 12, total: 30, completed: false, category: "defi", difficulty: "hard" },
-  { id: "q4", title: "Code Warrior", desc: "Solve 5 Assembly Puzzle challenges", reward: 150, rewardToken: "SKY444", xp: 250, progress: 3, total: 5, completed: false, category: "gaming", difficulty: "medium" },
-  { id: "q5", title: "Whale Watcher", desc: "Monitor 10 whale transactions", reward: 75, rewardToken: "SKY444", xp: 150, progress: 10, total: 10, completed: true, category: "defi", difficulty: "easy" },
-  { id: "q6", title: "Community Champion", desc: "Get 100 followers and 500 total likes", reward: 200, rewardToken: "SKY444", xp: 300, progress: 67, total: 100, completed: false, category: "social", difficulty: "medium" },
-  { id: "q7", title: "Governance Guru", desc: "Vote on 5 governance proposals", reward: 100, rewardToken: "SKY444", xp: 200, progress: 2, total: 5, completed: false, category: "governance", difficulty: "easy" },
-  { id: "q8", title: "NFT Collector", desc: "Own 10 different NFTs from the marketplace", reward: 300, rewardToken: "SKY444", xp: 400, progress: 4, total: 10, completed: false, category: "nft", difficulty: "hard" },
+const boundaries = [
+  { label: "Authenticated player, organization, quest, event, eligibility, and completion authority", value: "Not connected", icon: KeyRound },
+  { label: "Quest definitions, progress telemetry, social/game/DeFi/NFT/governance event provenance", value: "Unavailable", icon: FileCheck2 },
+  { label: "XP, token, NFT, wallet, payout, staking, tax, custody, chain-finality, and reward controls", value: "Not verified", icon: WalletCards },
+  { label: "Gaming, crypto, financial, legal, privacy, fraud, minors, charity, and authorization safeguards", value: "Not configured", icon: ShieldAlert },
 ];
 
-const dailyQuests = [
-  { title: "Daily Login", reward: 5, completed: true },
-  { title: "Post Something", reward: 10, completed: true },
-  { title: "Like 5 Posts", reward: 8, completed: false },
-  { title: "Check Price Feed", reward: 3, completed: false },
+const surfaces = [
+  { title: "Quest and event provenance", scope: "Quest definitions, source events, player identity, progress calculation, completion evidence, time windows, anti-cheat, and auditability", status: "Unavailable", icon: FileCheck2 },
+  { title: "Rewards and wallet authority", scope: "Reward eligibility, token or XP semantics, wallet ownership, custody, issuance, payout, chain, finality, fees, reversals, and tax records", status: "Not verified", icon: WalletCards },
+  { title: "Social and game outcomes", scope: "Posts, likes, followers, tournaments, games, governance, NFT ownership, staking, whale activity, rankings, and participant privacy", status: "Not configured", icon: Gamepad2 },
+  { title: "Safety and governance", scope: "Age and jurisdiction, minors, fraud, abuse, privacy, consent, charity settlement, financial risk, legal review, and least-privilege authorization", status: "Not connected", icon: ShieldAlert },
 ];
-
-const difficultyColors: Record<string, string> = {
-  easy: "text-purple-400 border-purple-500/30",
-  medium: "text-yellow-400 border-yellow-400/30",
-  hard: "text-red-400 border-red-400/30",
-};
-
-const categoryIcons: Record<string, string> = {
-  tournament: "🏆", social: "💬", defi: "💎", gaming: "🎮", governance: "🗳️", nft: "🖼️",
-};
 
 export default function GameFiQuestBoard() {
-  const [claimed, setClaimed] = useState<string[]>([]);
-  const [filter, setFilter] = useState("all");
-
-  const claimReward = (questId: string, reward: number) => {
-    setClaimed(prev => [...prev, questId]);
-    toast.success(`Claimed ${reward} SKY444! Reward sent to your wallet.`);
-  };
-
-  const filteredQuests = filter === "all" ? quests : quests.filter(q => q.category === filter);
-  const totalXP = quests.filter(q => q.completed).reduce((sum, q) => sum + q.xp, 0);
-  const completedCount = quests.filter(q => q.completed).length;
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="container py-8 max-w-5xl">
-        <PageHeader backHref="/gaming" icon={Sword} title="GameFi Quest Board" subtitle="Complete quests, earn SKY444 rewards, and level up your reputation" />
-
-        {/* Player Stats */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          {[
-            { label: "Total XP", value: totalXP.toLocaleString(), icon: Star, color: "text-yellow-400" },
-            { label: "Quests Done", value: `${completedCount}/${quests.length}`, icon: CheckCircle, color: "text-purple-400" },
-            { label: "SKY444 Earned", value: "725", icon: Gift, color: "text-primary" },
-            { label: "Rank", value: "#847", icon: TrendingUp, color: "text-purple-400" },
-          ].map(s => (
-            <Card key={s.label} className="border-border/50">
-              <CardContent className="pt-6">
-                <s.icon className={`w-5 h-5 ${s.color} mb-2`} />
-                <p className="text-2xl font-bold">{s.value}</p>
-                <p className="text-xs text-muted-foreground">{s.label}</p>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-
-        <Tabs defaultValue="quests">
-          <TabsList className="mb-6">
-            <TabsTrigger value="quests">All Quests</TabsTrigger>
-            <TabsTrigger value="daily">Daily Quests</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="quests">
-            {/* Category Filter */}
-            <div className="flex flex-wrap gap-2 mb-6">
-              {["all", "social", "defi", "gaming", "tournament", "governance", "nft"].map(cat => (
-                <Button key={cat} size="sm" variant={filter === cat ? "default" : "outline"} onClick={() => setFilter(cat)} className="capitalize">{cat}</Button>
-              ))}
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {filteredQuests.map(quest => {
-                const pct = (quest.progress / quest.total) * 100;
-                const isClaimed = claimed.includes(quest.id);
-                return (
-                  <Card key={quest.id} className={`border-border/50 ${quest.completed ? "border-purple-500/20 bg-purple-600/5" : ""}`}>
-                    <CardContent className="pt-6">
-                      <div className="flex items-start justify-between mb-3">
-                        <div className="flex items-center gap-2">
-                          <span className="text-2xl">{categoryIcons[quest.category]}</span>
-                          <div>
-                            <p className="font-medium text-sm">{quest.title}</p>
-                            <p className="text-xs text-muted-foreground">{quest.desc}</p>
-                          </div>
-                        </div>
-                        <Badge variant="outline" className={`text-xs ${difficultyColors[quest.difficulty]}`}>{quest.difficulty}</Badge>
-                      </div>
-
-                      <div className="mb-3">
-                        <div className="flex justify-between text-xs text-muted-foreground mb-1">
-                          <span>Progress</span>
-                          <span>{quest.progress}/{quest.total}</span>
-                        </div>
-                        <Progress value={pct} className="h-2" />
-                      </div>
-
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3 text-xs">
-                          <span className="text-primary font-medium">+{quest.reward} {quest.rewardToken}</span>
-                          <span className="text-yellow-400">+{quest.xp} XP</span>
-                        </div>
-                        {quest.completed ? (
-                          isClaimed ? (
-                            <Badge variant="outline" className="text-purple-400 border-purple-500/30 text-xs">Claimed</Badge>
-                          ) : (
-                            <Button size="sm" onClick={() => claimReward(quest.id, quest.reward)} className="bg-purple-600 hover:bg-purple-600 text-white">
-                              <Gift className="w-3 h-3 mr-1" />Claim
-                            </Button>
-                          )
-                        ) : (
-                          <Badge variant="secondary" className="text-xs"><Clock className="w-3 h-3 mr-1" />In Progress</Badge>
-                        )}
-                      </div>
-                    </CardContent>
-                  </Card>
-                );
-              })}
-            </div>
-          </TabsContent>
-
-          <TabsContent value="daily">
-            <Card className="border-border/50">
-              <CardHeader>
-                <CardTitle className="text-base flex items-center gap-2">
-                  <Zap className="w-4 h-4 text-yellow-400" />
-                  Daily Quests — Resets in 14h 32m
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  {dailyQuests.map((q, i) => (
-                    <div key={i} className={`flex items-center justify-between p-3 rounded-lg ${q.completed ? "bg-purple-600/10 border border-purple-500/20" : "bg-muted/30"}`}>
-                      <div className="flex items-center gap-3">
-                        {q.completed ? <CheckCircle className="w-4 h-4 text-purple-400" /> : <Clock className="w-4 h-4 text-muted-foreground" />}
-                        <span className="text-sm">{q.title}</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm text-primary font-medium">+{q.reward} SKY444</span>
-                        {q.completed && <Badge variant="outline" className="text-purple-400 border-purple-500/30 text-xs">Done</Badge>}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <div className="mt-4 p-3 rounded-lg bg-primary/10 border border-primary/20">
-                  <p className="text-sm font-medium">Complete all daily quests for a 2x bonus!</p>
-                  <Progress value={50} className="h-2 mt-2" />
-                  <p className="text-xs text-muted-foreground mt-1">2/4 completed</p>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader backHref="/gaming" icon={Sword} title="GameFi Quest Board" subtitle="Quest and reward readiness status; no authenticated player, quest dataset, completion event, XP, token, NFT, wallet, staking, payout, charity, or production GameFi service is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Quest rewards are not verified</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen presented fabricated quest completion and progress, XP, SKY444 rewards, rank, wallet claims, daily reset and bonus claims, staking, whale transactions, NFT ownership, governance, tournament, social, and charity activity without authenticated event provenance, anti-cheat, eligibility, wallet custody, chain finality, payout, tax, privacy, legal, or authorization boundaries. Those claims and controls were removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Sword aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">GameFi-readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A trustworthy quest and reward product requires authenticated identity and organization scope, source-backed quest definitions, auditable completion events and anti-cheat, clear XP and token semantics, wallet ownership and custody, chain and finality verification, payout and tax controls, privacy and fraud safeguards, age and jurisdiction rules, charity settlement evidence, accessible controls, and qualified gaming, crypto, financial, legal, and security review. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="gamefi-surfaces-heading"><h2 id="gamefi-surfaces-heading" className="mb-4 text-xl font-semibold">Quest surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No quest, progress, reward, token, wallet, NFT, financial, privacy, charity, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="gamefi-boundaries-heading"><h2 id="gamefi-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No quest, reward, or ownership claim</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, quest lookup, event lookup, progress calculation, score, XP, rank, token, NFT, staking, governance, whale transaction, social metric, tournament result, wallet lookup, signature, payout, API request, database read or write, notification, or personal-data operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Gaming, crypto, finance, charity, legal, privacy, and safety warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not treat this page as evidence of quest completion, token or XP rewards, wallet ownership, NFT holdings, staking, governance, charity contributions, ranking, or financial value. Verify event sources, eligibility, anti-cheat, chain finality, custody, taxes, jurisdiction, privacy, fraud controls, and qualified human review before relying on or acting through any GameFi system.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/gaming"><Button variant="outline"><Gamepad2 aria-hidden="true" className="mr-2 h-4 w-4" />Review gaming status</Button></Link><Link href="/wallet"><Button variant="outline"><WalletCards aria-hidden="true" className="mr-2 h-4 w-4" />Review wallet status</Button></Link><Link href="/security-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security status</Button></Link><Link href="/documentation"><Button variant="outline"><FileCheck2 aria-hidden="true" className="mr-2 h-4 w-4" />Review documentation</Button></Link><Link href="/contact-us-form"><Button variant="outline"><Search aria-hidden="true" className="mr-2 h-4 w-4" />Ask about rewards</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No auth check, quest lookup, event lookup, progress calculation, score, XP, rank, token, NFT, staking, governance, whale transaction, social metric, tournament result, wallet lookup, signature, payout, API request, database read or write, notification, export, deletion, or personal-data operation is performed. This page is not evidence of quests, rewards, token value, NFT ownership, staking, governance, charity settlement, wallet custody, financial advice, or production GameFi functionality.</p></Card></main></div>;
 }
