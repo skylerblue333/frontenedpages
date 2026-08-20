@@ -1,25 +1,14 @@
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { Check, FileCheck2, Keyboard, LockKeyhole, Menu, MousePointer2, ShieldAlert } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const menuStates = [
+  { label: "Menu trigger, target record, and available actions", value: "Not configured", icon: Menu },
+  { label: "Keyboard, pointer, focus, and dismissal behavior", value: "Not verified", icon: Keyboard },
+  { label: "Permission checks and destructive-action confirmation", value: "Unavailable", icon: FileCheck2 },
+  { label: "Mutation, persistence, notification, and audit result", value: "Disabled", icon: Check },
+];
 
 export default function ContextMenu() {
-  const [state, setState] = useState(false);
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 to-black p-4">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">ContextMenu</h1>
-        <p className="text-slate-400 mb-8">context menu</p>
-        
-        <Card className="bg-slate-900 border-slate-800 p-8">
-          <div className="space-y-6">
-            <p className="text-slate-300">Content for ContextMenu page</p>
-            <Button onClick={() => setState(!state)}>
-              {state ? "Deactivate" : "Activate"}
-            </Button>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Menu} title="Context Menu" subtitle="Context-menu interaction status; no record-specific menu, action, mutation, or persisted result is available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><ShieldAlert aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Context-menu actions are unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous screen was a generic Content placeholder with an Activate/Deactivate toggle, not a connected context-menu implementation. That control was removed rather than implying that a selected record, menu action, permission check, destructive confirmation, account change, financial operation, or saved result exists.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><MousePointer2 aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Interaction-readiness status</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A production context menu requires an identified target, action contract, authorization checks, keyboard and pointer accessibility, focus management, viewport-safe positioning, destructive-action confirmation, optimistic and failure states, idempotency, persistence, notifications, and audit evidence. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{menuStates.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="menu-boundaries-heading"><h2 id="menu-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><Menu aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No action claim</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No target record, menu item, copy, edit, delete, share, download, report, block, publish, wallet, payment, account, or administrative action is displayed or simulated.</p></Card><Card className="border border-border/50 bg-card p-6"><LockKeyhole aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No mutation claim</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No click, right-click, keyboard shortcut, API request, database write, notification, toast, destructive operation, account mutation, external integration call, or audit event is performed. This page does not replace an accessible menu implementation.</p></Card></div></section></main></div>;
 }
