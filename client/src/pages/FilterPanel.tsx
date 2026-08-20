@@ -1,25 +1,23 @@
-import { useState } from "react";
+import { AlertTriangle, CheckCircle2, Filter, KeyRound, ListFilter, Search, ShieldAlert, SlidersHorizontal, UserRound } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Authenticated scope, permission-aware fields, tenant isolation, and least privilege", value: "Not connected", icon: KeyRound },
+  { label: "Source provenance, field definitions, facet counts, result semantics, and index freshness", value: "Unavailable", icon: ListFilter },
+  { label: "Privacy, consent, personalization, AI ranking, accessibility, performance, and audit", value: "Not verified", icon: ShieldAlert },
+  { label: "Financial, crypto, legal, health, safety, and confidential-data safeguards", value: "Not configured", icon: UserRound },
+];
+
+const surfaces = [
+  { title: "Filter definitions", scope: "Field names, types, allowed values, null semantics, sorting, ranges, labels, localization, and source authority", status: "Unavailable", icon: SlidersHorizontal },
+  { title: "Results and counts", scope: "Query scope, index freshness, result count, facet count, ranking, pagination, duplicates, and empty-state semantics", status: "Not verified", icon: ListFilter },
+  { title: "Privacy and personalization", scope: "Consent, data minimization, saved filters, user profiling, AI ranking, sensitive attributes, access control, and audit", status: "Not configured", icon: ShieldAlert },
+  { title: "Sensitive domains", scope: "Personal, financial, crypto, legal, health, safety, marketplace, and confidential organizational records", status: "Not connected", icon: UserRound },
+];
 
 export default function FilterPanel() {
-  const [state, setState] = useState(false);
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 to-black p-4">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">FilterPanel</h1>
-        <p className="text-slate-400 mb-8">filter panel</p>
-        
-        <Card className="bg-slate-900 border-slate-800 p-8">
-          <div className="space-y-6">
-            <p className="text-slate-300">Content for FilterPanel page</p>
-            <Button onClick={() => setState(!state)}>
-              {state ? "Deactivate" : "Activate"}
-            </Button>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Filter} title="Filter Panel" subtitle="Filtering-readiness status; no authenticated query, data source, facet registry, result set, search index, personalized profile, or personal-data record is available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Filtering is not verified</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen exposed a generic activate/deactivate control and vague filter wording without a connected data source, schema, facet definition, query scope, index freshness, result semantics, privacy, personalization, accessibility, or authorization boundary. No filter or result evidence was available, so the control was removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Filter aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Filtering readiness</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Trustworthy filtering requires authenticated scope, permission-aware field definitions, authoritative source provenance, clear facet and result semantics, index freshness, privacy and consent controls, accessible interactions, predictable performance, auditable personalization or AI ranking, and special handling for financial, crypto, legal, health, safety, marketplace, or confidential data. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="filter-panel-surfaces-heading"><h2 id="filter-panel-surfaces-heading" className="mb-4 text-xl font-semibold">Filtering surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No filter capability, query result, count, personalization property, privacy property, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="filter-panel-boundaries-heading"><h2 id="filter-panel-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No query or metric claim</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, query, filter state, facet count, result count, search index read, user tracking, profile inference, AI ranking, API request, database read or write, notification, export, or personal-data operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Privacy, security, legal, finance, crypto, and safety warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Filters can expose sensitive attributes or influence financial, crypto, legal, health, safety, marketplace, or access decisions. Verify field authority, consent, redaction, least privilege, ranking methodology, accessibility, audit, and human review before relying on filtered results.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/explore"><Button variant="outline"><Search aria-hidden="true" className="mr-2 h-4 w-4" />Review discovery status</Button></Link><Link href="/search"><Button variant="outline"><ListFilter aria-hidden="true" className="mr-2 h-4 w-4" />Review search status</Button></Link><Link href="/security-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security status</Button></Link><Link href="/contact-us-form"><Button variant="outline"><SlidersHorizontal aria-hidden="true" className="mr-2 h-4 w-4" />Ask about filters</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No auth check, query, filter state, facet count, result count, search index read, user tracking, profile inference, AI ranking, API request, database read or write, notification, export, or personal-data operation is performed. This page is not evidence of filtering, search freshness, personalization, analytics, or production query functionality.</p></Card></main></div>;
 }
