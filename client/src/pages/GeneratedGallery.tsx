@@ -1,113 +1,34 @@
-import { useState } from "react";
+import { AlertTriangle, CheckCircle2, Code2, FileCheck2, Images, KeyRound, LockKeyhole, Search, ShieldAlert, Sparkles } from "lucide-react";
 import { Link } from "wouter";
-import { Images, ExternalLink, ArrowRight, Sparkles, Code2, Globe, Layers } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
 import { PageHeader } from "@/components/PageHeader";
 
-const SCREEN_CATEGORIES = [
-  { cat: "Social",    count: 48, color: "from-cyan-500 to-blue-500",    icon: "💬", href: "/social"         },
-  { cat: "Crypto",   count: 52, color: "from-yellow-500 to-orange-500", icon: "💎", href: "/crypto-hub"     },
-  { cat: "AI",       count: 41, color: "from-purple-500 to-pink-500",   icon: "🤖", href: "/ai-brain"       },
-  { cat: "Streaming",count: 34, color: "from-red-500 to-pink-500",      icon: "📺", href: "/streaming"      },
-  { cat: "Gaming",   count: 29, color: "from-green-500 to-teal-500",    icon: "🎮", href: "/arcade"         },
-  { cat: "Creator",  count: 38, color: "from-indigo-500 to-purple-500", icon: "🎨", href: "/creator-studio" },
-  { cat: "Charity",  count: 22, color: "from-green-500 to-emerald-500", icon: "💚", href: "/charity"        },
-  { cat: "Admin",    count: 43, color: "from-slate-500 to-gray-500",    icon: "⚙️", href: "/admin"          },
+const categories = [
+  { title: "Social", description: "Review the separately audited social surfaces; this gallery does not assert live data or community activity.", href: "/social" },
+  { title: "Crypto", description: "Review crypto surfaces only with explicit network, wallet, market-data, custody, and transaction boundaries.", href: "/crypto-hub" },
+  { title: "AI", description: "Review AI surfaces only with clear model, data-use, capability, safety, and authorization evidence.", href: "/ai-brain" },
+  { title: "Gaming", description: "Review local-only or unavailable gaming states; this gallery does not assert live games, players, rewards, or wagers.", href: "/gaming" },
+  { title: "Creator and streaming", description: "Review creator and media routes only after asset, license, storage, moderation, and publishing controls are verified.", href: "/creator-studio" },
+  { title: "Charity", description: "Review charity surfaces only with verified beneficiaries, settlement, receipts, reconciliation, and donor authorization.", href: "/gaming-for-charity" },
+  { title: "Administration", description: "Review administrative surfaces only with authenticated organization scope, role checks, audit, and least privilege.", href: "/admin" },
+  { title: "Documentation", description: "Review documentation and visual checkpoints as evidence; they do not certify production readiness by themselves.", href: "/documentation" },
 ];
 
-const STATS = [
-  { label: "Total Screens", val: "307", icon: Images },
-  { label: "Categories",    val: "8",   icon: Layers },
-  { label: "Live Pages",    val: "120+",icon: Globe  },
-  { label: "Components",    val: "340+",icon: Code2  },
+const boundaries = [
+  { label: "Inventory, category, route, component, asset, and visual-checkpoint provenance", value: "Not connected", icon: FileCheck2 },
+  { label: "AI authorship, human review, production status, licensing, ownership, and release approval", value: "Unavailable", icon: Sparkles },
+  { label: "Media storage, downloads, credentials, moderation, privacy, security, and access controls", value: "Not verified", icon: LockKeyhole },
+  { label: "Sensitive domain safeguards for finance, crypto, AI, gaming, charity, identity, and administration", value: "Not configured", icon: ShieldAlert },
+];
+
+const surfaces = [
+  { title: "Inventory and route evidence", scope: "Source inventory, registered route, component identity, visual checkpoint, build status, ownership, and release provenance", status: "Unavailable", icon: Images },
+  { title: "AI and asset provenance", scope: "Generation disclosure, human review, licenses, third-party rights, attribution, model/data use, and modification history", status: "Not verified", icon: Sparkles },
+  { title: "Gallery and download safety", scope: "Storage, file type, malware scanning, access control, signed URLs, retention, external links, and privacy", status: "Not configured", icon: ShieldAlert },
+  { title: "Module readiness", scope: "Social, crypto, AI, gaming, creator, streaming, charity, and admin contracts, authorization, observability, and incident response", status: "Not connected", icon: Code2 },
 ];
 
 export default function GeneratedGallery() {
-  const [selected, setSelected] = useState<string | null>(null);
-
-  return (
-    <div className="container py-8 max-w-5xl animate-page-in">
-      <PageHeader
-        backHref="/developer-protocol"
-        icon={Images}
-        title="Screen Gallery"
-        subtitle="307 AI-generated UI screens across all platform modules"
-      />
-
-      {/* Hero banner */}
-      <div className="card p-5 mb-6 bg-gradient-to-r from-primary/10 to-cyan-500/10 border-primary/20">
-        <div className="flex items-start gap-4">
-          <div className="w-12 h-12 rounded-xl bg-primary/20 flex items-center justify-center shrink-0">
-            <Sparkles className="w-6 h-6 text-primary" />
-          </div>
-          <div>
-            <h3 className="font-bold mb-1">AI-Generated Screen Library</h3>
-            <p className="text-sm text-muted-foreground">
-              Every screen was designed by AI and reviewed for production readiness.
-              Click any category to navigate to the live version of that module.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* Stats row */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-        {STATS.map(s => (
-          <div key={s.label} className="card p-4 text-center">
-            <s.icon className="w-5 h-5 text-primary mx-auto mb-2" />
-            <div className="text-xl font-black">{s.val}</div>
-            <div className="text-xs text-muted-foreground">{s.label}</div>
-          </div>
-        ))}
-      </div>
-
-      {/* Category grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {SCREEN_CATEGORIES.map(cat => (
-          <Link key={cat.cat} href={cat.href}>
-            <div
-              className={`card p-5 hover:border-slate-700/60 active:scale-[0.98] transition-all cursor-pointer group ${
-                selected === cat.cat ? "border-primary/40 bg-primary/5" : ""
-              }`}
-              onClick={() => setSelected(cat.cat)}
-            >
-              <div className="flex items-center gap-4">
-                <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${cat.color} flex items-center justify-center text-3xl shrink-0`}>
-                  {cat.icon}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <h3 className="font-bold">{cat.cat}</h3>
-                    <Badge variant="outline" className="text-[10px]">{cat.count} screens</Badge>
-                  </div>
-                  <p className="text-xs text-muted-foreground mt-0.5">
-                    View live {cat.cat.toLowerCase()} screens
-                  </p>
-                </div>
-                <ArrowRight className="w-5 h-5 text-slate-600 group-hover:text-primary transition-colors shrink-0" />
-              </div>
-            </div>
-          </Link>
-        ))}
-      </div>
-
-      {/* Download CTA */}
-      <div className="mt-6 card p-5 flex items-center justify-between">
-        <div>
-          <div className="text-sm font-semibold">Download Full Codebase</div>
-          <div className="text-xs text-muted-foreground">All 307 screens + source code</div>
-        </div>
-        <a
-          href="https://drive.google.com/file/d/1HKXHGjYNu2FUa41b4aiPelf75ThRZ_Za/view?usp=drivesdk"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Button className="btn-primary gap-2 text-xs">
-            <ExternalLink className="w-3.5 h-3.5" /> Download ZIP
-          </Button>
-        </a>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader backHref="/developer-protocol" icon={Images} title="Screen Gallery" subtitle="Gallery-readiness status; no authoritative screen count, category count, live-page count, component count, AI review certification, asset license, or codebase download is asserted by this page." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Gallery metrics and production certification are not verified</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous gallery asserted screen, category, live-page, and component counts, claimed every screen was AI-designed and reviewed for production readiness, linked categories directly to live modules, and offered an external codebase download without inventory provenance, route verification, human review evidence, licensing, storage, security, privacy, or release authority. Those claims and the download CTA were removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Images aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Gallery-readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A trustworthy screen gallery requires source-backed inventory, verified registered routes, visual evidence, build status, clear AI authorship and human-review disclosure, asset licensing and ownership, safe storage and downloads, moderation, privacy and security controls, and explicit module-by-module release approval. None are certified by this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="gallery-categories-heading"><h2 id="gallery-categories-heading" className="mb-4 text-xl font-semibold">Review surfaces</h2><div className="grid gap-4 md:grid-cols-2">{categories.map(({ title, description, href }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Images aria-hidden="true" className="h-7 w-7 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">Evidence required</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p><Link href={href}><Button variant="outline" className="mt-4">Review route</Button></Link></Card>)}</div></section><section aria-labelledby="gallery-surfaces-heading"><h2 id="gallery-surfaces-heading" className="mb-4 text-xl font-semibold">Gallery surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No screen count, live status, AI certification, license, download, financial, crypto, AI, gaming, charity, privacy, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="gallery-boundaries-heading"><h2 id="gallery-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No inventory or production claim</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No screen count, category count, live-page count, component count, AI-review certification, route lookup, asset lookup, license check, storage operation, external download, API request, database read or write, notification, or personal-data operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Asset, AI, privacy, security, and sensitive-domain warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not treat a gallery listing or screenshot as evidence of production readiness, functionality, licensing, ownership, safety, AI capability, financial or crypto status, charity impact, or live module availability. Verify source, route, rights, review, storage, credentials, sensitive-data handling, authorization, and human approval before distributing or relying on assets.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/documentation"><Button variant="outline"><FileCheck2 aria-hidden="true" className="mr-2 h-4 w-4" />Review documentation</Button></Link><Link href="/api-docs"><Button variant="outline"><Code2 aria-hidden="true" className="mr-2 h-4 w-4" />Review API status</Button></Link><Link href="/security-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link><Link href="/contact-us-form"><Button variant="outline"><Search aria-hidden="true" className="mr-2 h-4 w-4" />Ask about assets</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No screen count, category count, live-page count, component count, AI-review certification, route lookup, asset lookup, license check, storage operation, external download, API request, database read or write, notification, export, deletion, or personal-data operation is performed. This page is not evidence of gallery completeness, production readiness, licensing, ownership, functionality, financial or crypto status, AI capability, charity impact, or live module availability.</p></Card></main></div>;
 }
