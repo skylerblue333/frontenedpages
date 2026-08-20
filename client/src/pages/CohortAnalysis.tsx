@@ -1,75 +1,14 @@
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/_core/hooks/useAuth";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
-import { Loader2, Plus, Search, Settings } from "lucide-react";
+import { BarChart3, Database, FileCheck2, LockKeyhole, ShieldAlert, Users } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const cohortStates = [
+  { label: "Cohort source, identity, and segmentation rules", value: "Not connected", icon: Users },
+  { label: "Retention, conversion, revenue, and event definitions", value: "Not configured", icon: BarChart3 },
+  { label: "Authorization, privacy, and aggregation controls", value: "Not verified", icon: LockKeyhole },
+  { label: "Exports, audit trail, and reproducible calculations", value: "Unavailable", icon: FileCheck2 },
+];
 
 export default function CohortAnalysis() {
-  const { isAuthenticated } = useAuth();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>CohortAnalysis</CardTitle>
-            <CardDescription>Sign in to access this feature</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full">Sign In</Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold">CohortAnalysis</h1>
-            <p className="text-muted-foreground mt-2">User cohort analysis and segmentation</p>
-          </div>
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            New
-          </Button>
-        </div>
-
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Search className="w-4 h-4 text-muted-foreground" />
-              <Input
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="max-w-sm"
-              />
-              <Button variant="outline" size="icon">
-                <Settings className="w-4 h-4" />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {isLoading ? (
-              <div className="flex justify-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
-              </div>
-            ) : (
-              <div className="text-center py-12 text-muted-foreground">
-                <p>No data available. Start by creating a new item.</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Users} title="Cohort Analysis" subtitle="Cohort analytics integration status; no user segment, retention result, conversion, revenue, or behavioral conclusion is available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><ShieldAlert aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Cohort analysis is unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">This route previously exposed a sign-in gate, New action, search, settings, loading state, and an empty-item prompt without a connected cohort source, event schema, segmentation rule, authorization check, calculation, or audit record. Those controls were removed rather than implying that user cohorts, retention, conversion, revenue, engagement, or behavioral data exists.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><BarChart3 aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Cohort-readiness status</h2><p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">A production cohort report requires a defined population, consent and identity policy, event taxonomy, time windows, exclusion rules, privacy-preserving aggregation, reproducible calculations, access control, and clear uncertainty and empty states. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{cohortStates.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="cohort-boundary-heading"><h2 id="cohort-boundary-heading" className="mb-4 text-xl font-semibold">Current boundary</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><LockKeyhole aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No user identity, cohort membership, event, retention rate, conversion rate, revenue, engagement score, demographic attribute, behavioral conclusion, or AI insight is read, calculated, charted, exported, cached, or simulated by this page.</p></div></Card><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><FileCheck2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No sign-in, cohort creation, search, settings change, API request, database write, account mutation, notification, segmentation rule, or external analytics call is performed. Do not enter personal or confidential data into this unavailable analytics screen.</p></div></Card></div></section><Card className="border border-border/50 bg-card p-5"><p className="text-sm leading-6 text-muted-foreground">Future cohort results must be verified against an authorized source of truth with documented consent, aggregation, retention, deletion, and audit policies. An empty or unavailable state is not evidence of a zero cohort, zero retention, zero conversion, or zero revenue.</p></Card></main></div>;
 }
