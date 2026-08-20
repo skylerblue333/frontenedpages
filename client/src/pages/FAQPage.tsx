@@ -1,25 +1,23 @@
-import { useState } from "react";
+import { AlertTriangle, BookOpen, CheckCircle2, FileCheck2, HelpCircle, Search, ShieldAlert, Sparkles } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Question and answer source, owner, citation, effective date, jurisdiction, and publication status", value: "Not verified", icon: BookOpen },
+  { label: "Search, retrieval, localization, accessibility, moderation, correction, and support provenance", value: "Unavailable", icon: HelpCircle },
+  { label: "Legal, medical, tax, financial, crypto, safety, and AI review or human oversight", value: "Not configured", icon: ShieldAlert },
+  { label: "Privacy, data minimization, retention, audit, incident response, and user authorization", value: "Not connected", icon: FileCheck2 },
+];
+
+const surfaces = [
+  { title: "Public answers", scope: "Question, answer, source, citations, freshness, jurisdiction, version, accessibility, localization, and correction path", status: "Unavailable" },
+  { title: "Search and retrieval", scope: "Index coverage, ranking, query handling, content freshness, access filtering, redaction, and failure states", status: "Not verified" },
+  { title: "AI assistance", scope: "Model identity, retrieval sources, citations, uncertainty, prompt/data boundaries, human review, and refusal behavior", status: "Not configured" },
+  { title: "Trust and support", scope: "Privacy, moderation, legal/medical/financial review, feedback, support ownership, audit, and incident response", status: "Not connected" },
+];
 
 export default function FAQPage() {
-  const [state, setState] = useState(false);
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 to-black p-4">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">FAQPage</h1>
-        <p className="text-slate-400 mb-8">FAQ page</p>
-        
-        <Card className="bg-slate-900 border-slate-800 p-8">
-          <div className="space-y-6">
-            <p className="text-slate-300">Content for FAQPage page</p>
-            <Button onClick={() => setState(!state)}>
-              {state ? "Deactivate" : "Activate"}
-            </Button>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={HelpCircle} title="Frequently Asked Questions" subtitle="Public knowledge-readiness status; no verified question, answer, source, search index, AI response, or regulated-domain guidance is available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">FAQ content is not verified</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen exposed a generic activate/deactivate control and vague FAQ wording without an authoritative question-and-answer source, citations, freshness, jurisdiction, search behavior, accessibility, moderation, privacy, or regulated-domain review boundary. No public answer or support claim is available, so the control was removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><HelpCircle aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Public knowledge readiness</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A trustworthy FAQ requires authoritative sources, citations, freshness and jurisdiction, accessible presentation, search and retrieval controls, moderation, correction ownership, privacy and data minimization, and specialized review for legal, medical, tax, financial, crypto, and safety guidance. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="faq-page-surfaces-heading"><h2 id="faq-page-surfaces-heading" className="mb-4 text-xl font-semibold">Knowledge surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><BookOpen aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No answer capability, accuracy, legal/medical/financial outcome, privacy property, AI property, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="faq-page-boundaries-heading"><h2 id="faq-page-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><FileCheck2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No FAQ or answer claim</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No question, answer, citation, source, search query, index, AI response, translation, recommendation, support response, notification, API request, database read or write, or personal-data operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Legal, medical, tax, finance, crypto, AI, privacy, and safety warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Public answers can be relied on for consequential decisions and may expose sensitive information. Verify source, jurisdiction, freshness, professional review, citations, uncertainty, human oversight, privacy, accessibility, and correction procedures before relying on an answer.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/f-a-q-management"><Button variant="outline"><BookOpen aria-hidden="true" className="mr-2 h-4 w-4" />Review FAQ management</Button></Link><Link href="/documentation"><Button variant="outline"><HelpCircle aria-hidden="true" className="mr-2 h-4 w-4" />Review documentation status</Button></Link><Link href="/ai-control-center"><Button variant="outline"><Sparkles aria-hidden="true" className="mr-2 h-4 w-4" />Review AI status</Button></Link><Link href="/security-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security status</Button></Link><Link href="/contact-us-form"><Button variant="outline"><Search aria-hidden="true" className="mr-2 h-4 w-4" />Ask about FAQ availability</Button></Link></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No question lookup, search-index request, answer generation, AI inference, translation, moderation, support response, API request, database read or write, notification, export, or personal-data operation is performed. This page is not evidence of a public knowledge base, answer accuracy, legal/medical/tax/financial/crypto guidance, AI reliability, privacy, or production support functionality.</p></div></Card></main></div>;
 }
