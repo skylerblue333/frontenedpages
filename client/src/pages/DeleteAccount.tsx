@@ -1,25 +1,23 @@
-import { useState } from "react";
+import { AlertTriangle, CheckCircle2, FileDown, LockKeyhole, ShieldAlert, UserRoundX } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const readiness = [
+  { label: "Authenticated account ownership, re-authentication, and confirmation", value: "Not connected", icon: LockKeyhole },
+  { label: "Data export, retention schedule, deletion scope, and legal holds", value: "Unavailable", icon: FileDown },
+  { label: "Sessions, tokens, wallets, payments, integrations, and dependent records", value: "Not reconciled", icon: UserRoundX },
+  { label: "Recovery, support, audit trail, privacy rights, and completion evidence", value: "Not verified", icon: ShieldAlert },
+];
+
+const boundaries = [
+  { title: "No account mutation", description: "This page does not activate, deactivate, delete, suspend, restore, revoke, sign out, export, or mutate an account, session, token, wallet, payment record, content record, database row, or integration.", icon: UserRoundX },
+  { title: "No deletion-completion claim", description: "No identity, account, content, file, message, financial, wallet, blockchain, notification, analytics, backup, log, or third-party record is inspected, enumerated, deleted, retained, anonymized, or confirmed here.", icon: CheckCircle2 },
+  { title: "No retention or legal claim", description: "No retention period, legal hold, regulatory exception, backup behavior, export format, refund outcome, payment-record rule, privacy-rights result, or support SLA is asserted.", icon: FileDown },
+  { title: "Privacy and destructive-action warn-and-proceed", description: "Account deletion may be irreversible and can affect access, records, wallets, subscriptions, financial history, collaborators, and recovery. Verify ownership, export what you are entitled to retain, review official terms, and use authenticated support before any destructive action.", icon: ShieldAlert },
+];
 
 export default function DeleteAccount() {
-  const [state, setState] = useState(false);
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 to-black p-4">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">DeleteAccount</h1>
-        <p className="text-slate-400 mb-8">delete account</p>
-        
-        <Card className="bg-slate-900 border-slate-800 p-8">
-          <div className="space-y-6">
-            <p className="text-slate-300">Content for DeleteAccount page</p>
-            <Button onClick={() => setState(!state)}>
-              {state ? "Deactivate" : "Activate"}
-            </Button>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader backHref="/settings" icon={UserRoundX} title="Delete Account" subtitle="Account-deletion readiness status; no account, data, session, wallet, payment, content, or integration is changed in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Account deletion is unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous screen presented an ambiguous Activate/Deactivate toggle without authentication, confirmation, deletion scope, export, retention, dependency reconciliation, recovery, audit, or completion handling. No verified account-deletion workflow is connected, so the destructive control was removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><UserRoundX aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Account-deletion-readiness status</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A trustworthy deletion service requires authenticated ownership, explicit and irreversible-action confirmation, a clear export and deletion scope, retention and legal-hold rules, dependency reconciliation, session and token revocation, wallet and payment safeguards, support and recovery handling, auditability, privacy review, and verifiable completion. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{readiness.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="delete-boundaries-heading"><h2 id="delete-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2">{boundaries.map(({ title, description, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><Icon aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p></Card>)}</div></section><div className="flex flex-wrap gap-3"><Link href="/settings"><Button variant="outline">Return to account settings</Button></Link><Link href="/privacy-policy"><Button variant="outline">Review privacy status</Button></Link><Link href="/data-export"><Button variant="outline"><FileDown aria-hidden="true" className="mr-2 h-4 w-4" />View export status</Button></Link><Link href="/contact-us-form"><Button variant="outline">Contact authenticated support</Button></Link></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No account, user, profile, session, token, wallet, payment record, subscription, content, file, message, notification, analytics record, backup, log, integration, database row, deletion request, export request, activation, deactivation, suspension, restoration, revocation, sign-out, retention decision, legal-hold decision, refund, support case, API request, or database mutation is performed. This page is not evidence that account deletion, data export, privacy rights, retention, recovery, or support is available.</p></div></Card></main></div>;
 }
