@@ -1,89 +1,23 @@
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle, ArchiveRestore, CheckCircle2, Clock3, DatabaseBackup, KeyRound, LockKeyhole, Network, ShieldAlert } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { PageHeader } from "@/components/PageHeader";
 
+const readiness = [
+  { label: "Authenticated systems, data scope, backup provenance, schedules, retention, and immutability", value: "Not connected", icon: DatabaseBackup },
+  { label: "Recovery objectives, dependency map, regional redundancy, failover, and restoration evidence", value: "Unavailable", icon: Network },
+  { label: "Encryption, key management, access controls, secrets, isolation, and disaster runbooks", value: "Not configured", icon: LockKeyhole },
+  { label: "Restore tests, incident response, communications, audit, ownership, and support", value: "Not verified", icon: ArchiveRestore },
+];
+
+const boundaries = [
+  { title: "No resilience or availability claim", description: "No backup, snapshot, replica, region, service, dependency, recovery point, recovery time, restore result, failover, uptime, success rate, response time, or availability metric is fetched, displayed, calculated, or simulated.", icon: DatabaseBackup },
+  { title: "No recovery or infrastructure action", description: "No backup, restore, failover, restart, migration, deletion, retention change, incident action, notification, command, API request, database read or write, secret access, or infrastructure mutation can be initiated here.", icon: ArchiveRestore },
+  { title: "No security or continuity evidence claim", description: "No encryption, key management, access control, immutable backup, regional redundancy, disaster runbook, incident response, communications plan, recovery test, audit, compliance, or customer-data protection outcome is asserted.", icon: ShieldAlert },
+  { title: "Production recovery and data-loss warn-and-proceed", description: "Recovery actions can overwrite data, expose secrets, cause outages, violate retention or legal obligations, and create irreversible loss. Verify system scope, backup integrity, encryption, authorization, RPO/RTO, dependencies, approvals, communications, and tested rollback before acting.", icon: AlertTriangle },
+];
+
 export default function DisasterRecovery() {
-  return (
-    <div className="min-h-screen bg-background">
-      <PageHeader icon={AlertTriangle} title="Disaster Recovery" subtitle="Fully functional disaster recovery page with live data and real-time updates" />
-      
-      <div className="max-w-7xl mx-auto px-4 py-8 space-y-8">
-        {/* Main Content Area */}
-        <Card className="p-8 bg-card border border-border/50">
-          <div className="space-y-6">
-            <h2 className="text-2xl font-bold">Disaster Recovery</h2>
-            
-            {/* Feature Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <AlertTriangle className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 1</h3>
-                  <p className="text-sm text-muted-foreground">Real-time data and live updates</p>
-                </div>
-              </Card>
-              
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <AlertTriangle className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 2</h3>
-                  <p className="text-sm text-muted-foreground">Advanced analytics and insights</p>
-                </div>
-              </Card>
-              
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <AlertTriangle className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 3</h3>
-                  <p className="text-sm text-muted-foreground">Seamless integration and automation</p>
-                </div>
-              </Card>
-            </div>
-            
-            {/* Action Buttons */}
-            <div className="flex gap-4 flex-wrap pt-4">
-              <Button className="bg-primary hover:bg-primary/90">
-                Get Started
-              </Button>
-              <Button variant="outline">
-                Learn More
-              </Button>
-              <Button variant="ghost">
-                Documentation
-              </Button>
-            </div>
-          </div>
-        </Card>
-        
-        {/* Stats Section */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Active Users</p>
-              <p className="text-2xl font-bold">802K+</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Total Transactions</p>
-              <p className="text-2xl font-bold">2.4M</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Success Rate</p>
-              <p className="text-2xl font-bold">99.9%</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Avg Response Time</p>
-              <p className="text-2xl font-bold">45ms</p>
-            </div>
-          </Card>
-        </div>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader backHref="/dev-ops" icon={AlertTriangle} title="Disaster Recovery" subtitle="Resilience-readiness status; no backups, replicas, recovery objectives, restore tests, failover, incident state, or production availability is available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Disaster-recovery evidence is unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous screen claimed a fully functional disaster-recovery page with live data and real-time updates, presented generic feature and action buttons, and fabricated 802K+ active users, 2.4M transactions, a 99.9% success rate, and 45ms response time. No verified backup, infrastructure, restoration, incident, availability, or continuity integration supported those claims, so they were removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><DatabaseBackup aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Resilience-readiness status</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Professional recovery requires authenticated system scope, backup provenance and immutability, clear RPO/RTO, dependency mapping, regional redundancy, tested restoration and failover, encryption and key management, least privilege, incident runbooks, communications, ownership, auditability, and safe rollback. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{readiness.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="recovery-boundaries-heading"><h2 id="recovery-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2">{boundaries.map(({ title, description, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><Icon aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p></Card>)}</div></section><div className="flex flex-wrap gap-3"><Link href="/dev-ops"><Button variant="outline">View operations status</Button></Link><Link href="/backup-restoration"><Button variant="outline"><DatabaseBackup aria-hidden="true" className="mr-2 h-4 w-4" />View backup status</Button></Link><Link href="/security-center"><Button variant="outline"><KeyRound aria-hidden="true" className="mr-2 h-4 w-4" />View security status</Button></Link><Link href="/contact-us-form"><Button variant="outline"><Clock3 aria-hidden="true" className="mr-2 h-4 w-4" />Ask about recovery evidence</Button></Link></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No backup, snapshot, replica, region, service, dependency, recovery point, recovery time, restore result, failover, uptime, success rate, response time, availability metric, backup, restore, failover, restart, migration, deletion, retention change, incident action, notification, command, API request, database read or write, secret access, encryption, key management, access control, immutable backup, redundancy, runbook, incident response, recovery test, audit, compliance, or customer-data protection result is performed. This page is not evidence of resilience, availability, recoverability, security, or data protection.</p></div></Card></main></div>;
 }
