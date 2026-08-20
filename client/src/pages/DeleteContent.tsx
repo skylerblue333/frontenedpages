@@ -1,25 +1,23 @@
-import { useState } from "react";
+import { AlertTriangle, CheckCircle2, FileText, LockKeyhole, ShieldAlert, Trash2 } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const readiness = [
+  { label: "Authenticated owner, object scope, authorization, and re-authentication", value: "Not connected", icon: LockKeyhole },
+  { label: "Preview, confirmation, retention, legal holds, moderation, and appeals", value: "Unavailable", icon: FileText },
+  { label: "References, attachments, indexes, caches, backups, and dependent records", value: "Not reconciled", icon: Trash2 },
+  { label: "Recovery, audit trail, privacy rights, support, and completion evidence", value: "Not verified", icon: ShieldAlert },
+];
+
+const boundaries = [
+  { title: "No content mutation", description: "This page does not select, delete, archive, restore, hide, moderate, revoke, detach, or mutate any post, message, comment, file, media item, course item, profile field, database row, cache, backup, or integration.", icon: Trash2 },
+  { title: "No ownership or completion claim", description: "No content owner, object identifier, permission, dependency, deletion request, deletion job, retention result, anonymization, propagation, recovery, or completion state is inspected, calculated, displayed, or confirmed here.", icon: CheckCircle2 },
+  { title: "No legal, moderation, or retention claim", description: "No retention period, legal hold, moderation decision, appeal, copyright process, backup behavior, audit record, privacy-rights result, export format, or support outcome is asserted.", icon: FileText },
+  { title: "Privacy and destructive-action warn-and-proceed", description: "Content deletion may be irreversible and can affect collaborators, replies, files, public links, moderation records, analytics, legal holds, and recovery. Verify ownership and scope, preserve records you are entitled to retain, review official terms, and use authenticated support before acting.", icon: ShieldAlert },
+];
 
 export default function DeleteContent() {
-  const [state, setState] = useState(false);
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 to-black p-4">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">DeleteContent</h1>
-        <p className="text-slate-400 mb-8">delete content</p>
-        
-        <Card className="bg-slate-900 border-slate-800 p-8">
-          <div className="space-y-6">
-            <p className="text-slate-300">Content for DeleteContent page</p>
-            <Button onClick={() => setState(!state)}>
-              {state ? "Deactivate" : "Activate"}
-            </Button>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader backHref="/settings" icon={Trash2} title="Delete Content" subtitle="Content-deletion readiness status; no post, message, file, media item, profile field, course item, database row, backup, or integration is changed in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Content deletion is unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous screen presented an ambiguous Activate/Deactivate toggle without identifying a content object, verifying ownership or authorization, previewing scope, confirming a destructive action, reconciling dependencies, or handling retention, backups, moderation, legal holds, recovery, audit, and completion. No verified content-deletion workflow is connected, so the destructive control was removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Trash2 aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Content-deletion-readiness status</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A trustworthy content-deletion service requires authenticated ownership, precise object scope, authorization, preview and confirmation, dependency handling, retention and legal-hold rules, moderation and appeal controls, backup and cache propagation, privacy review, recovery, auditability, and verifiable completion. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{readiness.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="content-boundaries-heading"><h2 id="content-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2">{boundaries.map(({ title, description, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><Icon aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p></Card>)}</div></section><div className="flex flex-wrap gap-3"><Link href="/settings"><Button variant="outline">Return to account settings</Button></Link><Link href="/content-library"><Button variant="outline"><FileText aria-hidden="true" className="mr-2 h-4 w-4" />View content status</Button></Link><Link href="/privacy-policy"><Button variant="outline">Review privacy status</Button></Link><Link href="/contact-us-form"><Button variant="outline">Contact authenticated support</Button></Link></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No content owner, object identifier, permission, dependency, post, message, comment, file, media item, course item, profile field, deletion request, deletion job, retention result, anonymization, propagation, recovery, moderation decision, appeal, legal hold, backup, cache, analytics record, database row, API request, or database mutation is performed. This page is not evidence that content deletion, recovery, privacy rights, retention, moderation, or support is available.</p></div></Card></main></div>;
 }
