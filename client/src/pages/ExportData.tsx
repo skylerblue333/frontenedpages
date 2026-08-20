@@ -1,25 +1,23 @@
-import { useState } from "react";
+import { AlertTriangle, CheckCircle2, Download, FileCheck2, KeyRound, Search, ShieldAlert, UserRound } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Authenticated data subject, account ownership, organization scope, and export authorization", value: "Not connected", icon: KeyRound },
+  { label: "Data inventory, system provenance, relationships, completeness, and record classification", value: "Unavailable", icon: FileCheck2 },
+  { label: "Consent, redaction, privacy rights, retention, encryption, secure delivery, and deletion", value: "Not verified", icon: ShieldAlert },
+  { label: "Formats, portability, audit trail, legal holds, sensitive financial/crypto data, and support", value: "Not configured", icon: Download },
+];
+
+const surfaces = [
+  { title: "Subject-access scope", scope: "Identity verification, account and organization scope, records, relationships, shared content, permissions, and sensitive-data classification", status: "Unavailable" },
+  { title: "Export integrity", scope: "Source provenance, completeness, timestamps, schema, format, redaction, attachments, encryption, checksums, and delivery security", status: "Not verified" },
+  { title: "Privacy and retention", scope: "Consent, access rights, deletion, correction, retention, legal holds, financial and crypto records, and third-party data", status: "Not configured" },
+  { title: "Governance and support", scope: "Authorization, audit, rate limits, abuse prevention, support, incident response, recovery, and user notification", status: "Not connected" },
+];
 
 export default function ExportData() {
-  const [state, setState] = useState(false);
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 to-black p-4">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">ExportData</h1>
-        <p className="text-slate-400 mb-8">export data</p>
-        
-        <Card className="bg-slate-900 border-slate-800 p-8">
-          <div className="space-y-6">
-            <p className="text-slate-300">Content for ExportData page</p>
-            <Button onClick={() => setState(!state)}>
-              {state ? "Deactivate" : "Activate"}
-            </Button>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Download} title="Export Data" subtitle="Data-export readiness status; no authenticated data subject, account record, organization data, personal data, financial record, crypto record, export file, or download is available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Data export is not verified</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen exposed a generic activate/deactivate control and vague export wording without authenticating the data subject, identifying the data inventory, verifying provenance, applying privacy rights, or defining secure export and delivery semantics. No export, download, data disclosure, or deletion action is available, so the control was removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Download aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Data-export readiness</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A safe export workflow requires authenticated subject and organization scope, a complete data inventory, source provenance, record classification, privacy and consent review, redaction of third-party and sensitive data, retention and legal-hold rules, encrypted delivery, integrity checks, audit, support, and recovery. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="export-data-surfaces-heading"><h2 id="export-data-surfaces-heading" className="mb-4 text-xl font-semibold">Export surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Download aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No export capability, data scope, privacy property, security property, financial state, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="export-data-boundaries-heading"><h2 id="export-data-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><FileCheck2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No export or disclosure claim</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No sign-in, identity check, account lookup, data inventory, personal record, financial record, crypto record, attachment, format conversion, redaction, export file, download, delivery, deletion, or database read or write is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Privacy, identity, financial, crypto, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">An export can disclose personal, third-party, financial, crypto, health, or confidential organizational data and may be difficult to revoke. Verify identity, scope, consent or legal basis, redaction, retention, encryption, delivery recipient, audit, and support before enabling or acting on an export.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/privacy-center"><Button variant="outline"><UserRound aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy status</Button></Link><Link href="/security-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security status</Button></Link><Link href="/entity-profile"><Button variant="outline"><KeyRound aria-hidden="true" className="mr-2 h-4 w-4" />Review identity status</Button></Link><Link href="/contact-us-form"><Button variant="outline"><Search aria-hidden="true" className="mr-2 h-4 w-4" />Ask about export availability</Button></Link></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No auth check, identity verification, data query, export generation, file creation, download, delivery, redaction, encryption, API request, database read or write, deletion, notification, or personal-data operation is performed. This page is not evidence of data portability, privacy-rights fulfillment, secure delivery, financial/crypto export, or production export functionality.</p></div></Card></main></div>;
 }
