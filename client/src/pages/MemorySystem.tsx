@@ -1,201 +1,23 @@
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/_core/hooks/useAuth";
+import { AlertTriangle, Brain, CheckCircle2, Database, KeyRound, Layers3, LockKeyhole, RefreshCw, ShieldAlert, Tag, UserRound } from "lucide-react";
+import { Link } from "wouter";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { PageHeader } from "@/components/PageHeader";
-import { toast } from "sonner";
-import { Brain, Database, User, Tag, Clock, Search, Plus, Trash2, RefreshCw, Layers } from "lucide-react";
 
-const MEMORY_CATEGORIES = [
-  { id: "preferences", label: "Preferences", icon: User, color: "text-blue-400", count: 47 },
-  { id: "context", label: "Context", icon: Layers, color: "text-purple-400", count: 128 },
-  { id: "interactions", label: "Interactions", icon: Clock, color: "text-green-400", count: 2341 },
-  { id: "knowledge", label: "Knowledge", icon: Brain, color: "text-yellow-400", count: 89 },
+const boundaries = [
+  { label: "Authenticated user, organization, memory category, context, preference, and authorization scope", value: "Not connected", icon: KeyRound },
+  { label: "Memory source, event, interaction, preference, context, confidence, tags, access, and timestamp provenance", value: "Unavailable", icon: Database },
+  { label: "Storage, retrieval, preference inference, context continuity, synchronization, retention, deletion, and user-control behavior", value: "Not verified", icon: RefreshCw },
+  { label: "Personal data, sensitive inference, privacy, security, model, accessibility, and least-privilege safeguards", value: "Not configured", icon: LockKeyhole },
 ];
 
-const SAMPLE_MEMORIES = [
-  { id: 1, type: "preference", content: "User prefers dark mode and compact layouts", confidence: 0.97, lastAccessed: "2 min ago", tags: ["UI", "display"] },
-  { id: 2, type: "context", content: "Currently building a DeFi staking dashboard with SKY444 integration", confidence: 0.94, lastAccessed: "5 min ago", tags: ["crypto", "project"] },
-  { id: 3, type: "interaction", content: "Asked about TRUMP mining 3 times this week — high interest signal", confidence: 0.88, lastAccessed: "1 hour ago", tags: ["mining", "TRUMP"] },
-  { id: 4, type: "knowledge", content: "User is a software engineer with Web3 and React expertise", confidence: 0.99, lastAccessed: "1 day ago", tags: ["skills", "background"] },
-  { id: 5, type: "preference", content: "Prefers concise responses with code examples over long explanations", confidence: 0.91, lastAccessed: "3 hours ago", tags: ["communication", "style"] },
-  { id: 6, type: "context", content: "Working on YC pitch — needs clean MVP narrative, not feature list", confidence: 0.96, lastAccessed: "30 min ago", tags: ["YC", "pitch", "startup"] },
+const surfaces = [
+  { title: "User and memory scope", scope: "Authenticated user, organization, category, memory, context, preference, purpose, consent, and authorization", status: "Unavailable", icon: UserRound },
+  { title: "Memory data provenance", scope: "Source event, interaction, content, tags, confidence, access history, model, storage, and timestamp", status: "Not connected", icon: Database },
+  { title: "Preference and context inference", scope: "Inference purpose, methodology, model/provider, uncertainty, explanation, feedback, and correction", status: "Not verified", icon: Brain },
+  { title: "Privacy and lifecycle controls", scope: "Sensitive data, sharing, synchronization, retention, deletion, export, audit, security, and access", status: "Not configured", icon: ShieldAlert },
 ];
 
 export default function MemorySystem() {
-  const { user } = useAuth();
-  const [activeCategory, setActiveCategory] = useState("all");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [newMemory, setNewMemory] = useState("");
-
-  const filtered = SAMPLE_MEMORIES.filter(m => {
-    if (activeCategory !== "all" && !m.type.startsWith(activeCategory.slice(0, -1))) return false;
-    if (searchQuery && !m.content.toLowerCase().includes(searchQuery.toLowerCase())) return false;
-    return true;
-  });
-
-  return (
-    <div className="container py-8 max-w-6xl animate-page-in">
-      <PageHeader
-        backHref="/agent-coordination"
-        icon={Brain}
-        title="Long-Term Memory System"
-        subtitle="Phase 9 — Persistent memory graphs, user preference models, context continuity"
-      />
-
-      {/* Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-        {MEMORY_CATEGORIES.map(cat => (
-          <button
-            key={cat.id}
-            onClick={() => setActiveCategory(activeCategory === cat.id ? "all" : cat.id)}
-            className={`card p-4 text-left transition-all hover:border-primary/50 ${activeCategory === cat.id ? "border-primary" : ""}`}
-          >
-            <cat.icon className={`w-6 h-6 ${cat.color} mb-2`} />
-            <div className="text-xl font-bold">{cat.count.toLocaleString()}</div>
-            <div className="text-xs text-muted-foreground">{cat.label}</div>
-          </button>
-        ))}
-      </div>
-
-      <div className="grid md:grid-cols-3 gap-6">
-        {/* Memory list */}
-        <div className="md:col-span-2 space-y-4">
-          <div className="flex items-center gap-3">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <input
-                value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
-                className="w-full bg-secondary/50 border border-border/50 rounded-lg pl-9 pr-3 py-2 text-sm"
-                placeholder="Search memories..."
-              />
-            </div>
-            <button
-              onClick={() => toast.info("Memory sync running...")}
-              className="p-2 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors"
-            >
-              <RefreshCw className="w-4 h-4" />
-            </button>
-          </div>
-
-          {filtered.map(mem => (
-            <div key={mem.id} className="card p-4">
-              <div className="flex items-start justify-between gap-3">
-                <div className="flex-1">
-                  <div className="text-sm mb-2">{mem.content}</div>
-                  <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                    <span className="flex items-center gap-1">
-                      <Clock className="w-3 h-3" />
-                      {mem.lastAccessed}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Database className="w-3 h-3" />
-                      {(mem.confidence * 100).toFixed(0)}% confidence
-                    </span>
-                  </div>
-                  <div className="flex flex-wrap gap-1 mt-2">
-                    {mem.tags.map(tag => (
-                      <span key={tag} className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full">
-                        #{tag}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-                <button
-                  onClick={() => toast.success("Memory removed")}
-                  className="p-1.5 rounded-lg hover:bg-red-500/20 text-muted-foreground hover:text-red-400 transition-colors shrink-0"
-                >
-                  <Trash2 className="w-3.5 h-3.5" />
-                </button>
-              </div>
-              {/* Confidence bar */}
-              <div className="mt-3 h-1 bg-secondary rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-primary rounded-full transition-all"
-                  style={{ width: `${mem.confidence * 100}%` }}
-                />
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Add memory + model info */}
-        <div className="space-y-4">
-          <div className="card p-5">
-            <h3 className="font-semibold mb-3 flex items-center gap-2">
-              <Plus className="w-4 h-4 text-primary" />
-              Add Memory
-            </h3>
-            <textarea
-              value={newMemory}
-              onChange={e => setNewMemory(e.target.value)}
-              rows={4}
-              className="w-full bg-secondary/50 border border-border/50 rounded-lg px-3 py-2 text-sm resize-none mb-3"
-              placeholder="Enter a fact, preference, or context to remember..."
-            />
-            <button
-              onClick={() => {
-                if (!newMemory.trim()) return;
-                toast.success("Memory stored");
-                setNewMemory("");
-              }}
-              className="btn-primary w-full text-sm"
-            >
-              Store Memory
-            </button>
-          </div>
-
-          <div className="card p-5">
-            <h3 className="font-semibold mb-3 flex items-center gap-2">
-              <Tag className="w-4 h-4 text-purple-400" />
-              Preference Model
-            </h3>
-            <div className="space-y-3">
-              {[
-                { label: "Content Style", value: "Technical + Concise", bar: 0.91 },
-                { label: "Response Length", value: "Short", bar: 0.78 },
-                { label: "Code Examples", value: "Always include", bar: 0.97 },
-                { label: "Topic Focus", value: "Web3 + AI", bar: 0.94 },
-              ].map(pref => (
-                <div key={pref.label}>
-                  <div className="flex justify-between text-xs mb-1">
-                    <span className="text-muted-foreground">{pref.label}</span>
-                    <span className="font-medium">{pref.value}</span>
-                  </div>
-                  <div className="h-1.5 bg-secondary rounded-full overflow-hidden">
-                    <div className="h-full bg-gradient-to-r from-primary to-purple-500 rounded-full" style={{ width: `${pref.bar * 100}%` }} />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="card p-5">
-            <h3 className="font-semibold mb-3 flex items-center gap-2">
-              <Brain className="w-4 h-4 text-yellow-400" />
-              Context Continuity
-            </h3>
-            <div className="space-y-2 text-sm">
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Active Context Window</span>
-                <span className="font-medium text-green-400">Live</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Memory Depth</span>
-                <span className="font-medium">30 days</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Graph Nodes</span>
-                <span className="font-medium">2,605</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Compression</span>
-                <span className="font-medium text-blue-400">Auto</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Brain} title="Long-Term Memory System" subtitle="Personal-memory and context-continuity readiness status; no authenticated user, memory store, preference model, context service, synchronization layer, retention policy, or production memory backend is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Long-term memory is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen displayed fabricated personal memories, category counts, content, tags, access times, confidence scores, inferred preferences, live context, memory depth, graph node totals, and storage or deletion actions. It used fixed sample data and local toast messages to imply a persistent memory system without an authenticated user, source provenance, consent, model evidence, privacy controls, or a real storage contract. Those memories, metrics, inferences, forms, synchronization, storage, and deletion claims were removed. No memory, preference, context, user, confidence, graph, storage, or availability state is displayed, accepted, stored, inferred, or simulated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Brain aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Personal-memory readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A trustworthy memory system requires authenticated user scope, explicit purpose and consent, authoritative source provenance, transparent preference and context inference, uncertainty and correction, secure persistence, retention and deletion controls, privacy, and least-privilege authorization. A remembered preference or inferred context is not a fact or guarantee. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="memory-system-surfaces-heading"><h2 id="memory-system-surfaces-heading" className="mb-4 text-xl font-semibold">Memory-system control surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No memory, preference, context, user, confidence, model, privacy, security, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="memory-system-boundaries-heading"><h2 id="memory-system-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No memory operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, user or memory query, event lookup, preference inference, context retrieval, synchronization, storage, deletion, API request, database read or write, export, or personal-data operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">AI, privacy, personal data, security, accessibility, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not enter passwords, intimate content, identity documents, precise location, financial details, private keys, or personal contact information here. Do not treat this page as evidence of a memory, preference, context, confidence score, synchronization, storage, deletion, or secure memory capability. Verify consent, purpose, model limits, privacy, retention, deletion, correction, and authorization before using personal-data memory.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/memory-constellation"><Button variant="outline"><Layers3 aria-hidden="true" className="mr-2 h-4 w-4" />Review constellation status</Button></Link><Link href="/memory-graph-visualizer"><Button variant="outline"><Database aria-hidden="true" className="mr-2 h-4 w-4" />Review graph status</Button></Link><Link href="/ai-tools-hub"><Button variant="outline"><Brain aria-hidden="true" className="mr-2 h-4 w-4" />Review AI status</Button></Link><Link href="/safety-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review safety</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><Tag aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No auth check, user or memory query, event lookup, preference inference, context retrieval, synchronization, storage, deletion, API request, database read or write, export, or personal-data operation is performed. This page is not evidence of a memory, preference, context, confidence score, synchronization, storage, deletion, or secure memory capability.</p></div></Card></main></div>;
 }
