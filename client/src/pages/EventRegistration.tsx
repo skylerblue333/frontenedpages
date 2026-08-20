@@ -1,75 +1,23 @@
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/_core/hooks/useAuth";
+import { AlertTriangle, CalendarCheck2, CheckCircle2, FileCheck2, KeyRound, Search, ShieldAlert, Ticket } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
-import { Loader2, Plus, Search, Settings } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Authenticated attendee or organizer, event provenance, registration authority, and consent", value: "Not connected", icon: KeyRound },
+  { label: "Capacity, availability, waitlists, accessibility, invitations, cancellations, and attendance evidence", value: "Unavailable", icon: CalendarCheck2 },
+  { label: "Tickets, payment processor, fees, taxes, refunds, disputes, and reconciliation", value: "Not verified", icon: Ticket },
+  { label: "Privacy, reminders, notifications, moderation, retention, audit, and support", value: "Not configured", icon: ShieldAlert },
+];
+
+const surfaces = [
+  { title: "Event and availability", scope: "Verified event, organizer, venue, date, time zone, capacity, availability, registration window, dependencies, and change history", status: "Unavailable" },
+  { title: "Registration and consent", scope: "Attendee identity, invitations, consent, accessibility, waitlists, cancellations, confirmations, reminders, and attendance provenance", status: "Not configured" },
+  { title: "Ticketing and finance", scope: "Ticket prices, payment processor, fees, taxes, refunds, disputes, payouts, and financial reconciliation", status: "Not verified" },
+  { title: "Privacy and governance", scope: "Personal data, sharing, retention, moderation, safety, notifications, exports, audit, support, and incident response", status: "Not connected" },
+];
 
 export default function EventRegistration() {
-  const { isAuthenticated } = useAuth();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>EventRegistration</CardTitle>
-            <CardDescription>Sign in to access this feature</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full">Sign In</Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold">EventRegistration</h1>
-            <p className="text-muted-foreground mt-2">RSVP management</p>
-          </div>
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            New
-          </Button>
-        </div>
-
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Search className="w-4 h-4 text-muted-foreground" />
-              <Input
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="max-w-sm"
-              />
-              <Button variant="outline" size="icon">
-                <Settings className="w-4 h-4" />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {isLoading ? (
-              <div className="flex justify-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
-              </div>
-            ) : (
-              <div className="text-center py-12 text-muted-foreground">
-                <p>No data available. Start by creating a new item.</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={CalendarCheck2} title="Event Registration" subtitle="Registration-readiness status; no authenticated attendee or organizer, event, availability, capacity, ticket, payment, RSVP, confirmation, or reminder is available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Event registration is not verified</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen exposed a sign-in path and generic new, settings, search, loading, and empty-state controls without a connected registration service or documented event, attendee, consent, privacy, accessibility, safety, or ticketing boundary. No event availability, RSVP, capacity, ticket, payment, confirmation, or reminder evidence was available, so registration controls were removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><CalendarCheck2 aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Registration readiness</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Safe event registration requires authenticated attendee or organizer authority, verified event and availability data, consent and minimization, accessibility and safety, capacity and waitlist correctness, reliable confirmations and reminders, ticketing and financial reconciliation, cancellation and refund handling, least privilege, audit, and incident response. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="event-registration-surfaces-heading"><h2 id="event-registration-surfaces-heading" className="mb-4 text-xl font-semibold">Registration surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><CalendarCheck2 aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No registration capability, attendee state, date, financial state, privacy property, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="event-registration-boundaries-heading"><h2 id="event-registration-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><FileCheck2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No RSVP or registration claim</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No sign-in, attendee, organizer, event, venue, date, capacity, availability, invitation, waitlist, RSVP, registration, confirmation, reminder, ticket, payment, refund, dispute, or attendance record is read, calculated, displayed, created, exported, or simulated.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Privacy, safety, accessibility, and finance warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Registration can expose identity, schedules, accessibility needs, relationships, and financial data. Verify event authority, availability, consent, accessibility, safety, privacy, ticketing evidence, payment processor, refunds, reconciliation, retention, and audit before enabling or acting on an RSVP.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/event-calendar"><Button variant="outline"><CalendarCheck2 aria-hidden="true" className="mr-2 h-4 w-4" />Review calendar status</Button></Link><Link href="/event-creation"><Button variant="outline"><Ticket aria-hidden="true" className="mr-2 h-4 w-4" />Review creation status</Button></Link><Link href="/security-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security status</Button></Link><Link href="/contact-us-form"><Button variant="outline"><Search aria-hidden="true" className="mr-2 h-4 w-4" />Ask about registration</Button></Link></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No auth check, sign-in, event lookup, attendee lookup, availability check, RSVP, registration, invitation, waitlist, confirmation, reminder, ticketing, payment, refund, API request, database read or write, notification, export, or personal-data operation is performed. This page is not evidence of event registration, capacity, ticketing, reminders, privacy, safety, accessibility, or production RSVP functionality.</p></div></Card></main></div>;
 }
