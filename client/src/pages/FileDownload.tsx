@@ -1,25 +1,23 @@
-import { useState } from "react";
+import { AlertTriangle, CheckCircle2, Download, FileCheck2, FileText, KeyRound, LockKeyhole, Search, ShieldAlert, UserRound } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Authenticated recipient, owner, organization scope, permission, least privilege, and revocation", value: "Not connected", icon: KeyRound },
+  { label: "File identity, source, checksum, version, availability, signed URL, expiration, and recipient provenance", value: "Unavailable", icon: FileCheck2 },
+  { label: "Encryption, malware/content validation, transfer status, retry safety, audit, retention, and deletion", value: "Not verified", icon: LockKeyhole },
+  { label: "Personal, financial, crypto, legal, health, AI, security, and confidential-data safeguards", value: "Not configured", icon: ShieldAlert },
+];
+
+const surfaces = [
+  { title: "File and recipient", scope: "File owner, identity, type, size, version, checksum, recipient, permission, visibility, and availability", status: "Unavailable", icon: FileText },
+  { title: "Secure delivery", scope: "Encryption, signed URL, expiration, access scope, malware validation, transfer status, failure, retry, and revocation", status: "Not verified", icon: LockKeyhole },
+  { title: "Audit and retention", scope: "Download event, access log, notification, retention, deletion, legal hold, recovery, and support ownership", status: "Not configured", icon: FileCheck2 },
+  { title: "Sensitive files", scope: "Personal, financial, crypto, wallet, legal, health, AI, security, and confidential organizational records", status: "Not connected", icon: UserRound },
+];
 
 export default function FileDownload() {
-  const [state, setState] = useState(false);
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 to-black p-4">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">FileDownload</h1>
-        <p className="text-slate-400 mb-8">file download</p>
-        
-        <Card className="bg-slate-900 border-slate-800 p-8">
-          <div className="space-y-6">
-            <p className="text-slate-300">Content for FileDownload page</p>
-            <Button onClick={() => setState(!state)}>
-              {state ? "Deactivate" : "Activate"}
-            </Button>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Download} title="File Download" subtitle="File-delivery readiness status; no authenticated recipient, file, signed URL, download permission, transfer status, or personal-data record is available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">File download is not verified</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen exposed a generic activate/deactivate control and vague download wording without an authenticated recipient, file source, owner, permission, signed delivery mechanism, encryption, malware, expiration, audit, or retention boundary. No file, link, transfer, or delivery evidence was available, so the control was removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Download aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Secure file-delivery readiness</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A safe download requires authenticated recipient scope, verified file ownership and provenance, least-privilege access, encryption, malware and content validation, scoped and expiring delivery, transfer status, retry safety, revocation, audit, retention, deletion, and special handling for personal, financial, crypto, legal, health, AI, security, or confidential files. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="file-download-surfaces-heading"><h2 id="file-download-surfaces-heading" className="mb-4 text-xl font-semibold">Delivery surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No delivery capability, permission, file state, privacy property, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="file-download-boundaries-heading"><h2 id="file-download-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><FileCheck2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No download or link claim</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, file lookup, recipient lookup, signed URL, download, transfer, retry, access event, notification, API request, database read or write, deletion, export, or personal-data operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Privacy, security, legal, finance, crypto, and safety warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">A downloaded file may expose personal, financial, crypto, wallet, legal, health, AI, security, or confidential organizational information. Verify recipient, owner, permission, encryption, malware screening, expiration, audit, revocation, retention, and support boundaries before enabling delivery.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/file-browser"><Button variant="outline"><FileText aria-hidden="true" className="mr-2 h-4 w-4" />Review file status</Button></Link><Link href="/file-sharing"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review sharing status</Button></Link><Link href="/file-upload-form"><Button variant="outline"><Download aria-hidden="true" className="mr-2 h-4 w-4" />Review upload status</Button></Link><Link href="/security-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security status</Button></Link><Link href="/contact-us-form"><Button variant="outline"><Search aria-hidden="true" className="mr-2 h-4 w-4" />Ask about delivery</Button></Link></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No auth check, file lookup, recipient lookup, signed URL, download, transfer, retry, access event, API request, database read or write, notification, deletion, export, or personal-data operation is performed. This page is not evidence of secure file delivery, permission enforcement, encryption, malware scanning, revocation, or production download functionality.</p></div></Card></main></div>;
 }
