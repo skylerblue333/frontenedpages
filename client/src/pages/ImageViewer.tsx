@@ -1,25 +1,23 @@
-import { useState } from "react";
+import { AlertTriangle, CheckCircle2, Download, FileCheck2, Image as ImageIcon, KeyRound, LockKeyhole, Share2, ShieldAlert } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Authenticated owner, workspace, asset, collaborator, view, share, and download authorization scope", value: "Not connected", icon: KeyRound },
+  { label: "Image source, metadata, format, dimensions, creator, ownership, license, and freshness provenance", value: "Unavailable", icon: ImageIcon },
+  { label: "Visibility, access, caching, sharing, download, export, deletion, retention, and audit controls", value: "Not verified", icon: Share2 },
+  { label: "Personal, biometric, copyrighted, sensitive-image, privacy, security, and least-privilege safeguards", value: "Not configured", icon: ShieldAlert },
+];
+
+const surfaces = [
+  { title: "Asset and provenance", scope: "Asset identity, source, creator, dimensions, format, metadata, timestamp, AI disclosure, freshness, and content integrity", status: "Unavailable", icon: ImageIcon },
+  { title: "Access and presentation", scope: "Owner, workspace, visibility, permissions, signed URLs, caching, thumbnails, alt text, accessibility, and moderation", status: "Not verified", icon: KeyRound },
+  { title: "Sharing and download", scope: "Links, recipients, download, export, watermarking, licensing, attribution, retention, deletion, and audit", status: "Not configured", icon: Download },
+  { title: "Privacy and safety", scope: "Personal, biometric, health, identity, copyrighted, abusive, or sensitive imagery; reporting, privacy, security, and review", status: "Not connected", icon: LockKeyhole },
+];
 
 export default function ImageViewer() {
-  const [state, setState] = useState(false);
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 to-black p-4">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">ImageViewer</h1>
-        <p className="text-slate-400 mb-8">image viewer</p>
-        
-        <Card className="bg-slate-900 border-slate-800 p-8">
-          <div className="space-y-6">
-            <p className="text-slate-300">Content for ImageViewer page</p>
-            <Button onClick={() => setState(!state)}>
-              {state ? "Deactivate" : "Activate"}
-            </Button>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={ImageIcon} title="Image Viewer" subtitle="Image-viewing readiness status; no authenticated asset scope, image source, metadata, viewer, storage, sharing, download, or production image-viewing service is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Image viewing is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen exposed a generic activate/deactivate control without asset identity, source provenance, metadata, ownership, permissions, visibility, sharing, download, moderation, privacy, or authorization boundaries. That unsupported state mutation was removed. No image, asset, thumbnail, signed URL, share link, download, or deletion is created or displayed from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><ImageIcon aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Image-viewing readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Trustworthy image viewing requires authenticated asset scope, source and creator provenance, permission and visibility checks, safe delivery and caching, metadata and AI disclosure, accessible presentation, moderation, licensing and download semantics, privacy and sensitive-image safeguards, retention and deletion, audit, and human review for copyrighted or consequential content. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="image-viewer-surfaces-heading"><h2 id="image-viewer-surfaces-heading" className="mb-4 text-xl font-semibold">Viewing surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No image, asset, metadata, permission, viewer, share, download, moderation, privacy, security, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="image-viewer-boundaries-heading"><h2 id="image-viewer-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No image or access claim</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, asset lookup, image fetch, URL signing, metadata read, thumbnail generation, permission check, cache write, share-link creation, download, export, deletion, API request, database read or write, notification, or personal-data operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Media, copyright, sensitive-data, privacy, security, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not treat this page as evidence of image access, asset ownership, creator, licensing, commercial rights, metadata, visibility, sharing, download, storage, deletion, moderation, or privacy. Verify consent, rights, source provenance, access scope, safe delivery, sensitive-image handling, retention, security, accessibility, and human review before viewing or sharing imagery.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/image-gallery"><Button variant="outline"><ImageIcon aria-hidden="true" className="mr-2 h-4 w-4" />Review gallery status</Button></Link><Link href="/image-editor"><Button variant="outline"><ImageIcon aria-hidden="true" className="mr-2 h-4 w-4" />Review editor status</Button></Link><Link href="/file-preview"><Button variant="outline"><FileCheck2 aria-hidden="true" className="mr-2 h-4 w-4" />Review file preview</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link><Link href="/security-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security</Button></Link><Link href="/documentation"><Button variant="outline"><FileCheck2 aria-hidden="true" className="mr-2 h-4 w-4" />Review evidence</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No auth check, asset lookup, image fetch, URL signing, metadata read, thumbnail generation, permission check, cache write, share-link creation, download, export, deletion, API request, database read or write, notification, or personal-data operation is performed. This page is not evidence of image access, asset ownership, creator, licensing, commercial rights, metadata, visibility, sharing, download, storage, deletion, moderation, privacy, or production image-viewing functionality.</p></Card></main></div>;
 }
