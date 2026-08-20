@@ -1,75 +1,23 @@
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/_core/hooks/useAuth";
+import { AlertTriangle, CheckCircle2, ClipboardList, KeyRound, LockKeyhole, PackageSearch, ReceiptText, RefreshCw, ShieldAlert } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
-import { Loader2, Plus, Search, Settings } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Authenticated user, organization, catalog, warehouse, item, and inventory authorization scope", value: "Not connected", icon: KeyRound },
+  { label: "Item identity, ownership, stock source, unit, reservation, adjustment, and movement provenance", value: "Unavailable", icon: PackageSearch },
+  { label: "Orders, pricing, payments, fulfillment, returns, reconciliation, and duplicate-prevention controls", value: "Not verified", icon: ReceiptText },
+  { label: "Personal, address, financial, supplier, security, privacy, retention, audit, and least-privilege safeguards", value: "Not configured", icon: ShieldAlert },
+];
+
+const surfaces = [
+  { title: "Inventory ledger", scope: "Item identity, SKU, owner, location, quantity, unit, source, movement, adjustment, reservation, and immutable audit history", status: "Unavailable", icon: ClipboardList },
+  { title: "Orders and fulfillment", scope: "Order, customer, address, price, payment, allocation, shipment, delivery, return, refund, and reconciliation", status: "Not connected", icon: ReceiptText },
+  { title: "Availability and alerts", scope: "Authoritative stock, thresholds, reservations, stale data, low-stock event provenance, delivery, and retry behavior", status: "Not configured", icon: RefreshCw },
+  { title: "Privacy and operational safety", scope: "Personal, address, financial, supplier, security, retention, deletion, access logging, and authorization", status: "Not verified", icon: LockKeyhole },
+];
 
 export default function InventoryManagement() {
-  const { isAuthenticated } = useAuth();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>InventoryManagement</CardTitle>
-            <CardDescription>Sign in to access this feature</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full">Sign In</Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold">InventoryManagement</h1>
-            <p className="text-muted-foreground mt-2">Stock tracking and low stock alerts</p>
-          </div>
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            New
-          </Button>
-        </div>
-
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Search className="w-4 h-4 text-muted-foreground" />
-              <Input
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="max-w-sm"
-              />
-              <Button variant="outline" size="icon">
-                <Settings className="w-4 h-4" />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {isLoading ? (
-              <div className="flex justify-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
-              </div>
-            ) : (
-              <div className="text-center py-12 text-muted-foreground">
-                <p>No data available. Start by creating a new item.</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={PackageSearch} title="Inventory Management" subtitle="Inventory-service readiness status; no authenticated organization, item, warehouse, stock ledger, order, pricing, fulfillment, alert, or production inventory service is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Inventory management is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen implied stock tracking and low-stock alerts, exposed an unauthenticated sign-in pseudo-action, and included inert New, settings, search, and loading controls without an item ledger, stock source, reservations, pricing, orders, fulfillment, privacy, or authorization boundary. Those unsupported claims and controls were removed. No item, stock quantity, price, order, alert, ownership, valuation, or fulfillment result is displayed or initiated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><PackageSearch aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Inventory-service readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Reliable inventory management requires authenticated organization and warehouse scope, authoritative item and movement records, reservation and concurrency rules, clear ownership and valuation, order and fulfillment semantics, payment and refund handling, alert provenance, reconciliation, privacy for customers and suppliers, auditability, and human-readable failure states. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="inventory-surfaces-heading"><h2 id="inventory-surfaces-heading" className="mb-4 text-xl font-semibold">Inventory surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No item, quantity, price, order, fulfillment, alert, privacy, security, ownership, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="inventory-boundaries-heading"><h2 id="inventory-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No inventory or order operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, inventory query, item creation, stock adjustment, reservation, search, alert, order, payment, fulfillment, refund, API request, database read or write, notification, export, deletion, or personal-data operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Commerce, financial, privacy, security, supplier, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not treat this page as evidence of stock, availability, low-stock alerts, prices, ownership, valuations, orders, payments, fulfillment, refunds, supplier records, or production commerce functionality. Verify item source, owner, quantity, timing, reservations, payment, tax, privacy, fraud controls, and reconciliation before relying on inventory data.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/inventory"><Button variant="outline"><PackageSearch aria-hidden="true" className="mr-2 h-4 w-4" />Review inventory status</Button></Link><Link href="/orders"><Button variant="outline"><ReceiptText aria-hidden="true" className="mr-2 h-4 w-4" />Review orders</Button></Link><Link href="/marketplace"><Button variant="outline"><ClipboardList aria-hidden="true" className="mr-2 h-4 w-4" />Review marketplace</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link><Link href="/security-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No auth check, inventory query, item creation, stock adjustment, reservation, search, alert, order, payment, fulfillment, refund, API request, database read or write, notification, export, deletion, or personal-data operation is performed. This page is not evidence of stock, availability, low-stock alerts, prices, ownership, valuations, orders, payments, fulfillment, refunds, supplier records, or production commerce functionality.</p></Card></main></div>;
 }
