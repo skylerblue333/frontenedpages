@@ -1,89 +1,23 @@
-import { UserPlus } from "lucide-react";
+import { AlertTriangle, Bell, CheckCircle2, Clock3, FileCheck2, KeyRound, Search, ShieldAlert, UserPlus, UserRound, Users } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { PageHeader } from "@/components/PageHeader";
 
+const boundaries = [
+  { label: "Authenticated requester, recipient, relationship scope, consent, and least privilege", value: "Not connected", icon: KeyRound },
+  { label: "Request identity, provenance, timestamp, status, expiration, privacy, and deletion semantics", value: "Unavailable", icon: Clock3 },
+  { label: "Accept/decline, blocking, moderation, notifications, audit, and safety escalation", value: "Not verified", icon: ShieldAlert },
+  { label: "Personal, dating, financial, crypto, marketplace, AI, and third-party data safeguards", value: "Not configured", icon: UserRound },
+];
+
+const surfaces = [
+  { title: "Request registry", scope: "Authenticated subject, requester, recipient, source, consent, timestamp, status, expiration, visibility, and deletion state", status: "Unavailable", icon: UserPlus },
+  { title: "Decision and notification", scope: "Accept, decline, cancel, block, mute, report, notification delivery, idempotency, and audit semantics", status: "Not verified", icon: Bell },
+  { title: "Safety and moderation", scope: "Authenticity, impersonation, harassment, spam, minors, dating safety, escalation, moderator authority, and privacy", status: "Not configured", icon: ShieldAlert },
+  { title: "Sensitive relationships", scope: "Personal, dating, financial, crypto, marketplace, AI, organizational, and third-party connections", status: "Not connected", icon: Users },
+];
+
 export default function FollowRequests() {
-  return (
-    <div className="min-h-screen bg-background">
-      <PageHeader icon={UserPlus} title="Follow Requests" subtitle="Fully functional follow requests page with live data and real-time updates" />
-      
-      <div className="max-w-7xl mx-auto px-4 py-8 space-y-8">
-        {/* Main Content Area */}
-        <Card className="p-8 bg-card border border-border/50">
-          <div className="space-y-6">
-            <h2 className="text-2xl font-bold">Follow Requests</h2>
-            
-            {/* Feature Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <UserPlus className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 1</h3>
-                  <p className="text-sm text-muted-foreground">Real-time data and live updates</p>
-                </div>
-              </Card>
-              
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <UserPlus className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 2</h3>
-                  <p className="text-sm text-muted-foreground">Advanced analytics and insights</p>
-                </div>
-              </Card>
-              
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <UserPlus className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 3</h3>
-                  <p className="text-sm text-muted-foreground">Seamless integration and automation</p>
-                </div>
-              </Card>
-            </div>
-            
-            {/* Action Buttons */}
-            <div className="flex gap-4 flex-wrap pt-4">
-              <Button className="bg-primary hover:bg-primary/90">
-                Get Started
-              </Button>
-              <Button variant="outline">
-                Learn More
-              </Button>
-              <Button variant="ghost">
-                Documentation
-              </Button>
-            </div>
-          </div>
-        </Card>
-        
-        {/* Stats Section */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Active Users</p>
-              <p className="text-2xl font-bold">802K+</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Total Transactions</p>
-              <p className="text-2xl font-bold">2.4M</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Success Rate</p>
-              <p className="text-2xl font-bold">99.9%</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Avg Response Time</p>
-              <p className="text-2xl font-bold">45ms</p>
-            </div>
-          </Card>
-        </div>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={UserPlus} title="Follow Requests" subtitle="Social-request readiness status; no authenticated requester, recipient, relationship request, notification, decision, moderation record, or personal-data record is available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Follow requests are not verified</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen claimed live data and real-time updates, presented generic feature cards, fabricated active-user, transaction, success-rate, and response-time metrics, and offered demo actions without a connected request registry, identity scope, consent, notification, moderation, privacy, or authorization boundary. Those claims and actions were removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><UserPlus aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Social-request readiness</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Trustworthy follow requests require authenticated requester and recipient scope, relationship provenance, consent and privacy controls, clear timestamps and status semantics, idempotent accept or decline decisions, safe notification delivery, blocking and moderation, deletion and audit, and special handling for personal, dating, financial, crypto, marketplace, AI, organizational, or third-party relationships. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="follow-requests-surfaces-heading"><h2 id="follow-requests-surfaces-heading" className="mb-4 text-xl font-semibold">Request surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No request capability, identity, count, notification, privacy property, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="follow-requests-boundaries-heading"><h2 id="follow-requests-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><FileCheck2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No request or metric claim</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, request lookup, user lookup, live update, active-user count, transaction count, success rate, response-time metric, accept/decline mutation, notification, API request, database read or write, export, or personal-data operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Privacy, dating, safety, AI, finance, crypto, and moderation warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Follow requests can expose identity, dating context, location, financial or crypto interests, organizational affiliations, or sensitive third-party information. Verify consent, authenticity, age and safety controls, blocking, moderation, notification scope, least privilege, audit, and human review before accepting or declining requests.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/follow-list"><Button variant="outline"><Users aria-hidden="true" className="mr-2 h-4 w-4" />Review relationship status</Button></Link><Link href="/profile"><Button variant="outline"><UserRound aria-hidden="true" className="mr-2 h-4 w-4" />Review profile status</Button></Link><Link href="/direct-messages"><Button variant="outline"><Bell aria-hidden="true" className="mr-2 h-4 w-4" />Review messaging status</Button></Link><Link href="/security-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review safety status</Button></Link><Link href="/contact-us-form"><Button variant="outline"><Search aria-hidden="true" className="mr-2 h-4 w-4" />Ask about requests</Button></Link></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No auth check, request lookup, user lookup, live update, active-user count, transaction count, success rate, response-time metric, accept/decline mutation, notification, API request, database read or write, export, or personal-data operation is performed. This page is not evidence of live follow requests, social metrics, messaging, moderation, or production social functionality.</p></div></Card></main></div>;
 }
