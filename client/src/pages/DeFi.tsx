@@ -1,171 +1,23 @@
-import { useState } from "react";
+import { ArrowLeftRight, BarChart3, CheckCircle2, Layers, LockKeyhole, ShieldAlert, WalletCards, Zap } from "lucide-react";
 import { Link } from "wouter";
-import { Layers, Zap, ArrowLeftRight, TrendingUp, Shield, Droplets, Plus, ArrowRight, Activity, DollarSign, BarChart3 } from "lucide-react";
 import { PageHeader } from "@/components/PageHeader";
-import { StatCard } from "@/components/StatCard";
+import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 
-const PROTOCOLS = [
-  { name: "SKY Swap",     type: "DEX",      tvl: "$4.2M",  apy: "18.4%", risk: "Low",    href: "/token-swap",   icon: "🔄", color: "from-purple-500 to-cyan-500" },
-  { name: "SKY Lend",     type: "Lending",  tvl: "$2.8M",  apy: "12.1%", risk: "Low",    href: "/staking",      icon: "🏦", color: "from-blue-500 to-indigo-500" },
-  { name: "SKY Farm",     type: "Yield",    tvl: "$1.9M",  apy: "34.7%", risk: "Medium", href: "/yield-farming",icon: "🌾", color: "from-green-500 to-teal-500"  },
-  { name: "SKY Bridge",   type: "Bridge",   tvl: "$890K",  apy: "—",     risk: "Medium", href: "/cross-chain",  icon: "🌉", color: "from-orange-500 to-red-500"  },
-  { name: "SKY Vault",    type: "Vault",    tvl: "$620K",  apy: "22.3%", risk: "Low",    href: "/staking",      icon: "🔒", color: "from-yellow-500 to-orange-500"},
-  { name: "SKY Perps",    type: "Perps",    tvl: "$340K",  apy: "—",     risk: "High",   href: "/trading",      icon: "📈", color: "from-red-500 to-pink-500"    },
+const readiness = [
+  { label: "Verified protocol contracts, chain/network, token metadata, and oracle sources", value: "Not connected", icon: Layers },
+  { label: "Authoritative TVL, APY, volume, pool balances, fees, rates, and liquidity", value: "Unavailable", icon: BarChart3 },
+  { label: "Wallet connection, allowance, signing, swaps, lending, staking, and bridging", value: "Not configured", icon: WalletCards },
+  { label: "Audits, exploit monitoring, custody, slippage, sanctions, and recovery", value: "Not verified", icon: LockKeyhole },
 ];
 
-const POOLS = [
-  { pair: "SKY444/USDT", tvl: "$1.8M", apy: "24.6%", volume: "$420K", myLiquidity: "$0" },
-  { pair: "SKY444/ETH",  tvl: "$980K", apy: "31.2%", volume: "$218K", myLiquidity: "$0" },
-  { pair: "ETH/USDT",    tvl: "$2.4M", apy: "8.4%",  volume: "$1.2M", myLiquidity: "$0" },
-  { pair: "BTC/USDT",    tvl: "$5.1M", apy: "6.1%",  volume: "$3.8M", myLiquidity: "$0" },
+const boundaries = [
+  { title: "No DeFi metric claim", description: "No total value locked, APY, APR, volume, pool balance, liquidity, rate, yield, fee, risk rating, protocol count, token price, or performance result is fetched, displayed, calculated, or simulated.", icon: BarChart3 },
+  { title: "No wallet or protocol action", description: "No connect-wallet, approve, sign, swap, lend, borrow, stake, farm, add liquidity, withdraw, bridge, claim, transaction, API request, database read or write, or account mutation can be initiated here.", icon: WalletCards },
+  { title: "No protocol or chain claim", description: "No SKY Swap, SKY Lend, SKY Farm, SKY Bridge, SKY Vault, perps, supported chain, smart contract, oracle, audit, custody model, bridge security, or protocol availability is asserted.", icon: Layers },
+  { title: "Financial and crypto warn-and-proceed", description: "DeFi involves smart-contract, oracle, bridge, liquidity, impermanent-loss, liquidation, MEV, phishing, custody, regulatory, and total-loss risk. Do not enter private keys, seed phrases, wallet credentials, payment data, or funds here; independently verify contracts and network details before acting.", icon: ShieldAlert },
 ];
-
-const TABS = ["Overview", "Pools", "Lending", "Bridges"] as const;
-type Tab = typeof TABS[number];
-
-const RISK_COLOR: Record<string, string> = {
-  Low: "bg-green-500/20 text-green-400 border-green-500/30",
-  Medium: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30",
-  High: "bg-red-500/20 text-red-400 border-red-500/30",
-};
 
 export default function DeFi() {
-  const [tab, setTab] = useState<Tab>("Overview");
-
-  return (
-    <div className="container py-8 max-w-5xl animate-page-in">
-      <PageHeader
-        backHref="/crypto-hub"
-        icon={Layers}
-        title="DeFi Hub"
-        subtitle="Decentralized finance — swap, lend, farm, and bridge SKY444"
-        actions={
-          <Link href="/token-swap">
-            <Button className="btn-primary gap-2">
-              <Zap className="w-4 h-4" /> Start Earning
-            </Button>
-          </Link>
-        }
-      />
-
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-        <StatCard icon={DollarSign} label="Total TVL" value="$10.5M" color="primary" />
-        <StatCard icon={TrendingUp} label="Best APY" value="34.7%" color="success" />
-        <StatCard icon={Activity} label="24h Volume" value="$5.6M" color="accent" />
-        <StatCard icon={BarChart3} label="Protocols" value={PROTOCOLS.length.toString()} color="warning" />
-      </div>
-
-      {/* Tab bar */}
-      <div className="flex gap-1 bg-secondary/30 rounded-xl p-1 mb-6">
-        {TABS.map(t => (
-          <button
-            key={t}
-            onClick={() => setTab(t)}
-            className={`flex-1 py-2.5 rounded-lg text-xs font-semibold transition-all active:scale-[0.97] ${
-              tab === t ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
-            }`}
-          >
-            {t}
-          </button>
-        ))}
-      </div>
-
-      {(tab === "Overview") && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {PROTOCOLS.map(p => (
-            <Link key={p.name} href={p.href}>
-              <div className="card p-5 hover:border-slate-700/60 active:scale-[0.98] transition-all cursor-pointer group">
-                <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${p.color} flex items-center justify-center text-2xl mb-3`}>
-                  {p.icon}
-                </div>
-                <div className="flex items-center justify-between mb-1">
-                  <h3 className="font-bold text-sm">{p.name}</h3>
-                  <Badge variant="outline" className="text-[10px]">{p.type}</Badge>
-                </div>
-                <div className="grid grid-cols-2 gap-2 mt-3 text-xs">
-                  <div>
-                    <div className="text-muted-foreground">TVL</div>
-                    <div className="font-semibold">{p.tvl}</div>
-                  </div>
-                  <div>
-                    <div className="text-muted-foreground">APY</div>
-                    <div className="font-semibold text-green-400">{p.apy}</div>
-                  </div>
-                </div>
-                <div className="flex items-center justify-between mt-3">
-                  <span className={`text-[10px] px-2 py-0.5 rounded-full border ${RISK_COLOR[p.risk]}`}>
-                    {p.risk} Risk
-                  </span>
-                  <ArrowRight className="w-4 h-4 text-slate-600 group-hover:text-primary transition-colors" />
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
-      )}
-
-      {tab === "Pools" && (
-        <div className="space-y-2">
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="font-semibold text-sm">Liquidity Pools</h3>
-            <Link href="/yield-farming">
-              <Button size="sm" className="btn-primary gap-1 text-xs">
-                <Plus className="w-3 h-3" /> Add Liquidity
-              </Button>
-            </Link>
-          </div>
-          {POOLS.map(pool => (
-            <Link key={pool.pair} href="/yield-farming">
-              <div className="card p-4 flex items-center gap-4 hover:border-slate-700/60 active:scale-[0.99] transition-all cursor-pointer">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-cyan-500 flex items-center justify-center text-white font-bold text-xs shrink-0">
-                  LP
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="font-semibold text-sm">{pool.pair}</div>
-                  <div className="text-xs text-muted-foreground">TVL: {pool.tvl} · Vol: {pool.volume}</div>
-                </div>
-                <div className="text-right shrink-0">
-                  <div className="text-green-400 font-bold text-sm">{pool.apy}</div>
-                  <div className="text-xs text-muted-foreground">APY</div>
-                </div>
-                <Button size="sm" variant="outline" className="text-xs shrink-0">Add LP</Button>
-              </div>
-            </Link>
-          ))}
-        </div>
-      )}
-
-      {tab === "Lending" && (
-        <div className="card p-8 text-center">
-          <div className="w-16 h-16 rounded-2xl bg-blue-500/20 flex items-center justify-center mx-auto mb-4">
-            <Layers className="w-8 h-8 text-blue-400" />
-          </div>
-          <h3 className="font-bold text-lg mb-2">SKY Lend Protocol</h3>
-          <p className="text-muted-foreground text-sm mb-4">Supply assets to earn interest or borrow against your collateral.</p>
-          <Link href="/staking">
-            <Button className="btn-primary gap-2">
-              <ArrowRight className="w-4 h-4" /> Open Lending
-            </Button>
-          </Link>
-        </div>
-      )}
-
-      {tab === "Bridges" && (
-        <div className="card p-8 text-center">
-          <div className="w-16 h-16 rounded-2xl bg-orange-500/20 flex items-center justify-center mx-auto mb-4">
-            <ArrowLeftRight className="w-8 h-8 text-orange-400" />
-          </div>
-          <h3 className="font-bold text-lg mb-2">Cross-Chain Bridge</h3>
-          <p className="text-muted-foreground text-sm mb-4">Bridge SKY444 across Ethereum, BSC, Polygon, Avalanche, and Solana.</p>
-          <Link href="/cross-chain">
-            <Button className="btn-primary gap-2">
-              <ArrowRight className="w-4 h-4" /> Open Bridge
-            </Button>
-          </Link>
-        </div>
-      )}
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader backHref="/crypto-hub" icon={Layers} title="DeFi Hub" subtitle="DeFi-readiness status; no protocols, chains, pools, yields, TVL, volume, wallet connection, signing, swaps, lending, staking, farming, bridging, or financial account state are available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><ShieldAlert aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">DeFi functionality is unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous screen presented fabricated TVL, APY, volume, pool, protocol, and risk metrics, advertised earning and add-liquidity actions, and linked to unsupported swap, staking, farming, lending, and bridge workflows. No verified contracts, chain data, wallet signing, protocol integrations, audits, custody, oracle, rate, or risk controls were connected, so those claims and actions were removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Layers aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">DeFi-readiness status</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Production DeFi infrastructure requires verified contracts and networks, authoritative indexed data, wallet and signing boundaries, transaction simulation and validation, slippage and allowance controls, protocol and bridge monitoring, auditability, incident recovery, privacy, and clear financial risk disclosures. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{readiness.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="defi-boundaries-heading"><h2 id="defi-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2">{boundaries.map(({ title, description, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><Icon aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p></Card>)}</div></section><div className="flex flex-wrap gap-3"><Link href="/crypto-hub"><Button variant="outline"><ArrowLeftRight aria-hidden="true" className="mr-2 h-4 w-4" />View crypto hub status</Button></Link><Link href="/wallet"><Button variant="outline">View wallet status</Button></Link><Link href="/cross-chain"><Button variant="outline">View cross-chain status</Button></Link><Link href="/contact-us-form"><Button variant="outline"><Zap aria-hidden="true" className="mr-2 h-4 w-4" />Ask about availability</Button></Link></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No total value locked, APY, APR, volume, pool balance, liquidity, rate, yield, fee, risk rating, protocol count, token price, performance result, connect-wallet, approve, sign, swap, lend, borrow, stake, farm, add liquidity, withdraw, bridge, claim, transaction, API request, database read or write, protocol, supported chain, smart contract, oracle, audit, custody model, or financial recommendation is performed. This page is not evidence of DeFi availability, contract safety, yield, liquidity, bridge security, custody, profitability, or financial advice.</p></div></Card></main></div>;
 }
