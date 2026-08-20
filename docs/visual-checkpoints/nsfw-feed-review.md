@@ -1,0 +1,9 @@
+# NSFWFeed visual checkpoint
+
+NSFWFeed was hardened from a screen that displayed fabricated creators, handles, tiers, titles, likes, comments, prices, locked content, an inert age confirmation, an unsupported 18 U.S.C. § 2257 compliance claim, and an unverified 80% revenue-share promise. It did not connect age assurance, consent, rights, content, moderation, reporting, privacy, payments, payouts, or authorization. The unsupported workflow was replaced with this explicit readiness boundary. No adult content, creator, viewer, age result, consent record, engagement count, price, purchase, revenue share, moderation decision, or availability state is displayed, queried, inferred, created, sold, stored, shared, or mutated from this page. The registered route is `/n-s-f-w-feed`; `/nsfw-feed` was verified as a 404 and was not treated as a valid checkpoint route.
+
+No auth check, age or guardian verification, creator or content query, consent or rights check, feed or recommendation, content display, purchase, subscription, payout, message, share, moderation, report, API request, database read or write, upload, export, deletion, or adult-content operation is read, calculated, displayed, asserted, initiated, or simulated.
+
+Files: `nsfw-feed-desktop.webp`, `nsfw-feed-mobile.png`.
+
+The 390px capture was reviewed for readable wrapped unavailable disclosure, stacked adult-content safety and rights cards, stacked viewer/rights/monetization/privacy surfaces, adult-content/age-assurance/consent/legal/payment/privacy/safety/accessibility/security/authorization warn-and-proceed notice, safe social/creator/security/privacy links, and absence of horizontal overflow or fake adult content, creator, viewer, age verification, consent, engagement, price, purchase, revenue share, moderation, legal compliance, or privacy claims.
