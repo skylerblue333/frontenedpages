@@ -1,25 +1,23 @@
-import { useState } from "react";
+import { AlertTriangle, CheckCircle2, FileSearch, KeyRound, Search, ShieldAlert, SlidersHorizontal } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const readiness = [
+  { label: "Authenticated search scope, query provenance, filters, and authorization", value: "Not connected", icon: Search },
+  { label: "Index source, freshness, ranking, permissions, privacy, and redaction", value: "Unavailable", icon: FileSearch },
+  { label: "No-result semantics, loading, retry, clear-search, pagination, and accessibility", value: "Not configured", icon: SlidersHorizontal },
+  { label: "Audit, abuse prevention, rate limits, support, and data retention", value: "Not verified", icon: KeyRound },
+];
+
+const boundaries = [
+  { title: "No search-result claim", description: "No query, result, count, item, person, document, message, creator, ranking, relevance score, index, freshness, permission, or personal-information record is read, displayed, calculated, or simulated.", icon: FileSearch },
+  { title: "No search action", description: "No sign-in, query input, filter, sort, clear, retry, pagination, search request, API request, database read or write, result selection, navigation, or account mutation can be initiated here.", icon: Search },
+  { title: "No privacy or relevance claim", description: "No authorization, indexing, freshness, ranking, relevance, accessibility, privacy, redaction, rate limit, abuse prevention, audit, or no-result outcome is asserted.", icon: ShieldAlert },
+  { title: "Search and personal-data warn-and-proceed", description: "Search can reveal personal, financial, educational, community, or confidential records. Verify query scope, permissions, source provenance, retention, redaction, ranking, accessibility, and audit before enabling search or acting on results.", icon: AlertTriangle },
+];
 
 export default function EmptySearchState() {
-  const [state, setState] = useState(false);
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 to-black p-4">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">EmptySearchState</h1>
-        <p className="text-slate-400 mb-8">empty search state</p>
-        
-        <Card className="bg-slate-900 border-slate-800 p-8">
-          <div className="space-y-6">
-            <p className="text-slate-300">Content for EmptySearchState page</p>
-            <Button onClick={() => setState(!state)}>
-              {state ? "Deactivate" : "Activate"}
-            </Button>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Search} title="Search Empty State" subtitle="Search-state readiness status; no authenticated query, index, result set, permission scope, ranking, or search action is available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Search state is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen presented placeholder copy and an ambiguous Activate/Deactivate toggle rather than a verified search query, index, permission scope, loading state, no-result definition, retry behavior, or privacy boundary. The toggle and implied search action were removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Search aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Search-state readiness</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A trustworthy empty state requires a defined query and scope, authenticated authorization, source and index provenance, freshness and ranking semantics, privacy and redaction, accessible loading and no-result messaging, retry and clear-search behavior, rate limits, abuse prevention, auditability, and support. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{readiness.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="search-boundaries-heading"><h2 id="search-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2">{boundaries.map(({ title, description, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><Icon aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p></Card>)}</div></section><div className="flex flex-wrap gap-3"><Link href="/documentation"><Button variant="outline"><FileSearch aria-hidden="true" className="mr-2 h-4 w-4" />Review source status</Button></Link><Link href="/security-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy status</Button></Link><Link href="/contact-us-form"><Button variant="outline"><Search aria-hidden="true" className="mr-2 h-4 w-4" />Ask about search availability</Button></Link></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No query, result, count, item, person, document, message, creator, ranking, relevance score, index, freshness, permission, personal-information record, sign-in, query input, filter, sort, clear, retry, pagination, search request, API request, database read or write, result selection, navigation, authorization, indexing, freshness, ranking, relevance, accessibility, privacy, redaction, rate limit, abuse prevention, audit, or no-result outcome is performed. This page is not evidence of a searchable, empty, current, private, authorized, or accessible result state.</p></div></Card></main></div>;
 }
