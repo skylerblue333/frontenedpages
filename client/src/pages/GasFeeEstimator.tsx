@@ -1,25 +1,23 @@
-import { useState } from "react";
+import { AlertTriangle, CheckCircle2, Calculator, FileCheck2, KeyRound, LockKeyhole, Search, ShieldAlert, WalletCards } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Authenticated user, organization, wallet, network, and transaction authorization scope", value: "Not connected", icon: KeyRound },
+  { label: "RPC source, chain identity, block state, native asset, gas units, fee market, and timestamp provenance", value: "Unavailable", icon: FileCheck2 },
+  { label: "Transaction parameters, simulation, nonce, limits, slippage, signing, submission, and finality controls", value: "Not verified", icon: WalletCards },
+  { label: "Privacy, security, tax, financial risk, network failure, and irreversible-action safeguards", value: "Not configured", icon: ShieldAlert },
+];
+
+const surfaces = [
+  { title: "Network and fee data", scope: "Chain identity, RPC source, block state, native asset, gas units, fee market, timestamp, stale-data handling, and provenance", status: "Unavailable", icon: Calculator },
+  { title: "Transaction context", scope: "Destination, calldata, value, nonce, gas limit, max fee, priority fee, token approval, simulation, slippage, and revert risk", status: "Not verified", icon: FileCheck2 },
+  { title: "Wallet and signing authority", scope: "Wallet ownership, custody, key protection, signature preview, user confirmation, permissions, submission, replacement, and finality", status: "Not configured", icon: WalletCards },
+  { title: "Safety and reporting", scope: "Privacy, fraud, phishing, taxes, fees, network outages, chain reorgs, irreversible loss, audit logs, and authorization", status: "Not connected", icon: ShieldAlert },
+];
 
 export default function GasFeeEstimator() {
-  const [state, setState] = useState(false);
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 to-black p-4">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">GasFeeEstimator</h1>
-        <p className="text-slate-400 mb-8">gas fee estimator</p>
-        
-        <Card className="bg-slate-900 border-slate-800 p-8">
-          <div className="space-y-6">
-            <p className="text-slate-300">Content for GasFeeEstimator page</p>
-            <Button onClick={() => setState(!state)}>
-              {state ? "Deactivate" : "Activate"}
-            </Button>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Calculator} title="Gas Fee Estimator" subtitle="Blockchain-fee readiness status; no connected network, RPC source, fee market, wallet, transaction, or current estimate is available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Fee estimates are unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen was only a generic activate/deactivate placeholder and did not establish a network, RPC source, fee market, transaction context, wallet authority, or current data provenance. No estimate, savings claim, transaction control, or financial result is displayed or implied.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Calculator aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Fee-estimation readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A trustworthy fee estimator requires a verified network and RPC source, current block and fee-market data, explicit native-asset and currency semantics, complete transaction parameters, simulation and stale-data handling, wallet and signing authority, clear uncertainty, chain finality and failure handling, privacy and fraud protections, and qualified crypto, financial, tax, legal, and security review. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="fee-surfaces-heading"><h2 id="fee-surfaces-heading" className="mb-4 text-xl font-semibold">Fee surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No gas price, fee, savings, transaction, wallet, network, financial, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="fee-boundaries-heading"><h2 id="fee-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No estimate or transaction claim</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No RPC request, chain lookup, gas price, fee calculation, currency conversion, destination validation, simulation, nonce, signing, wallet connection, transaction submission, API request, database read or write, notification, or personal-data operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Crypto, finance, tax, legal, privacy, and irreversible-action warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not treat this page as evidence of current fees, gas prices, savings, network conditions, transaction success, wallet security, or financial advice. Verify network, RPC freshness, transaction parameters, simulation, signer authority, chain finality, fees, taxes, privacy, fraud controls, and human review before signing or submitting any transaction.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/wallet"><Button variant="outline"><WalletCards aria-hidden="true" className="mr-2 h-4 w-4" />Review wallet status</Button></Link><Link href="/gas-tracker"><Button variant="outline"><Calculator aria-hidden="true" className="mr-2 h-4 w-4" />Review gas tracker</Button></Link><Link href="/security-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security status</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy status</Button></Link><Link href="/contact-us-form"><Button variant="outline"><Search aria-hidden="true" className="mr-2 h-4 w-4" />Ask about fees</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No RPC request, chain lookup, gas price, fee calculation, currency conversion, destination validation, simulation, nonce, signing, wallet connection, transaction submission, API request, database read or write, notification, export, deletion, or personal-data operation is performed. This page is not evidence of current fees, transaction safety, network status, financial advice, or production blockchain functionality.</p></Card></main></div>;
 }
