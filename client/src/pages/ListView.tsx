@@ -1,25 +1,23 @@
-import { useState } from "react";
+import { AlertTriangle, CheckCircle2, ClipboardList, Filter, KeyRound, LockKeyhole, Search, ShieldAlert, SlidersHorizontal } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Authenticated viewer, tenant, record scope, field-level access, and action authorization", value: "Not connected", icon: KeyRound },
+  { label: "Record identity, schema, source, freshness, ownership, ordering, pagination, and consistency provenance", value: "Unavailable", icon: ClipboardList },
+  { label: "Search, filter, sort, selection, bulk action, export, retry, empty, loading, and error controls", value: "Not verified", icon: SlidersHorizontal },
+  { label: "Personal, confidential, financial, behavioral, privacy, retention, security, and least-privilege safeguards", value: "Not configured", icon: ShieldAlert },
+];
+
+const surfaces = [
+  { title: "Record and schema provenance", scope: "Record identity, source, schema, field definitions, owner, freshness, version, consistency, and audit", status: "Unavailable", icon: ClipboardList },
+  { title: "Query and navigation", scope: "Search, filter, sort, pagination, cursor, caching, loading, empty, stale, failure, retry, and accessibility", status: "Not connected", icon: Search },
+  { title: "Selection and actions", scope: "Selection scope, bulk authorization, confirmation, idempotency, mutation status, rollback, export, and audit", status: "Not verified", icon: Filter },
+  { title: "Privacy and list safety", scope: "Personal, confidential, financial, behavioral, privacy, deletion, retention, security, and authorization", status: "Not configured", icon: LockKeyhole },
+];
 
 export default function ListView() {
-  const [state, setState] = useState(false);
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 to-black p-4">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">ListView</h1>
-        <p className="text-slate-400 mb-8">list view</p>
-        
-        <Card className="bg-slate-900 border-slate-800 p-8">
-          <div className="space-y-6">
-            <p className="text-slate-300">Content for ListView page</p>
-            <Button onClick={() => setState(!state)}>
-              {state ? "Deactivate" : "Activate"}
-            </Button>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={ClipboardList} title="List View" subtitle="Data-list readiness status; no authenticated record source, schema, query, pagination, filter, sort, selection, export, mutation, or production list service is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">List data is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen was a generic list placeholder with an inert Activate/Deactivate control and did not establish record identity, schema, source, access scope, query behavior, loading or error states, sorting, filtering, pagination, selection, actions, export, privacy, retention, or authorization. The placeholder and local state mutation were removed. No record, count, filter, query result, selection, export, or data mutation is displayed or initiated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><ClipboardList aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Data-list readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A trustworthy list requires an authoritative record source and schema, authenticated scope, deterministic query semantics, fresh and consistent data, accessible loading/empty/error/retry states, safe selection and mutation workflows, export controls, privacy, audit, and least-privilege authorization. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="list-surfaces-heading"><h2 id="list-surfaces-heading" className="mb-4 text-xl font-semibold">List surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No record, count, filter, query result, selection, export, mutation, privacy, security, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="list-boundaries-heading"><h2 id="list-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No list operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, record query, schema read, search, filter, sort, pagination, count, selection, bulk action, export, mutation, API request, database read or write, notification, or personal-data operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Privacy, security, data-integrity, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not treat this page as evidence that records exist, are current, belong to a user, are complete, or may be searched, exported, selected, changed, or shared. Verify source, schema, access scope, freshness, consistency, field sensitivity, retention, and authorization before relying on list data or taking action.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/data-management"><Button variant="outline"><ClipboardList aria-hidden="true" className="mr-2 h-4 w-4" />Review data status</Button></Link><Link href="/analytics"><Button variant="outline"><SlidersHorizontal aria-hidden="true" className="mr-2 h-4 w-4" />Review analytics</Button></Link><Link href="/admin"><Button variant="outline"><KeyRound aria-hidden="true" className="mr-2 h-4 w-4" />Review admin scope</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link><Link href="/security-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No auth check, record query, schema read, search, filter, sort, pagination, count, selection, bulk action, export, mutation, API request, database read or write, notification, or personal-data operation is performed. This page is not evidence that records exist, are current, belong to a user, are complete, or may be searched, exported, selected, changed, or shared.</p></Card></main></div>;
 }
