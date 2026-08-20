@@ -1,89 +1,21 @@
-import { BarChart } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { BarChart3, Database, FileCheck2, Gauge, LockKeyhole, ShieldAlert, Sparkles, Workflow } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { PageHeader } from "@/components/PageHeader";
 
+const analyticsStates = [
+  { label: "Content records, ownership, taxonomy, and event source", value: "Not connected", icon: Database },
+  { label: "Views, reach, engagement, conversion, and audience metrics", value: "Not measured", icon: BarChart3 },
+  { label: "Data freshness, query performance, and reporting history", value: "Unavailable", icon: Gauge },
+  { label: "AI insights, automation, permissions, and audit evidence", value: "Not verified", icon: FileCheck2 },
+];
+
+const boundaries = [
+  { title: "Content and audience data", description: "No content item, author, viewer, audience, view, reach, engagement, reaction, conversion, revenue, transaction, or user count is read, calculated, displayed, or simulated.", icon: Database },
+  { title: "Analytics and reporting", description: "No chart, dashboard, trend, cohort, attribution, forecast, performance result, export, or real-time update is produced without a validated event source and reporting contract.", icon: BarChart3 },
+  { title: "AI and automation", description: "No insight, recommendation, score, classification, automation result, or model-generated interpretation is available without an authorized model integration and truthful error handling.", icon: Sparkles },
+  { title: "Security and privacy", description: "No event permissions, tenant isolation, consent, retention, access audit, secret handling, or deletion path is connected. Do not enter credentials or sensitive data here.", icon: LockKeyhole },
+];
+
 export default function ContentAnalytics() {
-  return (
-    <div className="min-h-screen bg-background">
-      <PageHeader icon={BarChart} title="Content Analytics" subtitle="Fully functional content analytics page with live data and real-time updates" />
-      
-      <div className="max-w-7xl mx-auto px-4 py-8 space-y-8">
-        {/* Main Content Area */}
-        <Card className="p-8 bg-card border border-border/50">
-          <div className="space-y-6">
-            <h2 className="text-2xl font-bold">Content Analytics</h2>
-            
-            {/* Feature Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <BarChart className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 1</h3>
-                  <p className="text-sm text-muted-foreground">Real-time data and live updates</p>
-                </div>
-              </Card>
-              
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <BarChart className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 2</h3>
-                  <p className="text-sm text-muted-foreground">Advanced analytics and insights</p>
-                </div>
-              </Card>
-              
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <BarChart className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 3</h3>
-                  <p className="text-sm text-muted-foreground">Seamless integration and automation</p>
-                </div>
-              </Card>
-            </div>
-            
-            {/* Action Buttons */}
-            <div className="flex gap-4 flex-wrap pt-4">
-              <Button className="bg-primary hover:bg-primary/90">
-                Get Started
-              </Button>
-              <Button variant="outline">
-                Learn More
-              </Button>
-              <Button variant="ghost">
-                Documentation
-              </Button>
-            </div>
-          </div>
-        </Card>
-        
-        {/* Stats Section */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Active Users</p>
-              <p className="text-2xl font-bold">802K+</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Total Transactions</p>
-              <p className="text-2xl font-bold">2.4M</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Success Rate</p>
-              <p className="text-2xl font-bold">99.9%</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Avg Response Time</p>
-              <p className="text-2xl font-bold">45ms</p>
-            </div>
-          </Card>
-        </div>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={BarChart3} title="Content Analytics" subtitle="Content-analytics integration status; no content records, audience metrics, charts, AI insights, or live reporting are available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><ShieldAlert aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Content analytics is unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous screen claimed fully functional live data, real-time updates, advanced analytics, insights, integration, automation, and offered non-functional Get Started, Learn More, and Documentation actions. It also displayed fabricated 802K+ active users, 2.4M transactions, a 99.9% success rate, and 45ms average response time. Those claims and actions were removed rather than presenting invented content evidence.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><BarChart3 aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Analytics-readiness status</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A production content-analytics service requires defined content ownership, validated event collection, identity and consent rules, data contracts, aggregation semantics, freshness and performance monitoring, access controls, privacy and retention policies, reproducible reporting, and safe failure states. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{analyticsStates.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="analytics-boundaries-heading"><h2 id="analytics-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2">{boundaries.map(({ title, description, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><Icon aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p></Card>)}</div></section><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><Workflow aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No get-started, learn-more, documentation, refresh, export, API request, database write, notification, automation, account mutation, external integration call, chart, metric, score, or recommendation is performed. This page is not evidence of audience size, content performance, revenue, platform reliability, or production readiness.</p></div></Card></main></div>;
 }
