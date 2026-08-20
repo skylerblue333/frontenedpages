@@ -1,166 +1,23 @@
-/**
- * MatchChat — Dating System Chat
- * AI icebreakers, safety filters, conversation scoring, engagement tracking
- */
-import { useState, useRef, useEffect } from "react";
-import { Send, Brain, Shield, Heart, Star, ArrowLeft, MoreVertical, Sparkles } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { AlertTriangle, CheckCircle2, Clock3, Heart, KeyRound, LockKeyhole, MessageCircle, ShieldAlert, Sparkles, UserRound } from "lucide-react";
 import { Link } from "wouter";
-import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
 
-const ICEBREAKERS = [
-  "What's the most interesting thing you've learned this week?",
-  "If you could live anywhere in the world for a year, where would it be?",
-  "What's your favorite way to spend a Sunday morning?",
-  "What's a skill you've been wanting to learn?",
-  "What's the best meal you've ever had?",
+const boundaries = [
+  { label: "Authenticated users, match relationship, age assurance, consent, conversation, participant, and authorization scope", value: "Not connected", icon: KeyRound },
+  { label: "Message source, delivery, ordering, timestamps, presence, read state, media, and retention provenance", value: "Unavailable", icon: Clock3 },
+  { label: "Safety, reporting, blocking, moderation, abuse response, crisis handling, and user-control behavior", value: "Not verified", icon: ShieldAlert },
+  { label: "Private messages, personal data, precise location, AI assistance, privacy, security, and least-privilege safeguards", value: "Not configured", icon: LockKeyhole },
 ];
 
-const MOCK_MESSAGES = [
-  { id: 1, sender: "them", text: "Hey! I saw we matched 💜 Your profile is really interesting!", time: "2:30 PM" },
-  { id: 2, sender: "me", text: "Thanks! I loved your bio about the DeFi work. What protocol are you most excited about right now?", time: "2:32 PM" },
-  { id: 3, sender: "them", text: "Honestly Uniswap V4 has been blowing my mind. The hook architecture is so elegant. Are you into DeFi too?", time: "2:35 PM" },
+const surfaces = [
+  { title: "Match and participant scope", scope: "Authenticated user, participant, match relationship, age assurance, consent, profile, and authorization", status: "Unavailable", icon: UserRound },
+  { title: "Conversation delivery", scope: "Message source, recipient, transport, ordering, timestamps, read state, retries, media, encryption, and retention", status: "Not connected", icon: MessageCircle },
+  { title: "Safety and moderation", scope: "Report, block, moderation, abuse, impersonation, coercion, exploitation, crisis, escalation, and appeal controls", status: "Not verified", icon: ShieldAlert },
+  { title: "AI and privacy controls", scope: "Icebreakers, model/provider, prompt and message boundaries, consent, personal data, deletion, security, and access", status: "Not configured", icon: Sparkles },
 ];
 
 export default function MatchChat() {
-  const [messages, setMessages] = useState(MOCK_MESSAGES);
-  const [input, setInput] = useState("");
-  const [showIcebreakers, setShowIcebreakers] = useState(false);
-  const [conversationScore, setConversationScore] = useState(72);
-  const bottomRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
-
-  const sendMessage = (text: string) => {
-    if (!text.trim()) return;
-    const newMsg = { id: Date.now(), sender: "me" as const, text: text.trim(), time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) };
-    setMessages(prev => [...prev, newMsg]);
-    setInput("");
-    setConversationScore(prev => Math.min(100, prev + 3));
-
-    // Simulate reply
-    setTimeout(() => {
-      const replies = [
-        "That's really interesting! Tell me more...",
-        "I totally agree with that perspective.",
-        "Wow, I hadn't thought about it that way!",
-        "You seem really knowledgeable about this 😊",
-      ];
-      const reply = { id: Date.now() + 1, sender: "them" as const, text: replies[Math.floor(Math.random() * replies.length)], time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) };
-      setMessages(prev => [...prev, reply]);
-    }, 1500);
-  };
-
-  return (
-    <div className="h-screen bg-background flex flex-col max-w-lg mx-auto">
-      {/* Header */}
-      <div className="p-3 border-b flex items-center gap-3 shrink-0">
-        <Link href="/dating/matches">
-          <Button variant="ghost" size="sm" className="p-1">
-            <ArrowLeft className="w-5 h-5" />
-          </Button>
-        </Link>
-        <div className="relative">
-          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-pink-500 to-purple-500 flex items-center justify-center text-sm font-bold text-white">
-            A
-          </div>
-          <div className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-green-500 border-2 border-background" />
-        </div>
-        <div className="flex-1">
-          <div className="font-semibold text-sm">Alex Rivera</div>
-          <div className="text-xs text-green-400">Online · 94% match</div>
-        </div>
-        <div className="flex items-center gap-1">
-          <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-secondary text-xs">
-            <Heart className="w-2.5 h-2.5 text-pink-400" />
-            <span className="text-muted-foreground">{conversationScore}%</span>
-          </div>
-          <Button variant="ghost" size="sm" className="p-1" onClick={() => toast("Match options coming soon")}>
-            <MoreVertical className="w-4 h-4" />
-          </Button>
-        </div>
-      </div>
-
-      {/* Safety notice */}
-      <div className="px-3 py-2 bg-blue-500/10 border-b border-blue-500/20 flex items-center gap-2 text-xs text-blue-400 shrink-0">
-        <Shield className="w-3.5 h-3.5 shrink-0" />
-        <span>Safety filters active · Report or block from menu</span>
-      </div>
-
-      {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-3 space-y-3">
-        {/* Match notification */}
-        <div className="text-center">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-pink-500/10 border border-pink-500/20 text-xs text-pink-400">
-            <Heart className="w-3 h-3" />
-            You matched with Alex Rivera!
-            <Star className="w-3 h-3" />
-          </div>
-        </div>
-
-        {messages.map(msg => (
-          <div key={msg.id} className={`flex ${msg.sender === "me" ? "justify-end" : "justify-start"}`}>
-            <div className={`max-w-[75%] ${msg.sender === "me" ? "items-end" : "items-start"} flex flex-col gap-0.5`}>
-              <div className={`px-3 py-2 rounded-2xl text-sm ${msg.sender === "me" ? "bg-gradient-to-br from-pink-500 to-purple-500 text-white rounded-br-sm" : "bg-secondary text-foreground rounded-bl-sm"}`}>
-                {msg.text}
-              </div>
-              <span className="text-xs text-muted-foreground px-1">{msg.time}</span>
-            </div>
-          </div>
-        ))}
-        <div ref={bottomRef} />
-      </div>
-
-      {/* Icebreakers */}
-      {showIcebreakers && (
-        <div className="px-3 py-2 border-t bg-secondary/30 shrink-0">
-          <div className="flex items-center gap-2 mb-2">
-            <Sparkles className="w-3.5 h-3.5 text-purple-400" />
-            <span className="text-xs font-medium text-purple-400">AI Icebreakers</span>
-          </div>
-          <div className="flex gap-2 overflow-x-auto pb-1">
-            {ICEBREAKERS.map((ib, idx) => (
-              <button
-                key={idx}
-                onClick={() => { sendMessage(ib); setShowIcebreakers(false); }}
-                className="shrink-0 px-2.5 py-1.5 rounded-xl bg-purple-500/10 border border-purple-500/20 text-xs text-purple-300 hover:bg-purple-500/20 transition-colors text-left max-w-[200px]"
-              >
-                {ib}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Input */}
-      <div className="p-3 border-t flex gap-2 shrink-0">
-        <Button
-          variant="outline"
-          size="sm"
-          className={`shrink-0 ${showIcebreakers ? "border-purple-500 text-purple-400" : ""}`}
-          onClick={() => setShowIcebreakers(!showIcebreakers)}
-        >
-          <Brain className="w-4 h-4" />
-        </Button>
-        <Input
-          placeholder="Type a message..."
-          value={input}
-          onChange={e => setInput(e.target.value)}
-          onKeyDown={e => e.key === "Enter" && sendMessage(input)}
-          className="flex-1"
-        />
-        <Button
-          size="sm"
-          className="shrink-0 bg-gradient-to-br from-pink-500 to-purple-500 hover:from-pink-400 hover:to-purple-400"
-          onClick={() => sendMessage(input)}
-          disabled={!input.trim()}
-        >
-          <Send className="w-4 h-4" />
-        </Button>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={MessageCircle} title="Match Chat" subtitle="Dating-chat readiness status; no authenticated participant, match relationship, age-assurance control, consent record, message transport, presence service, moderation workflow, AI provider, or production messaging backend is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Match chat is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen simulated a match with a named participant, online presence, match percentage, conversation score, prewritten messages, message timestamps, automatic replies, AI icebreakers, and active safety filters. It could append local messages and fabricate a delayed reply without an authenticated relationship, message transport, moderation, consent, age assurance, or safety control plane. Those identities, messages, scores, replies, and actions were removed. No participant, match, presence, message, profile, AI output, safety state, or availability state is displayed, accepted, stored, sent, or simulated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Heart aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Dating-chat readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A trustworthy dating chat requires authenticated participant and match scope, age assurance, mutual consent, secure message delivery, presence and timestamp provenance, reporting and blocking, abuse and crisis safeguards, moderation, privacy, and explicit AI assistance boundaries. No participant, conversation, AI response, safety status, or match outcome is established here.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="match-chat-surfaces-heading"><h2 id="match-chat-surfaces-heading" className="mb-4 text-xl font-semibold">Dating-chat control surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No participant, match, message, presence, AI, safety, privacy, security, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="match-chat-boundaries-heading"><h2 id="match-chat-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No messaging operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, match or participant query, profile or presence lookup, message send or receive, reply generation, AI inference, safety-filter operation, report, block, API request, database read or write, export, deletion, or private-message operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Dating, safety, privacy, AI, age assurance, security, accessibility, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not enter passwords, intimate content, identity documents, precise location, financial details, private keys, or personal contact information here. Do not treat this page as evidence of a match, participant identity, consent, presence, message delivery, safety filter, moderation response, AI output, age assurance, or secure chat capability. Verify consent, age, reporting, blocking, moderation, abuse escalation, privacy, retention, deletion, and authorization before communicating.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/dating/matches"><Button variant="outline"><Heart aria-hidden="true" className="mr-2 h-4 w-4" />Review match status</Button></Link><Link href="/dating"><Button variant="outline"><UserRound aria-hidden="true" className="mr-2 h-4 w-4" />Review dating status</Button></Link><Link href="/ai-tools-hub"><Button variant="outline"><Sparkles aria-hidden="true" className="mr-2 h-4 w-4" />Review AI status</Button></Link><Link href="/safety-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review safety</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No auth check, match or participant query, profile or presence lookup, message send or receive, reply generation, AI inference, safety-filter operation, report, block, API request, database read or write, export, deletion, or private-message operation is performed. This page is not evidence of a match, participant identity, consent, presence, message delivery, safety filter, moderation response, AI output, age assurance, or secure chat capability.</p></Card></main></div>;
 }
