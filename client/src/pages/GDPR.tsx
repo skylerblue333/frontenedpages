@@ -1,74 +1,23 @@
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/_core/hooks/useAuth";
+import { AlertTriangle, CheckCircle2, FileCheck2, KeyRound, LockKeyhole, Search, ShieldAlert, UserRound } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Loader2, Plus, Search, Settings } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Controller/processor role, jurisdiction, organization scope, DPO/contact, and authorization", value: "Not connected", icon: KeyRound },
+  { label: "Processing inventory, purpose, lawful basis, consent, data categories, sources, and recipients", value: "Unavailable", icon: FileCheck2 },
+  { label: "Access, correction, deletion, portability, objection, retention, transfer, breach, and audit controls", value: "Not verified", icon: LockKeyhole },
+  { label: "Personal, health, financial, crypto, biometric, dating, minor, and confidential-data safeguards", value: "Not configured", icon: ShieldAlert },
+];
+
+const surfaces = [
+  { title: "Processing accountability", scope: "Controller/processor role, purpose, lawful basis, data inventory, source, recipient, vendor, jurisdiction, retention, and records of processing", status: "Unavailable", icon: FileCheck2 },
+  { title: "Data-subject rights", scope: "Identity verification, access, correction, deletion, portability, objection, restriction, consent withdrawal, response timing, and secure delivery", status: "Not verified", icon: UserRound },
+  { title: "Security and incidents", scope: "Encryption, access control, minimization, pseudonymization, logging, breach detection, notification, DPIA, risk, and audit evidence", status: "Not configured", icon: ShieldAlert },
+  { title: "Sensitive and transferred data", scope: "Health, financial, crypto, biometric, dating, minors, behavioral, cross-border, third-party, AI-inferred, and confidential organizational data", status: "Not connected", icon: LockKeyhole },
+];
 
 export default function GDPR() {
-  const { isAuthenticated } = useAuth();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>GDPR</CardTitle>
-            <CardDescription>Sign in to access this feature</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full">Sign In</Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold">GDPR</h1>
-            <p className="text-muted-foreground mt-2">GDPR compliance</p>
-          </div>
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            New
-          </Button>
-        </div>
-
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Search className="w-4 h-4 text-muted-foreground" />
-              <Input
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="max-w-sm"
-              />
-              <Button variant="outline" size="icon">
-                <Settings className="w-4 h-4" />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {isLoading ? (
-              <div className="flex justify-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
-              </div>
-            ) : (
-              <div className="text-center py-12 text-muted-foreground">
-                <p>No data available. Start by creating a new item.</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={LockKeyhole} title="GDPR and Privacy" subtitle="Privacy-readiness status; no authenticated organization, processing inventory, consent record, data-subject request, vendor, transfer, breach, or personal-data record is available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Privacy compliance is not verified</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen exposed a sign-in path and generic new, settings, search, loading, and empty-state controls without a connected controller or processor role, processing inventory, lawful basis, consent, data-subject rights, retention, transfer, vendor, breach, security, audit, or authorization boundary. No compliance, certification, or personal-data evidence was available, so privacy controls were removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><LockKeyhole aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Privacy-readiness</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Trustworthy privacy operations require a verified controller or processor role, jurisdiction and accountable contact, processing inventory, purpose and lawful basis, consent where applicable, data minimization, subject-rights workflows, retention and deletion, vendor and transfer controls, security evidence, DPIAs, breach response, auditability, and special handling for health, financial, crypto, biometric, dating, minor, behavioral, AI-inferred, or confidential data. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="gdpr-surfaces-heading"><h2 id="gdpr-surfaces-heading" className="mb-4 text-xl font-semibold">Privacy surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No privacy capability, compliance status, certification, personal-data property, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="gdpr-boundaries-heading"><h2 id="gdpr-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No compliance or personal-data claim</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, privacy lookup, consent lookup, subject request, data export, deletion, correction, vendor lookup, transfer lookup, breach lookup, certification claim, API request, database read or write, notification, or personal-data operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Legal, privacy, security, finance, crypto, health, dating, and safety warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Privacy obligations vary by jurisdiction and data context. Verify the responsible entity, purpose, lawful basis, consent, sensitive-data rules, rights process, retention, vendors, transfers, security, breach response, and qualified legal or privacy review before relying on any compliance statement or processing personal data.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/export-data"><Button variant="outline"><FileCheck2 aria-hidden="true" className="mr-2 h-4 w-4" />Review export status</Button></Link><Link href="/delete-account"><Button variant="outline"><UserRound aria-hidden="true" className="mr-2 h-4 w-4" />Review deletion status</Button></Link><Link href="/security-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security status</Button></Link><Link href="/documentation"><Button variant="outline"><FileCheck2 aria-hidden="true" className="mr-2 h-4 w-4" />Review documentation status</Button></Link><Link href="/contact-us-form"><Button variant="outline"><Search aria-hidden="true" className="mr-2 h-4 w-4" />Ask about privacy</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No auth check, privacy lookup, consent lookup, subject request, data export, deletion, correction, vendor lookup, transfer lookup, breach lookup, certification claim, API request, database read or write, notification, or personal-data operation is performed. This page is not evidence of GDPR compliance, legal advice, certification, security, or production privacy functionality.</p></Card></main></div>;
 }
