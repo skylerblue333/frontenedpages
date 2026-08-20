@@ -1,75 +1,23 @@
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/_core/hooks/useAuth";
+import { AlertTriangle, BookOpenCheck, CheckCircle2, FileCheck2, KeyRound, LockKeyhole, Search, ShieldAlert, Stethoscope, UserRound } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
-import { Loader2, Plus, Search, Settings } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Authenticated editor, clinician, organization, reader, and health-content authorization scope", value: "Not connected", icon: KeyRound },
+  { label: "Article source, author credentials, clinical review, evidence level, update date, and version provenance", value: "Unavailable", icon: BookOpenCheck },
+  { label: "Medical safety, contraindication, emergency, privacy, consent, minors, accessibility, and correction controls", value: "Not verified", icon: ShieldAlert },
+  { label: "Security, moderation, health-data, sensitive-domain, legal, and least-privilege safeguards", value: "Not configured", icon: LockKeyhole },
+];
+
+const surfaces = [
+  { title: "Evidence and editorial provenance", scope: "Source, author, clinical reviewer, specialty, evidence level, publication date, update history, citations, conflicts, and corrections", status: "Unavailable", icon: BookOpenCheck },
+  { title: "Medical safety context", scope: "Scope, uncertainty, contraindications, interactions, warning signs, emergency guidance, accessibility, and professional referral", status: "Not verified", icon: Stethoscope },
+  { title: "Content and privacy", scope: "Reader identity, health data, consent, children, personalization, comments, moderation, retention, deletion, and export", status: "Not configured", icon: LockKeyhole },
+  { title: "Operations and authorization", scope: "Editorial workflow, approvals, search, notifications, security, audit, support, and role-based access", status: "Not connected", icon: FileCheck2 },
+];
 
 export default function HealthArticles() {
-  const { isAuthenticated } = useAuth();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>HealthArticles</CardTitle>
-            <CardDescription>Sign in to access this feature</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full">Sign In</Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold">HealthArticles</h1>
-            <p className="text-muted-foreground mt-2">Health content</p>
-          </div>
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            New
-          </Button>
-        </div>
-
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Search className="w-4 h-4 text-muted-foreground" />
-              <Input
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="max-w-sm"
-              />
-              <Button variant="outline" size="icon">
-                <Settings className="w-4 h-4" />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {isLoading ? (
-              <div className="flex justify-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
-              </div>
-            ) : (
-              <div className="text-center py-12 text-muted-foreground">
-                <p>No data available. Start by creating a new item.</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Stethoscope} title="Health Articles" subtitle="Healthcare-information readiness status; no article inventory, clinical review, evidence source, patient-specific guidance, personalization, or production medical-content service is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Health articles are unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen exposed a sign-in path and generic new, settings, search, loading, and empty-state controls without article provenance, qualified authors, clinical review, evidence, update history, medical safety context, privacy, consent, minors protections, or authorization boundaries. Those unsupported controls were removed. This page does not provide medical advice or patient-specific guidance.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Stethoscope aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Healthcare-information readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Trustworthy health information requires authoritative sources, qualified authors and clinical review, evidence and update provenance, transparent uncertainty, contraindication and emergency context, privacy and consent, minors and accessibility protections, editorial correction, moderation, security, and qualified medical and legal review. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="health-article-surfaces-heading"><h2 id="health-article-surfaces-heading" className="mb-4 text-xl font-semibold">Readiness surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No article, author, clinician, evidence, treatment, diagnosis, patient, privacy, security, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="health-article-boundaries-heading"><h2 id="health-article-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No article or medical guidance claim</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, article lookup, source lookup, author lookup, clinical review, search, diagnosis, treatment recommendation, patient lookup, personalization, API request, database read or write, notification, export, deletion, or personal-data operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Medical, privacy, minors, security, legal, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not treat this page as evidence of clinical accuracy, medical advice, diagnosis, treatment, safety, personalization, or emergency guidance. Verify source and reviewer credentials, evidence, dates, uncertainty, contraindications, patient privacy, consent, minors protections, accessibility, and qualified human review before publishing or relying on health content.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/health-dashboard"><Button variant="outline"><Stethoscope aria-hidden="true" className="mr-2 h-4 w-4" />Review health status</Button></Link><Link href="/documentation"><Button variant="outline"><FileCheck2 aria-hidden="true" className="mr-2 h-4 w-4" />Review evidence</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link><Link href="/security-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security</Button></Link><Link href="/profile"><Button variant="outline"><UserRound aria-hidden="true" className="mr-2 h-4 w-4" />Review identity</Button></Link><Link href="/contact-us-form"><Button variant="outline"><Search aria-hidden="true" className="mr-2 h-4 w-4" />Ask about health content</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No auth check, article lookup, source lookup, author lookup, clinical review, search, diagnosis, treatment recommendation, patient lookup, personalization, API request, database read or write, notification, export, deletion, or personal-data operation is performed. This page is not evidence of clinical accuracy, medical advice, diagnosis, treatment, safety, personalization, emergency guidance, or production healthcare-information functionality.</p></Card></main></div>;
 }
