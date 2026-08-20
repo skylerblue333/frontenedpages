@@ -1,0 +1,9 @@
+# MobileApp visual checkpoint
+
+MobileApp was hardened from a Coming Soon marketing simulation that presented inert App Store, Google Play, and PWA actions; claimed crypto trading, AI chat, rewards, streaming, governance, instant swaps, hardware-wallet support, AR, voice commands, offline mode, push notifications, biometric authentication, 4.9 rating, 12K reviews, 500K+ downloads, less-than-50ms response time, 99.9% uptime, a Q3 2026 preview, exact system requirements, and a 50,000+ waitlist with a SKY444 bonus. Those claims, metrics, features, specifications, timing, waitlist, and toast actions were not backed by a signed package, verified store listing, backend, wallet, AI, device, privacy, or authorization contract and were removed. No app, package, download, user count, rating, review, feature, device, wallet, reward, waitlist, or availability state is displayed, accepted, stored, installed, or transmitted from this page. The registered route is `/mobile-app`.
+
+No package query, store lookup, download, install, app launch, PWA install, waitlist mutation, wallet connection, trade, swap, AI call, notification registration, offline cache, biometric prompt, camera or microphone permission, API request, database read or write, export, deletion, or mobile operation is read, calculated, displayed, asserted, initiated, or simulated.
+
+Files: `mobile-app-desktop.webp`, `mobile-app-mobile.png`.
+
+The 390px capture was reviewed for readable wrapped unavailable disclosure, stacked mobile-release readiness cards, stacked app/platform/crypto-permissions surfaces, crypto/AI/rewards/privacy/security/accessibility/authorization warn-and-proceed notice, safe mobile/crypto/AI/security/privacy links, and absence of horizontal overflow or fake app download, store listing, signed release, rating, review, user count, trading, swap, AI assistant, reward, wallet, waitlist, launch date, bonus, compatibility, or privacy claims.

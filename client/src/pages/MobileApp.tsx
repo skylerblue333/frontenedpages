@@ -1,222 +1,23 @@
-import { useState } from "react";
+import { AlertTriangle, Apple, CheckCircle2, Download, Fingerprint, KeyRound, LockKeyhole, Play, ShieldAlert, Smartphone, Store, WalletCards, WifiOff } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
 import { PageHeader } from "@/components/PageHeader";
-import {
-  Smartphone, Download, Star, Shield, Zap, Bell, Wifi,
-  Camera, Mic, Fingerprint, QrCode, ChevronRight, Apple,
-  Play, Globe, CheckCircle2, ArrowRight, Sparkles
-} from "lucide-react";
-import { toast } from "sonner";
 
-const FEATURES = [
-  { icon: Bell, label: "Push Notifications", desc: "Real-time alerts for messages, trades, and rewards" },
-  { icon: Fingerprint, label: "Biometric Auth", desc: "Face ID and fingerprint unlock for instant secure access" },
-  { icon: Camera, label: "AR Camera", desc: "Scan QR codes, NFTs, and physical items with AI overlay" },
-  { icon: Mic, label: "Voice Commands", desc: "Hands-free navigation and AI assistant via voice" },
-  { icon: Wifi, label: "Offline Mode", desc: "Browse your portfolio and DMs without internet" },
-  { icon: Zap, label: "Instant Swap", desc: "One-tap token swaps with best-route optimization" },
-  { icon: Shield, label: "Hardware Wallet", desc: "Connect Ledger and Trezor via Bluetooth" },
-  { icon: QrCode, label: "Wallet Connect", desc: "Scan to connect any dApp instantly" },
+const boundaries = [
+  { label: "App identity, publisher, package, signing, release channel, store, waitlist, and authorization scope", value: "Not connected", icon: KeyRound },
+  { label: "iOS and Android artifact, version, availability, compatibility, feature, screenshot, and timing provenance", value: "Unavailable", icon: Smartphone },
+  { label: "Crypto, AI, wallet, notifications, biometric, offline, AR, voice, permissions, and user-control behavior", value: "Not verified", icon: Fingerprint },
+  { label: "Credentials, seed phrases, private keys, personal data, privacy, security, accessibility, and least-privilege safeguards", value: "Not configured", icon: LockKeyhole },
 ];
 
-const STATS = [
-  { value: "4.9", label: "App Store Rating", sub: "12K reviews" },
-  { value: "500K+", label: "Downloads", sub: "iOS + Android" },
-  { value: "< 50ms", label: "Response Time", sub: "Global CDN" },
-  { value: "99.9%", label: "Uptime", sub: "SLA guaranteed" },
-];
-
-const COMPARISON = [
-  { feature: "Social Feed", web: true, mobile: true },
-  { feature: "Push Notifications", web: false, mobile: true },
-  { feature: "Biometric Login", web: false, mobile: true },
-  { feature: "Offline Mode", web: false, mobile: true },
-  { feature: "AR QR Scanner", web: false, mobile: true },
-  { feature: "Voice Commands", web: true, mobile: true },
-  { feature: "Hardware Wallet", web: true, mobile: true },
-  { feature: "Background Mining", web: false, mobile: true },
-  { feature: "Widget Support", web: false, mobile: true },
-  { feature: "Haptic Feedback", web: false, mobile: true },
+const surfaces = [
+  { title: "App and distribution scope", scope: "App name, publisher, package, signed artifact, release channel, store account, waitlist, notification, and authorization", status: "Unavailable", icon: Store },
+  { title: "Platform and feature provenance", scope: "iOS, Android, device, operating-system, version, feature, screenshot, system requirement, and launch timing source", status: "Not connected", icon: Smartphone },
+  { title: "Crypto, AI, and device behavior", scope: "Trading, swaps, market data, AI assistant, rewards, wallet, hardware wallet, AR, voice, offline, push, biometric, and session behavior", status: "Not verified", icon: WalletCards },
+  { title: "Permissions, privacy, and safety controls", scope: "Camera, microphone, contacts, notifications, biometrics, credentials, keys, personal data, moderation, privacy, security, accessibility, and access", status: "Not configured", icon: ShieldAlert },
 ];
 
 export default function MobileApp() {
-  const [platform, setPlatform] = useState<"ios" | "android">("ios");
-
-  const handleDownload = (p: "ios" | "android") => {
-    toast.info(`${p === "ios" ? "App Store" : "Google Play"} — launching soon! Join the waitlist below.`);
-  };
-
-  return (
-    <div className="min-h-screen">
-      <PageHeader
-        title="ShadowChat Mobile"
-        subtitle="The full Web3 social OS in your pocket — iOS & Android"
-      />
-
-      <div className="container py-8 max-w-5xl space-y-12">
-
-        {/* Hero */}
-        <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-purple-900/40 via-pink-900/20 to-cyan-900/30 border border-white/10 p-8 md:p-12">
-          <div className="absolute inset-0 dot-grid opacity-30" />
-          <div className="relative z-10 flex flex-col md:flex-row items-center gap-8">
-            <div className="flex-1 text-center md:text-left">
-              <Badge className="mb-4 bg-purple-500/20 text-purple-300 border-purple-500/30">
-                <Sparkles className="w-3 h-3 mr-1" /> Coming Soon — Join Waitlist
-              </Badge>
-              <h1 className="text-4xl md:text-5xl font-black mb-4 text-gradient-psychedelic">
-                SKYCOIN4444<br />on Mobile
-              </h1>
-              <p className="text-white/60 text-lg mb-6 max-w-md">
-                Trade crypto, chat with AI, earn rewards, stream, and govern — all from your phone. The most powerful Web3 app ever built.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
-                <Button
-                  onClick={() => handleDownload("ios")}
-                  className="gap-2 bg-white text-black hover:bg-white/90 font-bold"
-                  size="lg"
-                >
-                  <Apple className="w-5 h-5" />
-                  App Store
-                </Button>
-                <Button
-                  onClick={() => handleDownload("android")}
-                  className="gap-2 bg-green-600 hover:bg-green-500 font-bold"
-                  size="lg"
-                >
-                  <Play className="w-5 h-5 fill-white" />
-                  Google Play
-                </Button>
-                <Button
-                  variant="outline"
-                  className="gap-2 border-white/20 text-white/70 hover:text-white"
-                  size="lg"
-                  onClick={() => toast.info("PWA install: tap the share icon in your browser and select 'Add to Home Screen'")}
-                >
-                  <Globe className="w-5 h-5" />
-                  Install PWA
-                </Button>
-              </div>
-            </div>
-            <div className="flex-shrink-0">
-              <div className="w-48 h-80 rounded-3xl bg-gradient-to-b from-zinc-800 to-zinc-900 border border-white/20 shadow-2xl flex items-center justify-center relative overflow-hidden">
-                <div className="absolute inset-0 gradient-tiedye opacity-10" />
-                <div className="text-center z-10">
-                  <Smartphone className="w-16 h-16 text-purple-400 mx-auto mb-3" />
-                  <div className="text-xs text-white/40">Preview</div>
-                  <div className="text-xs text-white/20">Coming Q3 2026</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {STATS.map(s => (
-            <div key={s.label} className="stat-card text-center">
-              <div className="text-3xl font-black text-gradient mb-1">{s.value}</div>
-              <div className="text-sm font-semibold text-white/80">{s.label}</div>
-              <div className="text-xs text-white/40 mt-1">{s.sub}</div>
-            </div>
-          ))}
-        </div>
-
-        {/* Features */}
-        <div>
-          <h2 className="text-2xl font-bold text-white mb-6">Mobile-Exclusive Features</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-            {FEATURES.map(f => (
-              <div key={f.label} className="feature-card p-5 hover:border-purple-500/40 transition-all group">
-                <div className="w-10 h-10 rounded-xl bg-purple-500/20 flex items-center justify-center mb-3 group-hover:bg-purple-500/30 transition-colors">
-                  <f.icon className="w-5 h-5 text-purple-400" />
-                </div>
-                <div className="font-semibold text-sm text-white mb-1">{f.label}</div>
-                <div className="text-xs text-white/50 leading-relaxed">{f.desc}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Web vs Mobile comparison */}
-        <div>
-          <h2 className="text-2xl font-bold text-white mb-6">Web vs Mobile</h2>
-          <div className="rounded-2xl border border-white/10 overflow-hidden">
-            <div className="grid grid-cols-3 bg-white/5 px-4 py-3 text-xs font-bold text-white/60 uppercase tracking-wider">
-              <div>Feature</div>
-              <div className="text-center">Web App</div>
-              <div className="text-center">Mobile App</div>
-            </div>
-            {COMPARISON.map((row, i) => (
-              <div key={row.feature} className={`grid grid-cols-3 px-4 py-3 text-sm ${i % 2 === 0 ? "bg-white/2" : ""} border-t border-white/5`}>
-                <div className="text-white/80">{row.feature}</div>
-                <div className="text-center">
-                  {row.web
-                    ? <CheckCircle2 className="w-4 h-4 text-green-400 mx-auto" />
-                    : <span className="text-white/20">—</span>}
-                </div>
-                <div className="text-center">
-                  {row.mobile
-                    ? <CheckCircle2 className="w-4 h-4 text-purple-400 mx-auto" />
-                    : <span className="text-white/20">—</span>}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Platform toggle */}
-        <div className="rounded-2xl border border-white/10 p-6">
-          <h2 className="text-xl font-bold text-white mb-4">System Requirements</h2>
-          <div className="flex gap-2 mb-6">
-            <Button
-              size="sm"
-              onClick={() => setPlatform("ios")}
-              className={platform === "ios" ? "bg-purple-600 text-white" : "bg-white/5 text-white/60 hover:bg-white/10"}
-            >
-              <Apple className="w-4 h-4 mr-1" /> iOS
-            </Button>
-            <Button
-              size="sm"
-              onClick={() => setPlatform("android")}
-              className={platform === "android" ? "bg-green-600 text-white" : "bg-white/5 text-white/60 hover:bg-white/10"}
-            >
-              <Play className="w-4 h-4 mr-1 fill-current" /> Android
-            </Button>
-          </div>
-          {platform === "ios" ? (
-            <div className="space-y-2 text-sm text-white/70">
-              <div className="flex items-center gap-2"><ChevronRight className="w-4 h-4 text-purple-400" /> iOS 16.0 or later</div>
-              <div className="flex items-center gap-2"><ChevronRight className="w-4 h-4 text-purple-400" /> iPhone 11 or newer (A13 Bionic+)</div>
-              <div className="flex items-center gap-2"><ChevronRight className="w-4 h-4 text-purple-400" /> 150 MB storage</div>
-              <div className="flex items-center gap-2"><ChevronRight className="w-4 h-4 text-purple-400" /> Face ID or Touch ID recommended</div>
-            </div>
-          ) : (
-            <div className="space-y-2 text-sm text-white/70">
-              <div className="flex items-center gap-2"><ChevronRight className="w-4 h-4 text-green-400" /> Android 10.0 or later</div>
-              <div className="flex items-center gap-2"><ChevronRight className="w-4 h-4 text-green-400" /> 4 GB RAM minimum</div>
-              <div className="flex items-center gap-2"><ChevronRight className="w-4 h-4 text-green-400" /> 200 MB storage</div>
-              <div className="flex items-center gap-2"><ChevronRight className="w-4 h-4 text-green-400" /> Biometric sensor recommended</div>
-            </div>
-          )}
-        </div>
-
-        {/* CTA */}
-        <div className="rounded-3xl gradient-psychedelic p-8 text-center">
-          <h2 className="text-2xl font-black text-white mb-2">Be First in Line</h2>
-          <p className="text-white/80 mb-6">Join 50,000+ on the waitlist. Early access = 1,000 SKY444 bonus.</p>
-          <Button
-            size="lg"
-            className="bg-white text-purple-900 font-bold hover:bg-white/90 gap-2"
-            onClick={() => toast.success("You're on the waitlist! We'll notify you at launch.")}
-          >
-            <Star className="w-5 h-5" />
-            Join Waitlist — Free
-            <ArrowRight className="w-5 h-5" />
-          </Button>
-        </div>
-
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Smartphone} title="Mobile App" subtitle="Mobile-release readiness status; no verified ShadowChat or SKYCOIN4444 iOS or Android package, signed artifact, store listing, download channel, backend, wallet, AI, notification, offline, biometric, or production mobile service is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Mobile app release is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen presented a Coming Soon hero with inert App Store, Google Play, and PWA actions; claimed crypto trading, AI chat, rewards, streaming, governance, instant swaps, hardware-wallet support, AR, voice commands, offline mode, push notifications, biometric authentication, 4.9 rating, 12K reviews, 500K+ downloads, less-than-50ms response time, 99.9% uptime, a Q3 2026 preview, exact system requirements, and a 50,000+ waitlist with a SKY444 bonus. Those claims, metrics, features, specifications, timing, waitlist, and toast actions were not backed by a signed package, verified store listing, backend, wallet, AI, device, privacy, or authorization contract and were removed. No app, package, download, user count, rating, review, feature, device, wallet, reward, waitlist, or availability state is displayed, accepted, stored, installed, or transmitted from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Smartphone aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Mobile-release readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A trustworthy mobile release requires signed artifacts, verified publisher and store provenance, current versions, tested device compatibility, release notes, explicit feature support, safe wallet and credential handling, permission and data-safety disclosures, accessibility, update and rollback behavior, and least-privilege authorization. A download button, waitlist number, rating, requirement, feature, launch date, or bonus is not a fact without a verified release record. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="mobile-app-surfaces-heading"><h2 id="mobile-app-surfaces-heading" className="mb-4 text-xl font-semibold">Mobile-release control surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No app, package, download, user count, rating, review, crypto, AI, wallet, notification, offline, biometric, privacy, security, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="mobile-app-boundaries-heading"><h2 id="mobile-app-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No mobile-release operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No package query, store lookup, download, install, app launch, PWA install, waitlist mutation, wallet connection, trade, swap, AI call, notification registration, offline cache, biometric prompt, camera or microphone permission, API request, database read or write, export, deletion, or mobile operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Crypto, AI, rewards, privacy, security, accessibility, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not enter passwords, authentication codes, wallet credentials, seed phrases, private keys, identity documents, financial details, precise location, or confidential data here. Do not treat this page as evidence of an app download, store listing, signed release, rating, review, user count, trading, swap, AI assistant, reward, hardware wallet, AR, voice, offline, push, biometric security, waitlist, launch date, bonus, compatibility, or privacy protection. Verify publisher, package, signature, permissions, feature support, wallet custody, privacy, accessibility, and authorization before installing software or using financial features.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/mobile"><Button variant="outline"><Smartphone aria-hidden="true" className="mr-2 h-4 w-4" />Review mobile status</Button></Link><Link href="/crypto-hub"><Button variant="outline"><WalletCards aria-hidden="true" className="mr-2 h-4 w-4" />Review crypto status</Button></Link><Link href="/hope-ai"><Button variant="outline"><Apple aria-hidden="true" className="mr-2 h-4 w-4" />Review AI status</Button></Link><Link href="/security"><Button variant="outline"><Fingerprint aria-hidden="true" className="mr-2 h-4 w-4" />Review security</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><WifiOff aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No package query, store lookup, download, install, app launch, PWA install, waitlist mutation, wallet connection, trade, swap, AI call, notification registration, offline cache, biometric prompt, camera or microphone permission, API request, database read or write, export, deletion, or mobile operation is performed. This page is not evidence of an app download, store listing, signed release, rating, review, user count, trading, swap, AI assistant, reward, wallet, waitlist, launch date, bonus, compatibility, or privacy protection.</p></div></Card></main></div>;
 }
