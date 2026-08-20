@@ -1,25 +1,14 @@
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { FileCheck2, LockKeyhole, MessageCircle, Search, ShieldAlert, Users } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const sectionStates = [
+  { label: "Comment source, author identity, and parent context", value: "Not connected", icon: MessageCircle },
+  { label: "Replies, reactions, search, and pagination", value: "Not configured", icon: Search },
+  { label: "Moderation, reporting, notifications, and abuse controls", value: "Unavailable", icon: ShieldAlert },
+  { label: "Privacy, retention, deletion, and audit evidence", value: "Not verified", icon: FileCheck2 },
+];
 
 export default function CommentsSection() {
-  const [state, setState] = useState(false);
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 to-black p-4">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">CommentsSection</h1>
-        <p className="text-slate-400 mb-8">comments section</p>
-        
-        <Card className="bg-slate-900 border-slate-800 p-8">
-          <div className="space-y-6">
-            <p className="text-slate-300">Content for CommentsSection page</p>
-            <Button onClick={() => setState(!state)}>
-              {state ? "Deactivate" : "Activate"}
-            </Button>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={MessageCircle} title="Comments Section" subtitle="Comments-section integration status; no comment, author, reply, reaction, moderation, or notification record is available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><ShieldAlert aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Comments section is unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">This route previously displayed generic placeholder copy and an Activate/Deactivate control without real comments, author identity, parent context, pagination, moderation policy, authorization, persistence, or success and failure states. The demo mutation was removed rather than implying that a comment section was activated or that any community record exists.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><MessageCircle aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Comments-section readiness</h2><p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">A production comments section needs authenticated authorship, thread and parent integrity, bounded retrieval, pagination, spam and abuse prevention, moderation workflows, notification semantics, privacy and retention controls, and auditable create, edit, delete, and report behavior. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{sectionStates.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="comments-section-boundary-heading"><h2 id="comments-section-boundary-heading" className="mb-4 text-xl font-semibold">Current boundary</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><Users aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No comment, author, avatar, timestamp, parent relation, reply, reaction, mention, notification, report, moderation decision, or engagement count is read, displayed, stored, or simulated by this page.</p></div></Card><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><LockKeyhole aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No activation, deactivation, comment creation, search, edit, delete, moderation action, API request, database write, account mutation, notification, or external integration call is performed. Do not enter secrets or sensitive personal data into this unavailable section.</p></div></Card></div></section></main></div>;
 }
