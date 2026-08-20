@@ -1,75 +1,23 @@
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/_core/hooks/useAuth";
+import { AlertTriangle, CheckCircle2, FileWarning, KeyRound, Network, Search, ShieldAlert, TimerReset } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
-import { Loader2, Plus, Search, Settings } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Authenticated organization, service scope, event provenance, and least-privilege access", value: "Not connected", icon: KeyRound },
+  { label: "Error events, logs, traces, request IDs, stack data, redaction, sampling, and retention", value: "Unavailable", icon: FileWarning },
+  { label: "Alerts, thresholds, deduplication, ownership, incidents, on-call, and escalation", value: "Not configured", icon: AlertTriangle },
+  { label: "Privacy, security, audit, recovery, data quality, and operational evidence", value: "Not verified", icon: ShieldAlert },
+];
+
+const surfaces = [
+  { title: "Error and event intake", scope: "SDKs, request IDs, exceptions, logs, traces, releases, environments, provenance, redaction, sampling, and retention", status: "Unavailable" },
+  { title: "Alerting and incidents", scope: "Thresholds, deduplication, routing, ownership, on-call, escalation, incident records, communication, and postmortems", status: "Not configured" },
+  { title: "Reliability and performance", scope: "Latency, availability, dependency health, saturation, error budgets, regressions, recovery, and service-level objectives", status: "Not connected" },
+  { title: "Governance and privacy", scope: "Access, personal-data minimization, secrets, financial and wallet redaction, retention, exports, audit, and support", status: "Not verified" },
+];
 
 export default function ErrorTracking() {
-  const { isAuthenticated } = useAuth();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>ErrorTracking</CardTitle>
-            <CardDescription>Sign in to access this feature</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full">Sign In</Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold">ErrorTracking</h1>
-            <p className="text-muted-foreground mt-2">Error monitoring</p>
-          </div>
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            New
-          </Button>
-        </div>
-
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Search className="w-4 h-4 text-muted-foreground" />
-              <Input
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="max-w-sm"
-              />
-              <Button variant="outline" size="icon">
-                <Settings className="w-4 h-4" />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {isLoading ? (
-              <div className="flex justify-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
-              </div>
-            ) : (
-              <div className="text-center py-12 text-muted-foreground">
-                <p>No data available. Start by creating a new item.</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={FileWarning} title="Error Tracking" subtitle="Observability-readiness status; no authenticated organization, error event, log, trace, request ID, alert, incident, uptime, performance, or production telemetry is available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Error tracking is not verified</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen exposed a sign-in path and generic new, settings, search, loading, and empty-state controls without a connected telemetry service or documented privacy and authorization boundary. No error, log, trace, alert, incident, uptime, performance, or recovery evidence was available, so monitoring controls were removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><FileWarning aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Observability readiness</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Safe error tracking requires authenticated scope, event and release provenance, privacy-preserving redaction, secret and financial/wallet protection, sampling and retention policy, alert ownership, incident response, reliable logs/traces, service-level evidence, least-privilege access, audit, and recovery. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="error-tracking-surfaces-heading"><h2 id="error-tracking-surfaces-heading" className="mb-4 text-xl font-semibold">Tracking surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Network aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No monitoring capability, metric, incident, security property, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="error-tracking-boundaries-heading"><h2 id="error-tracking-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><TimerReset aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No telemetry claim</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No sign-in, error event, log, trace, request ID, stack, alert, incident, latency, uptime, performance, dependency, release, error budget, recovery, or production metric is read, calculated, displayed, exported, or simulated.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Observability, privacy, security, and sensitive-data warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Telemetry can contain personal data, credentials, wallet addresses, financial records, and security-sensitive details. Verify purpose, minimization, redaction, access, retention, audit, incident ownership, and recovery before collecting or acting on monitoring data.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/environment-management"><Button variant="outline"><Network aria-hidden="true" className="mr-2 h-4 w-4" />Review environment status</Button></Link><Link href="/security-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security status</Button></Link><Link href="/incident-response"><Button variant="outline"><AlertTriangle aria-hidden="true" className="mr-2 h-4 w-4" />Review incident status</Button></Link><Link href="/contact-us-form"><Button variant="outline"><Search aria-hidden="true" className="mr-2 h-4 w-4" />Ask about tracking availability</Button></Link></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No auth check, sign-in, event collection, error report, log, trace, request ID, alert, incident, release, performance calculation, API request, database read or write, telemetry export, credential or wallet capture, tracking event, recovery action, or production monitoring operation is performed. This page is not evidence of uptime, observability, security, privacy, compliance, incident response, or error-tracking functionality.</p></div></Card></main></div>;
 }
