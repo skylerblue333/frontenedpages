@@ -1,25 +1,23 @@
-import { useState } from "react";
+import { AlertTriangle, CheckCircle2, Fingerprint, KeyRound, LockKeyhole, MailCheck, ShieldAlert, UserRound } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Authenticated account, tenant, identity provider, redirect, and authorization context", value: "Not connected", icon: UserRound },
+  { label: "Credential collection, transport, hashing, verification, MFA, recovery, and phishing-resistant authentication", value: "Unavailable", icon: KeyRound },
+  { label: "Session, cookie, device, revocation, rate-limit, lockout, audit, and suspicious-login controls", value: "Not verified", icon: ShieldAlert },
+  { label: "Password, email, identity, privacy, retention, security, and least-privilege safeguards", value: "Not configured", icon: LockKeyhole },
+];
+
+const surfaces = [
+  { title: "Identity and account scope", scope: "Account identity, tenant, identity provider, redirect, consent, role, session audience, and authorization", status: "Unavailable", icon: UserRound },
+  { title: "Credentials and verification", scope: "Email or identifier, password transport, hashing, verification, MFA, passkeys, recovery, and credential reset", status: "Not connected", icon: KeyRound },
+  { title: "Session and abuse controls", scope: "Secure cookies, expiry, rotation, revocation, device binding, rate limits, lockout, alerts, and audit", status: "Not verified", icon: Fingerprint },
+  { title: "Privacy and account safety", scope: "Email, identity, password, recovery data, privacy, retention, deletion, security, and authorization", status: "Not configured", icon: LockKeyhole },
+];
 
 export default function Login() {
-  const [state, setState] = useState(false);
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 to-black p-4">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">Login</h1>
-        <p className="text-slate-400 mb-8">login page with email/password</p>
-        
-        <Card className="bg-slate-900 border-slate-800 p-8">
-          <div className="space-y-6">
-            <p className="text-slate-300">Content for Login page</p>
-            <Button onClick={() => setState(!state)}>
-              {state ? "Deactivate" : "Activate"}
-            </Button>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={KeyRound} title="Login" subtitle="Authentication readiness status; no credential form, identity provider, session service, MFA, recovery, account lookup, or production authentication backend is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Authentication is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen labeled itself as an email/password login page but displayed only an inert Activate/Deactivate toggle. It did not establish an identity provider, credential transport or hashing, MFA, recovery, session, cookie, redirect, rate-limit, lockout, privacy, audit, or authorization contract. The toggle and unsupported login implication were removed. No email, password, token, session, account, identity, or authentication result is collected, displayed, or initiated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><KeyRound aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Authentication readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A trustworthy login service requires a real identity provider, secure credential handling, MFA or passkeys, recovery and reset controls, secure sessions and cookies, rate limits and abuse detection, privacy notices, audit events, and least-privilege authorization. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="login-surfaces-heading"><h2 id="login-surfaces-heading" className="mb-4 text-xl font-semibold">Authentication surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No email, password, token, session, account, identity, authentication, financial, privacy, security, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="login-boundaries-heading"><h2 id="login-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No authentication operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No credential input, account lookup, identity-provider redirect, password verification, MFA challenge, session creation, cookie write, recovery request, notification, API request, database read or write, export, deletion, or personal-data operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Credential, identity, privacy, security, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not enter passwords, recovery codes, private keys, access tokens, or sensitive identity information here. Do not treat this page as evidence that an account, identity provider, session, MFA flow, recovery flow, or authenticated state exists. Verify the provider, origin, secure transport, password handling, phishing resistance, cookie policy, recovery, rate limits, audit, and authorization before authenticating.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/signup"><Button variant="outline"><MailCheck aria-hidden="true" className="mr-2 h-4 w-4" />Review registration</Button></Link><Link href="/forgot-password"><Button variant="outline"><KeyRound aria-hidden="true" className="mr-2 h-4 w-4" />Review recovery</Button></Link><Link href="/mfa-verification"><Button variant="outline"><Fingerprint aria-hidden="true" className="mr-2 h-4 w-4" />Review MFA</Button></Link><Link href="/security-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No credential input, account lookup, identity-provider redirect, password verification, MFA challenge, session creation, cookie write, recovery request, notification, API request, database read or write, export, deletion, or personal-data operation is performed. This page is not evidence that an account, identity provider, session, MFA flow, recovery flow, or authenticated state exists.</p></Card></main></div>;
 }
