@@ -1,75 +1,23 @@
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/_core/hooks/useAuth";
+import { AlertTriangle, CheckCircle2, Clapperboard, Eye, FileVideo2, KeyRound, LockKeyhole, PlayCircle, Search, ShieldAlert, Smartphone, Star, Users } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
-import { Loader2, Plus, Search, Settings } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Authenticated viewer, organization, device, title, asset, entitlement, and authorization scope", value: "Not connected", icon: KeyRound },
+  { label: "Title, creator, synopsis, asset, rating, review, license, territory, availability, age, and timestamp provenance", value: "Unavailable", icon: Clapperboard },
+  { label: "Detail lookup, playback, entitlement, subscription, recommendation, review, and user-control behavior", value: "Not verified", icon: PlayCircle },
+  { label: "Personal data, payment, age assurance, privacy, security, accessibility, moderation, and least-privilege safeguards", value: "Not configured", icon: LockKeyhole },
+];
+
+const surfaces = [
+  { title: "Viewer, title, and entitlement scope", scope: "Authenticated viewer, organization, device, title, asset, subscription, entitlement, consent, and authorization", status: "Unavailable", icon: Users },
+  { title: "Metadata, asset, and licensing provenance", scope: "Title, creator, synopsis, media asset, source, license, territory, release, rating, age, timestamp, and retention", status: "Not connected", icon: FileVideo2 },
+  { title: "Playback, reviews, and recommendations", scope: "Detail lookup, search, playback, streaming provider, quality, review, rating, recommendation, subscription, and user-control behavior", status: "Not verified", icon: Star },
+  { title: "Privacy, safety, and access controls", scope: "Personal data, payment, age assurance, sensitive content, moderation, export, deletion, accessibility, security, privacy, and access", status: "Not configured", icon: ShieldAlert },
+];
 
 export default function MovieDetail() {
-  const { isAuthenticated } = useAuth();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>MovieDetail</CardTitle>
-            <CardDescription>Sign in to access this feature</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full">Sign In</Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold">MovieDetail</h1>
-            <p className="text-muted-foreground mt-2">Movie info</p>
-          </div>
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            New
-          </Button>
-        </div>
-
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Search className="w-4 h-4 text-muted-foreground" />
-              <Input
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="max-w-sm"
-              />
-              <Button variant="outline" size="icon">
-                <Settings className="w-4 h-4" />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {isLoading ? (
-              <div className="flex justify-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
-              </div>
-            ) : (
-              <div className="text-center py-12 text-muted-foreground">
-                <p>No data available. Start by creating a new item.</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Clapperboard} title="Movie Detail" subtitle="Media-detail readiness status; no authenticated viewer or organization, title metadata service, asset store, licensing or territory service, rating or review provider, playback or streaming provider, subscription, recommendation, moderation, or production media backend is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Movie detail is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen presented an authenticated-only shell with inert Sign In, New, search, settings, tabs, and loading controls but did not connect viewers, title metadata, assets, creators, ratings, reviews, licensing, territories, age assurance, availability, playback, subscriptions, recommendations, moderation, privacy, or authorization. The incomplete workflow was replaced with this explicit readiness boundary. No viewer, title, synopsis, poster, rating, review, license, availability, subscription, playback, recommendation, or availability state is displayed, queried, created, streamed, stored, or mutated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Clapperboard aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Media-detail readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Trustworthy media details require authenticated viewer scope, authoritative metadata and asset records, licensing and territory provenance, age and content classification, entitlement and playback semantics, review and recommendation safeguards, moderation, privacy, accessibility, and least-privilege authorization. A synopsis, poster, rating, review, license, availability label, or playback promise is not a fact without a verified title or entitlement record. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="movie-detail-surfaces-heading"><h2 id="movie-detail-surfaces-heading" className="mb-4 text-xl font-semibold">Media-detail control surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No viewer, title, asset, license, rating, availability, playback, subscription, recommendation, privacy, security, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="movie-detail-boundaries-heading"><h2 id="movie-detail-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No detail operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, viewer or title query, search input, metadata or asset lookup, rating or review read, license or territory lookup, age gate, playback, streaming, subscription or entitlement mutation, recommendation, API request, database read or write, export, deletion, or media-detail operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Media, payments, age assurance, privacy, safety, accessibility, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not enter passwords, authentication codes, identity documents, payment details, private media, precise location, or confidential data here. Do not treat this page as evidence of a title, synopsis, poster, rating, review, license, territory, age classification, availability, playback, subscription, recommendation, moderation response, or privacy protection. Verify viewer, source, license, territory, age assurance, entitlement, content safety, payment, privacy, accessibility, security, and authorization before relying on media details or watching content.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/movie-catalog"><Button variant="outline"><Clapperboard aria-hidden="true" className="mr-2 h-4 w-4" />Review movie catalog</Button></Link><Link href="/media-gallery"><Button variant="outline"><FileVideo2 aria-hidden="true" className="mr-2 h-4 w-4" />Review media status</Button></Link><Link href="/media-carousel"><Button variant="outline"><Eye aria-hidden="true" className="mr-2 h-4 w-4" />Review media carousel</Button></Link><Link href="/mobile"><Button variant="outline"><Smartphone aria-hidden="true" className="mr-2 h-4 w-4" />Review mobile status</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link><Link href="/search"><Button variant="outline"><Search aria-hidden="true" className="mr-2 h-4 w-4" />Review search status</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No auth check, viewer or title query, search input, metadata or asset lookup, rating or review read, license or territory lookup, age gate, playback, streaming, subscription or entitlement mutation, recommendation, API request, database read or write, export, deletion, or media-detail operation is performed. This page is not evidence of a title, synopsis, poster, rating, review, license, territory, age classification, availability, playback, subscription, recommendation, moderation response, or privacy protection.</p></Card></main></div>;
 }
