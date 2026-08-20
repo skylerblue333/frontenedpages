@@ -1,84 +1,23 @@
-import { Vote } from "lucide-react";
+import { AlertTriangle, BarChart3, CheckCircle2, Gavel, LockKeyhole, ShieldAlert, Users, Vote } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { PageHeader } from "@/components/PageHeader";
 
+const readiness = [
+  { label: "DAO identity, membership, token balances, delegation, and voting power", value: "Not verified", icon: Users },
+  { label: "Proposals, quorum, voting periods, results, and execution targets", value: "Unavailable", icon: Vote },
+  { label: "Treasury assets, permissions, timelocks, transfers, and settlement", value: "Not connected", icon: Gavel },
+  { label: "Security review, auditability, privacy, and incident recovery", value: "Not configured", icon: LockKeyhole },
+];
+
+const boundaries = [
+  { title: "No governance-state claim", description: "No DAO, member, token holder, delegation, voting power, proposal, quorum, vote, result, execution target, or governance decision is read, displayed, calculated, or simulated.", icon: Vote },
+  { title: "No treasury or financial action", description: "No treasury balance, asset, transfer, payment, grant, fee, signature, multisignature approval, timelock, contract call, transaction hash, or settlement can be initiated or confirmed.", icon: Gavel },
+  { title: "No AI or performance claim", description: "No AI insight, autonomous decision, analytics result, encryption guarantee, processing speed, uptime, latency, throughput, success rate, or security certification is asserted.", icon: BarChart3 },
+  { title: "Governance warn-and-proceed", description: "Governance and treasury decisions can affect assets, rights, contracts, and legal obligations. Verify records, quorum, authority, and execution targets and obtain qualified advice before acting.", icon: AlertTriangle },
+];
+
 export default function DAOGovernance() {
-  return (
-    <div className="min-h-screen bg-background">
-      <PageHeader icon={Vote} title="DAO Governance" subtitle="Advanced dao governance with cutting-edge technology" />
-      
-      <div className="max-w-7xl mx-auto px-4 py-8 space-y-8">
-        {/* Main Content Area */}
-        <Card className="p-8 bg-gradient-to-br from-primary/10 to-secondary/10 border border-primary/20">
-          <div className="space-y-6">
-            <h2 className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">DAO Governance</h2>
-            
-            {/* Advanced Features */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <Card className="p-4 bg-background/80 border border-primary/30 hover:border-primary/80 transition-all cursor-pointer hover:shadow-lg hover:shadow-primary/20">
-                <div className="space-y-3">
-                  <Vote className="w-8 h-8 text-primary" />
-                  <h3 className="font-bold text-lg">Advanced Analytics</h3>
-                  <p className="text-sm text-muted-foreground">Real-time data processing with AI insights</p>
-                  <Button size="sm" variant="outline" className="w-full">Explore</Button>
-                </div>
-              </Card>
-              
-              <Card className="p-4 bg-background/80 border border-primary/30 hover:border-primary/80 transition-all cursor-pointer hover:shadow-lg hover:shadow-primary/20">
-                <div className="space-y-3">
-                  <Vote className="w-8 h-8 text-primary" />
-                  <h3 className="font-bold text-lg">Automation Engine</h3>
-                  <p className="text-sm text-muted-foreground">Autonomous operations with intelligent decision making</p>
-                  <Button size="sm" variant="outline" className="w-full">Configure</Button>
-                </div>
-              </Card>
-              
-              <Card className="p-4 bg-background/80 border border-primary/30 hover:border-primary/80 transition-all cursor-pointer hover:shadow-lg hover:shadow-primary/20">
-                <div className="space-y-3">
-                  <Vote className="w-8 h-8 text-primary" />
-                  <h3 className="font-bold text-lg">Security First</h3>
-                  <p className="text-sm text-muted-foreground">Robust encryption and protection</p>
-                  <Button size="sm" variant="outline" className="w-full">Secure</Button>
-                </div>
-              </Card>
-            </div>
-            
-            {/* Performance Metrics */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4">
-              <div className="p-4 bg-background/50 rounded-lg border border-border/50">
-                <p className="text-xs text-muted-foreground">Processing Speed</p>
-                <p className="text-2xl font-bold text-primary">99.9%</p>
-              </div>
-              <div className="p-4 bg-background/50 rounded-lg border border-border/50">
-                <p className="text-xs text-muted-foreground">Uptime</p>
-                <p className="text-2xl font-bold text-primary">24/7</p>
-              </div>
-              <div className="p-4 bg-background/50 rounded-lg border border-border/50">
-                <p className="text-xs text-muted-foreground">Latency</p>
-                <p className="text-2xl font-bold text-primary">&lt;50ms</p>
-              </div>
-              <div className="p-4 bg-background/50 rounded-lg border border-border/50">
-                <p className="text-xs text-muted-foreground">Throughput</p>
-                <p className="text-2xl font-bold text-primary">10K+/s</p>
-              </div>
-            </div>
-            
-            {/* Action Section */}
-            <div className="flex gap-4 flex-wrap pt-6">
-              <Button size="lg" className="bg-primary hover:bg-primary/90">
-                Get Started Now
-              </Button>
-              <Button size="lg" variant="outline">
-                View Documentation
-              </Button>
-              <Button size="lg" variant="ghost">
-                Schedule Demo
-              </Button>
-            </div>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader backHref="/dao-treasury" icon={Vote} title="DAO Governance" subtitle="Governance-readiness status; no live DAO membership, voting power, proposals, quorum, treasury, token, execution, analytics, or automation is available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><ShieldAlert aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">DAO governance is unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous screen presented unsupported AI analytics, autonomous governance automation, security and encryption guarantees, invented processing/uptime/latency/throughput metrics, and generic Explore, Configure, Secure, Get Started, Documentation, and Schedule Demo actions. No verified DAO identity, membership, proposal, vote, treasury, contract, security, or audit integration was connected, so those claims and controls were removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Vote aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Governance-readiness status</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Production DAO governance requires verified identity and membership, token and delegation semantics, proposal schemas, quorum and voting-period rules, immutable vote records, execution targets, treasury permissions, timelocks and multisignature controls, contract security, privacy, monitoring, recovery, and auditable results. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{readiness.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="dao-boundaries-heading"><h2 id="dao-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2">{boundaries.map(({ title, description, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><Icon aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p></Card>)}</div></section><div className="flex flex-wrap gap-3"><Link href="/dao-treasury"><Button variant="outline">View treasury status</Button></Link><Link href="/crypto-hub"><Button variant="outline">View crypto status</Button></Link><Link href="/contact-us-form"><Button variant="outline">Ask about availability</Button></Link></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No DAO record, member, token balance, delegation, voting power, proposal, quorum, vote, result, treasury balance, asset, transfer, payment, grant, fee, signature, multisignature approval, timelock, contract call, transaction, AI insight, autonomous decision, performance metric, security guarantee, API request, database read or write, notification, or financial recommendation is performed. This page is not evidence of governance authority, quorum, treasury control, vote validity, or execution.</p></div></Card></main></div>;
 }
