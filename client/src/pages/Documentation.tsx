@@ -1,25 +1,23 @@
-import { useState } from "react";
+import { AlertTriangle, BookOpen, CheckCircle2, FileSearch, History, LockKeyhole, Search, ShieldAlert, Users } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const readiness = [
+  { label: "Authoritative documentation sources, owners, scope, coverage, and provenance", value: "Not connected", icon: BookOpen },
+  { label: "Versioning, freshness, changelog, search, navigation, links, and release alignment", value: "Unavailable", icon: History },
+  { label: "Technical accuracy, examples, accessibility, localization, and security review", value: "Not configured", icon: ShieldAlert },
+  { label: "Feedback, support, corrections, deprecation, audit, and retention handling", value: "Not verified", icon: LockKeyhole },
+];
+
+const boundaries = [
+  { title: "No documentation coverage or freshness claim", description: "No document, guide, API, example, version, release, owner, link, search result, coverage percentage, freshness date, completeness, compatibility, or documentation metric is fetched, displayed, calculated, or simulated.", icon: FileSearch },
+  { title: "No documentation mutation", description: "No sign-in, document creation, edit, publication, version change, search, link opening, feedback, correction, deprecation, API request, database read or write, or account mutation can be initiated here.", icon: BookOpen },
+  { title: "No technical or support claim", description: "No implementation accuracy, API contract, security guidance, code-example safety, compatibility, accessibility, localization, support response, ownership, or release-alignment outcome is asserted.", icon: ShieldAlert },
+  { title: "Documentation and change-management warn-and-proceed", description: "Documentation can contain insecure commands, stale contracts, credentials, personal data, legal terms, and deployment instructions. Verify source ownership, version, environment, code examples, links, security review, and change history before relying on or executing guidance.", icon: AlertTriangle },
+];
 
 export default function Documentation() {
-  const [state, setState] = useState(false);
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 to-black p-4">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">Documentation</h1>
-        <p className="text-slate-400 mb-8">documentation</p>
-        
-        <Card className="bg-slate-900 border-slate-800 p-8">
-          <div className="space-y-6">
-            <p className="text-slate-300">Content for Documentation page</p>
-            <Button onClick={() => setState(!state)}>
-              {state ? "Deactivate" : "Activate"}
-            </Button>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={BookOpen} title="Documentation" subtitle="Documentation-readiness status; no authoritative guides, API contracts, examples, versions, search index, links, coverage, freshness, or documentation state is available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Documentation evidence is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen presented placeholder content and an ambiguous Activate/Deactivate toggle without authoritative sources, ownership, versioning, freshness, search, links, security review, accessibility, support, or audit workflow. The toggle and implied documentation state were removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><BookOpen aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Documentation-readiness status</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Trustworthy documentation requires authoritative source ownership, complete scope, version and release alignment, freshness, searchable navigation, accurate contracts and examples, security and accessibility review, link validation, feedback and correction, deprecation, support, and auditability. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{readiness.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="documentation-boundaries-heading"><h2 id="documentation-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2">{boundaries.map(({ title, description, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><Icon aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p></Card>)}</div></section><div className="flex flex-wrap gap-3"><Link href="/developer-protocol"><Button variant="outline"><FileSearch aria-hidden="true" className="mr-2 h-4 w-4" />View API-readiness status</Button></Link><Link href="/change-management"><Button variant="outline"><History aria-hidden="true" className="mr-2 h-4 w-4" />View change status</Button></Link><Link href="/security-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />View security status</Button></Link><Link href="/contact-us-form"><Button variant="outline"><Users aria-hidden="true" className="mr-2 h-4 w-4" />Ask about documentation availability</Button></Link></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No document, guide, API, example, version, release, owner, link, search result, coverage percentage, freshness date, completeness, compatibility, documentation metric, sign-in, document creation, edit, publication, version change, search, link opening, feedback, correction, deprecation, API request, database read or write, implementation accuracy, API contract, security guidance, code-example safety, compatibility, accessibility, localization, support response, ownership, or release-alignment result is performed. This page is not evidence of documentation completeness, accuracy, freshness, security, or support coverage.</p></div></Card></main></div>;
 }
