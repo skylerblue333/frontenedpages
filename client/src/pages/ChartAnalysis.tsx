@@ -1,89 +1,14 @@
-import { BarChart3 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { BarChart3, Database, FileCheck2, Gauge, LockKeyhole, ShieldAlert } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { PageHeader } from "@/components/PageHeader";
 
+const readinessItems = [
+  { label: "Source data, ownership, schema, and refresh policy", status: "Not connected", icon: Database },
+  { label: "Chart series, filters, calculations, and metric definitions", status: "Not configured", icon: BarChart3 },
+  { label: "Latency, error rate, completeness, and performance telemetry", status: "Unavailable", icon: Gauge },
+  { label: "Export, audit trail, access control, and retention policy", status: "Not configured", icon: FileCheck2 },
+];
+
 export default function ChartAnalysis() {
-  return (
-    <div className="min-h-screen bg-background">
-      <PageHeader icon={BarChart3} title="Chart Analysis" subtitle="Fully functional chart analysis page with live data and real-time updates" />
-      
-      <div className="max-w-7xl mx-auto px-4 py-8 space-y-8">
-        {/* Main Content Area */}
-        <Card className="p-8 bg-card border border-border/50">
-          <div className="space-y-6">
-            <h2 className="text-2xl font-bold">Chart Analysis</h2>
-            
-            {/* Feature Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <BarChart3 className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 1</h3>
-                  <p className="text-sm text-muted-foreground">Real-time data and live updates</p>
-                </div>
-              </Card>
-              
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <BarChart3 className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 2</h3>
-                  <p className="text-sm text-muted-foreground">Advanced analytics and insights</p>
-                </div>
-              </Card>
-              
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <BarChart3 className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 3</h3>
-                  <p className="text-sm text-muted-foreground">Seamless integration and automation</p>
-                </div>
-              </Card>
-            </div>
-            
-            {/* Action Buttons */}
-            <div className="flex gap-4 flex-wrap pt-4">
-              <Button className="bg-primary hover:bg-primary/90">
-                Get Started
-              </Button>
-              <Button variant="outline">
-                Learn More
-              </Button>
-              <Button variant="ghost">
-                Documentation
-              </Button>
-            </div>
-          </div>
-        </Card>
-        
-        {/* Stats Section */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Active Users</p>
-              <p className="text-2xl font-bold">802K+</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Total Transactions</p>
-              <p className="text-2xl font-bold">2.4M</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Success Rate</p>
-              <p className="text-2xl font-bold">99.9%</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Avg Response Time</p>
-              <p className="text-2xl font-bold">45ms</p>
-            </div>
-          </Card>
-        </div>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={BarChart3} title="Chart Analysis" subtitle="Analytics readiness boundary; no live data, chart result, or performance claim is available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><ShieldAlert aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Chart analysis is unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous screen claimed real-time data, live updates, advanced analytics, seamless automation, 802K+ active users, 2.4M total transactions, a 99.9% success rate, and 45ms average response time. No data source, metric definition, query, telemetry pipeline, access policy, calculation, or audit evidence was connected. Those claims and the non-functional Get Started, Learn More, and Documentation buttons were removed rather than presenting demo-ware as production capability.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><BarChart3 aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Analytics-readiness status</h2><p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">A trustworthy chart requires a named source of truth, documented dimensions and measures, bounded query behavior, data freshness, permission checks, calculation tests, empty and error states, and an auditable interpretation. This route currently has none of those integrations.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{readinessItems.map(({ label, status, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{status}</p></Card>)}</div></Card><section aria-labelledby="boundary-heading"><h2 id="boundary-heading" className="mb-4 text-xl font-semibold">Current boundary</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><LockKeyhole aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No user, transaction, financial, operational, AI, market, blockchain, or system metric is read, calculated, charted, exported, cached, or simulated by this page. Do not treat this unavailable state as a measurement or report.</p></div></Card><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><Gauge aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No active-user count, transaction total, success rate, response-time percentile, uptime, throughput, trend, forecast, insight, recommendation, or automation result is fabricated as a fallback. Verify future analytics against independently trusted source data and telemetry.</p></div></Card></div></section></main></div>;
 }
