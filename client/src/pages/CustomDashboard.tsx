@@ -1,74 +1,23 @@
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/_core/hooks/useAuth";
+import { BarChart3, CheckCircle2, LayoutDashboard, LockKeyhole, Search, Settings2, ShieldAlert, SlidersHorizontal } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Loader2, Plus, Search, Settings } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const readiness = [
+  { label: "Authenticated owner, dashboard records, and saved views", value: "Not connected", icon: LockKeyhole },
+  { label: "Widgets, data sources, queries, filters, and metric provenance", value: "Unavailable", icon: BarChart3 },
+  { label: "Alerts, refresh, exports, sharing, and notifications", value: "Not configured", icon: SlidersHorizontal },
+  { label: "Permissions, privacy, audit logs, and failure handling", value: "Not verified", icon: Settings2 },
+];
+
+const boundaries = [
+  { title: "No dashboard data claim", description: "No dashboard, widget, chart, KPI, metric, query, saved view, data source, alert, refresh time, or analytics result is read, calculated, displayed, or simulated.", icon: BarChart3 },
+  { title: "No control or persistence claim", description: "No sign-in, create, search, filter, configure, save, export, share, delete, notification, API request, database read or write, or account mutation can be initiated here.", icon: LayoutDashboard },
+  { title: "No performance or business claim", description: "No user count, revenue, conversion, growth, uptime, latency, success rate, forecast, AI insight, operational result, or business metric is asserted.", icon: SlidersHorizontal },
+  { title: "No privacy or authorization claim", description: "No private data, role, permission, ownership, access decision, retention rule, audit evidence, or integration status beyond this page’s explicit boundary is available. Do not enter sensitive information here.", icon: LockKeyhole },
+];
 
 export default function CustomDashboard() {
-  const { isAuthenticated } = useAuth();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>CustomDashboard</CardTitle>
-            <CardDescription>Sign in to access this feature</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full">Sign In</Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold">CustomDashboard</h1>
-            <p className="text-muted-foreground mt-2">Create custom dashboard</p>
-          </div>
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            New
-          </Button>
-        </div>
-
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Search className="w-4 h-4 text-muted-foreground" />
-              <Input
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="max-w-sm"
-              />
-              <Button variant="outline" size="icon">
-                <Settings className="w-4 h-4" />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {isLoading ? (
-              <div className="flex justify-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
-              </div>
-            ) : (
-              <div className="text-center py-12 text-muted-foreground">
-                <p>No data available. Start by creating a new item.</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={LayoutDashboard} title="Custom Dashboard" subtitle="Dashboard-readiness status; no saved dashboards, widgets, metrics, data sources, analytics, alerts, exports, sharing, or account state are available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><ShieldAlert aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Custom dashboards are unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous screen showed a fake authentication gate, non-functional Sign In, New, Search, and Settings controls, a simulated loading state, and a generic prompt implying that a dashboard item could be created. No verified dashboard records, widgets, data sources, metrics, permissions, persistence, or analytics integration was connected, so those claims and controls were removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><LayoutDashboard aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Dashboard-readiness status</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Production custom dashboards require authenticated ownership, schema-backed dashboard and widget records, trusted data sources and query contracts, filter and refresh semantics, access control, privacy, error and empty states, exports and sharing, alert delivery, observability, and auditability. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{readiness.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="dashboard-boundaries-heading"><h2 id="dashboard-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2">{boundaries.map(({ title, description, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><Icon aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p></Card>)}</div></section><div className="flex flex-wrap gap-3"><Link href="/dashboard"><Button variant="outline">View dashboard status</Button></Link><Link href="/settings"><Button variant="outline">View settings status</Button></Link><Link href="/contact-us-form"><Button variant="outline">Ask about availability</Button></Link></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No dashboard list, widget, chart, KPI, metric, query, saved view, data source, filter, search, refresh, alert, export, share, create action, sign-in, API request, database read or write, notification, user count, revenue, conversion, growth, uptime, latency, forecast, AI insight, or business result is performed. This page is not evidence of dashboard persistence, analytics, account access, or operational performance.</p></div></Card></main></div>;
 }
