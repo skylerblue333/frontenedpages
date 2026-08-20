@@ -1,74 +1,23 @@
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/_core/hooks/useAuth";
+import { AlertTriangle, BarChart3, CheckCircle2, ClipboardCheck, KeyRound, LockKeyhole, ShieldAlert, Target, TrendingUp, UsersRound } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Loader2, Plus, Search, Settings } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Authenticated organization, tenant, analyst, dataset, cohort, and analytics authorization scope", value: "Not connected", icon: KeyRound },
+  { label: "Customer identity, cohort definition, revenue source, costs, churn, retention, and attribution provenance", value: "Unavailable", icon: UsersRound },
+  { label: "LTV, CAC, margin, discounting, forecast, uncertainty, experimentation, and decision controls", value: "Not verified", icon: TrendingUp },
+  { label: "Personal, behavioral, financial, privacy, fairness, security, retention, and least-privilege safeguards", value: "Not configured", icon: ShieldAlert },
+];
+
+const surfaces = [
+  { title: "Cohorts and definitions", scope: "Customer identity, cohort membership, period, inclusion rules, denominator, lifecycle, consent, and reproducible query provenance", status: "Unavailable", icon: UsersRound },
+  { title: "Revenue and cost inputs", scope: "Net revenue, refunds, taxes, fees, discounts, gross margin, acquisition cost, attribution, accounting basis, and reconciliation", status: "Not connected", icon: BarChart3 },
+  { title: "Retention and forecast", scope: "Churn, retention, survival, repeat activity, horizon, assumptions, discount rate, sensitivity, uncertainty, and review", status: "Not verified", icon: TrendingUp },
+  { title: "Privacy and decision safety", scope: "Personal and behavioral data, segmentation, fairness, profiling, access, retention, deletion, security, and authorization", status: "Not configured", icon: LockKeyhole },
+];
 
 export default function LTVAnalysis() {
-  const { isAuthenticated } = useAuth();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>LTVAnalysis</CardTitle>
-            <CardDescription>Sign in to access this feature</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full">Sign In</Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold">LTVAnalysis</h1>
-            <p className="text-muted-foreground mt-2">Lifetime value analysis</p>
-          </div>
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            New
-          </Button>
-        </div>
-
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Search className="w-4 h-4 text-muted-foreground" />
-              <Input
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="max-w-sm"
-              />
-              <Button variant="outline" size="icon">
-                <Settings className="w-4 h-4" />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {isLoading ? (
-              <div className="flex justify-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
-              </div>
-            ) : (
-              <div className="text-center py-12 text-muted-foreground">
-                <p>No data available. Start by creating a new item.</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={TrendingUp} title="LTV Analysis" subtitle="Customer-analytics readiness status; no authenticated organization, customer dataset, cohort, revenue, retention, acquisition-cost, lifetime-value, forecast, or production analytics service is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">LTV analysis is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen implied lifetime-value analysis, exposed an unauthenticated sign-in pseudo-action, and included inert New, settings, search, and loading controls without customer identity, cohort definitions, revenue and cost provenance, churn, retention, attribution, forecasting, privacy, fairness, or authorization boundaries. Those unsupported claims and controls were removed. No customer count, LTV, CAC, churn, retention, revenue, margin, forecast, recommendation, or behavioral profile is displayed or calculated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><TrendingUp aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Customer-analytics readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Responsible LTV analysis requires authorized data scope, explicit cohort and metric definitions, source-backed revenue and cost inputs, refunds and tax treatment, reproducible attribution, retention and churn methodology, transparent forecasts and uncertainty, fairness and anti-profiling review, privacy and deletion controls, and human decision ownership. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="ltv-surfaces-heading"><h2 id="ltv-surfaces-heading" className="mb-4 text-xl font-semibold">Analytics surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No customer, cohort, revenue, LTV, CAC, churn, retention, forecast, recommendation, privacy, security, financial, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="ltv-boundaries-heading"><h2 id="ltv-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No customer analytics operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, customer query, cohort calculation, revenue query, CAC or LTV calculation, churn or retention calculation, forecast, segmentation, search, settings mutation, API request, database read or write, notification, export, deletion, or personal-data operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Financial, privacy, profiling, fairness, security, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not treat this page as evidence of customer value, churn, retention, revenue, margins, acquisition cost, forecasts, growth, profitability, or a recommendation to target or price people. Verify cohort rules, source and timestamp, refunds, taxes, accounting, assumptions, uncertainty, fairness, privacy, consent, access, and qualified review before relying on analytics.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/analytics"><Button variant="outline"><BarChart3 aria-hidden="true" className="mr-2 h-4 w-4" />Review analytics status</Button></Link><Link href="/customer-analytics"><Button variant="outline"><UsersRound aria-hidden="true" className="mr-2 h-4 w-4" />Review customer analytics</Button></Link><Link href="/financial-reports"><Button variant="outline"><ClipboardCheck aria-hidden="true" className="mr-2 h-4 w-4" />Review financial status</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link><Link href="/security-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No auth check, customer query, cohort calculation, revenue query, CAC or LTV calculation, churn or retention calculation, forecast, segmentation, search, settings mutation, API request, database read or write, notification, export, deletion, or personal-data operation is performed. This page is not evidence of customer value, churn, retention, revenue, margins, acquisition cost, forecasts, growth, profitability, or a recommendation to target or price people.</p></Card></main></div>;
 }
