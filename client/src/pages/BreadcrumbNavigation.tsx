@@ -1,25 +1,14 @@
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { ChevronRight, FileCheck2, Home, Keyboard, LockKeyhole, Map, ShieldCheck } from "lucide-react";
+import { Link } from "wouter";
 import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const trail = [
+  { label: "Home", href: "/dashboard" },
+  { label: "Components", href: "/component-showcase" },
+  { label: "Breadcrumb navigation", href: null },
+];
 
 export default function BreadcrumbNavigation() {
-  const [state, setState] = useState(false);
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 to-black p-4">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">BreadcrumbNavigation</h1>
-        <p className="text-slate-400 mb-8">breadcrumb navigation</p>
-        
-        <Card className="bg-slate-900 border-slate-800 p-8">
-          <div className="space-y-6">
-            <p className="text-slate-300">Content for BreadcrumbNavigation page</p>
-            <Button onClick={() => setState(!state)}>
-              {state ? "Deactivate" : "Activate"}
-            </Button>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Map} title="Breadcrumb Navigation" subtitle="A typed, accessible navigation pattern for showing hierarchy and current location. This page does not claim application data, permissions, or workflow state." /><main className="mx-auto max-w-5xl space-y-8 px-4 py-8"><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Map aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Navigation pattern</h2><p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">Breadcrumbs should expose a meaningful hierarchy, use links for navigable ancestors, identify the current page with <code className="rounded bg-muted px-1">aria-current="page"</code>, remain readable at narrow widths, and never imply that a destination or record exists unless the route confirms it.</p></div></div><nav aria-label="Breadcrumb" className="mt-8 rounded-xl border border-primary/30 bg-background/80 p-4"><ol className="flex flex-wrap items-center gap-2 text-sm">{trail.map((item, index) => <li key={item.label} className="flex items-center gap-2">{index > 0 && <ChevronRight aria-hidden="true" className="h-4 w-4 text-muted-foreground" />}{item.href ? <Link href={item.href} className="rounded px-2 py-1 text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">{index === 0 && <Home aria-hidden="true" className="mr-1 inline h-4 w-4" />}{item.label}</Link> : <span aria-current="page" className="rounded bg-primary/10 px-2 py-1 font-medium text-foreground">{item.label}</span>}</li>)}</ol></nav></Card><section aria-labelledby="breadcrumb-evidence-heading"><h2 id="breadcrumb-evidence-heading" className="mb-4 text-xl font-semibold">Implementation boundaries</h2><div className="grid gap-4 md:grid-cols-3">{[{ label: "Hierarchy", text: "Ancestors are explicit links; the current location is not presented as a clickable action.", icon: Home }, { label: "Keyboard and screen readers", text: "The navigation has a label, visible focus treatment, semantic list structure, and aria-current on the current page.", icon: Keyboard }, { label: "Route safety", text: "No Activate, Deactivate, mutation, record lookup, or unsupported workflow state is simulated by this route.", icon: ShieldCheck }].map(({ label, text, icon: Icon }) => <Card key={label} className="border border-border/50 bg-card p-5"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><h3 className="font-semibold">{label}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{text}</p></Card>)}</div></section><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><LockKeyhole aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">This component does not read, write, or infer account data, financial data, private content, permissions, workflow status, or security state. It is a navigation pattern only; destination availability and authorization must be established by the destination route.</p></div></Card><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><FileCheck2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">The previous generic placeholder and fake Activate/Deactivate control were removed. No success, activation, operational, or feature-completion claim is fabricated as a fallback.</p></div></Card></main></div>;
 }
