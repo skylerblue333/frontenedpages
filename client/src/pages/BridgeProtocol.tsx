@@ -1,84 +1,16 @@
-import { Link } from "lucide-react";
+import { Activity, FileCheck2, Link2, LockKeyhole, Network, ShieldAlert, WalletCards } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { PageHeader } from "@/components/PageHeader";
 
+const evidence = [
+  { label: "Supported networks, contracts, and route allowlist", value: "Unavailable", icon: Network },
+  { label: "Wallets, balances, approvals, and bridge parameters", value: "Not configured", icon: WalletCards },
+  { label: "Transfer signing, relaying, confirmations, and settlement", value: "Not connected", icon: Link2 },
+  { label: "Security review, monitoring, limits, and audit", value: "Disabled", icon: FileCheck2 },
+];
+
 export default function BridgeProtocol() {
-  return (
-    <div className="min-h-screen bg-background">
-      <PageHeader icon={Link} title="Bridge Protocol" subtitle="Advanced bridge protocol with cutting-edge technology" />
-      
-      <div className="max-w-7xl mx-auto px-4 py-8 space-y-8">
-        {/* Main Content Area */}
-        <Card className="p-8 bg-gradient-to-br from-primary/10 to-secondary/10 border border-primary/20">
-          <div className="space-y-6">
-            <h2 className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Bridge Protocol</h2>
-            
-            {/* Advanced Features */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <Card className="p-4 bg-background/80 border border-primary/30 hover:border-primary/80 transition-all cursor-pointer hover:shadow-lg hover:shadow-primary/20">
-                <div className="space-y-3">
-                  <Link className="w-8 h-8 text-primary" />
-                  <h3 className="font-bold text-lg">Advanced Analytics</h3>
-                  <p className="text-sm text-muted-foreground">Real-time data processing with AI insights</p>
-                  <Button size="sm" variant="outline" className="w-full">Explore</Button>
-                </div>
-              </Card>
-              
-              <Card className="p-4 bg-background/80 border border-primary/30 hover:border-primary/80 transition-all cursor-pointer hover:shadow-lg hover:shadow-primary/20">
-                <div className="space-y-3">
-                  <Link className="w-8 h-8 text-primary" />
-                  <h3 className="font-bold text-lg">Automation Engine</h3>
-                  <p className="text-sm text-muted-foreground">Autonomous operations with intelligent decision making</p>
-                  <Button size="sm" variant="outline" className="w-full">Configure</Button>
-                </div>
-              </Card>
-              
-              <Card className="p-4 bg-background/80 border border-primary/30 hover:border-primary/80 transition-all cursor-pointer hover:shadow-lg hover:shadow-primary/20">
-                <div className="space-y-3">
-                  <Link className="w-8 h-8 text-primary" />
-                  <h3 className="font-bold text-lg">Security First</h3>
-                  <p className="text-sm text-muted-foreground">Robust encryption and protection</p>
-                  <Button size="sm" variant="outline" className="w-full">Secure</Button>
-                </div>
-              </Card>
-            </div>
-            
-            {/* Performance Metrics */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4">
-              <div className="p-4 bg-background/50 rounded-lg border border-border/50">
-                <p className="text-xs text-muted-foreground">Processing Speed</p>
-                <p className="text-2xl font-bold text-primary">99.9%</p>
-              </div>
-              <div className="p-4 bg-background/50 rounded-lg border border-border/50">
-                <p className="text-xs text-muted-foreground">Uptime</p>
-                <p className="text-2xl font-bold text-primary">24/7</p>
-              </div>
-              <div className="p-4 bg-background/50 rounded-lg border border-border/50">
-                <p className="text-xs text-muted-foreground">Latency</p>
-                <p className="text-2xl font-bold text-primary">&lt;50ms</p>
-              </div>
-              <div className="p-4 bg-background/50 rounded-lg border border-border/50">
-                <p className="text-xs text-muted-foreground">Throughput</p>
-                <p className="text-2xl font-bold text-primary">10K+/s</p>
-              </div>
-            </div>
-            
-            {/* Action Section */}
-            <div className="flex gap-4 flex-wrap pt-6">
-              <Button size="lg" className="bg-primary hover:bg-primary/90">
-                Get Started Now
-              </Button>
-              <Button size="lg" variant="outline">
-                View Documentation
-              </Button>
-              <Button size="lg" variant="ghost">
-                Schedule Demo
-              </Button>
-            </div>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Link2} title="Bridge Protocol" subtitle="Cross-chain bridge services are not connected in this deployment. No network, route, wallet, asset, transfer, security, or settlement result is being reported or created." /><main className="mx-auto max-w-5xl space-y-8 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><ShieldAlert aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Bridge actions are unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous screen advertised advanced analytics with AI insights, autonomous decision-making, robust encryption, 99.9% processing speed, 24/7 uptime, less than 50ms latency, and 10K+/s throughput. It exposed Explore, Configure, Secure, Get Started, Documentation, and Schedule Demo controls. No chain allowlist, bridge contracts, token registry, route configuration, wallet ownership, approval flow, rate and liquidity data, relayer, signing boundary, security review, monitoring, incident response, or settlement verification was connected. Those claims and actions were removed rather than implying that assets can be bridged or protected.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Link2 aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Bridge-integration readiness</h2><p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">A production bridge requires explicit network and contract allowlists, token and decimal validation, address and chain checks, wallet authorization, approval and allowance semantics, limits and liquidity, replay and nonce protection, audited contracts, relayer monitoring, timeout and failure recovery, confirmation and finality rules, incident response, and independently verified settlement. None are available through this route.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{evidence.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div><div className="mt-6 flex flex-wrap gap-3"><Link href="/chain-explorer"><Button>View chain status</Button></Link><Link href="/wallet"><Button variant="outline">View wallet status</Button></Link><Link href="/security"><Button variant="ghost">View security status</Button></Link></div></Card><section aria-labelledby="bridge-evidence-heading"><h2 id="bridge-evidence-heading" className="mb-4 text-xl font-semibold">Current bridge evidence</h2><div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">{evidence.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-border/50 bg-card p-4"><p className="text-sm text-muted-foreground">{label}</p><div className="mt-2 flex items-center gap-2"><Icon aria-hidden="true" className="h-4 w-4 text-muted-foreground" /><p className="font-semibold">{value}</p></div></Card>)}</div></section><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><LockKeyhole aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">Do not enter passwords, access tokens, private keys, seed phrases, wallet credentials, contract secrets, or sensitive transaction details here. An unavailable bridge page is not evidence that a route, token, balance, allowance, transfer, security guarantee, or settlement exists.</p></div></Card><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><Activity aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No network lookup, token quote, wallet connection, balance read, allowance approval, bridge transfer, signature, relayer call, fee calculation, notification, analytics query, AI call, security assessment, or external chain API call is read, written, sent, stored, or simulated by this page.</p></div></Card><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><FileCheck2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No network count, route, asset, liquidity, fee, latency, uptime, throughput, transfer status, confirmation, finality, security rating, or settlement conclusion is fabricated as a fallback. Verify future bridge activity through independently audited contracts, trusted explorers, and server-side records.</p></div></Card></main></div>;
 }
