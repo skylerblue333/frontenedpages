@@ -1,195 +1,23 @@
-import { useState } from "react";
-import { Card } from "@/components/ui/card";
+import { AlertTriangle, CheckCircle2, FileCheck2, KeyRound, LockKeyhole, Search, ShieldAlert, Vote, WalletCards, Users } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { Vote, ChevronRight, ChevronLeft, CheckCircle2, FileText, Users, Clock, Zap } from "lucide-react";
+import { Card } from "@/components/ui/card";
 import { PageHeader } from "@/components/PageHeader";
-import { toast } from "sonner";
 
-const STEPS = ["Type", "Details", "Options", "Review", "Submit"];
-const PROPOSAL_TYPES = [
-  { id: "parameter", label: "Parameter Change", icon: "⚙️", desc: "Modify protocol parameters (fees, limits, thresholds)" },
-  { id: "treasury", label: "Treasury Spend", icon: "💰", desc: "Allocate treasury funds to a project or initiative" },
-  { id: "upgrade", label: "Protocol Upgrade", icon: "🔧", desc: "Propose a smart contract or protocol upgrade" },
-  { id: "community", label: "Community Initiative", icon: "🌍", desc: "Launch a community program or partnership" },
-  { id: "emergency", label: "Emergency Action", icon: "🚨", desc: "Urgent security or critical fix proposal" },
+const boundaries = [
+  { label: "Authenticated proposer, organization, role, proposal, token, treasury, and submission authorization scope", value: "Not connected", icon: KeyRound },
+  { label: "Proposal type, content, evidence, validation, voting rules, options, duration, quorum, and provenance", value: "Unavailable", icon: FileCheck2 },
+  { label: "Eligibility, stake, signing, publication, execution, timelock, audit, dispute, and irreversible-action controls", value: "Not verified", icon: WalletCards },
+  { label: "Privacy, security, financial, crypto, legal, tax, sanctions, and conflict-of-interest safeguards", value: "Not configured", icon: ShieldAlert },
+];
+
+const surfaces = [
+  { title: "Proposal authoring", scope: "Authenticated author, organization, proposal type, title, description, evidence, impact, validation, versioning, and draft retention", status: "Unavailable", icon: FileCheck2 },
+  { title: "Voting configuration", scope: "Options, duration, eligibility, snapshot, token weight, quorum, delegation, abstention, and tally semantics", status: "Not verified", icon: Vote },
+  { title: "Treasury and protocol risk", scope: "Treasury spend, parameter change, upgrade, emergency action, custody, signing, timelock, rollback, and execution", status: "Not configured", icon: WalletCards },
+  { title: "Review and submission safety", scope: "Roles, permissions, legal and tax review, sanctions, privacy, audit, conflict checks, fraud, disputes, and publication authority", status: "Not connected", icon: ShieldAlert },
 ];
 
 export default function GovernanceWizard() {
-  const [step, setStep] = useState(0);
-  const [type, setType] = useState("");
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [options, setOptions] = useState(["Yes — Approve", "No — Reject", "Abstain"]);
-  const [duration, setDuration] = useState("7");
-  const [submitted, setSubmitted] = useState(false);
-
-  const handleSubmit = () => {
-    setSubmitted(true);
-    toast.success("Governance proposal submitted for community vote!");
-  };
-
-  if (submitted) {
-    return (
-      <div className="max-w-2xl mx-auto px-4 py-6 text-center">
-        <div className="w-20 h-20 rounded-full bg-purple-600/20 flex items-center justify-center mx-auto mb-4">
-          <CheckCircle2 className="w-10 h-10 text-purple-400" />
-        </div>
-        <h2 className="text-2xl font-bold mb-2">Proposal Submitted!</h2>
-        <p className="text-muted-foreground mb-6">Your governance proposal is now live for community voting. Voting period: {duration} days.</p>
-        <div className="bg-card border border-border/50 rounded-xl p-4 text-left mb-6">
-          <p className="font-semibold">{title || "Untitled Proposal"}</p>
-          <p className="text-sm text-muted-foreground mt-1">{description || "No description provided"}</p>
-          <div className="flex gap-2 mt-3">
-            <Badge variant="outline" className="border-primary/30 text-primary">{type}</Badge>
-            <Badge variant="outline" className="border-purple-500/30 text-purple-400">Active</Badge>
-          </div>
-        </div>
-        <Button onClick={() => { setSubmitted(false); setStep(0); setType(""); setTitle(""); setDescription(""); }}>
-          Create Another Proposal
-        </Button>
-      </div>
-    );
-  }
-
-  return (
-    <div className="max-w-2xl mx-auto px-4 py-6">
-      <PageHeader backHref="/governance" title="Create Governance Proposal" subtitle="Shape the future of SKYCOIN4444" icon={Vote} />
-
-      {/* Step indicator */}
-      <div className="flex items-center gap-2 mb-8">
-        {STEPS.map((s, i) => (
-          <div key={i} className="flex items-center gap-2">
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all ${i < step ? "bg-purple-600 text-white" : i === step ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>
-              {i < step ? "✓" : i + 1}
-            </div>
-            {i < STEPS.length - 1 && <div className={`h-0.5 w-8 transition-all ${i < step ? "bg-purple-600" : "bg-border"}`} />}
-          </div>
-        ))}
-        <span className="ml-2 text-sm text-muted-foreground">{STEPS[step]}</span>
-      </div>
-
-      <Card className="p-6 border-border/50">
-        {step === 0 && (
-          <div>
-            <h3 className="font-bold text-lg mb-4">Select Proposal Type</h3>
-            <div className="space-y-3">
-              {PROPOSAL_TYPES.map(pt => (
-                <button key={pt.id} onClick={() => setType(pt.id)}
-                  className={`w-full flex items-center gap-4 p-4 rounded-xl border-2 text-left transition-all ${type === pt.id ? "border-primary bg-primary/10" : "border-border hover:border-primary/40"}`}>
-                  <span className="text-2xl">{pt.icon}</span>
-                  <div>
-                    <p className="font-semibold">{pt.label}</p>
-                    <p className="text-xs text-muted-foreground">{pt.desc}</p>
-                  </div>
-                  {type === pt.id && <CheckCircle2 className="w-5 h-5 text-primary ml-auto" />}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {step === 1 && (
-          <div className="space-y-4">
-            <h3 className="font-bold text-lg mb-4">Proposal Details</h3>
-            <div>
-              <label className="text-sm font-medium mb-1 block">Title</label>
-              <Input placeholder="Short, clear title for your proposal" value={title} onChange={e => setTitle(e.target.value)} />
-            </div>
-            <div>
-              <label className="text-sm font-medium mb-1 block">Description</label>
-              <textarea
-                className="w-full min-h-[120px] rounded-lg border border-border bg-background/60 p-3 text-sm resize-none focus:outline-none focus:ring-1 focus:ring-primary"
-                placeholder="Detailed description of the proposal, rationale, and expected impact..."
-                value={description}
-                onChange={e => setDescription(e.target.value)}
-              />
-            </div>
-            <div>
-              <label className="text-sm font-medium mb-1 block">Voting Duration</label>
-              <div className="flex gap-2">
-                {["3", "7", "14", "30"].map(d => (
-                  <button key={d} onClick={() => setDuration(d)}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${duration === d ? "bg-primary text-primary-foreground" : "border border-border hover:border-primary/40"}`}>
-                    {d} days
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-
-        {step === 2 && (
-          <div>
-            <h3 className="font-bold text-lg mb-4">Voting Options</h3>
-            <div className="space-y-3">
-              {options.map((opt, i) => (
-                <div key={i} className="flex items-center gap-2">
-                  <Input value={opt} onChange={e => { const o = [...options]; o[i] = e.target.value; setOptions(o); }} />
-                  {options.length > 2 && (
-                    <button onClick={() => setOptions(options.filter((_, j) => j !== i))} className="text-red-400 hover:text-red-300 text-sm px-2">✕</button>
-                  )}
-                </div>
-              ))}
-              {options.length < 5 && (
-                <Button variant="outline" size="sm" onClick={() => setOptions([...options, `Option ${options.length + 1}`])}>
-                  + Add Option
-                </Button>
-              )}
-            </div>
-          </div>
-        )}
-
-        {step === 3 && (
-          <div>
-            <h3 className="font-bold text-lg mb-4">Review Proposal</h3>
-            <div className="space-y-3">
-              <div className="bg-background/60 rounded-lg p-4">
-                <p className="text-xs text-muted-foreground mb-1">Type</p>
-                <p className="font-semibold capitalize">{type}</p>
-              </div>
-              <div className="bg-background/60 rounded-lg p-4">
-                <p className="text-xs text-muted-foreground mb-1">Title</p>
-                <p className="font-semibold">{title || "—"}</p>
-              </div>
-              <div className="bg-background/60 rounded-lg p-4">
-                <p className="text-xs text-muted-foreground mb-1">Description</p>
-                <p className="text-sm">{description || "—"}</p>
-              </div>
-              <div className="bg-background/60 rounded-lg p-4">
-                <p className="text-xs text-muted-foreground mb-1">Voting Options</p>
-                <div className="flex flex-wrap gap-2 mt-1">
-                  {options.map((o, i) => <Badge key={i} variant="outline">{o}</Badge>)}
-                </div>
-              </div>
-              <div className="bg-background/60 rounded-lg p-4">
-                <p className="text-xs text-muted-foreground mb-1">Duration</p>
-                <p className="font-semibold">{duration} days</p>
-              </div>
-              <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4 text-sm">
-                <p className="font-semibold text-yellow-400 mb-1">⚠️ Submission Requirement</p>
-                <p className="text-muted-foreground">You need 1,000 SKY444 staked to submit a proposal. Your current stake: 2,500 SKY444 ✓</p>
-              </div>
-            </div>
-          </div>
-        )}
-      </Card>
-
-      <div className="flex justify-between mt-6">
-        <Button variant="outline" onClick={() => setStep(s => s - 1)} disabled={step === 0} className="gap-2">
-          <ChevronLeft className="w-4 h-4" /> Back
-        </Button>
-        {step < STEPS.length - 1 ? (
-          <Button onClick={() => setStep(s => s + 1)} disabled={step === 0 && !type} className="gap-2">
-            Next <ChevronRight className="w-4 h-4" />
-          </Button>
-        ) : (
-          <Button onClick={handleSubmit} className="gap-2 bg-purple-600 hover:bg-purple-600">
-            <Vote className="w-4 h-4" /> Submit Proposal
-          </Button>
-        )}
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader backHref="/governance" icon={Vote} title="Create Governance Proposal" subtitle="Proposal-authoring readiness status; no draft, form, stake, eligibility check, proposal submission, vote, or governance action is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Proposal authoring is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen collected proposal type, title, description, voting duration, options, and exposed a submit flow that claimed a current SKY444 stake and a live community proposal without authenticated proposer scope, validation, voting rules, token authority, custody, legal review, audit, or backend submission. The form, stake claim, and submission action were removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Vote aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Proposal-authoring readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A trustworthy proposal wizard requires authenticated author and organization scope, source-backed governance rules, validated content and evidence, explicit options and duration semantics, verified token and eligibility rules, secure signing and publication, treasury or protocol risk review, timelocks and audit, dispute handling, privacy, and qualified crypto, financial, tax, legal, and security review. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="wizard-surfaces-heading"><h2 id="wizard-surfaces-heading" className="mb-4 text-xl font-semibold">Authoring surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No draft, proposal, stake, eligibility, vote, treasury, decision, financial, crypto, legal, privacy, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="wizard-boundaries-heading"><h2 id="wizard-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No draft or submission claim</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No form input, proposal draft, auth check, stake lookup, eligibility check, validation, vote configuration, signature, transaction, proposal submission, API request, database read or write, notification, or personal-data operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Governance, finance, crypto, tax, legal, privacy, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not treat this page as evidence of a current stake, proposal eligibility, submitted proposal, community vote, treasury authority, protocol upgrade, or financial advice. Verify identity, scope, evidence, rules, token custody, signer authority, legal status, tax, sanctions, privacy, audit, disputes, and human approval before authoring or submitting governance content.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/governance"><Button variant="outline"><Vote aria-hidden="true" className="mr-2 h-4 w-4" />Review governance</Button></Link><Link href="/governance-voting"><Button variant="outline"><Users aria-hidden="true" className="mr-2 h-4 w-4" />Review voting status</Button></Link><Link href="/wallet"><Button variant="outline"><WalletCards aria-hidden="true" className="mr-2 h-4 w-4" />Review wallet</Button></Link><Link href="/security-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link><Link href="/contact-us-form"><Button variant="outline"><Search aria-hidden="true" className="mr-2 h-4 w-4" />Ask about proposals</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No form input, proposal draft, auth check, stake lookup, eligibility check, validation, vote configuration, signature, transaction, proposal submission, API request, database read or write, notification, export, deletion, or personal-data operation is performed. This page is not evidence of a current stake, proposal eligibility, submitted proposal, community vote, treasury authority, protocol upgrade, financial advice, or production governance authoring functionality.</p></Card></main></div>;
 }
