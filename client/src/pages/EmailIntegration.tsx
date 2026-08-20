@@ -1,74 +1,23 @@
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/_core/hooks/useAuth";
+import { AlertTriangle, CheckCircle2, KeyRound, Mail, Network, Search, Send, ShieldAlert, Unplug, Users } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Loader2, Plus, Search, Settings } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const readiness = [
+  { label: "Authenticated project, provider, sender domain, OAuth/API scope, and permissions", value: "Not connected", icon: Mail },
+  { label: "Webhooks, synchronization, delivery, bounce, unsubscribe, retries, and rate limits", value: "Unavailable", icon: Network },
+  { label: "Secrets, rotation, disconnect, revocation, privacy, retention, and audit", value: "Not configured", icon: KeyRound },
+  { label: "Consent, recipient scope, monitoring, abuse prevention, support, and recovery", value: "Not verified", icon: Users },
+];
+
+const boundaries = [
+  { title: "No provider or connection claim", description: "No email provider, account, sender domain, credential, OAuth grant, API key, permission, webhook, sync cursor, message, delivery state, bounce, unsubscribe, or integration metric is fetched, displayed, calculated, or simulated.", icon: Mail },
+  { title: "No integration action", description: "No sign-in, provider connection, credential entry, OAuth authorization, domain setup, webhook registration, synchronization, send, disconnect, revoke, search, API request, database read or write, or account mutation can be initiated here.", icon: Unplug },
+  { title: "No delivery or security claim", description: "No provider availability, sender authentication, delivery, webhook integrity, credential protection, encryption, rate limit, privacy, consent, abuse prevention, synchronization, or revocation outcome is asserted.", icon: ShieldAlert },
+  { title: "External-service and secret-safety warn-and-proceed", description: "Email integrations can expose credentials, synchronize personal messages, send outbound mail, and retain provider data. Verify provider identity, scopes, sender ownership, secrets, webhooks, consent, retention, rate limits, monitoring, revocation, and rollback before connecting an account.", icon: AlertTriangle },
+];
 
 export default function EmailIntegration() {
-  const { isAuthenticated } = useAuth();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>EmailIntegration</CardTitle>
-            <CardDescription>Sign in to access this feature</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full">Sign In</Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold">EmailIntegration</h1>
-            <p className="text-muted-foreground mt-2">Email service setup</p>
-          </div>
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            New
-          </Button>
-        </div>
-
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Search className="w-4 h-4 text-muted-foreground" />
-              <Input
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="max-w-sm"
-              />
-              <Button variant="outline" size="icon">
-                <Settings className="w-4 h-4" />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {isLoading ? (
-              <div className="flex justify-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
-              </div>
-            ) : (
-              <div className="text-center py-12 text-muted-foreground">
-                <p>No data available. Start by creating a new item.</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Mail} title="Email Integration" subtitle="External-email integration readiness status; no verified provider, account, OAuth/API credential, sender domain, webhook, synchronization, delivery, or disconnect workflow is available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Email integration is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen presented sign-in, New, settings, search, a local loading state, and a generic empty state without a verified provider, credential, sender domain, permissions, webhooks, synchronization, delivery, privacy, or revocation integration. Those controls and implied connection state were removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Network aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">External-email integration readiness</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Trustworthy integrations require authenticated project and provider scope, least-privilege OAuth or API permissions, server-side secrets, verified sender ownership, webhook authenticity, synchronization and retry semantics, delivery and bounce handling, consent and privacy, rate limits, monitoring, rotation and revocation, disconnect behavior, auditability, and support. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{readiness.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="email-integration-boundaries-heading"><h2 id="email-integration-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2">{boundaries.map(({ title, description, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><Icon aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p></Card>)}</div></section><div className="flex flex-wrap gap-3"><Link href="/email-configuration"><Button variant="outline"><KeyRound aria-hidden="true" className="mr-2 h-4 w-4" />View configuration status</Button></Link><Link href="/email-campaigns"><Button variant="outline"><Send aria-hidden="true" className="mr-2 h-4 w-4" />View campaign status</Button></Link><Link href="/security-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />View security status</Button></Link><Link href="/contact-us-form"><Button variant="outline"><Search aria-hidden="true" className="mr-2 h-4 w-4" />Ask about integration availability</Button></Link></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No email provider, account, sender domain, credential, OAuth grant, API key, permission, webhook, sync cursor, message, delivery state, bounce, unsubscribe, integration metric, sign-in, provider connection, credential entry, OAuth authorization, domain setup, webhook registration, synchronization, send, disconnect, revoke, search, API request, database read or write, provider availability, sender authentication, delivery, webhook integrity, credential protection, encryption, rate limit, privacy, consent, abuse prevention, synchronization, or revocation result is performed. This page is not evidence of a connected, synchronized, authorized, secure, or deliverable email integration.</p></div></Card></main></div>;
 }
