@@ -1,84 +1,23 @@
-import { Droplet } from "lucide-react";
+import { AlertTriangle, BarChart3, CheckCircle2, Droplet, FileCheck2, KeyRound, LockKeyhole, Network, ShieldAlert, WalletCards } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { PageHeader } from "@/components/PageHeader";
 
+const boundaries = [
+  { label: "Authenticated staker, wallet, network, validator, protocol, and transaction authorization scope", value: "Not connected", icon: KeyRound },
+  { label: "Asset, validator, delegation, lockup, reward, fee, slashing, liquidity, and network provenance", value: "Unavailable", icon: Network },
+  { label: "Custody, staking, unstaking, withdrawal, transaction signing, settlement, and reconciliation controls", value: "Not verified", icon: WalletCards },
+  { label: "Crypto, financial, custody, protocol, smart-contract, privacy, fraud, security, and least-privilege safeguards", value: "Not configured", icon: ShieldAlert },
+];
+
+const surfaces = [
+  { title: "Network and validator scope", scope: "Chain, protocol, validator, delegation, validator identity, uptime source, commission, slashing, governance, and status provenance", status: "Unavailable", icon: Network },
+  { title: "Terms and rewards", scope: "Asset, amount, reward source, APR/APY methodology, fees, lockup, liquidity, tax, compounding, and variable-risk disclosure", status: "Not connected", icon: BarChart3 },
+  { title: "Custody and transaction lifecycle", scope: "Wallet ownership, signing, deposit, staking, unstaking, withdrawal, transaction hash, confirmation, failure, and reconciliation", status: "Not verified", icon: WalletCards },
+  { title: "Privacy and protocol safety", scope: "Financial, wallet, identity, device, behavioral, privacy, retention, smart-contract, fraud, and authorization", status: "Not configured", icon: LockKeyhole },
+];
+
 export default function LiquidStaking() {
-  return (
-    <div className="min-h-screen bg-background">
-      <PageHeader icon={Droplet} title="Liquid Staking" subtitle="Advanced liquid staking with cutting-edge technology" />
-      
-      <div className="max-w-7xl mx-auto px-4 py-8 space-y-8">
-        {/* Main Content Area */}
-        <Card className="p-8 bg-gradient-to-br from-primary/10 to-secondary/10 border border-primary/20">
-          <div className="space-y-6">
-            <h2 className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Liquid Staking</h2>
-            
-            {/* Advanced Features */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <Card className="p-4 bg-background/80 border border-primary/30 hover:border-primary/80 transition-all cursor-pointer hover:shadow-lg hover:shadow-primary/20">
-                <div className="space-y-3">
-                  <Droplet className="w-8 h-8 text-primary" />
-                  <h3 className="font-bold text-lg">Advanced Analytics</h3>
-                  <p className="text-sm text-muted-foreground">Real-time data processing with AI insights</p>
-                  <Button size="sm" variant="outline" className="w-full">Explore</Button>
-                </div>
-              </Card>
-              
-              <Card className="p-4 bg-background/80 border border-primary/30 hover:border-primary/80 transition-all cursor-pointer hover:shadow-lg hover:shadow-primary/20">
-                <div className="space-y-3">
-                  <Droplet className="w-8 h-8 text-primary" />
-                  <h3 className="font-bold text-lg">Automation Engine</h3>
-                  <p className="text-sm text-muted-foreground">Autonomous operations with intelligent decision making</p>
-                  <Button size="sm" variant="outline" className="w-full">Configure</Button>
-                </div>
-              </Card>
-              
-              <Card className="p-4 bg-background/80 border border-primary/30 hover:border-primary/80 transition-all cursor-pointer hover:shadow-lg hover:shadow-primary/20">
-                <div className="space-y-3">
-                  <Droplet className="w-8 h-8 text-primary" />
-                  <h3 className="font-bold text-lg">Security First</h3>
-                  <p className="text-sm text-muted-foreground">Robust encryption and protection</p>
-                  <Button size="sm" variant="outline" className="w-full">Secure</Button>
-                </div>
-              </Card>
-            </div>
-            
-            {/* Performance Metrics */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4">
-              <div className="p-4 bg-background/50 rounded-lg border border-border/50">
-                <p className="text-xs text-muted-foreground">Processing Speed</p>
-                <p className="text-2xl font-bold text-primary">99.9%</p>
-              </div>
-              <div className="p-4 bg-background/50 rounded-lg border border-border/50">
-                <p className="text-xs text-muted-foreground">Uptime</p>
-                <p className="text-2xl font-bold text-primary">24/7</p>
-              </div>
-              <div className="p-4 bg-background/50 rounded-lg border border-border/50">
-                <p className="text-xs text-muted-foreground">Latency</p>
-                <p className="text-2xl font-bold text-primary">&lt;50ms</p>
-              </div>
-              <div className="p-4 bg-background/50 rounded-lg border border-border/50">
-                <p className="text-xs text-muted-foreground">Throughput</p>
-                <p className="text-2xl font-bold text-primary">10K+/s</p>
-              </div>
-            </div>
-            
-            {/* Action Section */}
-            <div className="flex gap-4 flex-wrap pt-6">
-              <Button size="lg" className="bg-primary hover:bg-primary/90">
-                Get Started Now
-              </Button>
-              <Button size="lg" variant="outline">
-                View Documentation
-              </Button>
-              <Button size="lg" variant="ghost">
-                Schedule Demo
-              </Button>
-            </div>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Droplet} title="Liquid Staking" subtitle="Crypto-staking readiness status; no authenticated wallet, network, validator, protocol, staking position, reward feed, liquidity token, custody service, or production staking integration is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Liquid staking is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen claimed advanced analytics, AI insights, autonomous operations, intelligent decisions, robust encryption, live performance, uptime, latency, throughput, and a production staking service with inert action buttons, without network, validator, protocol, wallet, staking terms, reward, slashing, custody, liquidity, transaction, privacy, or authorization evidence. Those claims and controls were removed. No wallet, balance, validator, stake, reward, APY, liquidity token, transaction, or protocol status is displayed or initiated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Droplet aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Crypto-staking readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Trustworthy liquid staking requires authoritative chain and validator data, explicit protocol and contract identity, wallet ownership and signing, transparent rewards and fees, slashing and lockup rules, liquidity-token mechanics, custody, transaction verification, failure handling, smart-contract review, tax and risk disclosure, privacy, fraud prevention, and authorized access. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="liquid-staking-surfaces-heading"><h2 id="liquid-staking-surfaces-heading" className="mb-4 text-xl font-semibold">Staking surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No wallet, balance, validator, stake, reward, APY, liquidity token, transaction, protocol, financial, crypto, privacy, security, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="liquid-staking-boundaries-heading"><h2 id="liquid-staking-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No staking operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, wallet connection, network query, validator lookup, balance read, APY or reward calculation, contract interaction, transaction signing, staking, unstaking, withdrawal, liquidity issuance, search, API request, database read or write, notification, export, deletion, or financial-data operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Crypto, financial, custody, smart-contract, privacy, security, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not treat this page as evidence of a staking opportunity, validator, APY, reward, liquidity token, custody service, principal protection, guarantee, or transaction. Verify chain, contract, validator, wallet authorization, lockup, slashing, fees, liquidity, tax, smart-contract audit, counterparty, and transaction status with qualified professionals before acting.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/crypto-hub"><Button variant="outline"><Droplet aria-hidden="true" className="mr-2 h-4 w-4" />Review crypto status</Button></Link><Link href="/blockchain-custody"><Button variant="outline"><WalletCards aria-hidden="true" className="mr-2 h-4 w-4" />Review custody</Button></Link><Link href="/liquidity-pools"><Button variant="outline"><BarChart3 aria-hidden="true" className="mr-2 h-4 w-4" />Review liquidity status</Button></Link><Link href="/chain-explorer"><Button variant="outline"><Network aria-hidden="true" className="mr-2 h-4 w-4" />Review chain status</Button></Link><Link href="/legal-documents"><Button variant="outline"><FileCheck2 aria-hidden="true" className="mr-2 h-4 w-4" />Review legal status</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No auth check, wallet connection, network query, validator lookup, balance read, APY or reward calculation, contract interaction, transaction signing, staking, unstaking, withdrawal, liquidity issuance, search, API request, database read or write, notification, export, deletion, or financial-data operation is performed. This page is not evidence of a staking opportunity, validator, APY, reward, liquidity token, custody service, principal protection, guarantee, or transaction.</p></Card></main></div>;
 }
