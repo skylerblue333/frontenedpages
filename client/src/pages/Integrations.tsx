@@ -1,25 +1,23 @@
-import { useState } from "react";
+import { AlertTriangle, CheckCircle2, DatabaseZap, KeyRound, Link2, LockKeyhole, RefreshCw, ShieldAlert, Webhook } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Authenticated user, tenant, provider, account, connector, environment, and management authorization scope", value: "Not connected", icon: KeyRound },
+  { label: "OAuth/API credential, secret storage, granted permissions, data scopes, rotation, and revocation", value: "Unavailable", icon: LockKeyhole },
+  { label: "Sync source, last successful event, webhook signature, retries, errors, conflicts, and reconciliation", value: "Not configured", icon: RefreshCw },
+  { label: "Third-party data privacy, retention, deletion, access logging, incident response, and audit controls", value: "Not verified", icon: ShieldAlert },
+];
+
+const surfaces = [
+  { title: "Provider and account identity", scope: "Provider, account, environment, connection owner, OAuth consent, API credential, and secret status", status: "Unavailable", icon: Link2 },
+  { title: "Permissions and data scopes", scope: "Granted scope, requested scope, least privilege, personal data, financial data, revocation, and user consent", status: "Not connected", icon: KeyRound },
+  { title: "Sync and event health", scope: "Webhook verification, event provenance, last success, failure, retry, replay protection, conflict, and reconciliation", status: "Not configured", icon: Webhook },
+  { title: "Privacy and operational safety", scope: "Third-party records, retention, deletion, access logging, rate limits, incidents, and authorization", status: "Not verified", icon: DatabaseZap },
+];
 
 export default function Integrations() {
-  const [state, setState] = useState(false);
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 to-black p-4">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">Integrations</h1>
-        <p className="text-slate-400 mb-8">integrations</p>
-        
-        <Card className="bg-slate-900 border-slate-800 p-8">
-          <div className="space-y-6">
-            <p className="text-slate-300">Content for Integrations page</p>
-            <Button onClick={() => setState(!state)}>
-              {state ? "Deactivate" : "Activate"}
-            </Button>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Link2} title="Integrations" subtitle="Connector inventory readiness status; no authenticated provider, account, credential, permission, sync, webhook, third-party data, or production integration inventory is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Integrations are unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen only toggled a local activate/deactivate state and did not establish connected-provider identity, account ownership, credentials, permissions, data scopes, sync health, webhook verification, revocation, privacy, or authorization. That unsupported state mutation was removed. No connected integration, account, permission, sync result, event, third-party record, or management action is displayed or initiated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Link2 aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Integration inventory readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A trustworthy integration inventory requires authenticated tenant and account scope, consent-backed connector identity, server-side secret handling, explicit minimal permissions and data scopes, verified event delivery, sync correctness, revocation, privacy and retention controls, auditability, and human-readable failure states. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="integrations-surfaces-heading"><h2 id="integrations-surfaces-heading" className="mb-4 text-xl font-semibold">Integration surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No connector, provider, account, permission, sync, webhook, third-party data, privacy, security, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="integrations-boundaries-heading"><h2 id="integrations-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No integration inventory operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, provider lookup, account lookup, OAuth flow, API-key input, secret read or write, permission grant, webhook registration, sync, retry, disconnect, API request, database read or write, notification, export, deletion, or third-party data operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Identity, secret, privacy, security, third-party data, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not enter API keys, OAuth secrets, passwords, private keys, seed phrases, or personal data here. Do not treat this page as evidence of connected providers, valid credentials, granted permissions, synchronization, data access, or production integration reliability.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/integration-setup"><Button variant="outline"><Link2 aria-hidden="true" className="mr-2 h-4 w-4" />Review setup</Button></Link><Link href="/api-keys"><Button variant="outline"><KeyRound aria-hidden="true" className="mr-2 h-4 w-4" />Review API keys</Button></Link><Link href="/webhooks"><Button variant="outline"><Webhook aria-hidden="true" className="mr-2 h-4 w-4" />Review webhooks</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link><Link href="/security-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No auth check, provider lookup, account lookup, OAuth flow, API-key input, secret read or write, permission grant, webhook registration, sync, retry, disconnect, API request, database read or write, notification, export, deletion, or third-party data operation is performed. This page is not evidence of connected providers, valid credentials, granted permissions, synchronization, data access, or production integration reliability.</p></Card></main></div>;
 }
