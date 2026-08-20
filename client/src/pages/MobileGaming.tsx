@@ -1,74 +1,23 @@
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/_core/hooks/useAuth";
+import { AlertTriangle, Award, CheckCircle2, Gamepad2, KeyRound, LockKeyhole, ShieldAlert, ShoppingBag, Smartphone, Sparkles, Trophy, Users, WalletCards } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Loader2, Plus, Search, Settings } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Authenticated player, device, game, session, team, purchase, wallet, and authorization scope", value: "Not connected", icon: KeyRound },
+  { label: "Game catalog, player identity, multiplayer, ranking, reward, virtual-good, match, and timestamp provenance", value: "Unavailable", icon: Gamepad2 },
+  { label: "Game logic, performance, anti-cheat, AI, moderation, age assurance, purchases, and user-control behavior", value: "Not verified", icon: Trophy },
+  { label: "Personal data, voice/chat, payment, private keys, privacy, security, accessibility, and least-privilege safeguards", value: "Not configured", icon: LockKeyhole },
+];
+
+const surfaces = [
+  { title: "Player and game scope", scope: "Authenticated player, device, game, session, team, age assurance, consent, visibility, and authorization", status: "Unavailable", icon: Users },
+  { title: "Match and progression provenance", scope: "Game rules, match, score, ranking, achievement, reward, virtual good, item, source, and timestamp", status: "Not connected", icon: Award },
+  { title: "Payments, wallet, and AI behavior", scope: "Purchase, refund, entitlement, virtual currency, wallet, custody, AI, performance, anti-cheat, and session behavior", status: "Not verified", icon: WalletCards },
+  { title: "Safety and privacy controls", scope: "Chat, voice, camera, contacts, moderation, reporting, blocking, age assurance, retention, deletion, privacy, security, accessibility, and access", status: "Not configured", icon: ShieldAlert },
+];
 
 export default function MobileGaming() {
-  const { isAuthenticated } = useAuth();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>MobileGaming</CardTitle>
-            <CardDescription>Sign in to access this feature</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full">Sign In</Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold">MobileGaming</h1>
-            <p className="text-muted-foreground mt-2">Mobile gaming</p>
-          </div>
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            New
-          </Button>
-        </div>
-
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Search className="w-4 h-4 text-muted-foreground" />
-              <Input
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="max-w-sm"
-              />
-              <Button variant="outline" size="icon">
-                <Settings className="w-4 h-4" />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {isLoading ? (
-              <div className="flex justify-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
-              </div>
-            ) : (
-              <div className="text-center py-12 text-muted-foreground">
-                <p>No data available. Start by creating a new item.</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Gamepad2} title="Mobile Gaming" subtitle="Mobile-gaming readiness status; no authenticated player, game catalog, multiplayer service, session ledger, ranking or reward system, purchase or virtual-goods service, wallet custody, AI provider, moderation workflow, or production gaming backend is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Mobile gaming is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen presented an authenticated-only shell with inert Sign In, New, search, settings, and loading controls but did not connect a game catalog, player profile, session service, multiplayer transport, ranking, reward, virtual-goods, purchase, wallet, AI, anti-cheat, moderation, age-assurance, or authorization contract. The incomplete workflow was replaced with this explicit readiness boundary. No game, player, device, session, match, score, ranking, reward, purchase, item, wallet, AI output, chat, or availability state is displayed, queried, created, calculated, purchased, or mutated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Gamepad2 aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Mobile-gaming readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A trustworthy mobile-game service requires authenticated players, authoritative game rules and session state, reliable multiplayer transport, transparent scoring and progression, anti-cheat controls, safe payments and entitlement reconciliation, wallet boundaries, age assurance, moderation, privacy, accessibility, and least-privilege authorization. A displayed score, rank, reward, purchase, or game state is not a fact without a verified service record. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="mobile-gaming-surfaces-heading"><h2 id="mobile-gaming-surfaces-heading" className="mb-4 text-xl font-semibold">Mobile-gaming control surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No game, player, session, match, ranking, reward, purchase, wallet, AI, moderation, privacy, security, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="mobile-gaming-boundaries-heading"><h2 id="mobile-gaming-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No gaming operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, game or player query, session or multiplayer connection, score or ranking calculation, reward or purchase mutation, wallet connection, AI call, chat or voice permission, API request, database read or write, export, deletion, or gaming operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Payments, crypto, AI, age, privacy, security, accessibility, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not enter passwords, identity documents, private messages, payment details, wallet credentials, seed phrases, private keys, precise location, or confidential data here. Do not treat this page as evidence of a game, player, session, match, score, rank, reward, purchase, virtual good, wallet custody, AI behavior, chat safety, age assurance, or gaming outcome. Verify game rules, player scope, consent, age, payments, custody, moderation, privacy, accessibility, and authorization before playing or transacting.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/games"><Button variant="outline"><Gamepad2 aria-hidden="true" className="mr-2 h-4 w-4" />Review game status</Button></Link><Link href="/marketplace"><Button variant="outline"><ShoppingBag aria-hidden="true" className="mr-2 h-4 w-4" />Review marketplace</Button></Link><Link href="/crypto-hub"><Button variant="outline"><WalletCards aria-hidden="true" className="mr-2 h-4 w-4" />Review crypto status</Button></Link><Link href="/hope-ai"><Button variant="outline"><Sparkles aria-hidden="true" className="mr-2 h-4 w-4" />Review AI status</Button></Link><Link href="/safety-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review safety</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><Smartphone aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No auth check, game or player query, session or multiplayer connection, score or ranking calculation, reward or purchase mutation, wallet connection, AI call, chat or voice permission, API request, database read or write, export, deletion, or gaming operation is performed. This page is not evidence of a game, player, session, match, score, rank, reward, purchase, virtual good, wallet custody, AI behavior, chat safety, age assurance, or gaming outcome.</p></div></Card></main></div>;
 }
