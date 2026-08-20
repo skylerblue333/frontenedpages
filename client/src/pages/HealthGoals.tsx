@@ -1,75 +1,23 @@
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/_core/hooks/useAuth";
+import { AlertTriangle, Activity, CheckCircle2, FileCheck2, KeyRound, LockKeyhole, Search, ShieldAlert, Stethoscope, Target, UserRound } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
-import { Loader2, Plus, Search, Settings } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Authenticated person, caregiver, provider, organization, goal, and health-data authorization scope", value: "Not connected", icon: KeyRound },
+  { label: "Goal source, measurement unit, baseline, target, progress, timestamp, device, and calculation provenance", value: "Unavailable", icon: Activity },
+  { label: "Safety, consent, privacy, minors, accessibility, coaching, clinical review, correction, and retention controls", value: "Not verified", icon: ShieldAlert },
+  { label: "Security, sensitive-data, emergency, legal, and least-privilege safeguards", value: "Not configured", icon: LockKeyhole },
+];
+
+const surfaces = [
+  { title: "Goals and measurements", scope: "Goal identity, baseline, target, unit, cadence, source, device, timestamp, progress calculation, uncertainty, correction, and history", status: "Unavailable", icon: Target },
+  { title: "Coaching and clinical context", scope: "Recommendations, behavior change, contraindications, provider relationship, escalation, professional review, and emergency boundaries", status: "Not verified", icon: Stethoscope },
+  { title: "Consent and privacy", scope: "Health data, caregiver access, children, personalization, notifications, sharing, retention, export, deletion, and audit", status: "Not configured", icon: LockKeyhole },
+  { title: "Operations and authorization", scope: "Role-based access, organization scope, accessibility, security, support, incident handling, and legal review", status: "Not connected", icon: FileCheck2 },
+];
 
 export default function HealthGoals() {
-  const { isAuthenticated } = useAuth();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>HealthGoals</CardTitle>
-            <CardDescription>Sign in to access this feature</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full">Sign In</Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold">HealthGoals</h1>
-            <p className="text-muted-foreground mt-2">Goal setting</p>
-          </div>
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            New
-          </Button>
-        </div>
-
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Search className="w-4 h-4 text-muted-foreground" />
-              <Input
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="max-w-sm"
-              />
-              <Button variant="outline" size="icon">
-                <Settings className="w-4 h-4" />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {isLoading ? (
-              <div className="flex justify-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
-              </div>
-            ) : (
-              <div className="text-center py-12 text-muted-foreground">
-                <p>No data available. Start by creating a new item.</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Target} title="Health Goals" subtitle="Wellness-goal readiness status; no authenticated person or provider scope, goal, measurement, progress, coaching, reward, or production health service is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Health goals are unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen exposed a sign-in path and generic new, settings, search, loading, and empty-state controls without authenticated person or provider scope, goal provenance, measurement semantics, progress calculation, coaching safety, consent, privacy, minors, accessibility, clinical review, or authorization boundaries. Those unsupported controls were removed. This page does not diagnose, coach, monitor, or provide medical advice.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Target aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Wellness-goal readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Trustworthy health goals require authenticated scope, source-backed measurements and units, transparent baselines and targets, safe progress semantics, professional review where appropriate, contraindication and emergency boundaries, consent and caregiver controls, privacy and security safeguards, correction and retention, accessibility, and qualified medical and legal review. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="health-goals-surfaces-heading"><h2 id="health-goals-surfaces-heading" className="mb-4 text-xl font-semibold">Goal surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No goal, baseline, target, progress, streak, recommendation, diagnosis, treatment, patient, privacy, security, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="health-goals-boundaries-heading"><h2 id="health-goals-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No goal, progress, or coaching claim</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, goal lookup, measurement lookup, baseline or target calculation, progress or streak calculation, coaching recommendation, patient lookup, provider lookup, API request, database read or write, notification, export, deletion, or personal-data operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Medical, privacy, minors, emergency, security, legal, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not treat this page as evidence of goals, progress, streaks, biometrics, coaching, diagnosis, treatment, or health improvement. Verify identity, measurement source, units, consent, caregiver rules, contraindications, urgency, professional review, retention, security, and human authorization before processing or relying on wellness data.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/health-dashboard"><Button variant="outline"><Activity aria-hidden="true" className="mr-2 h-4 w-4" />Review health status</Button></Link><Link href="/health-articles"><Button variant="outline"><Stethoscope aria-hidden="true" className="mr-2 h-4 w-4" />Review health content</Button></Link><Link href="/h-i-p-a-a"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review HIPAA readiness</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link><Link href="/security-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security</Button></Link><Link href="/profile"><Button variant="outline"><UserRound aria-hidden="true" className="mr-2 h-4 w-4" />Review identity</Button></Link><Link href="/documentation"><Button variant="outline"><FileCheck2 aria-hidden="true" className="mr-2 h-4 w-4" />Review evidence</Button></Link><Link href="/contact-us-form"><Button variant="outline"><Search aria-hidden="true" className="mr-2 h-4 w-4" />Ask about health goals</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No auth check, goal lookup, measurement lookup, baseline or target calculation, progress or streak calculation, coaching recommendation, patient lookup, provider lookup, API request, database read or write, notification, export, deletion, or personal-data operation is performed. This page is not evidence of goals, progress, streaks, biometrics, coaching, diagnosis, treatment, health improvement, or production health-goal functionality.</p></Card></main></div>;
 }
