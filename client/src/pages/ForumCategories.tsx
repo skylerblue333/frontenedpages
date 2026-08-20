@@ -1,75 +1,23 @@
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/_core/hooks/useAuth";
+import { AlertTriangle, CheckCircle2, FileText, FolderTree, KeyRound, Search, ShieldAlert, UserRound, Users } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
-import { Loader2, Plus, Search, Settings } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Authenticated community, tenant, moderator, category-owner, and least-privilege scope", value: "Not connected", icon: KeyRound },
+  { label: "Category, forum, thread, post, source, taxonomy, and search-index provenance", value: "Unavailable", icon: FolderTree },
+  { label: "Moderation, reporting, publishing, accessibility, AI assistance, privacy, and audit", value: "Not verified", icon: ShieldAlert },
+  { label: "Legal, medical, tax, financial, crypto, dating, safety, and confidential-content safeguards", value: "Not configured", icon: UserRound },
+];
+
+const surfaces = [
+  { title: "Taxonomy and ownership", scope: "Category definitions, hierarchy, labels, localization, ownership, lifecycle, visibility, and publishing approval", status: "Unavailable", icon: FolderTree },
+  { title: "Discussion provenance", scope: "Forum, thread, post, author, timestamp, source, search indexing, freshness, duplicates, and content authority", status: "Not verified", icon: FileText },
+  { title: "Moderation and safety", scope: "Rules, reporting, spam, harassment, minors, dating safety, legal/medical/financial/crypto content, escalation, and moderator authority", status: "Not configured", icon: ShieldAlert },
+  { title: "Personalization and AI", scope: "Recommendations, ranking, AI assistance, consent, sensitive attributes, privacy, accessibility, retention, and audit", status: "Not connected", icon: Users },
+];
 
 export default function ForumCategories() {
-  const { isAuthenticated } = useAuth();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>ForumCategories</CardTitle>
-            <CardDescription>Sign in to access this feature</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full">Sign In</Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold">ForumCategories</h1>
-            <p className="text-muted-foreground mt-2">Organized discussion boards</p>
-          </div>
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            New
-          </Button>
-        </div>
-
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Search className="w-4 h-4 text-muted-foreground" />
-              <Input
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="max-w-sm"
-              />
-              <Button variant="outline" size="icon">
-                <Settings className="w-4 h-4" />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {isLoading ? (
-              <div className="flex justify-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
-              </div>
-            ) : (
-              <div className="text-center py-12 text-muted-foreground">
-                <p>No data available. Start by creating a new item.</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={FolderTree} title="Forum Categories" subtitle="Community-taxonomy readiness status; no authenticated community, category registry, forum, thread, post, search index, moderator record, or personal-data record is available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Forum taxonomy is not verified</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen exposed a sign-in path and generic new, settings, search, loading, and empty-state controls without a connected category registry, ownership, taxonomy, forum, search index, moderation, publishing, privacy, accessibility, AI, or authorization boundary. No category, thread, post, or community evidence was available, so forum controls were removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><FolderTree aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Community-taxonomy readiness</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Trustworthy forum categories require authenticated community and moderator scope, authoritative taxonomy and ownership, clear forum/thread/post provenance, search-index freshness, moderation and safety rules, publishing approval, accessibility, privacy, retention, audit, and careful handling of legal, medical, tax, financial, crypto, dating, safety, AI, or confidential content. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="forum-categories-surfaces-heading"><h2 id="forum-categories-surfaces-heading" className="mb-4 text-xl font-semibold">Community surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No forum capability, category count, post count, recommendation, AI property, privacy property, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="forum-categories-boundaries-heading"><h2 id="forum-categories-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No category or community claim</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, category lookup, forum lookup, thread lookup, post lookup, search query, count, creation, editing, publishing, moderation mutation, API request, database read or write, notification, export, or personal-data operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Legal, medical, financial, crypto, dating, safety, AI, and privacy warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Forum categories can route or amplify high-impact content and expose identity, health, legal, financial, crypto, dating, or confidential information. Verify source authority, jurisdiction, disclaimers, moderation, age and safety controls, consent, accessibility, least privilege, AI oversight, audit, and human review before publishing or relying on category content.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/discussion-forums"><Button variant="outline"><Users aria-hidden="true" className="mr-2 h-4 w-4" />Review forum status</Button></Link><Link href="/documentation"><Button variant="outline"><FileText aria-hidden="true" className="mr-2 h-4 w-4" />Review documentation status</Button></Link><Link href="/explore"><Button variant="outline"><Search aria-hidden="true" className="mr-2 h-4 w-4" />Review discovery status</Button></Link><Link href="/security-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review moderation status</Button></Link><Link href="/contact-us-form"><Button variant="outline"><Search aria-hidden="true" className="mr-2 h-4 w-4" />Ask about categories</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No auth check, category lookup, forum lookup, thread lookup, post lookup, search query, count, creation, editing, publishing, moderation mutation, API request, database read or write, notification, export, deletion, or personal-data operation is performed. This page is not evidence of forum categories, post counts, moderation, AI assistance, legal/medical/financial guidance, or production community functionality.</p></Card></main></div>;
 }
