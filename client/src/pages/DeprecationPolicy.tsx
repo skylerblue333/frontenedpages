@@ -1,74 +1,23 @@
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/_core/hooks/useAuth";
+import { AlertTriangle, CalendarClock, CheckCircle2, GitBranch, LockKeyhole, ShieldAlert, Tags, Workflow } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Loader2, Plus, Search, Settings } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const readiness = [
+  { label: "Products, APIs, versions, support windows, owners, and dependency inventory", value: "Not connected", icon: Tags },
+  { label: "Notice, impact, migration, compatibility, replacement, and accessibility evidence", value: "Unavailable", icon: CalendarClock },
+  { label: "Approvals, rollout, rollback, customer communication, and incident handling", value: "Not configured", icon: Workflow },
+  { label: "Authenticated scope, change history, audit trail, exceptions, and recovery", value: "Not verified", icon: LockKeyhole },
+];
+
+const boundaries = [
+  { title: "No lifecycle or support claim", description: "No product, API, feature, version, release, support window, end-of-life date, owner, customer impact, replacement, compatibility, or availability status is fetched, displayed, calculated, or simulated.", icon: Tags },
+  { title: "No deprecation action", description: "No sign-in, notice creation, version change, feature disablement, migration, redirect, customer notification, approval, rollback, settings change, API request, database read or write, or production mutation can be initiated here.", icon: GitBranch },
+  { title: "No migration or compliance claim", description: "No migration path, data preservation, backward compatibility, accessibility review, privacy result, legal notice, customer acknowledgment, audit event, exception, or support outcome is asserted.", icon: CheckCircle2 },
+  { title: "Change-management warn-and-proceed", description: "Deprecation can break clients, remove access, lose data, create security exposure, violate contractual or accessibility duties, and disrupt operations. Verify ownership, notice periods, compatibility, migration, rollback, communications, and approval before acting.", icon: ShieldAlert },
+];
 
 export default function DeprecationPolicy() {
-  const { isAuthenticated } = useAuth();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>DeprecationPolicy</CardTitle>
-            <CardDescription>Sign in to access this feature</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full">Sign In</Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold">DeprecationPolicy</h1>
-            <p className="text-muted-foreground mt-2">Deprecation notices</p>
-          </div>
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            New
-          </Button>
-        </div>
-
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Search className="w-4 h-4 text-muted-foreground" />
-              <Input
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="max-w-sm"
-              />
-              <Button variant="outline" size="icon">
-                <Settings className="w-4 h-4" />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {isLoading ? (
-              <div className="flex justify-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
-              </div>
-            ) : (
-              <div className="text-center py-12 text-muted-foreground">
-                <p>No data available. Start by creating a new item.</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader backHref="/enterprise" icon={CalendarClock} title="Deprecation Policy" subtitle="Lifecycle-governance status; no product, API, feature, version, support window, notice, migration, compatibility, or deprecation state is available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Deprecation evidence is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen presented sign-in, New, settings, search, a local loading state, and a generic empty state without product or API inventory, version ownership, support windows, notice rules, migration planning, compatibility evidence, rollback, customer communication, or audit handling. Those controls and implied lifecycle workflow were removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><CalendarClock aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Lifecycle-governance status</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A trustworthy deprecation program requires an inventory and owner, dated support policy, impact and compatibility analysis, accessible notices, replacement guidance, migration and data-preservation plan, approvals, staged rollout, rollback, customer communication, observability, auditability, and recovery. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{readiness.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="deprecation-boundaries-heading"><h2 id="deprecation-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2">{boundaries.map(({ title, description, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><Icon aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p></Card>)}</div></section><div className="flex flex-wrap gap-3"><Link href="/enterprise"><Button variant="outline">View enterprise status</Button></Link><Link href="/system-status"><Button variant="outline">View system status</Button></Link><Link href="/deployment-pipeline"><Button variant="outline">View release status</Button></Link><Link href="/contact-us-form"><Button variant="outline">Ask about lifecycle evidence</Button></Link></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No product, API, feature, version, release, support window, end-of-life date, owner, customer impact, replacement, compatibility, availability status, notice, version change, feature disablement, migration, redirect, customer notification, approval, rollback, API request, database read or write, migration path, data-preservation result, accessibility review, privacy result, legal notice, acknowledgment, audit event, exception, support outcome, or production mutation is performed. This page is not evidence of lifecycle governance, compatibility, support, compliance, or deprecation readiness.</p></div></Card></main></div>;
 }
