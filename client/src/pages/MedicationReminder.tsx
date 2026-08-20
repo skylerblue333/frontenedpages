@@ -1,75 +1,23 @@
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/_core/hooks/useAuth";
+import { AlertTriangle, BellRing, CheckCircle2, ClipboardCheck, Database, HeartPulse, KeyRound, LockKeyhole, ShieldAlert, UserRound } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
-import { Loader2, Plus, Search, Settings } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Authenticated patient, caregiver, organization, medication, schedule, and health-data authorization scope", value: "Not connected", icon: KeyRound },
+  { label: "Medication identity, prescription, dose, route, frequency, prescriber, pharmacy, interaction, and timestamp provenance", value: "Unavailable", icon: Database },
+  { label: "Reminder delivery, adherence, missed-dose handling, escalation, emergency behavior, and user-control behavior", value: "Not verified", icon: BellRing },
+  { label: "Health, medication, biometric, privacy, security, retention, deletion, and least-privilege safeguards", value: "Not configured", icon: LockKeyhole },
+];
+
+const surfaces = [
+  { title: "Patient and medication scope", scope: "Authenticated patient, caregiver, medication identity, prescription, prescriber, pharmacy, and authorization", status: "Unavailable", icon: UserRound },
+  { title: "Dose and schedule provenance", scope: "Dose, route, frequency, timing, medication list, interaction source, reconciliation, and timestamp", status: "Not connected", icon: ClipboardCheck },
+  { title: "Reminders and adherence", scope: "Notification channel, delivery, acknowledgement, missed dose, adherence record, escalation, and reliability", status: "Not verified", icon: BellRing },
+  { title: "Clinical safety and privacy", scope: "Interaction warning, contraindication, emergency escalation, health data, retention, deletion, security, and access", status: "Not configured", icon: ShieldAlert },
+];
 
 export default function MedicationReminder() {
-  const { isAuthenticated } = useAuth();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>MedicationReminder</CardTitle>
-            <CardDescription>Sign in to access this feature</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full">Sign In</Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold">MedicationReminder</h1>
-            <p className="text-muted-foreground mt-2">Med reminders</p>
-          </div>
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            New
-          </Button>
-        </div>
-
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Search className="w-4 h-4 text-muted-foreground" />
-              <Input
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="max-w-sm"
-              />
-              <Button variant="outline" size="icon">
-                <Settings className="w-4 h-4" />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {isLoading ? (
-              <div className="flex justify-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
-              </div>
-            ) : (
-              <div className="text-center py-12 text-muted-foreground">
-                <p>No data available. Start by creating a new item.</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={BellRing} title="Medication Reminder" subtitle="Medication-management readiness status; no authenticated patient or caregiver, medication list, prescription source, dosage schedule, interaction checker, notification transport, adherence ledger, emergency workflow, or production health backend is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Medication reminders are unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen presented an authenticated-only shell with inert Sign In, New, search, settings, and loading controls but did not connect a patient or caregiver, medication list, prescription source, dosage schedule, interaction checker, notification transport, adherence ledger, emergency workflow, or health-data controls. The incomplete workflow was replaced with this explicit readiness boundary. No medication, dose, schedule, reminder, adherence, interaction, patient, caregiver, notification, or health result is displayed, queried, created, calculated, or mutated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><BellRing aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Medication-management readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A trustworthy medication reminder requires authoritative prescription and medication provenance, patient or caregiver authorization, dose and schedule reconciliation, interaction and contraindication safeguards, reliable notification delivery, safe missed-dose handling, emergency escalation, privacy, and qualified clinical confirmation. This page is not medical advice and must not replace a pharmacist or clinician. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="medication-surfaces-heading"><h2 id="medication-surfaces-heading" className="mb-4 text-xl font-semibold">Medication-control surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No medication, dose, schedule, reminder, adherence, interaction, patient, caregiver, health, privacy, security, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="medication-boundaries-heading"><h2 id="medication-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No medication operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, patient or caregiver query, medication or prescription lookup, dose or schedule calculation, interaction check, reminder scheduling, notification send, adherence mutation, API request, database read or write, export, deletion, or health-data operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Health, medication, privacy, emergency, security, accessibility, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not enter diagnoses, medications, doses, prescriptions, biometric data, identity documents, emergency contacts, or other sensitive health information here. Do not treat this page as evidence of a medication list, dose, schedule, reminder delivery, adherence, interaction safety, missed-dose advice, emergency response, treatment, or health outcome. Contact a pharmacist, clinician, or emergency service for consequential medication or urgent health questions.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/health-dashboard"><Button variant="outline"><HeartPulse aria-hidden="true" className="mr-2 h-4 w-4" />Review health status</Button></Link><Link href="/medications"><Button variant="outline"><ClipboardCheck aria-hidden="true" className="mr-2 h-4 w-4" />Review medication status</Button></Link><Link href="/notifications"><Button variant="outline"><BellRing aria-hidden="true" className="mr-2 h-4 w-4" />Review notification status</Button></Link><Link href="/safety-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review safety</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No auth check, patient or caregiver query, medication or prescription lookup, dose or schedule calculation, interaction check, reminder scheduling, notification send, adherence mutation, API request, database read or write, export, deletion, or health-data operation is performed. This page is not evidence of a medication list, dose, schedule, reminder delivery, adherence, interaction safety, missed-dose advice, emergency response, treatment, or health outcome.</p></Card></main></div>;
 }
