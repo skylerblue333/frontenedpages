@@ -1,74 +1,21 @@
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/_core/hooks/useAuth";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Loader2, Plus, Search, Settings } from "lucide-react";
+import { Code2, FileCheck2, KeyRound, LockKeyhole, Network, ShieldAlert, WalletCards } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const contractStates = [
+  { label: "Verified network, chain ID, contract address, and ABI source", value: "Not connected", icon: Network },
+  { label: "ABI decoding, bytecode verification, and function metadata", value: "Unavailable", icon: Code2 },
+  { label: "Wallet permissions, transaction parameters, and simulation", value: "Not configured", icon: WalletCards },
+  { label: "Signature, execution, confirmation, and audit evidence", value: "Disabled", icon: FileCheck2 },
+];
+
+const boundaries = [
+  { title: "Contract identity", description: "No network, chain ID, contract address, deployment, ABI, bytecode, ownership, token balance, or verified source is read, displayed, or simulated.", icon: Network },
+  { title: "Execution safety", description: "No function call, calldata, gas estimate, nonce, allowance, transfer, approval, staking action, signature, transaction hash, confirmation, or failure state is produced.", icon: Code2 },
+  { title: "Wallet and authorization", description: "No wallet connection, account identity, private key, seed phrase, provider permission, custody, or transaction signing path is connected.", icon: WalletCards },
+  { title: "Security and audit", description: "No contract verification, replay protection, network validation, access control, event indexing, audit trail, or irreversible-action confirmation is available. Do not enter keys or credentials here.", icon: LockKeyhole },
+];
 
 export default function ContractABI() {
-  const { isAuthenticated } = useAuth();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>ContractABI</CardTitle>
-            <CardDescription>Sign in to access this feature</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full">Sign In</Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold">ContractABI</h1>
-            <p className="text-muted-foreground mt-2">Contract ABI editor</p>
-          </div>
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            New
-          </Button>
-        </div>
-
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Search className="w-4 h-4 text-muted-foreground" />
-              <Input
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="max-w-sm"
-              />
-              <Button variant="outline" size="icon">
-                <Settings className="w-4 h-4" />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {isLoading ? (
-              <div className="flex justify-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
-              </div>
-            ) : (
-              <div className="text-center py-12 text-muted-foreground">
-                <p>No data available. Start by creating a new item.</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Code2} title="Contract ABI" subtitle="Blockchain contract-integration status; no network, contract, ABI, wallet, token, transaction, or signing operation is available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><ShieldAlert aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Contract integration is unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous screen presented a fake sign-in gate, New, search, settings, loading, and empty-item controls without a verified network, contract address, ABI source, wallet provider, transaction service, or security boundary. Those controls were removed rather than implying that a contract can be inspected, edited, called, signed, or changed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Code2 aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Contract-readiness status</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Production blockchain contract tooling requires verified network identity, trusted contract provenance, ABI and bytecode validation, wallet authorization, least-privilege permissions, parameter validation, simulation, replay and nonce protection, explicit confirmation, signed execution, receipt verification, failure recovery, and audit evidence. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{contractStates.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="contract-boundaries-heading"><h2 id="contract-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2">{boundaries.map(({ title, description, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><Icon aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p></Card>)}</div></section><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><KeyRound aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No connect, inspect, edit, search, call, approve, transfer, stake, sign, submit, refresh, API request, database write, account mutation, external RPC call, transaction, chart, balance, or recommendation is performed. This page is not evidence of contract validity, security, ownership, token value, or transaction success.</p></div></Card></main></div>;
 }
