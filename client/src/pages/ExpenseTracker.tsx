@@ -1,75 +1,23 @@
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/_core/hooks/useAuth";
+import { AlertTriangle, CheckCircle2, FileCheck2, KeyRound, Receipt, Search, ShieldAlert, WalletCards } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
-import { Loader2, Plus, Search, Settings } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Authenticated user, organization, employee scope, expense ownership, and approval authority", value: "Not connected", icon: KeyRound },
+  { label: "Receipt, vendor, category, amount, currency, budget, reimbursement, and accounting provenance", value: "Unavailable", icon: Receipt },
+  { label: "Totals, trends, taxes, payment rails, refunds, payouts, and reconciliation", value: "Not verified", icon: WalletCards },
+  { label: "Privacy, retention, fraud controls, audit, incident response, and recovery", value: "Not configured", icon: ShieldAlert },
+];
+
+const surfaces = [
+  { title: "Expense log", scope: "Expense identity, employee, vendor, receipt, date, category, project, currency, amount, tax, attachment, approval, and source provenance", status: "Unavailable" },
+  { title: "Budgets and trends", scope: "Budget period, authorized limit, totals, category trends, forecasts, variance, currency conversion, and freshness", status: "Not verified" },
+  { title: "Reimbursement and accounting", scope: "Approval, reimbursement status, payment rail, timing, tax treatment, ledger posting, period close, and reconciliation", status: "Not configured" },
+  { title: "Privacy and financial governance", scope: "Receipt and bank-data handling, access, retention, fraud, exports, audit, support, and incident response", status: "Not connected" },
+];
 
 export default function ExpenseTracker() {
-  const { isAuthenticated } = useAuth();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>ExpenseTracker</CardTitle>
-            <CardDescription>Sign in to access this feature</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full">Sign In</Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold">ExpenseTracker</h1>
-            <p className="text-muted-foreground mt-2">Expense logging</p>
-          </div>
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            New
-          </Button>
-        </div>
-
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Search className="w-4 h-4 text-muted-foreground" />
-              <Input
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="max-w-sm"
-              />
-              <Button variant="outline" size="icon">
-                <Settings className="w-4 h-4" />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {isLoading ? (
-              <div className="flex justify-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
-              </div>
-            ) : (
-              <div className="text-center py-12 text-muted-foreground">
-                <p>No data available. Start by creating a new item.</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Receipt} title="Expense Tracker" subtitle="Expense-tracking readiness status; no authenticated employee or organization, expense, receipt, category, total, budget, reimbursement, tax, accounting, or financial record is available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Expense tracking is not verified</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen exposed a sign-in path and generic new, settings, search, loading, and empty-state controls without a connected expense ledger or documented employee, organization, receipt, approval, payment, tax, privacy, or authorization boundary. No expense log, total, budget, reimbursement, trend, accounting, or financial evidence was available, so tracking controls were removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Receipt aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Expense-tracking readiness</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Trustworthy expense tracking requires authenticated scope, receipt and vendor provenance, consistent categories and currencies, budget authority, defensible totals and trends, approval and reimbursement semantics, tax and accounting controls, secure payment rails, privacy, least privilege, audit, and incident response. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="expense-tracker-surfaces-heading"><h2 id="expense-tracker-surfaces-heading" className="mb-4 text-xl font-semibold">Tracking surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Receipt aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No expense capability, amount, balance, trend, tax result, accounting result, privacy property, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="expense-tracker-boundaries-heading"><h2 id="expense-tracker-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><FileCheck2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No expense total or trend claim</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No sign-in, employee, receipt, vendor, expense, category, amount, currency, budget, total, trend, forecast, reimbursement, payment, tax, refund, payout, accounting, balance, or reconciliation record is read, calculated, displayed, exported, or simulated.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Finance, tax, privacy, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Expense totals and reimbursement decisions can create tax, accounting, privacy, and fraud consequences. Verify organization authority, employee identity, receipt provenance, categories, currency, approval, payment rail, tax treatment, reconciliation, retention, and audit before tracking or acting on a record.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/expense-management"><Button variant="outline"><Receipt aria-hidden="true" className="mr-2 h-4 w-4" />Review expense management</Button></Link><Link href="/enterprise-billing"><Button variant="outline"><WalletCards aria-hidden="true" className="mr-2 h-4 w-4" />Review billing status</Button></Link><Link href="/security-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security status</Button></Link><Link href="/contact-us-form"><Button variant="outline"><Search aria-hidden="true" className="mr-2 h-4 w-4" />Ask about expense tracking</Button></Link></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No auth check, sign-in, expense query, receipt upload, vendor lookup, search, total calculation, trend calculation, budget update, reimbursement, payment, tax calculation, accounting post, API request, database read or write, notification, export, or personal-data operation is performed. This page is not evidence of expense tracking, totals, budgets, trends, reimbursements, accounting, tax, payment, bank or card handling, privacy, fraud controls, or production finance functionality.</p></div></Card></main></div>;
 }
