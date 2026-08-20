@@ -1,75 +1,23 @@
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/_core/hooks/useAuth";
+import { AlertTriangle, BadgeDollarSign, CheckCircle2, ClipboardCheck, KeyRound, LockKeyhole, ReceiptText, ShieldAlert, UsersRound, WalletCards } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
-import { Loader2, Plus, Search, Settings } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Authenticated account, household, organization, member, tier, and entitlement authorization scope", value: "Not connected", icon: KeyRound },
+  { label: "Tier definition, price, currency, tax, billing interval, benefits, eligibility, and effective-date provenance", value: "Unavailable", icon: ClipboardCheck },
+  { label: "Payment, invoice, renewal, cancellation, refund, downgrade, proration, and access-control behavior", value: "Not verified", icon: ReceiptText },
+  { label: "Payment credentials, personal data, financial reporting, privacy, security, and least-privilege safeguards", value: "Not configured", icon: LockKeyhole },
+];
+
+const surfaces = [
+  { title: "Member and organization scope", scope: "Authenticated account, organization, household, role, member, eligibility, tier, and authorization", status: "Unavailable", icon: UsersRound },
+  { title: "Plan and pricing provenance", scope: "Tier, benefits, price, currency, tax, billing interval, promotional terms, effective date, and source", status: "Not connected", icon: BadgeDollarSign },
+  { title: "Billing and entitlement lifecycle", scope: "Payment provider, invoice, renewal, cancellation, refund, downgrade, proration, grace period, and access", status: "Not verified", icon: WalletCards },
+  { title: "Financial, privacy, and security controls", scope: "Payment data, financial reporting, consent, retention, deletion, fraud, security, audit, and access", status: "Not configured", icon: ShieldAlert },
+];
 
 export default function MembershipTiers() {
-  const { isAuthenticated } = useAuth();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>MembershipTiers</CardTitle>
-            <CardDescription>Sign in to access this feature</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full">Sign In</Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold">MembershipTiers</h1>
-            <p className="text-muted-foreground mt-2">Group membership levels</p>
-          </div>
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            New
-          </Button>
-        </div>
-
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Search className="w-4 h-4 text-muted-foreground" />
-              <Input
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="max-w-sm"
-              />
-              <Button variant="outline" size="icon">
-                <Settings className="w-4 h-4" />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {isLoading ? (
-              <div className="flex justify-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
-              </div>
-            ) : (
-              <div className="text-center py-12 text-muted-foreground">
-                <p>No data available. Start by creating a new item.</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={UsersRound} title="Membership Tiers" subtitle="Subscription and membership readiness status; no authenticated account, organization, member registry, tier catalog, price source, billing provider, entitlement service, or production membership backend is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Membership tiers are unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen presented an authenticated-only shell with inert Sign In, New, search, settings, and loading controls but did not connect a member registry, tier definitions, price source, payment provider, invoices, tax, entitlement service, renewal, cancellation, refund, or authorization contract. The incomplete workflow was replaced with this explicit readiness boundary. No membership tier, price, benefit, member, account, payment, invoice, entitlement, revenue, or availability state is displayed, queried, created, calculated, or mutated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><UsersRound aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Subscription and membership readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A trustworthy membership service requires authoritative tier and price provenance, clear benefits and eligibility, secure billing, tax and invoice handling, reliable entitlement changes, cancellation and refund paths, financial reconciliation, privacy, and least-privilege authorization. A displayed price or benefit is not a binding offer unless backed by an authorized billing system and applicable terms. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="membership-surfaces-heading"><h2 id="membership-surfaces-heading" className="mb-4 text-xl font-semibold">Membership-control surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No membership tier, price, benefit, member, account, payment, invoice, entitlement, revenue, privacy, security, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="membership-boundaries-heading"><h2 id="membership-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No membership operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, member or tier query, price or benefit calculation, payment initiation, checkout, invoice creation, renewal, cancellation, refund, entitlement mutation, API request, database read or write, export, deletion, or financial-data operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Finance, billing, privacy, security, accessibility, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not enter payment credentials, passwords, identity documents, private keys, seed phrases, or confidential financial data here. Do not treat this page as evidence of a tier, price, benefit, membership, payment, invoice, renewal, refund, entitlement, revenue, or financial outcome. Verify terms, currency, taxes, billing provider, cancellation, refund, privacy, and authorization before subscribing.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/subscriptions"><Button variant="outline"><WalletCards aria-hidden="true" className="mr-2 h-4 w-4" />Review subscription status</Button></Link><Link href="/billing"><Button variant="outline"><ReceiptText aria-hidden="true" className="mr-2 h-4 w-4" />Review billing status</Button></Link><Link href="/account-settings"><Button variant="outline"><KeyRound aria-hidden="true" className="mr-2 h-4 w-4" />Review account status</Button></Link><Link href="/safety-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review safety</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No auth check, member or tier query, price or benefit calculation, payment initiation, checkout, invoice creation, renewal, cancellation, refund, entitlement mutation, API request, database read or write, export, deletion, or financial-data operation is performed. This page is not evidence of a tier, price, benefit, membership, payment, invoice, renewal, refund, entitlement, revenue, or financial outcome.</p></Card></main></div>;
 }
