@@ -1,144 +1,23 @@
-import React, { useState } from 'react';
-import { Card } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { AlertTriangle, CheckCircle2, Code2, FileCheck2, KeyRound, Network, Search, ShieldAlert, WalletCards } from "lucide-react";
+import { Link } from "wouter";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
 
-export default function ScalableAPI() {
-  const [selectedAPI, setSelectedAPI] = useState<string | null>(null);
+const readiness = [
+  { label: "API ownership, contract, versioning, endpoint inventory, schemas, and documentation", value: "Not verified", icon: Code2 },
+  { label: "Authentication, authorization, scopes, tenant isolation, secrets, and sensitive-data boundaries", value: "Unavailable", icon: KeyRound },
+  { label: "Validation, rate limits, quotas, billing, retries, idempotency, and error handling", value: "Not configured", icon: Network },
+  { label: "Monitoring, privacy, inference safety, audit, support, deprecation, and incident response", value: "Not connected", icon: ShieldAlert },
+];
 
-  const apis = [
-    {
-      name: 'Behavior API',
-      desc: 'User archetype, personality, engagement patterns',
-      endpoints: 3,
-      rateLimit: '10,000 req/min',
-      pricing: '$500/month',
-    },
-    {
-      name: 'Retention API',
-      desc: 'Churn prediction, retention scoring, engagement signals',
-      endpoints: 4,
-      rateLimit: '10,000 req/min',
-      pricing: '$500/month',
-    },
-    {
-      name: 'Decision API',
-      desc: 'AI decision engine, reasoning, confidence scoring',
-      endpoints: 2,
-      rateLimit: '5,000 req/min',
-      pricing: '$1,000/month',
-    },
-    {
-      name: 'Agent API',
-      desc: 'Autonomous agent deployment, task assignment, earnings',
-      endpoints: 5,
-      rateLimit: '20,000 req/min',
-      pricing: '$2,000/month',
-    },
-    {
-      name: 'Prediction API',
-      desc: 'Future path prediction, opportunity scoring, market forecasting',
-      endpoints: 3,
-      rateLimit: '10,000 req/min',
-      pricing: '$1,500/month',
-    },
-  ];
+const surfaces = [
+  { title: "Behavior and retention data", scope: "Identity, consent, profiling, churn inference, engagement signals, data minimization, and human review", status: "Unavailable" },
+  { title: "Decision and prediction services", scope: "Model provenance, uncertainty, sensitive decisions, financial or civic impact, explainability, and appeal", status: "Not verified" },
+  { title: "Agent and automation services", scope: "Tool permissions, task scope, execution sandboxing, side effects, resource limits, and audit", status: "Unavailable" },
+  { title: "API operations", scope: "Contracts, auth, validation, quotas, billing, versioning, monitoring, secrets, support, and rollback", status: "Not configured" },
+];
 
-  return (
-    <div className="min-h-screen bg-black text-white p-8">
-      <div className="max-w-7xl mx-auto">
-        <div className="mb-12">
-          <h1 className="text-4xl font-bold mb-2">ENTERPRISE API</h1>
-          <p className="text-gray-400">Access SKYCOIN4444's AI engines via REST API</p>
-        </div>
-
-        {/* API Grid */}
-        <div className="grid grid-cols-2 gap-6 mb-12">
-          {apis.map((api) => (
-            <Card
-              key={api.name}
-              className="bg-gray-900 border-gray-800 p-6 cursor-pointer hover:border-cyan-500 transition"
-              onClick={() => setSelectedAPI(api.name)}
-            >
-              <h3 className="font-bold text-lg mb-2">{api.name}</h3>
-              <p className="text-gray-400 text-sm mb-4">{api.desc}</p>
-
-              <div className="space-y-2 mb-6">
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-400">Endpoints</span>
-                  <span>{api.endpoints}</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-400">Rate Limit</span>
-                  <span>{api.rateLimit}</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-400">Pricing</span>
-                  <span className="text-cyan-400 font-bold">{api.pricing}</span>
-                </div>
-              </div>
-
-              <Button className="w-full bg-cyan-600 hover:bg-cyan-700">View Docs</Button>
-            </Card>
-          ))}
-        </div>
-
-        {/* Documentation */}
-        <div>
-          <h2 className="text-2xl font-bold mb-6">QUICK START</h2>
-          <Card className="bg-gray-900 border-gray-800 p-8">
-            <Tabs defaultValue="curl" className="w-full">
-              <TabsList className="bg-gray-800">
-                <TabsTrigger value="curl">cURL</TabsTrigger>
-                <TabsTrigger value="python">Python</TabsTrigger>
-                <TabsTrigger value="javascript">JavaScript</TabsTrigger>
-              </TabsList>
-
-              <TabsContent value="curl" className="mt-6">
-                <pre className="bg-black p-4 rounded overflow-x-auto text-sm">
-                  {`curl -X POST https://api.skycoin4444.com/v1/behavior/analyze \\
-  -H "Authorization: Bearer YOUR_API_KEY" \\
-  -H "Content-Type: application/json" \\
-  -d '{"userId": "user123"}'`}
-                </pre>
-              </TabsContent>
-
-              <TabsContent value="python" className="mt-6">
-                <pre className="bg-black p-4 rounded overflow-x-auto text-sm">
-                  {`import requests
-
-response = requests.post(
-  'https://api.skycoin4444.com/v1/behavior/analyze',
-  headers={'Authorization': 'Bearer YOUR_API_KEY'},
-  json={'userId': 'user123'}
-)
-
-print(response.json())`}
-                </pre>
-              </TabsContent>
-
-              <TabsContent value="javascript" className="mt-6">
-                <pre className="bg-black p-4 rounded overflow-x-auto text-sm">
-                  {`const response = await fetch(
-  'https://api.skycoin4444.com/v1/behavior/analyze',
-  {
-    method: 'POST',
-    headers: {
-      'Authorization': 'Bearer YOUR_API_KEY',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ userId: 'user123' })
-  }
-);
-
-const data = await response.json();`}
-                </pre>
-              </TabsContent>
-            </Tabs>
-          </Card>
-        </div>
-      </div>
-    </div>
-  );
+export default function EnterpriseAPI() {
+  return <div className="min-h-screen bg-background"><PageHeader icon={Code2} title="Enterprise API" subtitle="API-governance readiness status; no verified REST API, endpoint, model, API key, sensitive-data service, rate limit, price, billing, or production integration is available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Enterprise API capabilities are not verified</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen fabricated behavior, retention, decision, agent, and prediction APIs, endpoint counts, rate limits, pricing, API-key examples, user-identifying requests, and REST quick starts. No verified API contract, model, credential, authorization, privacy, billing, monitoring, or production service supported those claims, so they were removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Code2 aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">API-governance readiness</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A trustworthy enterprise API requires ownership and contracts, versioned schemas, authenticated tenant scope, least-privilege authorization, server-side secrets, input and output validation, privacy and sensitive-inference controls, safe AI boundaries, rate limits and idempotency, billing and quotas, monitoring, audit, deprecation, support, incident response, and rollback. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{readiness.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="enterprise-api-surfaces-heading"><h2 id="enterprise-api-surfaces-heading" className="mb-4 text-xl font-semibold">API surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Network aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No endpoint, model, data access, outcome, security property, commercial term, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="enterprise-api-boundaries-heading"><h2 id="enterprise-api-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><FileCheck2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No API or code claim</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No endpoint URL, package, request, response, schema, API key, token, user identifier, code snippet, install command, model, prediction, score, personality, churn, agent, payment, pricing, quota, SLA, or documentation claim is provided as official or executable.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">API, AI, privacy, financial, and secret-safety warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Enterprise APIs can expose personal data, create sensitive inferences, execute agents, incur charges, or change production systems. Verify ownership, tenant scope, consent, model provenance, scopes, secrets, validation, quotas, billing, monitoring, audit, human review, and rollback before integrating an API.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/developer-protocol"><Button variant="outline"><Code2 aria-hidden="true" className="mr-2 h-4 w-4" />Review protocol status</Button></Link><Link href="/security-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security status</Button></Link><Link href="/billing"><Button variant="outline"><WalletCards aria-hidden="true" className="mr-2 h-4 w-4" />Review billing status</Button></Link><Link href="/contact-us-form"><Button variant="outline"><Search aria-hidden="true" className="mr-2 h-4 w-4" />Ask about API availability</Button></Link></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No API, endpoint, model, package, request, response, schema, API key, token, user identifier, code snippet, install command, prediction, score, personality, churn, agent, payment, pricing, quota, SLA, documentation, sign-in, credential generation, API request, database read or write, model inference, sensitive profiling, agent execution, payment, billing, webhook, or production deployment is performed. This page is not evidence of an enterprise API, model service, safe inference, authorized data access, commercial API terms, or production integration.</p></div></Card></main></div>;
 }
