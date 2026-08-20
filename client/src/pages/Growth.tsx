@@ -1,57 +1,23 @@
+import { AlertTriangle, BarChart3, CheckCircle2, FileCheck2, KeyRound, LockKeyhole, Rocket, Search, ShieldAlert, Share2, Target, TrendingUp, Users } from "lucide-react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { PageHeader } from "@/components/PageHeader";
-import { StatCard } from "@/components/StatCard";
-import { TrendingUp, Users, DollarSign, Target, Rocket, Share2, Gift, Star, ArrowRight, BarChart3, Zap } from "lucide-react";
 
-const GROWTH_CHANNELS = [
-  { icon: Share2, label: "Referral Program", desc: "Earn 10% of referred user's first month revenue", reward: "10% commission", href: "/referrals", color: "text-primary" },
-  { icon: Gift, label: "Airdrop Campaigns", desc: "Complete tasks to earn free SKY444 tokens", reward: "Up to 1,000 SKY444", href: "/airdrops", color: "text-accent" },
-  { icon: Star, label: "Creator Incentives", desc: "Top creators earn bonus rewards monthly", reward: "Up to $5,000/mo", href: "/creator-studio", color: "text-warning" },
-  { icon: Rocket, label: "Launch Partner", desc: "Early adopter benefits and lifetime discounts", reward: "50% lifetime discount", href: "/enterprise", color: "text-success" },
+const boundaries = [
+  { label: "Authenticated organization, campaign, audience, attribution, analytics, and commercial authorization scope", value: "Not connected", icon: KeyRound },
+  { label: "User, activation, retention, conversion, referral, revenue, reward, and experiment metric provenance", value: "Unavailable", icon: BarChart3 },
+  { label: "Incentive eligibility, payout, payment, token, tax, consent, privacy, and fraud controls", value: "Not verified", icon: Target },
+  { label: "Security, legal, advertising, accessibility, AI, and least-privilege safeguards", value: "Not configured", icon: ShieldAlert },
+];
+
+const surfaces = [
+  { title: "Growth measurement", scope: "Acquisition, activation, retention, conversion, attribution, cohort definitions, source freshness, experiment design, and statistical review", status: "Unavailable", icon: BarChart3 },
+  { title: "Referrals and incentives", scope: "Eligibility, attribution, commission, payout, pricing, revenue recognition, anti-fraud, tax, disputes, and payment authority", status: "Not verified", icon: Share2 },
+  { title: "Token and creator programs", scope: "Airdrops, token issuance, creator compensation, custody, settlement, securities, tax, eligibility, and jurisdiction", status: "Not configured", icon: Rocket },
+  { title: "Privacy and operations", scope: "Consent, profiling, personal data, children, advertising, retention, deletion, security, accessibility, and audit", status: "Not connected", icon: LockKeyhole },
 ];
 
 export default function Growth() {
-  return (
-    <div className="container py-8 max-w-5xl animate-page-in">
-      <PageHeader backHref="/analytics" icon={TrendingUp} title="Growth Hub" subtitle="Referrals, incentives, and growth programs to accelerate your journey" badge="Active" />
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-        <StatCard icon={Users} label="Total Users" value="24,891" change={12.4} changeLabel="this month" color="primary" />
-        <StatCard icon={DollarSign} label="Rewards Paid" value="$48,230" change={8.7} changeLabel="this month" color="success" />
-        <StatCard icon={Target} label="Conversion Rate" value="4.2%" change={1.3} changeLabel="vs last month" color="accent" />
-        <StatCard icon={BarChart3} label="Viral Coefficient" value="1.34" change={5.2} changeLabel="this week" color="warning" />
-      </div>
-      <div className="grid md:grid-cols-2 gap-4 mb-8">
-        {GROWTH_CHANNELS.map(ch => (
-          <div key={ch.label} className="card p-5 hover:border-primary/40 transition-all duration-200">
-            <div className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
-                <ch.icon className={`w-5 h-5 ${ch.color}`} />
-              </div>
-              <div className="flex-1">
-                <div className="font-semibold mb-1">{ch.label}</div>
-                <p className="text-sm text-muted-foreground mb-2">{ch.desc}</p>
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-mono text-primary bg-primary/10 px-2 py-1 rounded">{ch.reward}</span>
-                  <Link href={ch.href}><Button size="sm" variant="outline" className="text-xs gap-1">Join <ArrowRight className="w-3 h-3" /></Button></Link>
-                </div>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-      <div className="card p-6 bg-gradient-to-r from-primary/10 to-accent/10 border-primary/30">
-        <div className="flex items-center justify-between flex-wrap gap-4">
-          <div>
-            <h3 className="text-lg font-bold mb-1">Your Referral Link</h3>
-            <p className="text-sm text-muted-foreground">Share and earn 10% of every referral's revenue</p>
-          </div>
-          <div className="flex gap-2">
-            <div className="px-4 py-2 bg-secondary rounded-lg font-mono text-sm">skycoin4444.com/ref/you</div>
-            <Button className="btn-primary gap-2"><Share2 className="w-4 h-4" />Copy Link</Button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader backHref="/analytics" icon={TrendingUp} title="Growth Hub" subtitle="Growth-readiness status; no live user, revenue, reward, referral, conversion, retention, campaign, token, or production-program data is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Growth data and programs are unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen asserted 24,891 users, $48,230 rewards, a 4.2% conversion rate, a 1.34 viral coefficient, referral commissions, token airdrops, creator payouts, lifetime discounts, an active status, and a personal referral link without verified metric provenance, payment or token settlement, consent, privacy, anti-fraud, tax, legal, or authorization controls. Those claims and commercial actions were removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><TrendingUp aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Growth-readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Trustworthy growth analytics and programs require source-backed metric definitions, attribution and experiment provenance, authenticated commercial scope, transparent pricing and revenue recognition, incentive eligibility and payout controls, payment and token safety, consent and profiling review, anti-fraud, tax and legal review, accessibility, and qualified security oversight. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="growth-surfaces-heading"><h2 id="growth-surfaces-heading" className="mb-4 text-xl font-semibold">Growth surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No user, revenue, reward, conversion, retention, campaign, token, payout, privacy, security, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="growth-boundaries-heading"><h2 id="growth-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No growth metric or offer claim</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, analytics query, user count, reward total, conversion calculation, viral coefficient, referral attribution, revenue lookup, payout, token issuance, discount, referral-link generation, API request, database read or write, notification, export, deletion, or personal-data operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Commercial, finance, crypto, privacy, advertising, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not treat this page as evidence of 24,891 users, $48,230 rewards, 4.2% conversion, 1.34 viral coefficient, referral commissions, airdrops, creator payouts, discounts, revenue, or active programs. Verify source data, consent, attribution, offer terms, payment and token custody, anti-fraud, tax, legal, privacy, and human approval before acting.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/analytics"><Button variant="outline"><BarChart3 aria-hidden="true" className="mr-2 h-4 w-4" />Review analytics</Button></Link><Link href="/referrals"><Button variant="outline"><Share2 aria-hidden="true" className="mr-2 h-4 w-4" />Review referral status</Button></Link><Link href="/creator-studio"><Button variant="outline"><Rocket aria-hidden="true" className="mr-2 h-4 w-4" />Review creator status</Button></Link><Link href="/profile"><Button variant="outline"><Users aria-hidden="true" className="mr-2 h-4 w-4" />Review identity</Button></Link><Link href="/security-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link><Link href="/documentation"><Button variant="outline"><FileCheck2 aria-hidden="true" className="mr-2 h-4 w-4" />Review evidence</Button></Link><Link href="/contact-us-form"><Button variant="outline"><Search aria-hidden="true" className="mr-2 h-4 w-4" />Ask about growth</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No auth check, analytics query, user count, reward total, conversion calculation, viral coefficient, referral attribution, revenue lookup, payout, token issuance, discount, referral-link generation, API request, database read or write, notification, export, deletion, or personal-data operation is performed. This page is not evidence of users, rewards, conversion, retention, revenue, commissions, token programs, creator payouts, discounts, active growth programs, or production growth functionality.</p></Card></main></div>;
 }
