@@ -1,75 +1,23 @@
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/_core/hooks/useAuth";
+import { Building2, CheckCircle2, ClipboardList, LockKeyhole, Plus, Search, ShieldAlert, Users } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
-import { Loader2, Plus, Search, Settings } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const readiness = [
+  { label: "Authenticated administrator, organization scope, roles, and authorization", value: "Not connected", icon: LockKeyhole },
+  { label: "Department records, memberships, hierarchy, ownership, and lifecycle", value: "Unavailable", icon: Building2 },
+  { label: "Budgets, approvals, staffing, permissions, exports, and integrations", value: "Not configured", icon: ClipboardList },
+  { label: "Audit trail, validation, concurrency, privacy, and recovery", value: "Not verified", icon: ShieldAlert },
+];
+
+const boundaries = [
+  { title: "No organization or department claim", description: "No organization, department, team, employee, manager, member, role, headcount, hierarchy, owner, budget, permission, status, or operational record is fetched, displayed, calculated, or simulated.", icon: Building2 },
+  { title: "No administrative action", description: "No sign-in, department creation, edit, delete, membership change, role change, settings update, approval, budget action, export, API request, database read or write, or account mutation can be initiated here.", icon: Users },
+  { title: "No access-control or audit claim", description: "No administrator verification, RBAC, least privilege, separation of duties, audit event, change history, validation, concurrency control, privacy, retention, or recovery behavior is asserted.", icon: LockKeyhole },
+  { title: "Administrative warn-and-proceed", description: "Organization data can expose personal information, employment relationships, permissions, compensation, budgets, and confidential operations. Verify administrator scope, lawful purpose, data minimization, and independent authorization before any administrative action.", icon: ShieldAlert },
+];
 
 export default function DepartmentManagement() {
-  const { isAuthenticated } = useAuth();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>DepartmentManagement</CardTitle>
-            <CardDescription>Sign in to access this feature</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full">Sign In</Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold">DepartmentManagement</h1>
-            <p className="text-muted-foreground mt-2">Organize and manage departments</p>
-          </div>
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            New
-          </Button>
-        </div>
-
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Search className="w-4 h-4 text-muted-foreground" />
-              <Input
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="max-w-sm"
-              />
-              <Button variant="outline" size="icon">
-                <Settings className="w-4 h-4" />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {isLoading ? (
-              <div className="flex justify-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
-              </div>
-            ) : (
-              <div className="text-center py-12 text-muted-foreground">
-                <p>No data available. Start by creating a new item.</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader backHref="/enterprise" icon={Building2} title="Department Management" subtitle="Administration-readiness status; no organization, department, membership, role, budget, permission, or operational record is available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><ShieldAlert aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Department management is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen presented a sign-in button, New and settings controls, a search field, a local loading state, and a generic empty state without a verified organization scope, administrator authorization, data contract, department persistence, membership model, or audit handling. Those controls and implied workflow were removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Building2 aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Administration-readiness status</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Production department management requires authenticated administrator scope, organization and department data models, membership and role permissions, validated mutations, approvals, auditability, privacy controls, concurrency handling, recovery, and clear empty, error, loading, and success states. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{readiness.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="department-boundaries-heading"><h2 id="department-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2">{boundaries.map(({ title, description, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><Icon aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p></Card>)}</div></section><div className="flex flex-wrap gap-3"><Link href="/enterprise"><Button variant="outline">View enterprise status</Button></Link><Link href="/admin-dashboard"><Button variant="outline">View admin status</Button></Link><Link href="/settings"><Button variant="outline"><Search aria-hidden="true" className="mr-2 h-4 w-4" />View account settings</Button></Link><Link href="/contact-us-form"><Button variant="outline"><Plus aria-hidden="true" className="mr-2 h-4 w-4" />Ask about availability</Button></Link></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No organization, department, team, employee, manager, member, role, headcount, hierarchy, owner, budget, permission, status, operational record, sign-in, department creation, edit, delete, membership change, role change, settings update, approval, budget action, export, API request, database read or write, administrator verification, RBAC, audit event, change history, privacy result, or account mutation is performed. This page is not evidence of department management, authorization, data accuracy, auditability, or administrative capability.</p></div></Card></main></div>;
 }
