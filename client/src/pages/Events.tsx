@@ -1,171 +1,23 @@
-import { useState } from "react";
+import { AlertTriangle, CalendarDays, CheckCircle2, FileCheck2, KeyRound, Search, ShieldAlert, Ticket, Users } from "lucide-react";
 import { Link } from "wouter";
-import { CalendarDays, Plus, Users, Clock, MapPin, Ticket, ArrowRight, Star, Video, Zap } from "lucide-react";
-import { PageHeader } from "@/components/PageHeader";
-import { StatCard } from "@/components/StatCard";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
 
-const EVENTS = [
-  {
-    id: "1", title: "SKY444 Token Launch Party",
-    date: "Jun 25, 2026", time: "8:00 PM UTC", type: "Virtual",
-    category: "Crypto", attendees: 1240, maxAttendees: 2000,
-    host: "SKYCOIN4444 Team", desc: "Celebrate the official SKY444 mainnet launch with live AMA, giveaways, and early staking bonuses.",
-    tags: ["Token Launch", "AMA", "Giveaway"], featured: true, rsvp: true,
-  },
-  {
-    id: "2", title: "AI Agents Hackathon",
-    date: "Jul 4, 2026", time: "12:00 PM UTC", type: "Virtual",
-    category: "AI", attendees: 567, maxAttendees: 1000,
-    host: "ShadowChat Dev Team", desc: "48-hour hackathon to build AI agents on the ShadowChat platform. $50K prize pool.",
-    tags: ["Hackathon", "AI", "$50K Prize"], featured: true, rsvp: false,
-  },
-  {
-    id: "3", title: "Creator Monetization Workshop",
-    date: "Jun 28, 2026", time: "3:00 PM UTC", type: "Virtual",
-    category: "Creator", attendees: 312, maxAttendees: 500,
-    host: "NOVA AI", desc: "Learn how to maximize earnings with subscriptions, tips, and premium content on ShadowChat.",
-    tags: ["Workshop", "Monetization", "Creators"], featured: false, rsvp: true,
-  },
-  {
-    id: "4", title: "DeFi Yield Strategies AMA",
-    date: "Jun 22, 2026", time: "6:00 PM UTC", type: "Virtual",
-    category: "DeFi", attendees: 891, maxAttendees: 1500,
-    host: "CIPHER AI", desc: "Deep dive into yield farming, liquidity pools, and maximizing DeFi returns with SKY444.",
-    tags: ["AMA", "DeFi", "Yield"], featured: false, rsvp: true,
-  },
-  {
-    id: "5", title: "Web3 Gaming Tournament",
-    date: "Jul 10, 2026", time: "2:00 PM UTC", type: "Virtual",
-    category: "Gaming", attendees: 234, maxAttendees: 500,
-    host: "Gaming Arena", desc: "Compete in the first ShadowChat Web3 gaming tournament with SKY444 prize pool.",
-    tags: ["Tournament", "Gaming", "Prize Pool"], featured: false, rsvp: false,
-  },
+const boundaries = [
+  { label: "Authenticated organizer, event provenance, venue authority, calendar scope, and publishing status", value: "Not connected", icon: KeyRound },
+  { label: "Event dates, time zones, attendance, capacity, registration, invitations, and reminders", value: "Unavailable", icon: CalendarDays },
+  { label: "Tickets, token or cash prizes, payments, fees, refunds, taxes, and reconciliation", value: "Not verified", icon: Ticket },
+  { label: "Consent, privacy, moderation, safety, accessibility, retention, and incident response", value: "Not configured", icon: ShieldAlert },
 ];
 
-const CATEGORIES = ["All", "Crypto", "AI", "Creator", "DeFi", "Gaming"];
+const surfaces = [
+  { title: "Event discovery", scope: "Verified event identity, organizer, description, category, venue, virtual link, date, time zone, status, and source provenance", status: "Unavailable" },
+  { title: "Attendance and registration", scope: "Attendee identity, counts, capacity, availability, RSVP, waitlists, invitations, check-ins, consent, and reminders", status: "Not configured" },
+  { title: "Ticketing and prizes", scope: "Ticket terms, payment processor, fees, taxes, refunds, payouts, token or cash prizes, and reconciliation", status: "Not verified" },
+  { title: "Community governance", scope: "Moderation, safety, accessibility, privacy, content, calendar integration, exports, retention, audit, and support", status: "Not connected" },
+];
 
 export default function Events() {
-  const [category, setCategory] = useState("All");
-  const [rsvped, setRsvped] = useState<Set<string>>(new Set(["1", "4"]));
-
-  const filtered = EVENTS.filter(e => category === "All" || e.category === category);
-
-  const toggleRsvp = (id: string) => {
-    setRsvped(prev => {
-      const n = new Set(prev);
-      n.has(id) ? n.delete(id) : n.add(id);
-      return n;
-    });
-  };
-
-  return (
-    <div className="container py-8 max-w-4xl animate-page-in">
-      <PageHeader
-        backHref="/social"
-        icon={CalendarDays}
-        title="Events"
-        subtitle="Upcoming AMAs, hackathons, launches, and community gatherings"
-        actions={
-          <Link href="/event-planner">
-            <Button className="btn-primary gap-2">
-              <Plus className="w-4 h-4" /> Create Event
-            </Button>
-          </Link>
-        }
-      />
-
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-        <StatCard icon={CalendarDays} label="Upcoming Events" value={EVENTS.length.toString()} color="primary" />
-        <StatCard icon={Ticket} label="Your RSVPs" value={rsvped.size.toString()} color="success" />
-        <StatCard icon={Star} label="Featured" value="2" color="warning" />
-        <StatCard icon={Users} label="Total Attendees" value="3.2K" color="accent" />
-      </div>
-
-      {/* Category filter */}
-      <div className="flex gap-1.5 flex-wrap mb-6">
-        {CATEGORIES.map(cat => (
-          <button
-            key={cat}
-            onClick={() => setCategory(cat)}
-            className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all active:scale-[0.97] ${
-              category === cat
-                ? "bg-primary text-primary-foreground"
-                : "bg-secondary/50 text-muted-foreground hover:bg-secondary hover:text-foreground border border-slate-700/40"
-            }`}
-          >
-            {cat}
-          </button>
-        ))}
-      </div>
-
-      {/* Events */}
-      <div className="space-y-4">
-        {filtered.map(event => (
-          <div key={event.id} className={`card p-5 transition-all hover:border-slate-700/60 ${event.featured ? "border-primary/30 bg-primary/5" : ""}`}>
-            <div className="flex items-start gap-4">
-              <div className="w-14 h-14 rounded-xl bg-secondary/50 flex flex-col items-center justify-center shrink-0 border border-slate-700/40">
-                <div className="text-xs text-muted-foreground font-medium">{event.date.split(" ")[0]}</div>
-                <div className="text-lg font-black text-foreground leading-none">{event.date.split(" ")[1].replace(",", "")}</div>
-                <div className="text-xs text-muted-foreground">{event.date.split(" ")[2]}</div>
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-start justify-between gap-2 mb-1">
-                  <div>
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <h3 className="font-bold text-sm">{event.title}</h3>
-                      {event.featured && (
-                        <Badge variant="default" className="text-[10px] px-1.5 py-0.5">⭐ Featured</Badge>
-                      )}
-                    </div>
-                    <div className="flex items-center gap-3 mt-1 text-xs text-muted-foreground">
-                      <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{event.time}</span>
-                      <span className="flex items-center gap-1"><Video className="w-3 h-3" />{event.type}</span>
-                      <span className="flex items-center gap-1"><Users className="w-3 h-3" />{event.attendees.toLocaleString()} / {event.maxAttendees.toLocaleString()}</span>
-                    </div>
-                  </div>
-                </div>
-                <p className="text-xs text-muted-foreground mt-2 line-clamp-2">{event.desc}</p>
-                <div className="flex items-center gap-2 mt-3 flex-wrap">
-                  {event.tags.map(tag => (
-                    <span key={tag} className="text-[10px] px-2 py-0.5 rounded-full bg-secondary/60 text-muted-foreground border border-slate-700/30">
-                      {tag}
-                    </span>
-                  ))}
-                  <div className="ml-auto flex items-center gap-2">
-                    <span className="text-xs text-muted-foreground">by {event.host}</span>
-                    <button
-                      onClick={() => toggleRsvp(event.id)}
-                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all active:scale-95 ${
-                        rsvped.has(event.id)
-                          ? "bg-green-500/20 text-green-400 border border-green-500/30 hover:bg-red-500/20 hover:text-red-400 hover:border-red-500/30"
-                          : "bg-primary/20 text-primary border border-primary/30 hover:bg-primary/30"
-                      }`}
-                    >
-                      <Ticket className="w-3 h-3" />
-                      {rsvped.has(event.id) ? "RSVP'd ✓" : "RSVP"}
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            {/* Attendance bar */}
-            <div className="mt-3">
-              <div className="flex justify-between text-xs text-muted-foreground mb-1">
-                <span>{event.attendees.toLocaleString()} attending</span>
-                <span>{Math.round((event.attendees / event.maxAttendees) * 100)}% full</span>
-              </div>
-              <div className="h-1.5 bg-secondary/50 rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-gradient-to-r from-primary to-cyan-500 rounded-full transition-all"
-                  style={{ width: `${Math.min((event.attendees / event.maxAttendees) * 100, 100)}%` }}
-                />
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader backHref="/social" icon={CalendarDays} title="Events" subtitle="Event-discovery readiness status; no authenticated event source, listing, organizer, date, venue, attendee count, capacity, ticket, prize, RSVP, or calendar integration is available in this deployment." actions={<Link href="/event-creation"><Button variant="outline">Review creation status</Button></Link>} /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Event listings are not verified</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen hard-coded crypto, AI, creator, DeFi, and gaming events with dates, hosts, attendance, capacity, featured status, token or cash prize claims, and RSVP mutations. No authenticated event source, organizer, venue, schedule, attendee, ticketing, payment, prize, privacy, safety, or moderation evidence supported those claims, so the fabricated listings and RSVP controls were removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><CalendarDays aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Event discovery readiness</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Trustworthy event discovery requires authenticated source and organizer authority, event and venue provenance, accurate dates and time zones, attendee and capacity evidence, consent and privacy, accessibility and safety, moderation, registration and ticketing controls, financial and prize reconciliation, calendar integration, least privilege, audit, and incident response. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="events-surfaces-heading"><h2 id="events-surfaces-heading" className="mb-4 text-xl font-semibold">Discovery surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><CalendarDays aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No event, listing, metric, attendance, financial state, privacy property, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="events-boundaries-heading"><h2 id="events-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><FileCheck2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No event listing or RSVP claim</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No event, title, date, time, time zone, venue, organizer, host, category, attendee count, capacity, featured state, tag, prize, ticket, RSVP, registration, calendar event, or notification record is read, calculated, displayed, recommended, created, exported, or simulated.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Community, privacy, safety, accessibility, crypto, and finance warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Events can expose locations, relationships, schedules, accessibility needs, financial data, and crypto or prize claims. Verify organizer authority, event source, venue and time-zone accuracy, consent, moderation, accessibility, safety, ticketing, payment, prize terms, reconciliation, and audit before publishing or acting on an event.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/event-calendar"><Button variant="outline"><CalendarDays aria-hidden="true" className="mr-2 h-4 w-4" />Review calendar status</Button></Link><Link href="/event-registration"><Button variant="outline"><Ticket aria-hidden="true" className="mr-2 h-4 w-4" />Review registration status</Button></Link><Link href="/event-analytics"><Button variant="outline"><Users aria-hidden="true" className="mr-2 h-4 w-4" />Review analytics status</Button></Link><Link href="/security-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security status</Button></Link><Link href="/contact-us-form"><Button variant="outline"><Search aria-hidden="true" className="mr-2 h-4 w-4" />Ask about events</Button></Link></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No auth check, sign-in, event query, listing, search, category filter, attendee lookup, capacity calculation, RSVP, registration, ticketing, payment, prize, calendar synchronization, API request, database read or write, notification, export, or personal-data operation is performed. This page is not evidence of events, schedules, attendance, ticketing, prizes, calendar integrations, privacy, safety, accessibility, or production discovery functionality.</p></div></Card></main></div>;
 }
