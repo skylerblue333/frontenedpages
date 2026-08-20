@@ -1,75 +1,14 @@
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/_core/hooks/useAuth";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
-import { Loader2, Plus, Search, Settings } from "lucide-react";
+import { FileCheck2, Gavel, LockKeyhole, Search, ShieldAlert, Users } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const policyStates = [
+  { label: "Policy owner, scope, version, effective date, and approval", value: "Not verified", icon: FileCheck2 },
+  { label: "Community rules, prohibited content, reporting, and appeals", value: "Not configured", icon: Gavel },
+  { label: "Moderator permissions, enforcement, evidence, and escalation", value: "Unavailable", icon: ShieldAlert },
+  { label: "Privacy, retention, legal review, and audit trail", value: "Not connected", icon: LockKeyhole },
+];
 
 export default function CommunityGuidelines() {
-  const { isAuthenticated } = useAuth();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>CommunityGuidelines</CardTitle>
-            <CardDescription>Sign in to access this feature</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full">Sign In</Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold">CommunityGuidelines</h1>
-            <p className="text-muted-foreground mt-2">Rules and policies</p>
-          </div>
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            New
-          </Button>
-        </div>
-
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Search className="w-4 h-4 text-muted-foreground" />
-              <Input
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="max-w-sm"
-              />
-              <Button variant="outline" size="icon">
-                <Settings className="w-4 h-4" />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {isLoading ? (
-              <div className="flex justify-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
-              </div>
-            ) : (
-              <div className="text-center py-12 text-muted-foreground">
-                <p>No data available. Start by creating a new item.</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Gavel} title="Community Guidelines" subtitle="Community-policy integration status; no binding policy, moderation rule, enforcement decision, legal conclusion, or compliance status is available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><ShieldAlert aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Guidelines are unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">This route previously exposed a sign-in gate, New action, search, settings, loading state, and an empty-item prompt without a policy owner, approved version, effective date, jurisdiction, moderation workflow, reporting channel, appeal process, privacy review, or audit record. Those controls were removed rather than presenting a placeholder as binding community rules or authoritative legal, safety, or compliance guidance.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Gavel aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Policy-readiness status</h2><p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">A production community-policy service requires a documented owner, versioning and approval, jurisdiction and scope, clear prohibited-content rules, reporting and appeal paths, moderator authorization, evidence handling, escalation, privacy and retention controls, and legally reviewed publication and enforcement records. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{policyStates.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="policy-boundary-heading"><h2 id="policy-boundary-heading" className="mb-4 text-xl font-semibold">Current boundary</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><Users aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No rule, prohibited-content category, member obligation, moderation decision, report, appeal, enforcement action, account status, safety conclusion, legal conclusion, compliance certification, or risk assessment is read, drafted as final, displayed, stored, or simulated by this page.</p></div></Card><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><Search aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No sign-in, policy creation, search, settings change, report, appeal, moderation action, API request, database write, notification, account mutation, or external legal, safety, or compliance integration call is performed. Do not enter secrets or sensitive personal information here.</p></div></Card></div></section><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><FileCheck2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">Legal disclaimer: this unavailable state is not a binding policy, legal advice, safety guarantee, moderation ruling, or compliance certification. Any future guidelines must be approved by the responsible organization and reviewed by a qualified attorney or relevant professional before reliance.</p></div></Card></main></div>;
 }
