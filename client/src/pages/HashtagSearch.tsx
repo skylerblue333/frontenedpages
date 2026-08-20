@@ -1,25 +1,23 @@
-import { useState } from "react";
+import { AlertTriangle, CheckCircle2, FileCheck2, Hash, KeyRound, LockKeyhole, Search, ShieldAlert, TrendingUp, Users } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Authenticated user, organization, hashtag, index, content, and visibility authorization scope", value: "Not connected", icon: KeyRound },
+  { label: "Index source, normalization, query parsing, freshness, relevance, ranking, and result provenance", value: "Unavailable", icon: Search },
+  { label: "Public/private visibility, consent, moderation, rate limits, retention, deletion, and audit controls", value: "Not verified", icon: ShieldAlert },
+  { label: "Privacy, minors, abuse, accessibility, security, profiling, and least-privilege safeguards", value: "Not configured", icon: LockKeyhole },
+];
+
+const surfaces = [
+  { title: "Query and index", scope: "Hashtag syntax, normalization, index coverage, source freshness, query processing, spelling, filtering, and result provenance", status: "Unavailable", icon: Hash },
+  { title: "Relevance and discovery", scope: "Ranking, relevance, trends, recommendations, personalization, engagement signals, and explanation semantics", status: "Not verified", icon: TrendingUp },
+  { title: "Visibility and moderation", scope: "Private content, consent, blocked users, abuse, spam, minors, reports, rate limits, retention, and deletion", status: "Not configured", icon: ShieldAlert },
+  { title: "Privacy and operations", scope: "Personal data, profiling, audit, accessibility, errors, notifications, export, security, and authorization", status: "Not connected", icon: LockKeyhole },
+];
 
 export default function HashtagSearch() {
-  const [state, setState] = useState(false);
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 to-black p-4">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">HashtagSearch</h1>
-        <p className="text-slate-400 mb-8">hashtag search</p>
-        
-        <Card className="bg-slate-900 border-slate-800 p-8">
-          <div className="space-y-6">
-            <p className="text-slate-300">Content for HashtagSearch page</p>
-            <Button onClick={() => setState(!state)}>
-              {state ? "Deactivate" : "Activate"}
-            </Button>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Search} title="Hashtag Search" subtitle="Hashtag-search readiness status; no authenticated search, index, result, recommendation, or private-content visibility service is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Hashtag search is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen exposed a generic activate/deactivate control without a connected hashtag index, query service, result provenance, relevance semantics, private-content visibility, consent, moderation, privacy, retention, rate-limit, or authorization boundary. The unsupported control was removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Search aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Hashtag-search readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Trustworthy hashtag search requires authenticated visibility scope, source-backed index and freshness semantics, safe query processing, explainable relevance and recommendations, consent for public or personal content, moderation and abuse controls, minors protections, rate limits, retention and deletion, audit, accessibility, and qualified privacy and security review. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="hashtag-search-surfaces-heading"><h2 id="hashtag-search-surfaces-heading" className="mb-4 text-xl font-semibold">Search surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No hashtag, result, user, post, trend, ranking, recommendation, private-content, privacy, security, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="hashtag-search-boundaries-heading"><h2 id="hashtag-search-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No search or result claim</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, input processing, hashtag search, index lookup, result calculation, relevance score, trend lookup, recommendation, user lookup, post lookup, API request, database read or write, notification, export, deletion, or personal-data operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Social discovery, privacy, moderation, minors, security, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not treat this page as evidence of search coverage, result counts, relevance, trends, recommendations, public visibility, or private-content access. Verify index provenance, visibility, consent, abuse controls, retention, deletion, and human review before exposing social search results.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/hashtag-explorer"><Button variant="outline"><Hash aria-hidden="true" className="mr-2 h-4 w-4" />Review explorer status</Button></Link><Link href="/explore"><Button variant="outline"><TrendingUp aria-hidden="true" className="mr-2 h-4 w-4" />Review explore status</Button></Link><Link href="/profile"><Button variant="outline"><Users aria-hidden="true" className="mr-2 h-4 w-4" />Review identity</Button></Link><Link href="/security-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link><Link href="/documentation"><Button variant="outline"><FileCheck2 aria-hidden="true" className="mr-2 h-4 w-4" />Review evidence</Button></Link><Link href="/contact-us-form"><Button variant="outline"><Search aria-hidden="true" className="mr-2 h-4 w-4" />Ask about search</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No auth check, input processing, hashtag search, index lookup, result calculation, relevance score, trend lookup, recommendation, user lookup, post lookup, API request, database read or write, notification, export, deletion, or personal-data operation is performed. This page is not evidence of search coverage, result counts, relevance, trends, recommendations, public visibility, private-content access, or production hashtag search.</p></Card></main></div>;
 }
