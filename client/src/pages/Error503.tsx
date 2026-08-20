@@ -1,25 +1,9 @@
-import { useState } from "react";
+import { AlertTriangle, ArrowLeft, CheckCircle2, CloudOff, Home, Search, ShieldAlert } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
 
 export default function Error503() {
-  const [state, setState] = useState(false);
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 to-black p-4">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">Error503</h1>
-        <p className="text-slate-400 mb-8">503 service unavailable</p>
-        
-        <Card className="bg-slate-900 border-slate-800 p-8">
-          <div className="space-y-6">
-            <p className="text-slate-300">Content for Error503 page</p>
-            <Button onClick={() => setState(!state)}>
-              {state ? "Deactivate" : "Activate"}
-            </Button>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={CloudOff} title="503 — Service unavailable" subtitle="Service-unavailable status; this page does not inspect provider health, maintenance, dependency status, queue state, incident records, retry safety, or recovery." /><main className="mx-auto max-w-3xl space-y-6 px-4 py-10"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Service availability was not verified</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">A 503 response ordinarily indicates that a service cannot handle a request temporarily. This static status screen has no provider health, maintenance notice, dependency status, queue, request ID, incident record, or recovery evidence to inspect, so it does not claim an outage, duration, cause, or retry safety.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8 text-center"><CloudOff aria-hidden="true" className="mx-auto h-12 w-12 text-primary" /><h2 className="mt-5 text-3xl font-bold">Service unavailable</h2><p className="mx-auto mt-3 max-w-xl text-sm leading-6 text-muted-foreground">Return to a known page or contact the system owner through an approved channel. Avoid repeating payments, trades, wallet actions, deletions, uploads, or other consequential operations until authoritative status is available.</p><div className="mt-6 flex flex-wrap justify-center gap-3"><Link href="/"><Button><Home aria-hidden="true" className="mr-2 h-4 w-4" />Go home</Button></Link><Button variant="outline" type="button" onClick={() => window.history.back()}><ArrowLeft aria-hidden="true" className="mr-2 h-4 w-4" />Go back</Button><Link href="/contact-us-form"><Button variant="outline"><Search aria-hidden="true" className="mr-2 h-4 w-4" />Contact support</Button></Link></div></Card><section aria-labelledby="service-unavailable-boundaries-heading"><h2 id="service-unavailable-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><ShieldAlert aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No uptime or dependency claim</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No provider, environment, service, dependency, queue, request, user, session, API response, database record, transaction, balance, order, upload, security event, log, metric, incident, or recovery state is read, inferred, revealed, changed, or simulated.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Infrastructure and sensitive-action warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">A temporary error does not prove whether an operation was accepted, queued, or completed. Verify idempotency and authoritative status before retrying financial, crypto, identity, deletion, upload, or other consequential actions.</p></Card></div></section><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No health check, maintenance lookup, retry, sign-in, API request, database read or write, transaction lookup, payment check, wallet check, deletion check, upload check, incident lookup, log access, recovery action, redirect, or content mutation is performed. This page is not evidence of an outage, uptime, maintenance window, queue state, transaction outcome, data loss, or production service status.</p></div></Card></main></div>;
 }
