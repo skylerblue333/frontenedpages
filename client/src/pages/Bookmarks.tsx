@@ -8,6 +8,29 @@ import { trpc } from "@/lib/trpc";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { toast } from "sonner";
 
+type BookmarkPost = {
+  id: string | number;
+  type?: "text" | "image" | "video" | "reel" | string;
+  content?: string | null;
+  likesCount?: number | null;
+  commentsCount?: number | null;
+  sharesCount?: number | null;
+  author?: { displayName?: string | null; username?: string | null } | null;
+};
+
+type BookmarkRecord = {
+  id: string | number;
+  post?: BookmarkPost | null;
+  note?: string | null;
+  createdAt?: string | Date | null;
+};
+
+function isBookmarkRecord(value: unknown): value is BookmarkRecord {
+  if (!value || typeof value !== "object") return false;
+  const record = value as Record<string, unknown>;
+  return (typeof record.id === "string" || typeof record.id === "number") && (record.post === undefined || record.post === null || typeof record.post === "object");
+}
+
 export default function Bookmarks() {
   const { user } = useAuth();
   const [, navigate] = useLocation();
@@ -21,10 +44,10 @@ export default function Bookmarks() {
 
   const removeBookmark = trpc.feed.removeBookmark.useMutation({
     onSuccess: () => { toast.success("Bookmark removed"); refetch(); },
-    onError: (err: unknown) => toast.error((err as Error).message),
+    onError: (err: unknown) => toast.error(err instanceof Error ? err.message : "Unable to remove bookmark"),
   });
 
-  const bookmarks = ((data as any[]) ?? []).filter((b: any) => {
+  const bookmarks = (Array.isArray(data) ? data.filter(isBookmarkRecord) : []).filter((b) => {
     const post = b.post;
     if (!post) return false;
     if (filter !== "all" && post.type !== filter) return false;
@@ -40,7 +63,7 @@ export default function Bookmarks() {
           <div className="glow-orb w-56 h-56 bg-cyan-500/15 top-0 left-1/3" />
         </div>
         <div className="container max-w-3xl mx-auto px-4 relative z-10">
-          <button onClick={() => navigate(-1 as any)} className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-white mb-4 transition-colors">
+          <button onClick={() => navigate(-1)} className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-white mb-4 transition-colors">
             <ChevronLeft className="w-4 h-4" /> Back
           </button>
           <div className="flex items-center gap-3 mb-2">
@@ -107,7 +130,7 @@ export default function Bookmarks() {
               </div>
             ) : (
               <div className="space-y-3">
-                {bookmarks.map((b: any) => {
+                {bookmarks.map((b) => {
                   const post = b.post;
                   return (
                     <div
