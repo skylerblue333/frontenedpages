@@ -1,89 +1,23 @@
-import { Coins } from "lucide-react";
+import { AlertTriangle, BarChart3, CheckCircle2, CircleDollarSign, FileChartColumn, KeyRound, LockKeyhole, Receipt, ShieldAlert, Users, WalletCards } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { PageHeader } from "@/components/PageHeader";
 
+const boundaries = [
+  { label: "Authenticated account, organization, seller, product, subscription, payment, and authorization scope", value: "Not connected", icon: KeyRound },
+  { label: "Price, plan, subscription, transaction, fee, revenue, payout, tax, refund, and timestamp provenance", value: "Unavailable", icon: Receipt },
+  { label: "Checkout, payment, entitlement, revenue recognition, attribution, payout, AI, reporting, and user-control behavior", value: "Not verified", icon: CircleDollarSign },
+  { label: "Personal data, financial data, payment credentials, privacy, security, accessibility, and least-privilege safeguards", value: "Not configured", icon: LockKeyhole },
+];
+
+const surfaces = [
+  { title: "Account, product, and monetization scope", scope: "Authenticated account, organization, seller, product, plan, subscription, entitlement, consent, and authorization", status: "Unavailable", icon: Users },
+  { title: "Revenue and payment provenance", scope: "Price, currency, transaction, fee, revenue recognition, payout, tax, refund, chargeback, source, period, and timestamp", status: "Not connected", icon: Receipt },
+  { title: "Attribution, reporting, and AI behavior", scope: "Conversion, campaign, attribution window, cohort, financial report, AI inference, model, uncertainty, and user-control behavior", status: "Not verified", icon: FileChartColumn },
+  { title: "Privacy, financial, and access controls", scope: "Identity, payment, financial data, fraud, accounting, retention, export, deletion, accessibility, security, privacy, and access", status: "Not configured", icon: ShieldAlert },
+];
+
 export default function Monetization() {
-  return (
-    <div className="min-h-screen bg-background">
-      <PageHeader icon={Coins} title="Monetization" subtitle="Fully functional monetization page with live data and real-time updates" />
-      
-      <div className="max-w-7xl mx-auto px-4 py-8 space-y-8">
-        {/* Main Content Area */}
-        <Card className="p-8 bg-card border border-border/50">
-          <div className="space-y-6">
-            <h2 className="text-2xl font-bold">Monetization</h2>
-            
-            {/* Feature Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <Coins className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 1</h3>
-                  <p className="text-sm text-muted-foreground">Real-time data and live updates</p>
-                </div>
-              </Card>
-              
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <Coins className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 2</h3>
-                  <p className="text-sm text-muted-foreground">Advanced analytics and insights</p>
-                </div>
-              </Card>
-              
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <Coins className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 3</h3>
-                  <p className="text-sm text-muted-foreground">Seamless integration and automation</p>
-                </div>
-              </Card>
-            </div>
-            
-            {/* Action Buttons */}
-            <div className="flex gap-4 flex-wrap pt-4">
-              <Button className="bg-primary hover:bg-primary/90">
-                Get Started
-              </Button>
-              <Button variant="outline">
-                Learn More
-              </Button>
-              <Button variant="ghost">
-                Documentation
-              </Button>
-            </div>
-          </div>
-        </Card>
-        
-        {/* Stats Section */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Active Users</p>
-              <p className="text-2xl font-bold">802K+</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Total Transactions</p>
-              <p className="text-2xl font-bold">2.4M</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Success Rate</p>
-              <p className="text-2xl font-bold">99.9%</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Avg Response Time</p>
-              <p className="text-2xl font-bold">45ms</p>
-            </div>
-          </Card>
-        </div>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={CircleDollarSign} title="Monetization" subtitle="High-risk monetization readiness status; no authenticated account or organization, product or subscription catalog, payment provider, revenue ledger, attribution service, payout processor, tax or financial-reporting system, AI provider, or production monetization backend is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Monetization is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen claimed fully functional monetization with live data and real-time updates, generic feature promises, inert action buttons, and fabricated metrics including active users, transactions, success rate, and response time. Those claims were removed and replaced with this explicit high-risk readiness boundary. No account, product, plan, price, subscription, transaction, fee, revenue, payout, tax, refund, attribution, user count, success rate, response time, payment, AI output, or availability state is displayed, queried, calculated, created, charged, recognized, stored, or mutated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><CircleDollarSign aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">High-risk monetization readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Trustworthy monetization requires authenticated ownership, authoritative product and subscription records, price and currency provenance, payment authorization and reconciliation, revenue-recognition policy, fee and payout semantics, refund and chargeback handling, tax and financial reporting, attribution definitions, privacy, accessibility, and least-privilege authorization. A user count, transaction count, success rate, revenue figure, payout, conversion, or financial report is not a fact without a verified source, period, definition, and ledger record. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="monetization-surfaces-heading"><h2 id="monetization-surfaces-heading" className="mb-4 text-xl font-semibold">Monetization control surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No account, product, subscription, price, transaction, fee, revenue, payout, tax, attribution, AI, privacy, security, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="monetization-boundaries-heading"><h2 id="monetization-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No monetization operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, account or organization query, product or plan lookup, checkout, payment authorization, subscription creation, entitlement change, revenue calculation, attribution, payout, tax or refund calculation, AI call, API request, database read or write, export, deletion, or monetization operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Finance, payments, tax, AI, privacy, security, accessibility, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not enter passwords, authentication codes, identity documents, payment details, wallet credentials, seed phrases, private keys, precise location, or confidential financial data here. Do not treat this page as evidence of a product, price, subscription, payment, revenue, payout, tax result, refund, chargeback, conversion, attribution, user count, success rate, response time, AI insight, or financial report. Verify account, product, currency, payment provider, ledger, recognition policy, tax, refund, privacy, accessibility, security, and authorization before relying on monetization data or charging users.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/membership-tiers"><Button variant="outline"><Users aria-hidden="true" className="mr-2 h-4 w-4" />Review membership status</Button></Link><Link href="/payments"><Button variant="outline"><Receipt aria-hidden="true" className="mr-2 h-4 w-4" />Review payment status</Button></Link><Link href="/marketplace-analytics"><Button variant="outline"><BarChart3 aria-hidden="true" className="mr-2 h-4 w-4" />Review marketplace analytics</Button></Link><Link href="/mobile-shop"><Button variant="outline"><CircleDollarSign aria-hidden="true" className="mr-2 h-4 w-4" />Review commerce status</Button></Link><Link href="/crypto-hub"><Button variant="outline"><WalletCards aria-hidden="true" className="mr-2 h-4 w-4" />Review crypto status</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No auth check, account or organization query, product or plan lookup, checkout, payment authorization, subscription creation, entitlement change, revenue calculation, attribution, payout, tax or refund calculation, AI call, API request, database read or write, export, deletion, or monetization operation is performed. This page is not evidence of a product, price, subscription, payment, revenue, payout, tax result, refund, chargeback, conversion, attribution, user count, success rate, response time, AI insight, or financial report.</p></Card></main></div>;
 }
