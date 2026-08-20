@@ -1,25 +1,14 @@
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { CheckSquare, FileCheck2, LockKeyhole, Palette, ShieldAlert } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const colorStates = [
+  { label: "Color model, allowed values, and contrast rules", value: "Not configured", icon: Palette },
+  { label: "Preview, validation, and apply behavior", value: "Unavailable", icon: CheckSquare },
+  { label: "Theme ownership and persistence scope", value: "Not verified", icon: LockKeyhole },
+  { label: "Accessible labels, reset, and audit evidence", value: "Not configured", icon: FileCheck2 },
+];
 
 export default function ColorPickerDialog() {
-  const [state, setState] = useState(false);
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 to-black p-4">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">ColorPickerDialog</h1>
-        <p className="text-slate-400 mb-8">color picker modal</p>
-        
-        <Card className="bg-slate-900 border-slate-800 p-8">
-          <div className="space-y-6">
-            <p className="text-slate-300">Content for ColorPickerDialog page</p>
-            <Button onClick={() => setState(!state)}>
-              {state ? "Deactivate" : "Activate"}
-            </Button>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Palette} title="Color Picker Dialog" subtitle="Color-dialog integration status; no color selection, preview, theme change, or saved preference is available in this deployment." /><main className="mx-auto max-w-5xl space-y-8 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><ShieldAlert aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Color picker is unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">This route previously displayed generic placeholder copy and an Activate/Deactivate control without a real color model, input, preview, contrast validation, apply behavior, authenticated ownership, persistence, reset, or success and failure states. The demo mutation was removed rather than implying that a theme, brand color, profile setting, or other visual preference was changed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Palette aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Color-dialog readiness</h2><p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">A production color picker needs an accessible input strategy, defined color space, contrast and validation rules, keyboard and screen-reader behavior, preview isolation, cancel and reset semantics, authorized persistence, and auditable apply feedback. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{colorStates.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="color-boundary-heading"><h2 id="color-boundary-heading" className="mb-4 text-xl font-semibold">Current boundary</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><LockKeyhole aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No color value, palette, theme, contrast result, branding setting, profile preference, or visual configuration is read, accepted, previewed, validated, stored, exported, or applied by this page.</p></div></Card><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><FileCheck2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No activation, deactivation, apply, reset, API request, database write, account change, theme mutation, notification, or external integration call is performed. Do not enter secrets or sensitive personal data into an unavailable dialog.</p></div></Card></div></section></main></div>;
 }
