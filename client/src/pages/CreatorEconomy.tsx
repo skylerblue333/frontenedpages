@@ -1,98 +1,23 @@
-import React, { useState } from 'react';
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { BarChart3, CheckCircle2, Coins, Database, LockKeyhole, ShieldAlert, Sparkles, Users } from "lucide-react";
+import { Link } from "wouter";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const readiness = [
+  { label: "Creator identity, guild membership, content, and ownership", value: "Not connected", icon: Users },
+  { label: "AI tools, analytics, moderation, and engagement services", value: "Unavailable", icon: Sparkles },
+  { label: "Revenue sharing, fees, rewards, payouts, and reconciliation", value: "Not configured", icon: Coins },
+  { label: "Source provenance, privacy, permissions, and audit evidence", value: "Not verified", icon: Database },
+];
+
+const boundaries = [
+  { title: "No creator or guild data claim", description: "No creator name, follower count, member count, guild, community, earnings, growth percentage, revenue, ranking, or audience record is read, displayed, or simulated.", icon: Users },
+  { title: "No AI-tool claim", description: "No content generator, analytics dashboard, moderation model, engagement assistant, recommendation, automation, or AI output is connected or available through this page.", icon: Sparkles },
+  { title: "No financial result claim", description: "No revenue share, fee, reward, token amount, payout, monthly revenue, balance, earnings, transaction, currency amount, or reconciliation result is calculated or reported.", icon: Coins },
+  { title: "Financial warn-and-proceed", description: "Creator-economy and revenue-sharing decisions can affect money, taxes, rights, and obligations. Verify records and obtain qualified legal, tax, or financial advice before acting.", icon: ShieldAlert },
+];
 
 export default function CreatorEconomy() {
-  const [activeTab, setActiveTab] = useState<'tools' | 'guilds' | 'revenue'>('tools');
-
-  const creators = [
-    { name: 'Luna', followers: 125000, earnings: 45230, growth: '+32%' },
-    { name: 'Alex', followers: 89000, earnings: 32150, growth: '+28%' },
-    { name: 'Jordan', followers: 156000, earnings: 67890, growth: '+45%' },
-  ];
-
-  return (
-    <div className="min-h-screen bg-black text-white p-8">
-      <div className="max-w-7xl mx-auto">
-        <div className="mb-12">
-          <h1 className="text-4xl font-bold mb-2">CREATOR ECONOMY</h1>
-          <p className="text-gray-400">AI-powered tools, guilds, and revenue sharing for creators</p>
-        </div>
-
-        {/* Tabs */}
-        <div className="flex gap-4 mb-8">
-          {(['tools', 'guilds', 'revenue'] as const).map((tab) => (
-            <Button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={tab === activeTab ? 'bg-cyan-600' : 'bg-gray-700'}
-            >
-              {tab.charAt(0).toUpperCase() + tab.slice(1)}
-            </Button>
-          ))}
-        </div>
-
-        {activeTab === 'tools' && (
-          <div className="grid grid-cols-3 gap-6 mb-12">
-            {[
-              { name: 'AI Content Generator', desc: 'Auto-generate posts, videos, captions' },
-              { name: 'Analytics Dashboard', desc: 'Real-time engagement and revenue tracking' },
-              { name: 'Community Manager', desc: 'AI-powered moderation and engagement' },
-            ].map((tool) => (
-              <Card key={tool.name} className="bg-gray-900 border-gray-800 p-6">
-                <h3 className="font-bold text-lg mb-2">{tool.name}</h3>
-                <p className="text-gray-400 text-sm mb-4">{tool.desc}</p>
-                <Button className="w-full bg-cyan-600 hover:bg-cyan-700">Use Tool</Button>
-              </Card>
-            ))}
-          </div>
-        )}
-
-        {activeTab === 'guilds' && (
-          <div className="space-y-6">
-            <h2 className="text-2xl font-bold">CREATOR GUILDS</h2>
-            {[
-              { name: 'Gaming Creators', members: 1250, revenue: 125000 },
-              { name: 'Music Producers', members: 890, revenue: 98000 },
-              { name: 'Tech Educators', members: 650, revenue: 76000 },
-            ].map((guild) => (
-              <Card key={guild.name} className="bg-gray-900 border-gray-800 p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="font-bold text-lg">{guild.name}</h3>
-                    <p className="text-gray-400">{guild.members} members</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-2xl font-bold text-yellow-400">${guild.revenue.toLocaleString()}</p>
-                    <p className="text-xs text-gray-500">monthly revenue</p>
-                  </div>
-                </div>
-              </Card>
-            ))}
-          </div>
-        )}
-
-        {activeTab === 'revenue' && (
-          <div className="space-y-6">
-            <h2 className="text-2xl font-bold">TOP CREATORS</h2>
-            {creators.map((creator) => (
-              <Card key={creator.name} className="bg-gray-900 border-gray-800 p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="font-bold text-lg">{creator.name}</h3>
-                    <p className="text-gray-400">{creator.followers.toLocaleString()} followers</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-2xl font-bold text-green-400">${creator.earnings.toLocaleString()}</p>
-                    <Badge className="bg-green-600 mt-2">{creator.growth}</Badge>
-                  </div>
-                </div>
-              </Card>
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Coins} title="Creator Economy" subtitle="Creator-economy readiness status; no live creator, guild, AI-tool, audience, revenue-sharing, payout, or financial data is available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><ShieldAlert aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Creator economy data is unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous screen fabricated creator names, followers, earnings, growth, guild member counts, monthly revenues, AI-powered tools, real-time analytics, moderation, and revenue sharing. Those tabs and values were removed because no verified creator, guild, AI, billing, payout, or reconciliation integration was connected.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Coins aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Economy-readiness status</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A production creator economy requires authenticated identities, clear ownership, content and guild records, consent, moderation, analytics provenance, documented revenue-sharing rules, payment settlement, tax handling, dispute resolution, privacy, access controls, and auditable reconciliation. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{readiness.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="economy-boundaries-heading"><h2 id="economy-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2">{boundaries.map(({ title, description, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><Icon aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p></Card>)}</div></section><div className="flex flex-wrap gap-3"><Link href="/creator-dashboard"><Button variant="outline">View creator status</Button></Link><Link href="/creator-analytics"><Button variant="outline">View analytics status</Button></Link><Card className="flex items-center gap-3 border border-border/50 bg-card px-4 py-2"><BarChart3 aria-hidden="true" className="h-4 w-4 text-muted-foreground" /><span className="text-sm text-muted-foreground">No economy tabs or tool actions are active.</span></Card></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No tab data, creator record, guild record, AI request, analytics query, moderation action, content generation, payment, revenue share, fee, reward, payout, transaction, API request, database read or write, notification, account mutation, or financial recommendation is performed. This page is not evidence of a creator economy, live guild, earnings program, or financial result.</p></div></Card></main></div>;
 }
