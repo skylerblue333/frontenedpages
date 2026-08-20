@@ -1,25 +1,13 @@
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { CheckSquare, FileCheck2, LockKeyhole, ShieldAlert } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const formStates = [
+  { label: "Field definitions, allowed values, and labels", value: "Not configured", icon: CheckSquare },
+  { label: "Validation, submission, and persistence contract", value: "Unavailable", icon: FileCheck2 },
+  { label: "Authenticated owner and authorization scope", value: "Not verified", icon: LockKeyhole },
+];
 
 export default function CheckboxGroupForm() {
-  const [state, setState] = useState(false);
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 to-black p-4">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">CheckboxGroupForm</h1>
-        <p className="text-slate-400 mb-8">checkbox group form</p>
-        
-        <Card className="bg-slate-900 border-slate-800 p-8">
-          <div className="space-y-6">
-            <p className="text-slate-300">Content for CheckboxGroupForm page</p>
-            <Button onClick={() => setState(!state)}>
-              {state ? "Deactivate" : "Activate"}
-            </Button>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={CheckSquare} title="Checkbox Group Form" subtitle="Form integration status; no selectable option, submission, account preference, or saved state is available in this deployment." /><main className="mx-auto max-w-5xl space-y-8 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><ShieldAlert aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Form is unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">This route previously displayed generic placeholder copy and an Activate/Deactivate control without real checkbox options, labels, validation, submission handling, authenticated ownership, persistence, or success and failure states. The demo mutation was removed rather than implying that a preference, setting, permission, enrollment, consent, or record was changed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><CheckSquare aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Form-readiness status</h2><p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">A production checkbox group needs accessible labels, a defined option set, initial-value rules, validation, authorization, safe submission, persistence, idempotency, feedback, and auditable change history. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-3">{formStates.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="form-boundary-heading"><h2 id="form-boundary-heading" className="mb-4 text-xl font-semibold">Current boundary</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><LockKeyhole aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No checkbox option, selection, consent, preference, permission, enrollment, notification setting, financial instruction, or personal data is read, accepted, stored, validated, exported, or submitted by this page.</p></div></Card><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><FileCheck2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No activation, deactivation, API request, database write, account change, notification, or external integration call is performed. Do not enter secrets or sensitive personal data into an unavailable form.</p></div></Card></div></section></main></div>;
 }
