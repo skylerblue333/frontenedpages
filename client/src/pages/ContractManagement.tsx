@@ -1,20 +1,21 @@
-import React from "react";
-import { Button } from "@/components/ui/button";
+import { Code2, FileCheck2, Gavel, KeyRound, LockKeyhole, Network, ShieldAlert, WalletCards } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
 
-const ContractManagement = () => {
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 p-6">
-      <div className="mx-auto max-w-6xl">
-        <h1 className="mb-6 text-4xl font-bold text-white">ContractManagement</h1>
-        <Card className="border-purple-600 bg-slate-800 p-6">
-          <p className="text-gray-300">
-            ContractManagement feature coming soon...
-          </p>
-        </Card>
-      </div>
-    </div>
-  );
-};
+const managementStates = [
+  { label: "Verified network, deployment, owner, and administrator", value: "Not connected", icon: Network },
+  { label: "Upgrade, pause, role, treasury, and permission controls", value: "Unavailable", icon: Gavel },
+  { label: "Proposal, simulation, signing, execution, and receipt", value: "Not configured", icon: WalletCards },
+  { label: "Contract verification, monitoring, and audit evidence", value: "Not verified", icon: FileCheck2 },
+];
 
-export default ContractManagement;
+const boundaries = [
+  { title: "Administrative identity", description: "No network, chain ID, contract address, deployment, owner, administrator, multisig, role, permission, or verified bytecode is read, displayed, or simulated.", icon: Network },
+  { title: "Governance and execution", description: "No upgrade, pause, unpause, role grant, role revoke, treasury transfer, parameter change, proposal, calldata, gas estimate, signature, transaction hash, or receipt is produced.", icon: Gavel },
+  { title: "Wallet and financial safety", description: "No wallet connection, account identity, private key, seed phrase, custody, token balance, payment, transfer, or transaction-signing path is connected.", icon: WalletCards },
+  { title: "Security and audit", description: "No contract verification, simulation, replay protection, network validation, event monitoring, incident response, or audit trail is available. Do not enter keys or credentials here.", icon: LockKeyhole },
+];
+
+export default function ContractManagement() {
+  return <div className="min-h-screen bg-background"><PageHeader icon={Code2} title="Contract Management" subtitle="Smart-contract administration status; no owner, administrator, upgrade, pause, treasury, permission, proposal, or transaction action is available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><ShieldAlert aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Contract administration is unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous screen was a “coming soon” placeholder with no verified network, deployment, owner, administrator, ABI, multisig, governance, transaction service, or security boundary. It has been replaced with an explicit readiness state rather than implying that a contract can be upgraded, paused, governed, or financially controlled here.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Gavel aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Administration-readiness status</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Production contract administration requires verified deployment provenance, least-privilege roles, multisig or governance controls, proposal and timelock semantics, simulation, explicit confirmation, signed execution, receipt verification, failure recovery, monitoring, incident response, and immutable audit evidence. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{managementStates.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="management-boundaries-heading"><h2 id="management-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2">{boundaries.map(({ title, description, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><Icon aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p></Card>)}</div></section><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><KeyRound aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No connect, inspect, upgrade, pause, grant, revoke, propose, simulate, approve, transfer, sign, submit, refresh, API request, database write, account mutation, external RPC call, transaction, balance, or financial recommendation is performed. This page is not evidence of contract ownership, governance authority, security, or transaction success.</p></div></Card></main></div>;
+}
