@@ -1,25 +1,14 @@
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { Activity, FileCheck2, RefreshCw, ServerOff, ShieldAlert } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const errorStates = [
+  { label: "Endpoint, service owner, and request context", value: "Not available", icon: ServerOff },
+  { label: "Retry policy, idempotency, and recovery state", value: "Not configured", icon: RefreshCw },
+  { label: "Health signal, incident record, and observability", value: "Not verified", icon: Activity },
+  { label: "Support escalation, audit, and user notification", value: "Unavailable", icon: FileCheck2 },
+];
 
 export default function ConnectionError() {
-  const [state, setState] = useState(false);
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 to-black p-4">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">ConnectionError</h1>
-        <p className="text-slate-400 mb-8">connection error page</p>
-        
-        <Card className="bg-slate-900 border-slate-800 p-8">
-          <div className="space-y-6">
-            <p className="text-slate-300">Content for ConnectionError page</p>
-            <Button onClick={() => setState(!state)}>
-              {state ? "Deactivate" : "Activate"}
-            </Button>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={ServerOff} title="Connection Error" subtitle="Connection-error integration status; no endpoint failure, outage cause, uptime result, retry success, or recovery state is available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><ShieldAlert aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Connection details are unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous screen was a generic connection-error placeholder with an Activate/Deactivate toggle and no failed request, endpoint, status code, incident record, retry behavior, or recovery evidence. It has been removed rather than implying that a service is down, that a retry occurred, or that an issue was resolved.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Activity aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Recovery-readiness status</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A production connection-error flow requires a real request context, safe error classification, correlation identifier, bounded retry and backoff policy, idempotency, user-safe messaging, monitoring, incident ownership, support escalation, and verified recovery or a truthful persistent-failure state. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{errorStates.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><ShieldAlert aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No retry, refresh, API request, database write, notification, incident creation, support ticket, account mutation, or external service call is performed. This page does not diagnose an outage or guarantee availability. Do not enter credentials, secrets, or sensitive personal data here.</p></div></Card></main></div>;
 }
