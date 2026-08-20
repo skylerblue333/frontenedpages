@@ -1,176 +1,23 @@
+import { AlertTriangle, Apple, CheckCircle2, Download, Fingerprint, KeyRound, LockKeyhole, ShieldAlert, Smartphone, Store, WalletCards, WifiOff } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Download, Apple, Smartphone, Star, Users, Zap } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "App identity, release artifact, signing, store listing, account, and authorization scope", value: "Not connected", icon: KeyRound },
+  { label: "iOS and Android package, version, availability, compatibility, screenshots, and download provenance", value: "Unavailable", icon: Smartphone },
+  { label: "Crypto, AI, portfolio, notifications, offline, biometric, permissions, and user-control behavior", value: "Not verified", icon: Fingerprint },
+  { label: "Credentials, wallet keys, personal data, privacy, security, accessibility, and least-privilege safeguards", value: "Not configured", icon: LockKeyhole },
+];
+
+const surfaces = [
+  { title: "App and release scope", scope: "App identity, package, version, signing, release channel, store account, install source, and authorization", status: "Unavailable", icon: Store },
+  { title: "Platform and compatibility provenance", scope: "iOS, Android, device, operating-system, language, size, feature, screenshot, and timestamp source", status: "Not connected", icon: Smartphone },
+  { title: "Crypto, AI, and account behavior", scope: "Trading, market data, AI advice, portfolio, notifications, wallet, offline, biometric, and session behavior", status: "Not verified", icon: Download },
+  { title: "Permissions, privacy, and safety controls", scope: "Camera, microphone, contacts, notifications, biometrics, credentials, keys, personal data, privacy, security, accessibility, and access", status: "Not configured", icon: ShieldAlert },
+];
 
 export default function Mobile() {
-  return (
-    <div className="min-h-screen bg-background">
-      {/* Hero Section */}
-      <div className="relative overflow-hidden py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto text-center">
-          <Badge className="mb-4">Available Now</Badge>
-          <h1 className="text-5xl font-bold mb-4">SKYCOIN4444 Mobile App</h1>
-          <p className="text-xl text-muted-foreground mb-8">
-            Trade crypto, chat with AI, and manage your portfolio on the go
-          </p>
-          <div className="flex gap-4 justify-center mb-12">
-            <Button size="lg" className="gap-2">
-              <Apple className="h-5 w-5" />
-              Download iOS
-            </Button>
-            <Button size="lg" variant="outline" className="gap-2">
-              <Smartphone className="h-5 w-5" />
-              Download Android
-            </Button>
-          </div>
-        </div>
-      </div>
-
-      {/* Features Grid */}
-      <div className="max-w-6xl mx-auto px-4 py-16">
-        <h2 className="text-3xl font-bold mb-12 text-center">Features</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
-          <Card>
-            <CardHeader>
-              <Zap className="h-8 w-8 text-blue-600 mb-2" />
-              <CardTitle>Instant Trading</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground">
-                Trade BTC, ETH, SOL, DOGE, and TRUMP with real-time prices and instant execution
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <Users className="h-8 w-8 text-purple-600 mb-2" />
-              <CardTitle>AI Chat</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground">
-                Chat with Hope AI to get trading signals, market analysis, and investment advice
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <Star className="h-8 w-8 text-yellow-600 mb-2" />
-              <CardTitle>Portfolio Tracking</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground">
-                Monitor your holdings, track performance, and receive real-time price alerts
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <Download className="h-8 w-8 text-green-600 mb-2" />
-              <CardTitle>Push Notifications</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground">
-                Get instant alerts for price movements, trades, and important platform updates
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <Smartphone className="h-8 w-8 text-red-600 mb-2" />
-              <CardTitle>Offline Mode</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground">
-                View your portfolio and recent transactions even without internet connection
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <Zap className="h-8 w-8 text-indigo-600 mb-2" />
-              <CardTitle>Biometric Security</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground">
-                Secure your account with Face ID, Touch ID, or fingerprint authentication
-              </p>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-
-      {/* Screenshots Section */}
-      <div className="bg-accent/5 py-16 px-4">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold mb-12 text-center">App Screenshots</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="bg-background rounded-lg p-4 border">
-                <div className="aspect-square bg-gradient-to-br from-blue-600/20 to-purple-600/20 rounded-lg flex items-center justify-center">
-                  <Smartphone className="h-16 w-16 text-muted-foreground" />
-                </div>
-                <p className="text-center mt-4 text-sm text-muted-foreground">Screenshot {i}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Specs Section */}
-      <div className="max-w-6xl mx-auto px-4 py-16">
-        <h2 className="text-3xl font-bold mb-12 text-center">Specifications</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <Card>
-            <CardHeader>
-              <CardTitle>iOS Requirements</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              <p><strong>OS:</strong> iOS 14.0 or later</p>
-              <p><strong>Size:</strong> 125 MB</p>
-              <p><strong>Compatibility:</strong> iPhone 8 and later</p>
-              <p><strong>Languages:</strong> 10+ languages</p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Android Requirements</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              <p><strong>OS:</strong> Android 8.0 or later</p>
-              <p><strong>Size:</strong> 98 MB</p>
-              <p><strong>Compatibility:</strong> Most Android devices</p>
-              <p><strong>Languages:</strong> 10+ languages</p>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-
-      {/* CTA Section */}
-      <div className="bg-gradient-to-r from-blue-600/10 to-purple-600/10 py-16 px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-4">Ready to Trade On The Go?</h2>
-          <p className="text-lg text-muted-foreground mb-8">
-            Download the SKYCOIN4444 mobile app and start trading instantly
-          </p>
-          <div className="flex gap-4 justify-center">
-            <Button size="lg" className="gap-2">
-              <Apple className="h-5 w-5" />
-              App Store
-            </Button>
-            <Button size="lg" variant="outline" className="gap-2">
-              <Smartphone className="h-5 w-5" />
-              Google Play
-            </Button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Smartphone} title="SKYCOIN4444 Mobile" subtitle="Mobile-distribution readiness status; no verified iOS or Android package, store listing, signed release, download channel, mobile backend, wallet, trading, AI, notification, offline, or biometric service is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Mobile application availability is unverified</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen claimed the SKYCOIN4444 mobile app was Available Now, offered inert iOS and Android download buttons, and promised instant crypto trading, real-time prices, instant execution, HOPE AI trading signals and investment advice, portfolio tracking, price alerts, push notifications, offline transactions, biometric security, screenshots, store availability, OS requirements, package sizes, device compatibility, and ten-plus languages. No signed package, store listing, mobile backend, release provenance, permission contract, wallet, trading, AI, notification, offline, or biometric evidence was connected. Those claims, specifications, screenshots, downloads, and actions were removed. No package, download, app, account, wallet, trade, portfolio, notification, device, permission, or availability state is displayed, accepted, stored, installed, or transmitted from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Smartphone aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Mobile-distribution readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A trustworthy mobile release requires signed artifacts, verified publisher and store provenance, current versions, compatibility evidence, release notes, tested permissions, secure session and credential handling, explicit feature support, privacy and data-safety disclosures, accessibility, update and rollback behavior, and least-privilege authorization. A store button, screenshot, specification, feature, or availability claim is not a fact without a verified release record. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="mobile-surfaces-heading"><h2 id="mobile-surfaces-heading" className="mb-4 text-xl font-semibold">Mobile-release control surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No app, package, download, crypto, AI, portfolio, notification, offline, biometric, privacy, security, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="mobile-boundaries-heading"><h2 id="mobile-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No mobile operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No package query, store lookup, download, install, app launch, wallet connection, trade, AI call, portfolio read, notification registration, offline cache, biometric prompt, permission request, API request, database read or write, export, deletion, or mobile operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Crypto, AI, privacy, security, accessibility, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not enter passwords, authentication codes, wallet credentials, seed phrases, private keys, identity documents, financial details, precise location, or confidential data here. Do not treat this page as evidence of an app download, store listing, signed release, trading, AI advice, portfolio, price alert, push notification, offline transaction, biometric security, compatibility, or privacy protection. Verify publisher, package, signature, permissions, feature support, privacy, accessibility, wallet custody, and authorization before installing software or using financial features.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/crypto-hub"><Button variant="outline"><WalletCards aria-hidden="true" className="mr-2 h-4 w-4" />Review crypto status</Button></Link><Link href="/hope-ai"><Button variant="outline"><Apple aria-hidden="true" className="mr-2 h-4 w-4" />Review AI status</Button></Link><Link href="/notifications"><Button variant="outline"><Download aria-hidden="true" className="mr-2 h-4 w-4" />Review notification status</Button></Link><Link href="/security"><Button variant="outline"><Fingerprint aria-hidden="true" className="mr-2 h-4 w-4" />Review security</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><WifiOff aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No package query, store lookup, download, install, app launch, wallet connection, trade, AI call, portfolio read, notification registration, offline cache, biometric prompt, permission request, API request, database read or write, export, deletion, or mobile operation is performed. This page is not evidence of an app download, store listing, signed release, trading, AI advice, portfolio, price alert, push notification, offline transaction, biometric security, compatibility, or privacy protection.</p></div></Card></main></div>;
 }
