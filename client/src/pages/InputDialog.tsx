@@ -1,25 +1,23 @@
-import { useState } from "react";
+import { AlertTriangle, CheckCircle2, FileInput, KeyRound, LockKeyhole, ShieldAlert, SlidersHorizontal, XCircle } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Authenticated user, tenant, resource, field purpose, and submission authorization scope", value: "Not connected", icon: KeyRound },
+  { label: "Schema, format, length, range, sanitization, normalization, and server-side validation", value: "Unavailable", icon: SlidersHorizontal },
+  { label: "Sensitive-data, privacy, retention, encryption, audit, and least-privilege controls", value: "Not configured", icon: ShieldAlert },
+  { label: "Create, update, delete, submit, cancel, retry, error, and side-effect handling", value: "Not verified", icon: FileInput },
+];
+
+const surfaces = [
+  { title: "Input contract", scope: "Field purpose, label, type, required state, examples, allowed values, length, range, format, and error copy", status: "Unavailable", icon: SlidersHorizontal },
+  { title: "Validation and sanitization", scope: "Client guidance, server validation, normalization, encoding, injection prevention, and authoritative rejection", status: "Not connected", icon: CheckCircle2 },
+  { title: "Submission and persistence", scope: "Authorization, create or update operation, database or API contract, idempotency, transaction, audit, and confirmation", status: "Not configured", icon: FileInput },
+  { title: "Privacy and accessibility", scope: "Sensitive data, masking, retention, deletion, keyboard focus, labels, announcements, cancel behavior, and recovery", status: "Not verified", icon: LockKeyhole },
+];
 
 export default function InputDialog() {
-  const [state, setState] = useState(false);
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 to-black p-4">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">InputDialog</h1>
-        <p className="text-slate-400 mb-8">input modal</p>
-        
-        <Card className="bg-slate-900 border-slate-800 p-8">
-          <div className="space-y-6">
-            <p className="text-slate-300">Content for InputDialog page</p>
-            <Button onClick={() => setState(!state)}>
-              {state ? "Deactivate" : "Activate"}
-            </Button>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={FileInput} title="Input Dialog" subtitle="Input-interaction readiness status; no authenticated form, field contract, validation, persistence, submission, or production dialog workflow is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Input dialog is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen only toggled a local activate/deactivate state and did not define an input field, validation, sanitization, authorization, sensitive-data handling, persistence, submission, cancellation, error recovery, accessibility, or side-effect boundary. That unsupported state mutation was removed. No input is accepted, stored, submitted, displayed, or sent from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><FileInput aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Input-interaction readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A safe input dialog requires a clear field contract, accessible labels and focus management, client guidance plus authoritative server validation, normalization and injection defenses, authenticated authorization, explicit persistence and transaction semantics, sensitive-data safeguards, cancellation and retry behavior, auditability, and human-readable errors. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="input-dialog-surfaces-heading"><h2 id="input-dialog-surfaces-heading" className="mb-4 text-xl font-semibold">Input surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No input, field, validation, persistence, submission, privacy, security, accessibility, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="input-dialog-boundaries-heading"><h2 id="input-dialog-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No input or submission operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No input, state mutation, client validation, server validation, sanitization, API request, database read or write, file upload, notification, persistence, export, deletion, or personal-data operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Identity, privacy, security, accessibility, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not enter secrets, passwords, private keys, seed phrases, financial details, health data, identity data, or personal information here. Do not treat this page as evidence of validation, submission, persistence, privacy, security, or production dialog functionality.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/forms"><Button variant="outline"><FileInput aria-hidden="true" className="mr-2 h-4 w-4" />Review forms</Button></Link><Link href="/settings"><Button variant="outline"><SlidersHorizontal aria-hidden="true" className="mr-2 h-4 w-4" />Review settings</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link><Link href="/security-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security</Button></Link><Link href="/documentation"><Button variant="outline"><CheckCircle2 aria-hidden="true" className="mr-2 h-4 w-4" />Review documentation</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No input, state mutation, client validation, server validation, sanitization, API request, database read or write, file upload, notification, persistence, export, deletion, or personal-data operation is performed. This page is not evidence of validation, submission, persistence, privacy, security, accessibility, or production dialog functionality.</p></Card></main></div>;
 }
