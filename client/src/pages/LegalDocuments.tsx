@@ -1,74 +1,23 @@
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/_core/hooks/useAuth";
+import { AlertTriangle, CheckCircle2, FileCheck2, KeyRound, Languages, LockKeyhole, Scale, ShieldAlert, Signature, UsersRound } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Loader2, Plus, Search, Settings } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Authenticated user, organization, jurisdiction, document, signer, and legal-record authorization scope", value: "Not connected", icon: KeyRound },
+  { label: "Document identity, owner, jurisdiction, version, effective date, source, review, and approval provenance", value: "Unavailable", icon: FileCheck2 },
+  { label: "Notice, consent, signature, acceptance, withdrawal, amendment, retention, and audit controls", value: "Not verified", icon: Signature },
+  { label: "Personal, confidential, financial, legal, privacy, accessibility, security, and least-privilege safeguards", value: "Not configured", icon: ShieldAlert },
+];
+
+const surfaces = [
+  { title: "Document provenance", scope: "Policy identity, issuer, owner, jurisdiction, version, effective date, source, counsel review, approval, and supersession", status: "Unavailable", icon: FileCheck2 },
+  { title: "Notice and acceptance", scope: "Audience, delivery, consent, signature, acceptance timestamp, withdrawal, amendment notice, and evidence", status: "Not connected", icon: Signature },
+  { title: "Legal and regulatory scope", scope: "Terms, privacy, financial, crypto, AI, identity, commerce, gaming, education, jurisdiction, and advice boundaries", status: "Not verified", icon: Scale },
+  { title: "Privacy and records safety", scope: "Personal and confidential data, retention, deletion, access, export, encryption, accessibility, and authorization", status: "Not configured", icon: LockKeyhole },
+];
 
 export default function LegalDocuments() {
-  const { isAuthenticated } = useAuth();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>LegalDocuments</CardTitle>
-            <CardDescription>Sign in to access this feature</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full">Sign In</Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold">LegalDocuments</h1>
-            <p className="text-muted-foreground mt-2">Legal documents</p>
-          </div>
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            New
-          </Button>
-        </div>
-
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Search className="w-4 h-4 text-muted-foreground" />
-              <Input
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="max-w-sm"
-              />
-              <Button variant="outline" size="icon">
-                <Settings className="w-4 h-4" />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {isLoading ? (
-              <div className="flex justify-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
-              </div>
-            ) : (
-              <div className="text-center py-12 text-muted-foreground">
-                <p>No data available. Start by creating a new item.</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Scale} title="Legal Documents" subtitle="Legal-document readiness status; no authenticated user, document repository, jurisdictional policy set, counsel-reviewed text, acceptance record, signature service, or production legal-record system is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Legal documents are unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen exposed an unauthenticated sign-in pseudo-action and inert New, settings, search, and loading controls without establishing document identity, issuer, jurisdiction, version, effective date, source, counsel review, approval, notice, consent, signature, acceptance, retention, privacy, accessibility, or authorization. Those unsupported claims and controls were removed. No legal document, policy version, acceptance, signature, approval, or legal status is displayed or initiated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Scale aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Legal-document readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Trustworthy legal documents require jurisdiction and audience scope, authoritative source and versioning, effective dates, qualified legal review, approval and supersession controls, accessible notice, informed consent, defensible signature and acceptance evidence, amendment and withdrawal paths, retention and deletion, confidentiality, and auditability. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="legal-documents-surfaces-heading"><h2 id="legal-documents-surfaces-heading" className="mb-4 text-xl font-semibold">Legal surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No document, policy, jurisdiction, approval, acceptance, signature, legal, privacy, security, financial, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="legal-documents-boundaries-heading"><h2 id="legal-documents-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No legal-record operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, document query, policy lookup, search, creation, editing, publication, approval, signature, acceptance, download, export, API request, database read or write, notification, deletion, or personal-data operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Legal, financial, crypto, AI, identity, privacy, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not treat this page as a contract, policy, privacy notice, financial disclosure, securities document, legal advice, consent record, signature record, compliance certification, or evidence of rights or obligations. Verify jurisdiction, version, effective date, issuer, qualified counsel, notice, consent, accessibility, retention, and authorization before relying on legal text or accepting terms.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/terms"><Button variant="outline"><Scale aria-hidden="true" className="mr-2 h-4 w-4" />Review terms status</Button></Link><Link href="/privacy"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy status</Button></Link><Link href="/compliance-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review compliance</Button></Link><Link href="/language-selector"><Button variant="outline"><Languages aria-hidden="true" className="mr-2 h-4 w-4" />Review localization</Button></Link><Link href="/identity-verification"><Button variant="outline"><UsersRound aria-hidden="true" className="mr-2 h-4 w-4" />Review identity</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy center</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No auth check, document query, policy lookup, search, creation, editing, publication, approval, signature, acceptance, download, export, API request, database read or write, notification, deletion, or personal-data operation is performed. This page is not a contract, policy, privacy notice, financial disclosure, securities document, legal advice, consent record, signature record, compliance certification, or evidence of rights or obligations.</p></Card></main></div>;
 }
