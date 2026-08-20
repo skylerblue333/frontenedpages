@@ -1,89 +1,23 @@
-import { Smile } from "lucide-react";
+import { AlertTriangle, BarChart3, CheckCircle2, Clock3, Database, FileSearch, LockKeyhole, ShieldAlert, Smile, TrendingUp } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { PageHeader } from "@/components/PageHeader";
 
+const boundaries = [
+  { label: "Authenticated user, organization, asset, market, jurisdiction, data scope, and analytics authorization", value: "Not connected", icon: LockKeyhole },
+  { label: "Market-data, news, social, survey, on-chain, model, vendor, licensing, and timestamp provenance", value: "Unavailable", icon: Database },
+  { label: "Sentiment methodology, sample, bias, uncertainty, validation, drift, freshness, and update behavior", value: "Not verified", icon: FileSearch },
+  { label: "Financial advice, manipulation, privacy, sensitive data, security, retention, and least-privilege safeguards", value: "Not configured", icon: ShieldAlert },
+];
+
+const surfaces = [
+  { title: "Data and asset scope", scope: "Asset, venue, instrument, region, time window, market-data source, news, social, survey, on-chain, and licensing", status: "Unavailable", icon: Database },
+  { title: "Sentiment methodology", scope: "Definition, sample, features, model, training data, bias, confidence, uncertainty, validation, drift, and timestamp", status: "Not connected", icon: FileSearch },
+  { title: "Interpretation and risk", scope: "Signal meaning, limitations, correlation, causation, market manipulation, financial advice, and decision safeguards", status: "Not verified", icon: TrendingUp },
+  { title: "Privacy and controls", scope: "User data, private sources, retention, deletion, audit, security, access scope, and authorization", status: "Not configured", icon: LockKeyhole },
+];
+
 export default function MarketSentiment() {
-  return (
-    <div className="min-h-screen bg-background">
-      <PageHeader icon={Smile} title="Market Sentiment" subtitle="Fully functional market sentiment page with live data and real-time updates" />
-      
-      <div className="max-w-7xl mx-auto px-4 py-8 space-y-8">
-        {/* Main Content Area */}
-        <Card className="p-8 bg-card border border-border/50">
-          <div className="space-y-6">
-            <h2 className="text-2xl font-bold">Market Sentiment</h2>
-            
-            {/* Feature Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <Smile className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 1</h3>
-                  <p className="text-sm text-muted-foreground">Real-time data and live updates</p>
-                </div>
-              </Card>
-              
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <Smile className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 2</h3>
-                  <p className="text-sm text-muted-foreground">Advanced analytics and insights</p>
-                </div>
-              </Card>
-              
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <Smile className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 3</h3>
-                  <p className="text-sm text-muted-foreground">Seamless integration and automation</p>
-                </div>
-              </Card>
-            </div>
-            
-            {/* Action Buttons */}
-            <div className="flex gap-4 flex-wrap pt-4">
-              <Button className="bg-primary hover:bg-primary/90">
-                Get Started
-              </Button>
-              <Button variant="outline">
-                Learn More
-              </Button>
-              <Button variant="ghost">
-                Documentation
-              </Button>
-            </div>
-          </div>
-        </Card>
-        
-        {/* Stats Section */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Active Users</p>
-              <p className="text-2xl font-bold">802K+</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Total Transactions</p>
-              <p className="text-2xl font-bold">2.4M</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Success Rate</p>
-              <p className="text-2xl font-bold">99.9%</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Avg Response Time</p>
-              <p className="text-2xl font-bold">45ms</p>
-            </div>
-          </Card>
-        </div>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Smile} title="Market Sentiment" subtitle="Market-data and sentiment readiness status; no authenticated user, asset scope, licensed data feed, news or social source, on-chain source, sentiment model, signal service, or production financial backend is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Market sentiment is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen claimed a fully functional market-sentiment service with live data and real-time updates, presented generic analytics promises and inert actions, and fabricated active users, transaction totals, success rate, and response time without a data or model control plane. Those claims and controls were removed. No sentiment score, market signal, asset ranking, price, trade recommendation, user metric, transaction, or financial result is displayed or initiated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Smile aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Market-sentiment readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A trustworthy sentiment service requires authoritative and licensed data provenance, explicit asset and time scope, reproducible methodology, model limitations, uncertainty and freshness, manipulation resistance, privacy, and least-privilege authorization. Sentiment is not a price, forecast, trading instruction, or guarantee. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="sentiment-surfaces-heading"><h2 id="sentiment-surfaces-heading" className="mb-4 text-xl font-semibold">Sentiment-control surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No sentiment score, market signal, asset ranking, price, financial, privacy, security, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="sentiment-boundaries-heading"><h2 id="sentiment-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No sentiment operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, market-data or news query, social or on-chain query, sentiment calculation, model inference, ranking, API request, database read or write, export, deletion, or financial-data operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Finance, AI, crypto, privacy, manipulation, security, accessibility, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not treat this page as evidence of a sentiment score, market signal, price forecast, trading recommendation, model accuracy, source coverage, freshness, or financial capability. Verify asset scope, source and license, methodology, sample bias, uncertainty, timestamp, manipulation controls, privacy, security, and authorization before acting on market information.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/market-data"><Button variant="outline"><Database aria-hidden="true" className="mr-2 h-4 w-4" />Review market data</Button></Link><Link href="/portfolio"><Button variant="outline"><BarChart3 aria-hidden="true" className="mr-2 h-4 w-4" />Review portfolio status</Button></Link><Link href="/risk-management"><Button variant="outline"><TrendingUp aria-hidden="true" className="mr-2 h-4 w-4" />Review risk status</Button></Link><Link href="/news"><Button variant="outline"><Clock3 aria-hidden="true" className="mr-2 h-4 w-4" />Review news status</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No auth check, market-data or news query, social or on-chain query, sentiment calculation, model inference, ranking, API request, database read or write, export, deletion, or financial-data operation is performed. This page is not evidence of a sentiment score, market signal, price forecast, trading recommendation, model accuracy, source coverage, freshness, or financial capability.</p></Card></main></div>;
 }
