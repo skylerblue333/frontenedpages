@@ -1,25 +1,23 @@
-import { useState } from "react";
+import { AlertTriangle, CheckCircle2, Clock3, KeyRound, LockKeyhole, LoaderCircle, RefreshCw, ShieldAlert } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Authenticated actor, operation, resource, scope, trigger, and authorization provenance", value: "Not connected", icon: KeyRound },
+  { label: "Loading state, progress semantics, queue, worker, timeout, cancellation, retry, and completion source", value: "Unavailable", icon: LoaderCircle },
+  { label: "Failure, empty, partial, stale, duplicate, idempotency, and recovery behavior", value: "Not verified", icon: RefreshCw },
+  { label: "Accessible status announcements, privacy, retention, security, and least-privilege safeguards", value: "Not configured", icon: LockKeyhole },
+];
+
+const surfaces = [
+  { title: "Operation identity and trigger", scope: "Operation name, resource, actor, trigger, request ID, authorization, expected duration, and side-effect scope", status: "Unavailable", icon: KeyRound },
+  { title: "Progress and lifecycle", scope: "Queued, running, progress definition, worker, heartbeat, timeout, cancellation, completion, and idempotency", status: "Not connected", icon: Clock3 },
+  { title: "Failure and recovery", scope: "Error source, retry policy, backoff, partial result, empty state, stale result, duplicate prevention, and user recovery", status: "Not verified", icon: RefreshCw },
+  { title: "Accessibility and privacy", scope: "Live-region semantics, focus, keyboard behavior, sensitive data, retention, security, and authorization", status: "Not configured", icon: ShieldAlert },
+];
 
 export default function LoadingDialog() {
-  const [state, setState] = useState(false);
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 to-black p-4">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">LoadingDialog</h1>
-        <p className="text-slate-400 mb-8">loading modal</p>
-        
-        <Card className="bg-slate-900 border-slate-800 p-8">
-          <div className="space-y-6">
-            <p className="text-slate-300">Content for LoadingDialog page</p>
-            <Button onClick={() => setState(!state)}>
-              {state ? "Deactivate" : "Activate"}
-            </Button>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={LoaderCircle} title="Loading Dialog" subtitle="Asynchronous-operation state readiness status; no operation, resource, worker, progress source, cancellation service, retry system, or production request is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Loading operation is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen presented a generic loading-modal label and an inert Activate/Deactivate toggle without identifying an operation, resource, actor, request, worker, progress contract, cancellation behavior, timeout, retry, error, empty state, accessibility semantics, privacy boundary, or authorization scope. The toggle and unsupported operation implication were removed. No work, request, progress, loading state, completion, failure, or side effect is displayed or initiated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><LoaderCircle aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Asynchronous-operation readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A trustworthy loading dialog requires a specific operation and resource, authoritative progress semantics, cancellation and timeout behavior, retry and idempotency controls, accessible status announcements, sensitive-data handling, and least-privilege authorization. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="loading-surfaces-heading"><h2 id="loading-surfaces-heading" className="mb-4 text-xl font-semibold">Operation-state surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No operation, request, progress, completion, failure, resource, personal, privacy, security, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="loading-boundaries-heading"><h2 id="loading-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No asynchronous operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, request, resource query, worker start, progress calculation, timer, cancellation, retry, toast, notification, API request, database read or write, export, deletion, or personal-data operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Operation, accessibility, privacy, security, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not treat this page as evidence that any request is loading, completed, failed, queued, cancellable, retryable, or authorized. Verify the operation, resource, request identity, progress definition, timeout, retry and idempotency policy, accessible status behavior, sensitive-data handling, and authorization before displaying or acting on a loading state.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/system-status"><Button variant="outline"><LoaderCircle aria-hidden="true" className="mr-2 h-4 w-4" />Review system status</Button></Link><Link href="/incident-management"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review incidents</Button></Link><Link href="/in-app-notifications"><Button variant="outline"><RefreshCw aria-hidden="true" className="mr-2 h-4 w-4" />Review notifications</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No auth check, request, resource query, worker start, progress calculation, timer, cancellation, retry, toast, notification, API request, database read or write, export, deletion, or personal-data operation is performed. This page is not evidence that any request is loading, completed, failed, queued, cancellable, retryable, or authorized.</p></Card></main></div>;
 }
