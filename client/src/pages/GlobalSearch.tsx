@@ -1,25 +1,23 @@
-import { useState } from "react";
+import { AlertTriangle, CheckCircle2, FileSearch, KeyRound, LockKeyhole, Search, ShieldAlert, SlidersHorizontal, UserRound } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Authenticated user, organization, role, resource, tenant, and search authorization scope", value: "Not connected", icon: KeyRound },
+  { label: "Indexed sources, freshness, schema, query parser, ranking, filters, and result provenance", value: "Unavailable", icon: FileSearch },
+  { label: "Visibility, consent, personal data, moderation, rate limits, retention, audit, and deletion controls", value: "Not verified", icon: SlidersHorizontal },
+  { label: "Privacy, security, abuse, sensitive-domain, accessibility, and safe-disclosure safeguards", value: "Not configured", icon: ShieldAlert },
+];
+
+const surfaces = [
+  { title: "Query and index provenance", scope: "Indexed sources, freshness, schema, parser, language, ranking, filters, pagination, deduplication, and result provenance", status: "Unavailable", icon: FileSearch },
+  { title: "Visibility and authorization", scope: "Tenant isolation, ownership, roles, permissions, private content, deleted content, consent, and policy enforcement", status: "Not verified", icon: KeyRound },
+  { title: "Privacy and moderation", scope: "Personal data, sensitive queries, user discovery, abuse, harassment, minors, reporting, retention, deletion, and audit", status: "Not configured", icon: LockKeyhole },
+  { title: "Performance and operations", scope: "Rate limits, timeouts, caching, error handling, observability, incident response, accessibility, and support", status: "Not connected", icon: SlidersHorizontal },
+];
 
 export default function GlobalSearch() {
-  const [state, setState] = useState(false);
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 to-black p-4">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">GlobalSearch</h1>
-        <p className="text-slate-400 mb-8">global search</p>
-        
-        <Card className="bg-slate-900 border-slate-800 p-8">
-          <div className="space-y-6">
-            <p className="text-slate-300">Content for GlobalSearch page</p>
-            <Button onClick={() => setState(!state)}>
-              {state ? "Deactivate" : "Activate"}
-            </Button>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Search} title="Global Search" subtitle="Search-readiness status; no authenticated search scope, indexed source, query service, result set, relevance score, or content-visibility boundary is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Search is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen was only a generic activate/deactivate placeholder and did not establish a query input, indexed source, result provenance, visibility rules, relevance semantics, privacy, moderation, rate limits, retention, or authorization boundary. No search action or result is active, returned, or implied here.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Search aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Search-readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Trustworthy global search requires authenticated tenant scope, indexed source provenance, freshness, schema and ranking semantics, safe visibility rules, consent and personal-data handling, moderation and abuse controls, rate limits, retention and deletion, audit, accessibility, and qualified privacy and security review. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="search-surfaces-heading"><h2 id="search-surfaces-heading" className="mb-4 text-xl font-semibold">Search surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No query, result, count, relevance, visibility, personal-data, moderation, privacy, security, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="search-boundaries-heading"><h2 id="search-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No search or result claim</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, query input, index lookup, result retrieval, relevance calculation, user or content discovery, API request, database read or write, notification, export, deletion, or personal-data operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Privacy, security, moderation, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not treat this page as evidence of searchable content, result completeness, relevance, visibility, privacy, or user discovery. Verify tenant scope, source freshness, ownership, consent, private-content rules, sensitive queries, abuse controls, retention, deletion, and human review before exposing search.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/search"><Button variant="outline"><Search aria-hidden="true" className="mr-2 h-4 w-4" />Review search status</Button></Link><Link href="/profile"><Button variant="outline"><UserRound aria-hidden="true" className="mr-2 h-4 w-4" />Review identity</Button></Link><Link href="/security-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link><Link href="/documentation"><Button variant="outline"><FileSearch aria-hidden="true" className="mr-2 h-4 w-4" />Review evidence</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No auth check, query input, index lookup, result retrieval, relevance calculation, user or content discovery, API request, database read or write, notification, export, deletion, or personal-data operation is performed. This page is not evidence of searchable content, result completeness, relevance, visibility, privacy, or production search functionality.</p></Card></main></div>;
 }
