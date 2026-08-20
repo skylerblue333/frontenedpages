@@ -1,25 +1,23 @@
-import { useState } from "react";
+import { CalendarDays, CheckCircle2, Clock3, Globe2, LockKeyhole, Settings2, ShieldAlert } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const readiness = [
+  { label: "Form purpose, date field, locale, timezone, and ownership", value: "Not connected", icon: CalendarDays },
+  { label: "Validation, ranges, business rules, holidays, and ambiguity handling", value: "Unavailable", icon: Settings2 },
+  { label: "Scheduling, reminders, persistence, downstream workflows, and audit", value: "Not configured", icon: Clock3 },
+  { label: "Permissions, privacy, localization, accessibility, and failure handling", value: "Not verified", icon: LockKeyhole },
+];
+
+const boundaries = [
+  { title: "No date-value claim", description: "No date, time, range, timezone, locale, calendar system, validity, business rule, or selected value is read, displayed, calculated, stored, or simulated.", icon: CalendarDays },
+  { title: "No form action or persistence claim", description: "No activate, deactivate, input, validate, submit, schedule, remind, save, edit, delete, API request, database read or write, or account mutation can be initiated here.", icon: Settings2 },
+  { title: "No downstream or business claim", description: "No appointment, deadline, billing event, legal date, course date, transaction, notification, workflow, analytics, or operational result is asserted.", icon: Clock3 },
+  { title: "No localization or privacy claim", description: "No timezone, locale, accessibility conformance, personal data, permission, audit, retention, or external integration is verified. Do not enter sensitive information here.", icon: Globe2 },
+];
 
 export default function DateInputForm() {
-  const [state, setState] = useState(false);
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 to-black p-4">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">DateInputForm</h1>
-        <p className="text-slate-400 mb-8">date input form</p>
-        
-        <Card className="bg-slate-900 border-slate-800 p-8">
-          <div className="space-y-6">
-            <p className="text-slate-300">Content for DateInputForm page</p>
-            <Button onClick={() => setState(!state)}>
-              {state ? "Deactivate" : "Activate"}
-            </Button>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={CalendarDays} title="Date Input Form" subtitle="Date-input readiness status; no date values, validation, timezone handling, scheduling, persistence, notifications, or account state are available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><ShieldAlert aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Date input is unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous screen contained generic content and a non-functional Activate/Deactivate toggle, implying that a date-input form was connected. No verified field purpose, validation, timezone, locale, persistence, scheduling, notification, permission, or downstream integration was connected, so the generic control was removed and the state is made explicit.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><CalendarDays aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Date-input-readiness status</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Production date inputs require a defined purpose, locale and timezone model, accessible interaction, validation and range rules, DST and ambiguity handling, persistence and concurrency semantics, downstream workflow behavior, privacy, authorization, observability, and auditable submission. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{readiness.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="date-boundaries-heading"><h2 id="date-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2">{boundaries.map(({ title, description, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><Icon aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p></Card>)}</div></section><div className="flex flex-wrap gap-3"><Link href="/date-picker-dialog"><Button variant="outline">View date-picker status</Button></Link><Link href="/notifications"><Button variant="outline">View notification status</Button></Link><Link href="/contact-us-form"><Button variant="outline">Ask about availability</Button></Link></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No date, time, range, timezone, locale, calendar system, validity, business rule, selected value, activate, deactivate, input, validate, submit, schedule, remind, save, edit, delete, API request, database read or write, appointment, deadline, billing event, legal date, course date, transaction, notification, workflow, analytics, operational result, accessibility claim, or privacy outcome is performed. This page is not evidence of date validation, scheduling, localization, persistence, or downstream execution.</p></div></Card></main></div>;
 }
