@@ -1,130 +1,23 @@
-/**
- * CreatorIntelligence — Phase 9 Creator Intelligence Layer
- * AI-powered creator analytics, content optimization, revenue intelligence
- */
-import { useState } from "react";
+import { BarChart3, CheckCircle2, Brain, Eye, Lightbulb, LockKeyhole, ShieldAlert, Sparkles, TrendingUp } from "lucide-react";
 import { Link } from "wouter";
-import { ArrowLeft, Brain, TrendingUp, BarChart2, Lightbulb, DollarSign, Eye } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
 
-const AI_INSIGHTS = [
-  { type: "Revenue", insight: "Your Tuesday posts earn 3.2x more than other days", action: "Schedule premium content on Tuesdays", impact: "high" },
-  { type: "Engagement", insight: "Short-form content (< 60s) gets 4x more shares", action: "Create more reels and clips", impact: "high" },
-  { type: "Audience", insight: "Your audience is most active 7–9 PM EST", action: "Post during peak hours", impact: "medium" },
-  { type: "Monetization", insight: "Subscribers who tip once tip again 78% of the time", action: "Add tip prompts after valuable content", impact: "high" },
-  { type: "Growth", insight: "Creators who respond to comments grow 2.1x faster", action: "Enable auto-reply for top comments", impact: "medium" },
+const readiness = [
+  { label: "Creator identity, consent, source data, and provenance", value: "Not connected", icon: LockKeyhole },
+  { label: "Model, provider, prompt, evaluation, and safety controls", value: "Unavailable", icon: Brain },
+  { label: "Insights, forecasts, recommendations, and causal evidence", value: "Not generated", icon: Lightbulb },
+  { label: "Automated replies, scheduling, targeting, and account mutations", value: "Disabled", icon: TrendingUp },
+];
+
+const boundaries = [
+  { title: "No AI insight claim", description: "No revenue, reach, growth, engagement, audience, content, timing, tip, retention, or creator-performance insight is generated, ranked, or presented as personalized.", icon: Sparkles },
+  { title: "No score or forecast claim", description: "No revenue score, reach score, growth rate, forecast, confidence, impact label, causal explanation, trend, expected result, or currency amount is calculated or displayed.", icon: BarChart3 },
+  { title: "No training or data claim", description: "No creator activity, audience behavior, identity, content, payment, analytics event, model training run, evaluation set, provider response, or private data is read or inferred.", icon: Eye },
+  { title: "No automation or mutation claim", description: "No auto-reply, scheduling, tip prompt, targeting, personalization, content change, notification, account mutation, or external AI request can be initiated here.", icon: LockKeyhole },
 ];
 
 export default function CreatorIntelligence() {
-  const [tab, setTab] = useState<"insights" | "forecast" | "optimize">("insights");
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="sticky top-0 z-10 bg-background/80 backdrop-blur-sm border-b border-border/50 px-4 py-3 flex items-center gap-3">
-        <Link href="/" className="p-2 rounded-lg hover:bg-secondary/50 transition-colors text-muted-foreground">
-          <ArrowLeft className="w-4 h-4" />
-        </Link>
-        <div>
-          <h1 className="font-bold text-lg flex items-center gap-2">
-            <Brain className="w-5 h-5 text-purple-400" />
-            Creator Intelligence
-          </h1>
-          <p className="text-xs text-muted-foreground">AI-powered creator insights — Phase 9</p>
-        </div>
-      </div>
-
-      <div className="max-w-2xl mx-auto p-4 space-y-4">
-        {/* Stats */}
-        <div className="grid grid-cols-3 gap-2">
-          {[
-            { label: "Revenue Score", value: "87/100", icon: DollarSign, color: "text-green-400" },
-            { label: "Reach Score", value: "72/100", icon: Eye, color: "text-blue-400" },
-            { label: "Growth Rate", value: "+24%", icon: TrendingUp, color: "text-pink-400" },
-          ].map(s => (
-            <div key={s.label} className="card p-3 text-center">
-              <s.icon className={`w-4 h-4 ${s.color} mx-auto mb-1`} />
-              <div className="font-bold text-sm">{s.value}</div>
-              <div className="text-xs text-muted-foreground">{s.label}</div>
-            </div>
-          ))}
-        </div>
-
-        <div className="flex gap-1 bg-secondary/30 rounded-xl p-1">
-          {(["insights", "forecast", "optimize"] as const).map(t => (
-            <button key={t} onClick={() => setTab(t)}
-              className={`flex-1 py-2 rounded-lg text-xs font-medium capitalize transition-colors ${tab === t ? "bg-background text-foreground shadow-sm" : "text-muted-foreground"}`}>
-              {t}
-            </button>
-          ))}
-        </div>
-
-        {tab === "insights" && (
-          <div className="space-y-3">
-            {AI_INSIGHTS.map((ins, i) => (
-              <div key={i} className="card p-4">
-                <div className="flex items-start justify-between gap-2 mb-2">
-                  <div className="flex items-center gap-2">
-                    <Lightbulb className="w-4 h-4 text-yellow-400 shrink-0" />
-                    <span className="text-xs font-medium text-yellow-400">{ins.type}</span>
-                  </div>
-                  <span className={`text-xs px-2 py-0.5 rounded-full ${ins.impact === "high" ? "bg-green-500/20 text-green-400" : "bg-blue-500/20 text-blue-400"}`}>{ins.impact} impact</span>
-                </div>
-                <p className="text-sm text-foreground mb-2">{ins.insight}</p>
-                <div className="flex items-center gap-2 text-xs text-primary">
-                  <span>→</span>
-                  <span>{ins.action}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {tab === "forecast" && (
-          <div className="space-y-3">
-            <div className="card p-4">
-              <h4 className="font-semibold text-sm mb-3">30-Day Revenue Forecast</h4>
-              <div className="space-y-2">
-                {[
-                  { label: "Conservative", value: "$1,240", color: "bg-blue-400" },
-                  { label: "Expected", value: "$2,180", color: "bg-green-400" },
-                  { label: "Optimistic", value: "$3,450", color: "bg-yellow-400" },
-                ].map(f => (
-                  <div key={f.label} className="flex items-center gap-3">
-                    <span className="text-xs text-muted-foreground w-24">{f.label}</span>
-                    <div className="flex-1 h-2 bg-secondary rounded-full overflow-hidden">
-                      <div className={`h-full ${f.color} rounded-full`} style={{ width: f.label === "Conservative" ? "36%" : f.label === "Expected" ? "63%" : "100%" }} />
-                    </div>
-                    <span className="text-xs font-medium w-16 text-right">{f.value}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="card p-4 bg-primary/5 border border-primary/20">
-              <p className="text-xs text-muted-foreground">Based on your last 90 days of activity, audience growth rate, and platform trends.</p>
-            </div>
-          </div>
-        )}
-
-        {tab === "optimize" && (
-          <div className="space-y-3">
-            {[
-              { title: "Enable AI Auto-Reply", desc: "Save 2hrs/day, boost engagement 40%", status: "available" },
-              { title: "Schedule Content Batching", desc: "Post at peak times automatically", status: "available" },
-              { title: "Tip Prompt Optimization", desc: "AI-timed tip prompts after high-value content", status: "beta" },
-              { title: "Audience Segment Targeting", desc: "Personalize content per audience segment", status: "coming" },
-            ].map(o => (
-              <div key={o.title} className="card p-4 flex items-center gap-3">
-                <div className="flex-1">
-                  <div className="font-medium text-sm">{o.title}</div>
-                  <div className="text-xs text-muted-foreground">{o.desc}</div>
-                </div>
-                <span className={`text-xs px-2 py-1 rounded-lg ${o.status === "available" ? "bg-green-500/20 text-green-400" : o.status === "beta" ? "bg-yellow-500/20 text-yellow-400" : "bg-secondary text-muted-foreground"}`}>
-                  {o.status}
-                </span>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader backHref="/creator-dashboard" icon={Brain} title="Creator Intelligence" subtitle="AI-readiness status; no live creator data, model output, insights, forecasts, scores, recommendations, or automated actions are available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><ShieldAlert aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Creator intelligence is unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous screen asserted AI-powered creator insights, fabricated revenue/reach/growth scores, unsupported timing and audience conclusions, fixed 30-day revenue forecasts, and optimization actions with claimed impact. Those outputs and controls were removed because no verified model, provider, data, consent, evaluation, provenance, or automation boundary was connected.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Brain aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">AI-readiness status</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Production creator intelligence requires explicit data sources and consent, authenticated ownership, model and provider identification, prompt and output handling, evaluation and uncertainty, safety and privacy review, financial safeguards, explainability, auditability, and reversible automation. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{readiness.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="intelligence-boundaries-heading"><h2 id="intelligence-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2">{boundaries.map(({ title, description, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><Icon aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p></Card>)}</div></section><div className="flex flex-wrap gap-3"><Link href="/creator-dashboard"><Button variant="outline">View creator status</Button></Link><Link href="/ai-governance"><Button variant="outline">View AI governance status</Button></Link></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No insights tab, forecast, optimization action, model call, AI request, chart, score, percentage, impact label, recommendation, audience segment, revenue amount, database read or write, notification, account mutation, external provider call, or automated creator action is performed. This page is not evidence of AI capability, creator performance, revenue, or forecast accuracy.</p></div></Card></main></div>;
 }
