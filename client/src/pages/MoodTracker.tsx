@@ -1,75 +1,23 @@
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/_core/hooks/useAuth";
+import { AlertTriangle, Brain, CheckCircle2, FileHeart, Fingerprint, KeyRound, LockKeyhole, MessageCircleHeart, ShieldAlert, Smartphone, Users } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
-import { Loader2, Plus, Search, Settings } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Authenticated user, caregiver, clinician, device, health record, and authorization scope", value: "Not connected", icon: KeyRound },
+  { label: "Mood entry, self-report, timestamp, context, trend, assessment, clinician, and source provenance", value: "Unavailable", icon: FileHeart },
+  { label: "Logging, analysis, prediction, AI inference, recommendation, notification, and user-control behavior", value: "Not verified", icon: Brain },
+  { label: "Sensitive health data, identity, crisis safety, privacy, security, accessibility, and least-privilege safeguards", value: "Not configured", icon: LockKeyhole },
+];
+
+const surfaces = [
+  { title: "User, caregiver, and clinical scope", scope: "Authenticated user, caregiver, clinician, device, health record, consent, emergency context, and authorization", status: "Unavailable", icon: Users },
+  { title: "Mood and wellbeing provenance", scope: "Self-report, mood label, context, timestamp, source, trend, retention, correction, deletion, and interpretation limits", status: "Not connected", icon: FileHeart },
+  { title: "Analysis, AI, and notifications", scope: "Trend analysis, assessment, prediction, recommendation, AI model, uncertainty, notification, escalation, and user-control behavior", status: "Not verified", icon: Brain },
+  { title: "Privacy, safety, and access controls", scope: "Sensitive health data, identity, crisis response, clinician review, export, deletion, accessibility, security, privacy, and access", status: "Not configured", icon: ShieldAlert },
+];
 
 export default function MoodTracker() {
-  const { isAuthenticated } = useAuth();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>MoodTracker</CardTitle>
-            <CardDescription>Sign in to access this feature</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full">Sign In</Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold">MoodTracker</h1>
-            <p className="text-muted-foreground mt-2">Mood logging</p>
-          </div>
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            New
-          </Button>
-        </div>
-
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Search className="w-4 h-4 text-muted-foreground" />
-              <Input
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="max-w-sm"
-              />
-              <Button variant="outline" size="icon">
-                <Settings className="w-4 h-4" />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {isLoading ? (
-              <div className="flex justify-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
-              </div>
-            ) : (
-              <div className="text-center py-12 text-muted-foreground">
-                <p>No data available. Start by creating a new item.</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={MessageCircleHeart} title="Mood Tracker" subtitle="Health and wellbeing readiness status; no authenticated user or caregiver, health-record store, mood-entry service, clinician workflow, AI provider, notification or crisis-escalation service, or production health backend is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Mood tracking is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen presented an authenticated-only shell with inert Sign In, New, search, settings, tabs, and loading controls but did not connect user or caregiver scope, mood entries, context, trends, assessment, clinician review, AI inference, recommendations, notifications, crisis escalation, privacy, or authorization. The incomplete workflow was replaced with this explicit health-readiness boundary. No user, mood, entry, assessment, trend, diagnosis, recommendation, AI output, notification, crisis state, or availability state is displayed, queried, created, inferred, stored, or mutated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><MessageCircleHeart aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Health and wellbeing readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Trustworthy mood tracking requires explicit user consent, authenticated record ownership, clear self-report semantics, source and timestamp provenance, sensitive-health-data minimization, clinician review boundaries, safe AI limitations, accessible interaction, secure retention and deletion, and crisis-aware escalation design. A mood label, trend, assessment, prediction, diagnosis, or recommendation is not a clinical fact without validated data and qualified review. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="mood-tracker-surfaces-heading"><h2 id="mood-tracker-surfaces-heading" className="mb-4 text-xl font-semibold">Mood-tracking control surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No user, mood, trend, assessment, diagnosis, recommendation, AI, notification, crisis, privacy, security, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="mood-tracker-boundaries-heading"><h2 id="mood-tracker-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No health-data operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, user or caregiver query, mood entry or health record read, search, trend or assessment calculation, diagnosis, treatment, AI call, recommendation, notification, emergency escalation, API request, database read or write, export, deletion, or mood-tracking operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Health, crisis safety, AI, privacy, security, accessibility, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">I'm an AI, not a medical professional — treat this as informed product-safety analysis, not a medical diagnosis; a qualified clinician should confirm anything consequential. Do not enter health records, mood notes, identity documents, passwords, authentication codes, medication details, private messages, precise location, or confidential data here. Do not treat this page as evidence of a mood state, trend, diagnosis, treatment recommendation, AI assessment, crisis response, clinician contact, notification, or privacy protection. If someone may be in immediate danger, contact local emergency services or a crisis hotline now. Verify consent, provenance, clinical review, retention, privacy, accessibility, safety, security, and authorization before relying on wellbeing data.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/health"><Button variant="outline"><FileHeart aria-hidden="true" className="mr-2 h-4 w-4" />Review health status</Button></Link><Link href="/meal-plans"><Button variant="outline"><Brain aria-hidden="true" className="mr-2 h-4 w-4" />Review nutrition status</Button></Link><Link href="/medication-reminder"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review medication status</Button></Link><Link href="/mobile-profile"><Button variant="outline"><Smartphone aria-hidden="true" className="mr-2 h-4 w-4" />Review mobile profile</Button></Link><Link href="/security"><Button variant="outline"><Fingerprint aria-hidden="true" className="mr-2 h-4 w-4" />Review security</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No auth check, user or caregiver query, mood entry or health record read, search, trend or assessment calculation, diagnosis, treatment, AI call, recommendation, notification, emergency escalation, API request, database read or write, export, deletion, or mood-tracking operation is performed. This page is not evidence of a mood state, trend, diagnosis, treatment recommendation, AI assessment, crisis response, clinician contact, notification, or privacy protection.</p></Card></main></div>;
 }
