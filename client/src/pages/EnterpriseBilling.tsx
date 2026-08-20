@@ -1,149 +1,23 @@
-import { useAuth } from "@/_core/hooks/useAuth";
+import { AlertTriangle, CheckCircle2, FileCheck2, KeyRound, ReceiptText, Search, ShieldAlert, WalletCards } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Badge } from "@/components/ui/badge";
-import { Download, CreditCard, Calendar } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
 
-export default function ScalableBilling() {
-  const { user } = useAuth();
+const readiness = [
+  { label: "Authenticated organization, tenant, contract, plan, entitlements, and billing authority", value: "Not connected", icon: KeyRound },
+  { label: "Invoices, usage metering, taxes, currency, reconciliation, credits, and accounting records", value: "Unavailable", icon: ReceiptText },
+  { label: "Payment processor, PCI scope, tokens, refunds, disputes, payouts, and financial controls", value: "Not verified", icon: WalletCards },
+  { label: "Privacy, authorization, audit, retention, support, cancellation, and recovery", value: "Not configured", icon: ShieldAlert },
+];
 
-  if (!user) return <div className="p-8 text-center">Please login</div>;
+const surfaces = [
+  { title: "Subscription and entitlements", scope: "Organization ownership, contract terms, plan provenance, prices, renewal, seats, usage limits, upgrades, downgrades, and cancellation", status: "Unavailable" },
+  { title: "Invoices and accounting", scope: "Invoice identity, line items, currency, tax, payment status, credits, refunds, reconciliation, retention, and export", status: "Not verified" },
+  { title: "Payment and financial controls", scope: "Processor identity, payment method tokens, PCI boundaries, authorization, disputes, payouts, chargebacks, and audit", status: "Not configured" },
+  { title: "Usage and support", scope: "Metering provenance, API and storage units, limits, overages, alerts, support, recovery, and incident handling", status: "Not connected" },
+];
 
-  const mockInvoices = [
-    { id: "INV-001", date: "2026-07-01", amount: 10000, status: "paid", service: "Scalable Package" },
-    { id: "INV-002", date: "2026-06-01", amount: 10000, status: "paid", service: "Scalable Package" },
-    { id: "INV-003", date: "2026-05-01", amount: 10000, status: "paid", service: "Scalable Package" },
-  ];
-
-  const currentSubscription = {
-    plan: "Scalable",
-    price: 10000,
-    billing: "monthly",
-    nextBilling: "2026-08-01",
-    status: "active",
-  };
-
-  return (
-    <div className="min-h-screen bg-background p-8">
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl font-bold mb-8">Scalable Billing</h1>
-
-        {/* Current Subscription */}
-        <Card className="mb-8">
-          <CardHeader>
-            <CardTitle>Current Subscription</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div>
-                <p className="text-sm text-muted-foreground">Plan</p>
-                <p className="font-semibold text-lg">{currentSubscription.plan}</p>
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Price</p>
-                <p className="font-semibold text-lg">${currentSubscription.price.toLocaleString()}</p>
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Billing</p>
-                <p className="font-semibold text-lg capitalize">{currentSubscription.billing}</p>
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Status</p>
-                <Badge className="mt-1">{currentSubscription.status}</Badge>
-              </div>
-            </div>
-            <div className="mt-6 flex gap-2">
-              <Button>Upgrade Plan</Button>
-              <Button variant="outline">Manage Billing</Button>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Tabs defaultValue="invoices" className="space-y-4">
-          <TabsList>
-            <TabsTrigger value="invoices">Invoices</TabsTrigger>
-            <TabsTrigger value="payment-method">Payment Method</TabsTrigger>
-            <TabsTrigger value="usage">Usage</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="invoices">
-            <Card>
-              <CardHeader>
-                <CardTitle>Invoice History</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  {mockInvoices.map((invoice) => (
-                    <div key={invoice.id} className="flex items-center justify-between p-4 border rounded-lg">
-                      <div>
-                        <p className="font-semibold">{invoice.id}</p>
-                        <p className="text-sm text-muted-foreground">{invoice.service}</p>
-                        <p className="text-xs text-muted-foreground">{invoice.date}</p>
-                      </div>
-                      <div className="flex items-center gap-4">
-                        <div className="text-right">
-                          <p className="font-semibold">${invoice.amount.toLocaleString()}</p>
-                          <Badge variant={invoice.status === "paid" ? "default" : "secondary"}>
-                            {invoice.status}
-                          </Badge>
-                        </div>
-                        <Button size="sm" variant="outline">
-                          <Download className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="payment-method">
-            <Card>
-              <CardHeader>
-                <CardTitle>Payment Method</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="p-4 border rounded-lg">
-                  <div className="flex items-center gap-3 mb-3">
-                    <CreditCard className="h-6 w-6" />
-                    <div>
-                      <p className="font-semibold">Visa ending in 4242</p>
-                      <p className="text-sm text-muted-foreground">Expires 12/2027</p>
-                    </div>
-                  </div>
-                  <Button variant="outline" className="w-full">Update Payment Method</Button>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="usage">
-            <Card>
-              <CardHeader>
-                <CardTitle>Usage This Month</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="p-4 border rounded-lg">
-                  <p className="font-semibold mb-2">API Calls</p>
-                  <div className="w-full bg-accent rounded-full h-2 mb-2">
-                    <div className="bg-blue-600 h-2 rounded-full" style={{ width: "65%" }}></div>
-                  </div>
-                  <p className="text-sm text-muted-foreground">6,500 / 10,000 calls</p>
-                </div>
-                <div className="p-4 border rounded-lg">
-                  <p className="font-semibold mb-2">Storage</p>
-                  <div className="w-full bg-accent rounded-full h-2 mb-2">
-                    <div className="bg-green-600 h-2 rounded-full" style={{ width: "42%" }}></div>
-                  </div>
-                  <p className="text-sm text-muted-foreground">420 GB / 1 TB</p>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
-      </div>
-    </div>
-  );
+export default function EnterpriseBilling() {
+  return <div className="min-h-screen bg-background"><PageHeader icon={WalletCards} title="Enterprise Billing" subtitle="Billing-readiness status; no authenticated organization, subscription, invoice, payment method, usage meter, price, charge, refund, or financial record is available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Enterprise billing is not verified</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen displayed a mock subscription, price, renewal date, paid invoices, card details, usage meters, and upgrade, billing-management, download, and payment controls. No authenticated organization, contract, processor, invoice source, usage meter, tax, authorization, privacy, or reconciliation evidence supported those claims, so they were removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><WalletCards aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Billing readiness</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Trustworthy enterprise billing requires authenticated organization authority, contract and entitlement provenance, processor and payment-token boundaries, invoice and usage evidence, currency and tax handling, reconciliation, refunds and disputes, PCI and privacy controls, least-privilege administration, audit, retention, support, cancellation, and recovery. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{readiness.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="billing-surfaces-heading"><h2 id="billing-surfaces-heading" className="mb-4 text-xl font-semibold">Billing surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><ReceiptText aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No billing capability, amount, status, financial outcome, or production integration is asserted.</p></Card>)}</div></section><section aria-labelledby="billing-boundaries-heading"><h2 id="billing-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><FileCheck2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No billing or payment claim</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No plan, price, invoice, subscription, renewal, payment method, card, usage, API call, storage unit, tax, refund, dispute, payout, credit, charge, financial record, or accounting outcome is read, calculated, displayed, downloaded, offered, or simulated.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Financial, privacy, authorization, and payment warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Billing actions can create financial obligations and expose payment, tax, organization, and personal data. Verify organization authority, contract terms, processor identity, PCI scope, tokenization, taxes, reconciliation, refunds, disputes, cancellation, audit, and support before enabling or acting on billing records.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/enterprise"><Button variant="outline"><ReceiptText aria-hidden="true" className="mr-2 h-4 w-4" />Review enterprise status</Button></Link><Link href="/security-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security status</Button></Link><Link href="/payment-processing"><Button variant="outline"><WalletCards aria-hidden="true" className="mr-2 h-4 w-4" />Review payment status</Button></Link><Link href="/contact-us-form"><Button variant="outline"><Search aria-hidden="true" className="mr-2 h-4 w-4" />Ask about billing availability</Button></Link></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No auth check, subscription, plan, price, renewal, invoice, paid status, card detail, payment method, usage meter, API call, storage unit, upgrade, billing management, download, charge, refund, dispute, payout, tax result, sign-in, payment processor, API request, database read or write, accounting record, or financial action is performed. This page is not evidence of an enterprise billing system, commercial terms, payment processor, PCI posture, invoice history, or financial outcome.</p></div></Card></main></div>;
 }
