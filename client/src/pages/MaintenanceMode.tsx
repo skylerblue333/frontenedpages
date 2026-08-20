@@ -1,25 +1,23 @@
-import { useState } from "react";
+import { AlertTriangle, CheckCircle2, Clock3, KeyRound, LockKeyhole, Megaphone, ServerCog, ShieldAlert, Wrench } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Authenticated operator, organization, environment, service, maintenance scope, and authorization", value: "Not connected", icon: KeyRound },
+  { label: "Change request, approval, start/end window, affected components, dependency, and rollback provenance", value: "Unavailable", icon: Clock3 },
+  { label: "Availability, user impact, bypass eligibility, status notice, incident, and recovery source", value: "Not verified", icon: ServerCog },
+  { label: "Security, privacy, audit, accessibility, notification, and least-privilege safeguards", value: "Not configured", icon: LockKeyhole },
+];
+
+const surfaces = [
+  { title: "Maintenance authorization", scope: "Operator identity, role, environment, service, change ticket, approval, emergency process, and least privilege", status: "Unavailable", icon: KeyRound },
+  { title: "Window and service impact", scope: "Start, end, timezone, affected routes, dependencies, availability, user impact, bypass, and recovery expectations", status: "Not connected", icon: Clock3 },
+  { title: "Communication and incident response", scope: "Status source, user notice, support path, incident linkage, escalation, updates, postmortem, and audit", status: "Not verified", icon: Megaphone },
+  { title: "Safety and rollback", scope: "Prechecks, backups, secrets, migration safety, rollback, accessibility, privacy, security, and authorization", status: "Not configured", icon: ShieldAlert },
+];
 
 export default function MaintenanceMode() {
-  const [state, setState] = useState(false);
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 to-black p-4">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">MaintenanceMode</h1>
-        <p className="text-slate-400 mb-8">maintenance mode page</p>
-        
-        <Card className="bg-slate-900 border-slate-800 p-8">
-          <div className="space-y-6">
-            <p className="text-slate-300">Content for MaintenanceMode page</p>
-            <Button onClick={() => setState(!state)}>
-              {state ? "Deactivate" : "Activate"}
-            </Button>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Wrench} title="Maintenance Mode" subtitle="Service-maintenance readiness status; no authenticated operator, environment, service, change request, maintenance window, availability control, status channel, or production operations backend is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Maintenance control is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen labeled itself as a maintenance-mode page but displayed only an inert Activate/Deactivate toggle. It did not establish operator authorization, environment or service scope, change approval, maintenance window, affected components, user impact, status communication, bypass policy, rollback, incident response, audit, privacy, security, or accessibility contracts. The toggle and unsupported control implication were removed. No service availability, maintenance state, outage, user impact, notification, or production operation is displayed or changed from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Wrench aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Service-maintenance readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A trustworthy maintenance control requires authenticated operator and environment scope, approved change and window, explicit service impact, status communication, safe bypass and recovery policy, prechecks and rollback, incident response, audit, privacy, accessibility, and least-privilege authorization. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="maintenance-surfaces-heading"><h2 id="maintenance-surfaces-heading" className="mb-4 text-xl font-semibold">Maintenance-control surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No service availability, maintenance state, outage, user impact, notification, financial, privacy, security, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="maintenance-boundaries-heading"><h2 id="maintenance-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No maintenance operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, service or environment query, maintenance toggle, deployment, migration, outage state, notification, status update, API request, database read or write, export, deletion, or infrastructure operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Operations, availability, security, privacy, accessibility, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not treat this page as evidence of maintenance, outage, availability, user impact, bypass, recovery, or production operations. Verify operator and environment scope, change approval, window, impact, status source, communication, rollback, incident process, accessibility, privacy, security, and authorization before changing availability.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/system-status"><Button variant="outline"><ServerCog aria-hidden="true" className="mr-2 h-4 w-4" />Review system status</Button></Link><Link href="/incident-management"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review incidents</Button></Link><Link href="/deployment-manager"><Button variant="outline"><Wrench aria-hidden="true" className="mr-2 h-4 w-4" />Review deployments</Button></Link><Link href="/notifications"><Button variant="outline"><Megaphone aria-hidden="true" className="mr-2 h-4 w-4" />Review notices</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No auth check, service or environment query, maintenance toggle, deployment, migration, outage state, notification, status update, API request, database read or write, export, deletion, or infrastructure operation is performed. This page is not evidence of maintenance, outage, availability, user impact, bypass, recovery, or production operations.</p></Card></main></div>;
 }
