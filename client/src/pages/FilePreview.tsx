@@ -1,25 +1,23 @@
-import { useState } from "react";
+import { AlertTriangle, CheckCircle2, Eye, FileCheck2, FileText, KeyRound, LockKeyhole, Search, ShieldAlert, Share2, UserRound } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Authenticated viewer, owner, organization scope, file permission, audience, and least privilege", value: "Not connected", icon: KeyRound },
+  { label: "File identity, source, version, format support, renderer, checksum, metadata, and availability", value: "Unavailable", icon: FileCheck2 },
+  { label: "Sandboxing, sanitization, malware/content safety, redaction, encryption, sharing, and download controls", value: "Not verified", icon: ShieldAlert },
+  { label: "Personal, financial, crypto, legal, health, AI, security, and confidential-data safeguards", value: "Not configured", icon: UserRound },
+];
+
+const surfaces = [
+  { title: "Preview identity", scope: "File owner, source, type, size, version, checksum, metadata, visibility, and deletion state", status: "Unavailable", icon: FileText },
+  { title: "Rendering safety", scope: "Format parser, renderer version, sandboxing, sanitization, malware scanning, active content, and failure status", status: "Not verified", icon: LockKeyhole },
+  { title: "Viewer controls", scope: "Access permission, redaction, copy, print, download, share, expiration, audit, retention, and revocation", status: "Not configured", icon: Eye },
+  { title: "Sensitive files", scope: "Personal, financial, crypto, wallet, legal, health, AI, security, and confidential organizational records", status: "Not connected", icon: UserRound },
+];
 
 export default function FilePreview() {
-  const [state, setState] = useState(false);
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 to-black p-4">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">FilePreview</h1>
-        <p className="text-slate-400 mb-8">file preview</p>
-        
-        <Card className="bg-slate-900 border-slate-800 p-8">
-          <div className="space-y-6">
-            <p className="text-slate-300">Content for FilePreview page</p>
-            <Button onClick={() => setState(!state)}>
-              {state ? "Deactivate" : "Activate"}
-            </Button>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Eye} title="File Preview" subtitle="File-preview readiness status; no authenticated viewer, file, permission, renderer, preview content, metadata, download, share, or personal-data record is available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">File preview is not verified</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen exposed a generic activate/deactivate control and vague preview wording without an authenticated viewer, file source, owner, permission, renderer, sanitization, malware, metadata, redaction, download, sharing, or privacy boundary. No file or preview evidence was available, so the control was removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Eye aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">File-preview readiness</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A safe preview requires authenticated scope, verified ownership and permissions, authoritative file provenance, supported and versioned renderers, sandboxing, sanitization, malware and active-content controls, metadata minimization, redaction, accessible rendering, explicit download and sharing controls, audit, retention, and special handling for personal, financial, crypto, legal, health, AI, security, or confidential files. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="file-preview-surfaces-heading"><h2 id="file-preview-surfaces-heading" className="mb-4 text-xl font-semibold">Preview surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No preview capability, permission, file state, privacy property, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="file-preview-boundaries-heading"><h2 id="file-preview-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><FileCheck2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No preview or content claim</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, file lookup, metadata read, preview rendering, parser, download, copy, print, share, redaction, API request, database read or write, notification, deletion, or personal-data operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Privacy, security, legal, finance, crypto, and safety warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">A preview can expose personal, financial, crypto, wallet, legal, health, AI, security, or confidential organizational information and active content. Verify owner, viewer permission, renderer safety, sanitization, malware screening, redaction, encryption, sharing, retention, audit, and support boundaries before displaying a file.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/file-browser"><Button variant="outline"><FileText aria-hidden="true" className="mr-2 h-4 w-4" />Review file status</Button></Link><Link href="/file-download"><Button variant="outline"><Eye aria-hidden="true" className="mr-2 h-4 w-4" />Review download status</Button></Link><Link href="/file-sharing"><Button variant="outline"><Share2 aria-hidden="true" className="mr-2 h-4 w-4" />Review sharing status</Button></Link><Link href="/security-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security status</Button></Link><Link href="/contact-us-form"><Button variant="outline"><Search aria-hidden="true" className="mr-2 h-4 w-4" />Ask about previews</Button></Link></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No auth check, file lookup, metadata read, preview rendering, parser, download, copy, print, share, redaction, API request, database read or write, notification, deletion, export, or personal-data operation is performed. This page is not evidence of secure preview rendering, permission enforcement, sanitization, malware scanning, encryption, or production file-preview functionality.</p></div></Card></main></div>;
 }
