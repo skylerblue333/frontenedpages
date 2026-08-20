@@ -1,134 +1,16 @@
-import { trpc } from "@/lib/trpc";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
-import { Heart, Trophy, TrendingUp, Globe, Users, DollarSign, Target, Loader2 } from "lucide-react";
-import { PageHeader } from "@/components/PageHeader";
+import { BarChart3, FileCheck2, Heart, LockKeyhole, ShieldAlert, Trophy, Users, WalletCards } from "lucide-react";
 import { Link } from "wouter";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
 
-// All data comes from live DB — no mock arrays
+const evidence = [
+  { label: "Donor identity, consent, ranking, and campaign history", value: "Unavailable", icon: Users },
+  { label: "Donation asset, amount, wallet, payment, and receipt", value: "Not configured", icon: WalletCards },
+  { label: "Campaign, beneficiary, goal, and verification source", value: "Not connected", icon: Heart },
+  { label: "Impact, privacy, tax, compliance, and audit evidence", value: "Disabled", icon: FileCheck2 },
+];
 
 export default function CharityLeaderboard() {
-  // Live DB queries — no mock data
-  const { data: stats, isLoading: statsLoading } = trpc.charity.stats.useQuery();
-  const { data: campaigns, isLoading: campaignsLoading } = trpc.charity.campaigns.useQuery({ limit: 10 });
-  const { data: leaderboard, isLoading: leaderboardLoading } = trpc.charity.leaderboard.useQuery({ limit: 20 });
-
-  const fmtSky = (n: number) =>
-    n >= 1_000_000 ? `${(n / 1_000_000).toFixed(1)}M` : n >= 1_000 ? `${(n / 1_000).toFixed(1)}K` : String(n);
-
-  return (
-    <div className="max-w-5xl mx-auto px-4 py-6">
-      <PageHeader backHref="/charity" title="Charity Leaderboard" subtitle="Top donors driving real-world impact with SKY444" icon={Heart} />
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-        <Card className="p-4 border-border/50 text-center">
-          <DollarSign className="w-6 h-6 text-purple-400 mx-auto mb-2" />
-          <p className="text-2xl font-black text-purple-400">
-            {statsLoading ? "…" : fmtSky(stats?.totalRaised ?? 0)} SKY444
-          </p>
-          <p className="text-xs text-muted-foreground">Total Donated</p>
-        </Card>
-        <Card className="p-4 border-border/50 text-center">
-          <Users className="w-6 h-6 text-primary mx-auto mb-2" />
-          <p className="text-2xl font-black text-primary">
-            {statsLoading ? "…" : (stats?.totalDonors ?? 0).toLocaleString()}
-          </p>
-          <p className="text-xs text-muted-foreground">Total Donors</p>
-        </Card>
-        <Card className="p-4 border-border/50 text-center">
-          <Globe className="w-6 h-6 text-blue-400 mx-auto mb-2" />
-          <p className="text-2xl font-black text-blue-400">
-            {statsLoading ? "…" : (stats?.activeCampaigns ?? 0).toLocaleString()}
-          </p>
-          <p className="text-xs text-muted-foreground">Active Campaigns</p>
-        </Card>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div>
-          <h3 className="font-bold mb-4 flex items-center gap-2"><Trophy className="w-4 h-4 text-yellow-400" /> Top Donors</h3>
-          {leaderboardLoading ? (
-            <div className="flex justify-center py-8"><Loader2 className="w-6 h-6 animate-spin text-muted-foreground" /></div>
-          ) : !Array.isArray(leaderboard) || leaderboard.length === 0 ? (
-            <Card className="p-8 text-center border-border/50">
-              <Heart className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
-              <p className="text-muted-foreground">No donations yet. Be the first to give!</p>
-              <Link href="/charity" className="text-primary text-sm hover:underline mt-2 inline-block">Browse campaigns →</Link>
-            </Card>
-          ) : (
-            <div className="space-y-3">
-              {(leaderboard as any[]).map((d: any, i: number) => (
-                <Card key={d.id ?? i} className={`p-4 border-border/50 flex items-center gap-3 ${i < 3 ? "border-yellow-500/20 bg-yellow-500/5" : "bg-card/60"}`}>
-                  <span className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0 ${i === 0 ? "bg-yellow-500/20 text-yellow-400" : i === 1 ? "bg-gray-400/20 text-gray-400" : i === 2 ? "bg-orange-500/20 text-orange-400" : "bg-muted text-muted-foreground"}`}>{i + 1}</span>
-                  <div className="flex-1 min-w-0">
-                    <p className="font-semibold text-sm truncate">{d.isAnonymous ? "Anonymous" : (d.donorName ?? d.username ?? `User #${d.donorId}`)}</p>
-                    <p className="text-xs text-muted-foreground">{d.campaignCount ?? 1} campaign{(d.campaignCount ?? 1) !== 1 ? "s" : ""}</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-sm font-bold text-purple-400">{Number(d.totalDonated ?? d.amount ?? 0).toLocaleString()} SKY444</p>
-                    <Badge variant="outline" className="text-[10px] border-primary/30 text-primary">
-                      {i === 0 ? "Diamond Donor" : i === 1 ? "Platinum Donor" : i === 2 ? "Gold Donor" : "Donor"}
-                    </Badge>
-                  </div>
-                </Card>
-              ))}
-            </div>
-          )}
-        </div>
-
-        <div>
-          <h3 className="font-bold mb-4 flex items-center gap-2"><TrendingUp className="w-4 h-4 text-primary" /> Active Campaigns</h3>
-          {campaignsLoading ? (
-            <div className="flex justify-center py-8"><Loader2 className="w-6 h-6 animate-spin text-muted-foreground" /></div>
-          ) : !Array.isArray(campaigns) || campaigns.length === 0 ? (
-            <Card className="p-8 text-center border-border/50">
-              <Target className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
-              <p className="text-muted-foreground">No active campaigns yet.</p>
-              <Link href="/charity" className="text-primary text-sm hover:underline mt-2 inline-block">Create a campaign →</Link>
-            </Card>
-          ) : (
-            <div className="space-y-4">
-              {(campaigns as any[]).map((c: any) => {
-                const raised = Number(c.raisedAmount ?? 0);
-                const goal = Number(c.goal ?? 1);
-                const pct = Math.min(100, Math.round((raised / goal) * 100));
-                return (
-                  <Card key={c.id} className="p-4 border-border/50">
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className="flex-1">
-                        <p className="font-semibold">{c.title}</p>
-                        <p className="text-xs text-muted-foreground">{c.category ?? "general"}</p>
-                      </div>
-                      <Badge variant="outline" className="border-purple-500/30 text-purple-400">{pct}%</Badge>
-                    </div>
-                    <div className="w-full bg-muted rounded-full h-2 mb-2">
-                      <div className="bg-purple-600 h-2 rounded-full transition-all" style={{ width: `${pct}%` }} />
-                    </div>
-                    <div className="flex justify-between text-xs text-muted-foreground">
-                      <span>{raised.toLocaleString()} SKY444 raised</span>
-                      <span>Goal: {goal.toLocaleString()} SKY444</span>
-                    </div>
-                    <Link href={`/charity/${c.id}`}>
-                      <Button size="sm" className="w-full mt-3 gap-1 h-8 text-xs"><Heart className="w-3 h-3" /> Donate Now</Button>
-                    </Link>
-                  </Card>
-                );
-              })}
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Impact note — chart will show real data once donations are made */}
-      <div className="mt-8">
-        <Card className="p-6 border-border/50 text-center">
-          <TrendingUp className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
-          <p className="text-sm text-muted-foreground">Impact analytics will appear here as donations are made.</p>
-          <Link href="/charity" className="text-primary text-sm hover:underline mt-2 inline-block">Start donating →</Link>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader backHref="/charity" title="Charity Leaderboard" subtitle="Donor rankings and charitable impact services are not connected in this deployment. No donor, donation, campaign, or financial result is being reported or created." icon={Trophy} /><main className="mx-auto max-w-5xl space-y-8 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><ShieldAlert aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Leaderboard actions are unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous screen presented Top Donors, Active Campaigns, Total Donated, Total Donors, Active Campaigns, SKY444 amounts, donor identities, donor badges, campaign progress, Impact analytics, and a Start donating link. It queried charity statistics, campaigns, and a donor leaderboard and used fallback values such as zero when data was absent. No verified donor consent, identity policy, charity registration, beneficiary, campaign, wallet or payment provider, receipt, donation ledger, impact methodology, tax treatment, or audit record was connected. Those rankings, amounts, badges, progress bars, analytics, and donation navigation were removed rather than implying that anyone donated or that a charitable outcome exists.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Trophy aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Charitable-evidence readiness</h2><p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">A production charitable leaderboard requires opt-in identity and ranking rules, verified donation records, clear asset and currency semantics, campaign and beneficiary due diligence, receipt and refund handling, privacy and tax disclosures, anti-manipulation controls, impact evidence, and an independent audit trail. None are available through this route.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{evidence.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div><div className="mt-6 flex flex-wrap gap-3"><Link href="/charity"><Button>View charity status</Button></Link><Link href="/wallet"><Button variant="outline">View wallet status</Button></Link><Link href="/audit-log"><Button variant="ghost">View audit status</Button></Link></div></Card><section aria-labelledby="leaderboard-evidence-heading"><h2 id="leaderboard-evidence-heading" className="mb-4 text-xl font-semibold">Current leaderboard evidence</h2><div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">{evidence.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-border/50 bg-card p-4"><p className="text-sm text-muted-foreground">{label}</p><div className="mt-2 flex items-center gap-2"><Icon aria-hidden="true" className="h-4 w-4 text-muted-foreground" /><p className="font-semibold">{value}</p></div></Card>)}</div></section><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><LockKeyhole aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">Do not enter passwords, access tokens, private keys, seed phrases, wallet credentials, payment details, donor identity, beneficiary information, tax documents, or sensitive personal information here. An unavailable leaderboard is not evidence that a donation, donor ranking, campaign, receipt, tax outcome, or impact result exists.</p></div></Card><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><WalletCards aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No donor lookup, donation query, wallet connection, balance read, payment authorization, receipt, refund, campaign progress calculation, impact calculation, ranking, badge, notification, or external charity, payment, wallet, or blockchain API call is read, written, sent, stored, or simulated by this page.</p></div></Card><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><BarChart3 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No total-donated amount, donor count, active-campaign count, donor identity, campaign goal, raised amount, percentage, donor tier, ranking, impact metric, tax, compliance, or charitable conclusion is fabricated as a fallback. Verify future records through independently trusted charitable and payment systems.</p></div></Card></main></div>;
 }
