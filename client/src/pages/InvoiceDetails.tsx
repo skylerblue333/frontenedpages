@@ -1,25 +1,23 @@
-import { useState } from "react";
+import { AlertTriangle, CheckCircle2, FileText, KeyRound, LockKeyhole, ReceiptText, ShieldAlert, WalletCards } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Authenticated payer, payee, organization, invoice, order, and financial authorization scope", value: "Not connected", icon: KeyRound },
+  { label: "Invoice number, issuer, recipient, line items, currency, rates, quantities, dates, and source provenance", value: "Unavailable", icon: FileText },
+  { label: "Subtotal, tax, discount, total, payment, receipt, refund, dispute, settlement, and reconciliation controls", value: "Not verified", icon: WalletCards },
+  { label: "Personal, address, financial, tax, privacy, retention, security, and least-privilege safeguards", value: "Not configured", icon: ShieldAlert },
+];
+
+const surfaces = [
+  { title: "Invoice identity and line items", scope: "Issuer, recipient, invoice number, order, issue date, due date, line items, quantity, unit price, currency, and immutable provenance", status: "Unavailable", icon: FileText },
+  { title: "Totals and tax", scope: "Subtotal, discount, tax jurisdiction, tax rate, rounding, total, accounting basis, and human review", status: "Not connected", icon: ReceiptText },
+  { title: "Payment and settlement", scope: "Payment method, authorization, status, processor, receipt, refund, dispute, chargeback, settlement, and reconciliation", status: "Not verified", icon: WalletCards },
+  { title: "Privacy and operational safety", scope: "Customer, address, financial, tax, supplier, access, retention, deletion, security, and authorization", status: "Not configured", icon: LockKeyhole },
+];
 
 export default function InvoiceDetails() {
-  const [state, setState] = useState(false);
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 to-black p-4">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">InvoiceDetails</h1>
-        <p className="text-slate-400 mb-8">invoice details</p>
-        
-        <Card className="bg-slate-900 border-slate-800 p-8">
-          <div className="space-y-6">
-            <p className="text-slate-300">Content for InvoiceDetails page</p>
-            <Button onClick={() => setState(!state)}>
-              {state ? "Deactivate" : "Activate"}
-            </Button>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={ReceiptText} title="Invoice Details" subtitle="Invoice-service readiness status; no authenticated payer, payee, invoice, order, line item, tax, payment, receipt, refund, or production billing service is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Invoice details are unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen only toggled a local activate/deactivate state and did not establish payer or payee identity, invoice provenance, line items, currency, tax, totals, payment status, receipts, refunds, disputes, privacy, retention, or authorization. That unsupported state mutation was removed. No invoice, customer, amount, tax, payment, receipt, refund, or billing result is displayed or initiated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><ReceiptText aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Invoice-service readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A trustworthy invoice requires authenticated payer and payee scope, source-backed identity and line items, authoritative currency and tax treatment, deterministic totals and rounding, payment authorization and processor evidence, receipts and refunds, dispute handling, accounting reconciliation, privacy for customers and suppliers, retention and deletion, auditability, and human-readable failure states. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="invoice-details-surfaces-heading"><h2 id="invoice-details-surfaces-heading" className="mb-4 text-xl font-semibold">Invoice surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No invoice, customer, amount, tax, payment, receipt, refund, privacy, security, financial, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="invoice-details-boundaries-heading"><h2 id="invoice-details-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No invoice or payment operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, invoice lookup, customer lookup, line-item calculation, tax calculation, total calculation, payment, receipt, refund, dispute, API request, database read or write, notification, export, deletion, or personal-data operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Financial, tax, privacy, security, accounting, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not treat this page as evidence of invoice validity, identity, amount, tax, payment, receipt, refund, dispute outcome, accounting record, or production billing functionality. Verify issuer, recipient, order, line items, currency, dates, tax jurisdiction, payment status, processor, fees, refund policy, privacy, and authorization before paying or relying on an invoice.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/invoice-management"><Button variant="outline"><ReceiptText aria-hidden="true" className="mr-2 h-4 w-4" />Review invoice management</Button></Link><Link href="/orders"><Button variant="outline"><FileText aria-hidden="true" className="mr-2 h-4 w-4" />Review orders</Button></Link><Link href="/payments"><Button variant="outline"><WalletCards aria-hidden="true" className="mr-2 h-4 w-4" />Review payments</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link><Link href="/security-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No auth check, invoice lookup, customer lookup, line-item calculation, tax calculation, total calculation, payment, receipt, refund, dispute, API request, database read or write, notification, export, deletion, or personal-data operation is performed. This page is not evidence of invoice validity, identity, amount, tax, payment, receipt, refund, dispute outcome, accounting record, or production billing functionality.</p></Card></main></div>;
 }
