@@ -1,75 +1,23 @@
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/_core/hooks/useAuth";
+import { AlertTriangle, CheckCircle2, Clock3, FileCheck2, FileText, GitCompare, KeyRound, Search, ShieldAlert, Undo2, UserRound } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
-import { Loader2, Plus, Search, Settings } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Authenticated owner, organization scope, version permission, restore authority, and least privilege", value: "Not connected", icon: KeyRound },
+  { label: "File and version identity, author, timestamp, source, checksum, diff, ordering, and retention provenance", value: "Unavailable", icon: Clock3 },
+  { label: "Concurrent edits, merge safety, restore, deletion, legal hold, audit, recovery, and notification", value: "Not verified", icon: Undo2 },
+  { label: "Personal, financial, crypto, legal, health, AI, security, and confidential-data safeguards", value: "Not configured", icon: ShieldAlert },
+];
+
+const surfaces = [
+  { title: "Version history", scope: "File owner, version identifier, author, timestamp, checksum, source, message, visibility, retention, and deletion state", status: "Unavailable", icon: FileText },
+  { title: "Diff and integrity", scope: "Content diff, format fidelity, checksum, ordering, concurrent edits, merge conflict, and audit provenance", status: "Not verified", icon: GitCompare },
+  { title: "Restore and recovery", scope: "Restore authority, preview, confirmation, idempotency, rollback, legal hold, notification, and recovery status", status: "Not configured", icon: Undo2 },
+  { title: "Sensitive files", scope: "Personal, financial, crypto, wallet, legal, health, AI, security, and confidential organizational records", status: "Not connected", icon: UserRound },
+];
 
 export default function FileVersioning() {
-  const { isAuthenticated } = useAuth();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>FileVersioning</CardTitle>
-            <CardDescription>Sign in to access this feature</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full">Sign In</Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold">FileVersioning</h1>
-            <p className="text-muted-foreground mt-2">Document version control</p>
-          </div>
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            New
-          </Button>
-        </div>
-
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Search className="w-4 h-4 text-muted-foreground" />
-              <Input
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="max-w-sm"
-              />
-              <Button variant="outline" size="icon">
-                <Settings className="w-4 h-4" />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {isLoading ? (
-              <div className="flex justify-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
-              </div>
-            ) : (
-              <div className="text-center py-12 text-muted-foreground">
-                <p>No data available. Start by creating a new item.</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Clock3} title="File Versioning" subtitle="File-history readiness status; no authenticated file, owner, version, author, timestamp, checksum, diff, restore state, retention record, or personal-data record is available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">File history is not verified</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen exposed a sign-in path and generic new, settings, search, loading, and empty-state controls without a connected file, version registry, authorship, checksums, diff semantics, concurrent-edit handling, restore authority, retention, or authorization boundary. No version evidence was available, so history controls were removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Clock3 aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">File-history readiness</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Trustworthy versioning requires authenticated ownership and restore authority, authoritative file and version provenance, immutable or verifiable timestamps and checksums, clear diffs, concurrent-edit and merge semantics, safe restore and rollback, retention and legal hold, deletion, audit, recovery, and special handling for personal, financial, crypto, legal, health, AI, security, or confidential files. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="file-versioning-surfaces-heading"><h2 id="file-versioning-surfaces-heading" className="mb-4 text-xl font-semibold">Versioning surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No version capability, authorship, restore result, privacy property, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="file-versioning-boundaries-heading"><h2 id="file-versioning-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><FileCheck2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No history or restore claim</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, file lookup, version lookup, author lookup, timestamp, checksum, diff, restore, rollback, merge, deletion, API request, database read or write, notification, or personal-data operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Privacy, security, legal, finance, crypto, and safety warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Version history can reveal personal, financial, crypto, wallet, legal, health, AI, security, or confidential organizational information. Verify owner, permission, author, checksum, diff integrity, restore authority, legal hold, retention, audit, and support boundaries before viewing or restoring a version.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/file-browser"><Button variant="outline"><FileText aria-hidden="true" className="mr-2 h-4 w-4" />Review file status</Button></Link><Link href="/file-preview"><Button variant="outline"><GitCompare aria-hidden="true" className="mr-2 h-4 w-4" />Review preview status</Button></Link><Link href="/document-management"><Button variant="outline"><Undo2 aria-hidden="true" className="mr-2 h-4 w-4" />Review document status</Button></Link><Link href="/security-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security status</Button></Link><Link href="/contact-us-form"><Button variant="outline"><Search aria-hidden="true" className="mr-2 h-4 w-4" />Ask about history</Button></Link></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No auth check, file lookup, version lookup, author lookup, timestamp, checksum, diff, restore, rollback, merge, deletion, API request, database read or write, notification, export, or personal-data operation is performed. This page is not evidence of file history, integrity, restore safety, legal hold, retention, or production versioning functionality.</p></div></Card></main></div>;
 }
