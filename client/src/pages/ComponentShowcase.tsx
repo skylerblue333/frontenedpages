@@ -190,16 +190,15 @@ export default function ComponentsShowcase() {
   const [dialogInput, setDialogInput] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
 
-  // AI ChatBox demo state
+  // Local UI demonstration state; no prompt is sent to a model or external service.
   const [chatMessages, setChatMessages] = useState<Message[]>([
     { role: "system", content: "You are a helpful assistant." },
   ]);
   const [isChatLoading, setIsChatLoading] = useState(false);
 
   const handleDialogSubmit = () => {
-    console.log("Dialog submitted with value:", dialogInput);
-    sonnerToast.success("Submitted successfully", {
-      description: `Input: ${dialogInput}`,
+    sonnerToast.info("Local dialog demo", {
+      description: dialogInput ? "The value was handled locally; nothing was saved or submitted." : "No value was entered; nothing was saved or submitted.",
     });
     setDialogInput("");
     setDialogOpen(false);
@@ -217,12 +216,13 @@ export default function ComponentsShowcase() {
     const newMessages: Message[] = [...chatMessages, { role: "user", content }];
     setChatMessages(newMessages);
 
-    // Simulate AI response with delay
+    // Keep this showcase local-only: no prompt is sent and no AI response is claimed.
     setIsChatLoading(true);
     setTimeout(() => {
       const aiResponse: Message = {
         role: "assistant",
-        content: `This is a **demo response**. In a real app, you would call a tRPC mutation here:\n\n\`\`\`typescript\nconst chatMutation = trpc.ai.chat.useMutation({\n  onSuccess: (response) => {\n    setChatMessages(prev => [...prev, {\n      role: "assistant",\n      content: response.choices[0].message.content\n    }]);\n  }\n});\n\nchatMutation.mutate({ messages: newMessages });\n\`\`\`\n\nYour message was: "${content}"`,
+                content: `This is a **local UI demonstration**, not an AI response. No prompt was sent to a model or external service. A production integration would require an authorized server-side model call, privacy controls, rate limits, and truthful error handling. The component can be wired to a tRPC mutation only after those controls exist.\n\n\`\`\`typescript
+\nconst chatMutation = trpc.ai.chat.useMutation({\n  onSuccess: (response) => {\n    setChatMessages(prev => [...prev, {\n      role: "assistant",\n      content: response.choices[0].message.content\n    }]);\n  }\n});\n\nchatMutation.mutate({ messages: newMessages });\n\`\`\`\n\nYour message was: "${content}"`,
       };
       setChatMessages([...newMessages, aiResponse]);
       setIsChatLoading(false);
@@ -1324,8 +1324,9 @@ export default function ComponentsShowcase() {
                     <Button
                       variant="outline"
                       onClick={() => {
-                        sonnerToast.success("Operation successful", {
-                          description: "Your changes have been saved",
+                                                  sonnerToast.info("Toast demo: success style", {
+                          description: "This local notification does not confirm that changes were saved",
+
                         });
                       }}
                     >
@@ -1381,7 +1382,7 @@ export default function ComponentsShowcase() {
                         );
                         sonnerToast.promise(promise, {
                           loading: "Processing...",
-                          success: "Processing complete!",
+                          success: "Toast demo: local promise resolved",
                           error: "Processing failed",
                         });
                       }}
@@ -1406,7 +1407,7 @@ export default function ComponentsShowcase() {
                       Features markdown rendering, auto-scrolling, and loading states.
                     </p>
                     <p className="mt-2">
-                      This is a demo with simulated responses. In a real app, you'd connect it to a tRPC mutation.
+                      Local-only demonstration: prompts remain in this browser and receive a clearly labeled placeholder response. No prompt is sent to an AI model, saved, shared, or treated as a completed action.
                     </p>
                   </div>
                   <AIChatBox
