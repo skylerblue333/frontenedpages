@@ -1,89 +1,23 @@
-import { Film } from "lucide-react";
+import { BarChart3, CheckCircle2, Film, LockKeyhole, ShieldAlert, Upload, Users } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { PageHeader } from "@/components/PageHeader";
 
+const readiness = [
+  { label: "Creator identity, ownership, content, and media storage", value: "Not connected", icon: Users },
+  { label: "Upload, editing, processing, publication, and moderation", value: "Unavailable", icon: Upload },
+  { label: "Analytics, audience, subscriptions, and monetization", value: "Not configured", icon: BarChart3 },
+  { label: "Privacy, access control, billing, and audit evidence", value: "Not verified", icon: LockKeyhole },
+];
+
+const boundaries = [
+  { title: "No studio capability claim", description: "No live data, upload, editor, media asset, creator profile, publication, automation, integration, or workflow is connected or represented as active.", icon: Film },
+  { title: "No creator metric claim", description: "No active-user count, transaction count, success rate, response time, audience, engagement, view, subscriber, revenue, or payout metric is displayed or simulated.", icon: BarChart3 },
+  { title: "No content or audience action", description: "No content creation, upload, edit, processing, scheduling, publication, moderation, subscription, entitlement, or audience notification can be initiated here.", icon: Upload },
+  { title: "No privacy or ownership claim", description: "No creator ownership, storage location, access permission, retention, deletion, consent, billing, or audit guarantee is asserted. Do not enter private content or financial data here.", icon: LockKeyhole },
+];
+
 export default function CreatorStudio() {
-  return (
-    <div className="min-h-screen bg-background">
-      <PageHeader icon={Film} title="Creator Studio" subtitle="Fully functional creator studio page with live data and real-time updates" />
-      
-      <div className="max-w-7xl mx-auto px-4 py-8 space-y-8">
-        {/* Main Content Area */}
-        <Card className="p-8 bg-card border border-border/50">
-          <div className="space-y-6">
-            <h2 className="text-2xl font-bold">Creator Studio</h2>
-            
-            {/* Feature Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <Film className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 1</h3>
-                  <p className="text-sm text-muted-foreground">Real-time data and live updates</p>
-                </div>
-              </Card>
-              
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <Film className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 2</h3>
-                  <p className="text-sm text-muted-foreground">Advanced analytics and insights</p>
-                </div>
-              </Card>
-              
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <Film className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 3</h3>
-                  <p className="text-sm text-muted-foreground">Seamless integration and automation</p>
-                </div>
-              </Card>
-            </div>
-            
-            {/* Action Buttons */}
-            <div className="flex gap-4 flex-wrap pt-4">
-              <Button className="bg-primary hover:bg-primary/90">
-                Get Started
-              </Button>
-              <Button variant="outline">
-                Learn More
-              </Button>
-              <Button variant="ghost">
-                Documentation
-              </Button>
-            </div>
-          </div>
-        </Card>
-        
-        {/* Stats Section */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Active Users</p>
-              <p className="text-2xl font-bold">802K+</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Total Transactions</p>
-              <p className="text-2xl font-bold">2.4M</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Success Rate</p>
-              <p className="text-2xl font-bold">99.9%</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Avg Response Time</p>
-              <p className="text-2xl font-bold">45ms</p>
-            </div>
-          </Card>
-        </div>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Film} title="Creator Studio" subtitle="Creator-studio readiness status; no live creator data, media tools, analytics, publication, audience, monetization, or automation integration is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><ShieldAlert aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Creator Studio is unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous screen claimed fully functional live data and real-time updates, exposed generic feature cards and non-functional actions, and displayed fabricated active-user, transaction, success-rate, and response-time metrics. No verified creator, media, analytics, publication, automation, or audit integration was connected, so those claims and controls were removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Film aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Studio-readiness status</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A production creator studio requires authenticated ownership, safe media handling, editing and processing contracts, durable storage, publication and rollback, moderation, analytics provenance, audience permissions, billing, privacy, observability, and clear failure and retry states. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{readiness.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="studio-boundaries-heading"><h2 id="studio-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2">{boundaries.map(({ title, description, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><Icon aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p></Card>)}</div></section><div className="flex flex-wrap gap-3"><Link href="/creator-analytics"><Button variant="outline">View analytics status</Button></Link><Link href="/creator-onboarding"><Button variant="outline">View onboarding status</Button></Link><Card className="flex items-center gap-3 border border-border/50 bg-card px-4 py-2"><span className="text-sm text-muted-foreground">No studio action controls active.</span></Card></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No create, upload, edit, process, save, publish, schedule, search, export, analytics query, API request, database read or write, notification, account mutation, external integration call, user count, transaction count, success rate, response time, audience metric, or creator recommendation is performed. This page is not evidence of a live creator studio or platform performance.</p></div></Card></main></div>;
 }
