@@ -1,57 +1,16 @@
+import { BadgeCheck, Code2, FileCheck2, Gift, KeyRound, LockKeyhole, Rocket, ShieldAlert, Users } from "lucide-react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
 import { PageHeader } from "@/components/PageHeader";
-import { Rocket, Zap, Shield, Star, CheckCircle, ArrowRight, Users, Code2, Bug, Gift } from "lucide-react";
 
-const BETA_FEATURES = [
-  { label: "AI Code Review Bot", status: "testing", desc: "Automated PR reviews with security scanning" },
-  { label: "Voice-to-Post", status: "testing", desc: "Dictate social posts with voice commands" },
-  { label: "Cross-Chain Bridge", status: "coming", desc: "Bridge SKY444 across 5 blockchains" },
-  { label: "DAO Delegation", status: "testing", desc: "Delegate your voting power to trusted members" },
-  { label: "Creator Collab Tools", status: "coming", desc: "Co-create content with other creators" },
-  { label: "AI Trading Signals", status: "live", desc: "ML-powered buy/sell signals for SKY444" },
+const evidence = [
+  { label: "Program ownership, eligibility, and invitations", value: "Unavailable", icon: Users },
+  { label: "Feature builds, environments, and release status", value: "Not configured", icon: Code2 },
+  { label: "Perks, entitlements, tokens, and fee schedules", value: "Not connected", icon: Gift },
+  { label: "Security, feedback, privacy, and audit", value: "Disabled", icon: FileCheck2 },
 ];
 
 export default function Beta() {
-  return (
-    <div className="container py-8 max-w-4xl animate-page-in">
-      <PageHeader backHref="/dashboard" icon={Rocket} title="Beta Program" subtitle="Early access to cutting-edge features before public launch" badge="Invite Only" badgeVariant="destructive" />
-      <div className="card p-6 bg-gradient-to-r from-primary/10 to-accent/10 border-primary/30 mb-8">
-        <div className="flex items-start gap-4">
-          <div className="w-12 h-12 rounded-xl bg-primary/20 flex items-center justify-center shrink-0"><Gift className="w-6 h-6 text-primary" /></div>
-          <div>
-            <h3 className="font-bold text-lg mb-1">Beta Tester Perks</h3>
-            <div className="grid sm:grid-cols-2 gap-2 mt-3">
-              {["500 SKY444 bonus tokens", "Lifetime 30% fee discount", "Exclusive Beta badge", "Direct dev team access", "Early feature voting rights", "Priority support queue"].map(p => (
-                <div key={p} className="flex items-center gap-2 text-sm"><CheckCircle className="w-4 h-4 text-success shrink-0" />{p}</div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="space-y-3 mb-8">
-        <h3 className="font-semibold flex items-center gap-2"><Zap className="w-5 h-5 text-primary" />Beta Features</h3>
-        {BETA_FEATURES.map(f => (
-          <div key={f.label} className="card p-4 flex items-center gap-4">
-            <div className="flex-1">
-              <div className="font-medium text-sm">{f.label}</div>
-              <div className="text-xs text-muted-foreground">{f.desc}</div>
-            </div>
-            <Badge variant={f.status === "live" ? "default" : f.status === "testing" ? "secondary" : "outline"} className="text-xs shrink-0">
-              {f.status === "live" ? "Live" : f.status === "testing" ? "Testing" : "Coming Soon"}
-            </Badge>
-          </div>
-        ))}
-      </div>
-      <div className="card p-6 text-center">
-        <h3 className="font-bold text-lg mb-2">Apply for Beta Access</h3>
-        <p className="text-muted-foreground text-sm mb-4">Limited spots available. Must hold 100+ SKY444 tokens.</p>
-        <div className="flex gap-3 justify-center">
-          <Link href="/staking"><Button className="btn-primary gap-2"><Star className="w-4 h-4" />Apply Now</Button></Link>
-          <Link href="/crypto"><Button variant="outline" gap-2>Get SKY444 <ArrowRight className="w-4 h-4" /></Button></Link>
-        </div>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader backHref="/dashboard" icon={Rocket} title="Beta Program" subtitle="Beta-program services are not connected in this deployment. No invitation, participant, feature, perk, token, fee, access right, feedback record, or release result is being reported or created." /><main className="mx-auto max-w-5xl space-y-8 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><ShieldAlert aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Beta access is unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous screen advertised 500 SKY444 bonus tokens, a lifetime 30% fee discount, an exclusive badge, developer access, feature-voting rights, priority support, and a 100-token holding requirement. It also marked AI code review, voice-to-post, DAO delegation, and trading signals as testing or live, and claimed a five-chain bridge. No program registry, participant identity, token ledger, fee schedule, feature environment, wallet verification, trading-data provider, bridge infrastructure, governance contract, support queue, or audit contract was connected. Those benefits, statuses, eligibility rules, and Apply/Get SKY444 actions were removed rather than implying that a user can access a beta, earn tokens, trade, bridge assets, or receive a discount.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Rocket aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Beta-program readiness</h2><p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">A production beta program requires a verified sponsor, participant enrollment and consent, eligibility criteria, isolated environments, feature flags, versioned releases, security review, support and feedback channels, rollback controls, clear risk disclosures, entitlement and refund semantics, wallet or payment verification where applicable, privacy safeguards, and auditable records. None are available through this route.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{evidence.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div><div className="mt-6 flex flex-wrap gap-3"><Link href="/ai-tools-hub"><Button>View AI status</Button></Link><Link href="/crypto"><Button variant="outline">View crypto status</Button></Link><Link href="/security"><Button variant="ghost">View security status</Button></Link></div></Card><section aria-labelledby="beta-evidence-heading"><h2 id="beta-evidence-heading" className="mb-4 text-xl font-semibold">Current beta evidence</h2><div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">{evidence.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-border/50 bg-card p-4"><p className="text-sm text-muted-foreground">{label}</p><div className="mt-2 flex items-center gap-2"><Icon aria-hidden="true" className="h-4 w-4 text-muted-foreground" /><p className="font-semibold">{value}</p></div></Card>)}</div></section><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><LockKeyhole aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">Do not enter passwords, access tokens, private keys, seed phrases, wallet details, payment information, confidential feedback, private prompts, or sensitive personal information here. An unavailable beta page is not evidence that a user is enrolled, eligible, entitled, discounted, supported, or financially rewarded.</p></div></Card><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><KeyRound aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No invitation request, wallet check, token balance read, fee change, feature enablement, AI call, trading signal, bridge transfer, governance delegation, badge award, notification, feedback submission, or external beta-provider call is read, written, sent, stored, or simulated by this page.</p></div></Card><Card className="border border-border/50 bg-card p-5"><div className="flex items-start gap-3"><BadgeCheck aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No participant count, invitation state, token amount, fee discount, feature status, chain count, trading signal, release stage, support priority, access right, entitlement, or security conclusion is fabricated as a fallback. Verify future beta records through independently trusted server-side systems.</p></div></Card></main></div>;
 }
