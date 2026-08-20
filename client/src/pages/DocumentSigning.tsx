@@ -1,75 +1,23 @@
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/_core/hooks/useAuth";
+import { AlertTriangle, CheckCircle2, FileCheck2, Fingerprint, KeyRound, LockKeyhole, Search, ShieldAlert, Signature, Users } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
-import { Loader2, Plus, Search, Settings } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const readiness = [
+  { label: "Authenticated signer identity, authority, consent, recipients, roles, and jurisdiction", value: "Not connected", icon: Fingerprint },
+  { label: "Document integrity, signing ceremony, fields, ordering, timestamps, and completion state", value: "Unavailable", icon: Signature },
+  { label: "Certificates, verification, key management, audit trail, retention, and legal holds", value: "Not configured", icon: KeyRound },
+  { label: "Privacy, accessibility, revocation, disputes, support, and compliance evidence", value: "Not verified", icon: LockKeyhole },
+];
+
+const boundaries = [
+  { title: "No signature or signer claim", description: "No document, signer, recipient, identity, role, authority, consent, field, signature, certificate, timestamp, signing status, completion, verification, or signature metric is fetched, displayed, calculated, or simulated.", icon: Signature },
+  { title: "No signing action", description: "No sign-in, document selection, signer invitation, field completion, signature capture, signing ceremony, certificate issuance, verification, download, revocation, dispute, search, API request, database read or write, or account mutation can be initiated here.", icon: FileCheck2 },
+  { title: "No legal, identity, or compliance claim", description: "No identity proof, authorization, consent, document integrity, signature validity, timestamp, non-repudiation, legal enforceability, jurisdiction, accessibility, privacy, audit, or compliance outcome is asserted.", icon: ShieldAlert },
+  { title: "E-signature, legal-record, and identity warn-and-proceed", description: "Signatures can bind people and organizations, expose identity documents and contracts, and create legal records. Verify signer identity and authority, document integrity, applicable law, consent, authentication, certificate chain, timestamps, retention, revocation, and independent legal review before signing.", icon: AlertTriangle },
+];
 
 export default function DocumentSigning() {
-  const { isAuthenticated } = useAuth();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>DocumentSigning</CardTitle>
-            <CardDescription>Sign in to access this feature</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full">Sign In</Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold">DocumentSigning</h1>
-            <p className="text-muted-foreground mt-2">E-signature</p>
-          </div>
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            New
-          </Button>
-        </div>
-
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Search className="w-4 h-4 text-muted-foreground" />
-              <Input
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="max-w-sm"
-              />
-              <Button variant="outline" size="icon">
-                <Settings className="w-4 h-4" />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {isLoading ? (
-              <div className="flex justify-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
-              </div>
-            ) : (
-              <div className="text-center py-12 text-muted-foreground">
-                <p>No data available. Start by creating a new item.</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Signature} title="Document Signing" subtitle="E-signature readiness status; no documents, signers, signing requests, signatures, certificates, timestamps, verification, or legal-record state is available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Document signing is unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous screen presented sign-in, New, settings, search, a local loading state, and a generic empty state without a verified signer identity, authority, consent, document-integrity, signing, certificate, timestamp, verification, legal, privacy, or audit workflow. Those controls and implied e-signature system were removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Signature aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">E-signature readiness</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Trustworthy signing requires verified identity and authority, informed consent, document integrity, secure signing ceremonies, authentication, certificates and key management, timestamps, audit trails, retention and legal holds, revocation and dispute handling, accessibility, privacy, jurisdictional review, and support. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{readiness.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="signing-boundaries-heading"><h2 id="signing-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2">{boundaries.map(({ title, description, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><Icon aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p></Card>)}</div></section><div className="flex flex-wrap gap-3"><Link href="/document-editor"><Button variant="outline"><FileCheck2 aria-hidden="true" className="mr-2 h-4 w-4" />View editor status</Button></Link><Link href="/document-sharing"><Button variant="outline">View sharing status</Button></Link><Link href="/identity-verification"><Button variant="outline"><Fingerprint aria-hidden="true" className="mr-2 h-4 w-4" />View identity status</Button></Link><Link href="/contact-us-form"><Button variant="outline"><Search aria-hidden="true" className="mr-2 h-4 w-4" />Ask about signing availability</Button></Link></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No document, signer, recipient, identity, role, authority, consent, field, signature, certificate, timestamp, signing status, completion, verification, signature metric, sign-in, document selection, signer invitation, field completion, signature capture, signing ceremony, certificate issuance, verification, download, revocation, dispute, search, API request, database read or write, identity proof, authorization, document integrity, signature validity, timestamp, non-repudiation, legal enforceability, jurisdiction, accessibility, privacy, audit, or compliance result is performed. This page is not evidence of signature validity, identity, legal enforceability, consent, certificate security, or compliance.</p></div></Card></main></div>;
 }
