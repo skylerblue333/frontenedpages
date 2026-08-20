@@ -1,25 +1,23 @@
-import { useState } from "react";
+import { AlertTriangle, CheckCircle2, Keyboard, LockKeyhole, Menu, Search, ShieldAlert, Users } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const readiness = [
+  { label: "Route-specific menu items, labels, destinations, roles, and permissions", value: "Not configured", icon: Menu },
+  { label: "Keyboard navigation, focus return, escape handling, and screen-reader semantics", value: "Not verified", icon: Keyboard },
+  { label: "Open/close behavior, outside-click handling, responsive layout, and state ownership", value: "Unavailable", icon: ShieldAlert },
+  { label: "Accessibility review, privacy scope, analytics, and support evidence", value: "Not connected", icon: LockKeyhole },
+];
+
+const boundaries = [
+  { title: "No menu behavior claim", description: "This route does not provide a verified menu trigger, menu items, destinations, permissions, keyboard behavior, focus management, responsive behavior, analytics, or navigation outcome.", icon: Menu },
+  { title: "No application-state action", description: "The previous placeholder’s Activate/Deactivate toggle was removed. No menu selection, navigation mutation, account change, permission change, API request, database read or write, or application state mutation can be initiated here.", icon: CheckCircle2 },
+  { title: "No accessibility or security claim", description: "No accessibility conformance, screen-reader support, focus safety, keyboard completeness, privacy, authorization, item provenance, or security outcome is asserted.", icon: ShieldAlert },
+  { title: "UI-component warn-and-proceed", description: "Menus can expose privileged destinations or trigger consequential actions. Verify labels, role-based visibility, keyboard and focus behavior, responsive placement, confirmation requirements, and authorization before using a menu in a production workflow.", icon: AlertTriangle },
+];
 
 export default function DropdownMenu() {
-  const [state, setState] = useState(false);
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 to-black p-4">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">DropdownMenu</h1>
-        <p className="text-slate-400 mb-8">dropdown menu</p>
-        
-        <Card className="bg-slate-900 border-slate-800 p-8">
-          <div className="space-y-6">
-            <p className="text-slate-300">Content for DropdownMenu page</p>
-            <Button onClick={() => setState(!state)}>
-              {state ? "Deactivate" : "Activate"}
-            </Button>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Menu} title="Dropdown Menu" subtitle="UI-component readiness status; no route-specific menu items, destinations, permissions, keyboard behavior, or application actions are available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Dropdown-menu behavior is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen presented placeholder copy and an ambiguous Activate/Deactivate toggle rather than a verified menu component. No route-specific items, destinations, permissions, keyboard semantics, focus behavior, responsive handling, accessibility review, or application action was established, so the toggle was removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Menu aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Menu-component readiness</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A trustworthy menu requires explicit trigger and item semantics, keyboard navigation, focus return, escape and outside-click handling, responsive placement, route and permission ownership, accessible labels, confirmation for consequential actions, and testing across authenticated and unauthenticated states. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{readiness.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="menu-boundaries-heading"><h2 id="menu-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2">{boundaries.map(({ title, description, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><Icon aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p></Card>)}</div></section><div className="flex flex-wrap gap-3"><Link href="/accessibility"><Button variant="outline"><Keyboard aria-hidden="true" className="mr-2 h-4 w-4" />View accessibility status</Button></Link><Link href="/navigation"><Button variant="outline"><Menu aria-hidden="true" className="mr-2 h-4 w-4" />View navigation status</Button></Link><Link href="/security-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />View security status</Button></Link><Link href="/contact-us-form"><Button variant="outline"><Search aria-hidden="true" className="mr-2 h-4 w-4" />Ask about component availability</Button></Link></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No menu trigger, item, destination, permission, keyboard behavior, focus management, responsive behavior, analytics, navigation outcome, Activate/Deactivate action, menu selection, navigation mutation, account change, permission change, API request, database read or write, accessibility conformance, screen-reader support, focus safety, keyboard completeness, privacy, authorization, or security result is performed. This page is not evidence of a functional, accessible, authorized, or production-ready dropdown menu.</p></div></Card></main></div>;
 }
