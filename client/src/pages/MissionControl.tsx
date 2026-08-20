@@ -1,74 +1,23 @@
-import { useAuth } from "@/_core/hooks/useAuth";
-import { getLoginUrl } from "@/const";
+import { AlertTriangle, Award, BriefcaseBusiness, CheckCircle2, GraduationCap, KeyRound, Lightbulb, LockKeyhole, Rocket, ShieldAlert, Sparkles, Store, Target, Users, WalletCards } from "lucide-react";
 import { Link } from "wouter";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { Gauge, Trophy, Briefcase, Sparkles, Rocket, Store } from "lucide-react";
-import { GOLD } from "./mission-control/shared";
-import { TodaySection } from "./mission-control/TodaySection";
-import { ReputationSection } from "./mission-control/ReputationSection";
-import { OpportunitiesSection } from "./mission-control/OpportunitiesSection";
-import { MissionsSection } from "./mission-control/MissionsSection";
-import { StartupSection } from "./mission-control/StartupSection";
-import { MarketplaceSection } from "./mission-control/MarketplaceSection";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
 
-const TABS = [
-  { value: "today", label: "Today", icon: Gauge, el: <TodaySection /> },
-  { value: "missions", label: "Missions", icon: Sparkles, el: <MissionsSection /> },
-  { value: "opportunities", label: "Opportunities", icon: Briefcase, el: <OpportunitiesSection /> },
-  { value: "reputation", label: "Reputation", icon: Trophy, el: <ReputationSection /> },
-  { value: "startup", label: "Startup Builder", icon: Rocket, el: <StartupSection /> },
-  { value: "marketplace", label: "AI Marketplace", icon: Store, el: <MarketplaceSection /> },
-] as const;
+const boundaries = [
+  { label: "Authenticated user, organization, goals, missions, opportunities, reputation, and authorization scope", value: "Not connected", icon: KeyRound },
+  { label: "Activity, learning, community, opportunity, reputation, marketplace, startup, and financial-data provenance", value: "Unavailable", icon: Users },
+  { label: "HOPE AI provider, suggestions, scores, ranking, matching, recommendations, and user-control behavior", value: "Not verified", icon: Lightbulb },
+  { label: "Personal data, sensitive inferences, financial records, privacy, safety, accessibility, and least-privilege safeguards", value: "Not configured", icon: LockKeyhole },
+];
+
+const surfaces = [
+  { title: "User and ecosystem scope", scope: "Authenticated user, organization, goals, missions, learning, communities, opportunities, visibility, and authorization", status: "Unavailable", icon: Target },
+  { title: "AI and recommendation provenance", scope: "HOPE provider, model, prompt, source activity, suggestion, score, ranking, matching, uncertainty, and explanation", status: "Not connected", icon: Sparkles },
+  { title: "Reputation and opportunity evidence", scope: "Activity, learning, teaching, builder, community, trust, leaderboard, opportunity, application, and review records", status: "Not verified", icon: Award },
+  { title: "Startup, marketplace, finance, privacy, and safety controls", scope: "Business, seller, buyer, revenue, payout, wallet, financial, personal, moderation, retention, security, and access", status: "Not configured", icon: ShieldAlert },
+];
 
 export default function MissionControl() {
-  const { user, loading } = useAuth();
-
-  if (loading) {
-    return <div className="min-h-screen bg-[#050510] flex items-center justify-center text-white/40">Loading…</div>;
-  }
-
-  if (!user) {
-    return (
-      <div className="min-h-screen bg-[#050510] text-white flex flex-col items-center justify-center gap-4 px-6 text-center">
-        <h1 className="text-3xl font-bold">Mission Control</h1>
-        <p className="text-white/50 max-w-md">Your HOPE AI command center — digital twin memory, reputation, opportunities, missions, a startup builder, and the AI marketplace. Sign in to continue.</p>
-        <div className="flex gap-3">
-          <a href={getLoginUrl()}><Button style={{ backgroundColor: GOLD, color: "#000" }}>Sign in</Button></a>
-          <Link href="/"><Button variant="outline" className="border-white/20 text-white/80">Back home</Button></Link>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-[#050510] text-white">
-      <div className="border-b border-white/10 sticky top-0 z-30" style={{ background: "rgba(5,5,16,0.92)", backdropFilter: "blur(20px)" }}>
-        <div className="max-w-6xl mx-auto px-4 py-4 flex items-center gap-3">
-          <Link href="/" className="text-white/40 hover:text-white/70 text-sm">← Home</Link>
-          <div className="w-px h-4 bg-white/15" />
-          <div>
-            <h1 className="text-lg font-black tracking-tight">Mission <span style={{ color: GOLD }}>Control</span></h1>
-            <p className="text-[11px] text-white/40 -mt-0.5">HOPE AI orchestration layer</p>
-          </div>
-        </div>
-      </div>
-
-      <div className="max-w-6xl mx-auto px-4 py-6">
-        <Tabs defaultValue="today">
-          <TabsList className="bg-white/[0.03] border border-white/10 flex flex-wrap h-auto p-1 mb-6">
-            {TABS.map((t) => (
-              <TabsTrigger key={t.value} value={t.value} className="data-[state=active]:bg-white/10 data-[state=active]:text-white text-white/50 gap-1.5">
-                <t.icon className="h-3.5 w-3.5" />
-                {t.label}
-              </TabsTrigger>
-            ))}
-          </TabsList>
-          {TABS.map((t) => (
-            <TabsContent key={t.value} value={t.value} className="mt-0">{t.el}</TabsContent>
-          ))}
-        </Tabs>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Rocket} title="Mission Control" subtitle="Platform-orchestration readiness status; no authenticated user or organization, HOPE AI orchestration service, goal or mission ledger, opportunity engine, reputation system, startup workflow, AI marketplace, financial ledger, or production command center is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Mission Control is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen exposed an authenticated HOPE AI command center with Today, Missions, Opportunities, Reputation, Startup Builder, and AI Marketplace tabs. Its child sections queried or implied goals, missions, learning, unread messages, communities, revenue, recommendations, reputation scores, leaderboards, opportunities, startup workflows, marketplace activity, user identities, and AI-generated suggestions. Those integrations, scores, metrics, financial values, and mutations were not verified as a coherent production contract and have been removed from this route. No user, organization, goal, mission, learning record, message count, community count, revenue, opportunity, reputation score, leaderboard, AI suggestion, marketplace record, startup state, or availability state is displayed, queried, generated, ranked, or mutated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Rocket aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Platform-orchestration readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A trustworthy command center requires authenticated scope, clear ownership, authoritative records, explainable AI boundaries, source and timestamp provenance, correction and appeal paths, least-privilege actions, privacy and safety controls, and separate contracts for goals, learning, community, opportunities, reputation, startup workflows, marketplace activity, and financial data. A dashboard score, recommendation, revenue value, user count, or AI claim is not a fact without a verified service record. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="mission-control-surfaces-heading"><h2 id="mission-control-surfaces-heading" className="mb-4 text-xl font-semibold">Mission-control surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No user, organization, goal, mission, learning, opportunity, reputation, AI, marketplace, startup, financial, privacy, security, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="mission-control-boundaries-heading"><h2 id="mission-control-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No orchestration operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, user or organization query, goal or mission lookup, learning or community query, recommendation or AI call, reputation calculation, leaderboard ranking, opportunity match, startup or marketplace mutation, revenue or wallet read, API request, database read or write, notification, export, deletion, or command-center operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">AI, finance, privacy, safety, security, accessibility, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not enter passwords, identity documents, private workplace or education records, financial details, wallet credentials, seed phrases, private keys, precise location, or confidential business data here. Do not treat this page as evidence of an AI command center, user profile, mission, recommendation, reputation score, leaderboard, opportunity match, startup outcome, marketplace activity, revenue, payout, or financial result. Verify source, scope, model, uncertainty, reviewer, consent, privacy, safety, accessibility, correction, custody, and authorization before relying on ecosystem decisions.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/goals"><Button variant="outline"><Target aria-hidden="true" className="mr-2 h-4 w-4" />Review goals</Button></Link><Link href="/hope-ai"><Button variant="outline"><Sparkles aria-hidden="true" className="mr-2 h-4 w-4" />Review AI status</Button></Link><Link href="/opportunities"><Button variant="outline"><BriefcaseBusiness aria-hidden="true" className="mr-2 h-4 w-4" />Review opportunities</Button></Link><Link href="/skyschool"><Button variant="outline"><GraduationCap aria-hidden="true" className="mr-2 h-4 w-4" />Review learning</Button></Link><Link href="/marketplace"><Button variant="outline"><Store aria-hidden="true" className="mr-2 h-4 w-4" />Review marketplace</Button></Link><Link href="/crypto-hub"><Button variant="outline"><WalletCards aria-hidden="true" className="mr-2 h-4 w-4" />Review crypto</Button></Link><Link href="/safety-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review safety</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No auth check, user or organization query, goal or mission lookup, learning or community query, recommendation or AI call, reputation calculation, leaderboard ranking, opportunity match, startup or marketplace mutation, revenue or wallet read, API request, database read or write, notification, export, deletion, or command-center operation is performed. This page is not evidence of an AI command center, user profile, mission, recommendation, reputation score, leaderboard, opportunity match, startup outcome, marketplace activity, revenue, payout, or financial result.</p></Card></main></div>;
 }
