@@ -1,171 +1,34 @@
+import { AlertTriangle, CheckCircle2, Compass, FileCheck2, Gamepad2, Globe, Heart, KeyRound, Radio, Search, ShieldAlert, Sparkles, Users, Video, WalletCards } from "lucide-react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { PageHeader } from "@/components/PageHeader";
-import { trpc } from "@/lib/trpc";
+import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import {
-  Compass, TrendingUp, Users, Video, Gamepad2, Coins, Heart,
-  Code2, Globe, Zap, Star, Radio, Search, Hash, Flame, Eye
-} from "lucide-react";
-import { useState } from "react";
+import { PageHeader } from "@/components/PageHeader";
+import { useMemo, useState } from "react";
 
-const CATEGORIES = [
-  { icon: TrendingUp, label: "Trending",    desc: "What's hot right now",           href: "/social",      color: "text-primary",    bg: "bg-primary/10" },
-  { icon: Radio,      label: "Live",        desc: "Creators streaming now",          href: "/streaming",   color: "text-red-400",    bg: "bg-red-500/10" },
-  { icon: Video,      label: "Reels",       desc: "Short-form video",                href: "/reels",       color: "text-pink-400",   bg: "bg-pink-500/10" },
-  { icon: Gamepad2,   label: "Gaming",      desc: "Tournaments and arcade games",    href: "/arcade",      color: "text-purple-400", bg: "bg-purple-500/10" },
-  { icon: Coins,      label: "DeFi",        desc: "Staking, swaps, and yields",      href: "/staking",     color: "text-amber-400",  bg: "bg-amber-500/10" },
-  { icon: Heart,      label: "Charity",     desc: "Campaigns making a difference",   href: "/charity",     color: "text-rose-400",   bg: "bg-rose-500/10" },
-  { icon: Code2,      label: "Dev Tools",   desc: "AI coding and developer assets",  href: "/ai-engineer", color: "text-cyan-400",   bg: "bg-cyan-500/10" },
-  { icon: Users,      label: "Communities", desc: "Groups and forums",               href: "/community",   color: "text-violet-400", bg: "bg-violet-500/10" },
-  { icon: Globe,      label: "Governance",  desc: "Vote on platform decisions",      href: "/governance",  color: "text-blue-400",   bg: "bg-blue-500/10" },
-  { icon: Star,       label: "Marketplace", desc: "Buy, sell, and trade assets",     href: "/marketplace", color: "text-orange-400", bg: "bg-orange-500/10" },
-  { icon: Zap,        label: "ICO",         desc: "New token launches",              href: "/ico",         color: "text-yellow-400", bg: "bg-yellow-500/10" },
-  { icon: Hash,       label: "Channels",    desc: "Creator channels & subscriptions",href: "/channels",    color: "text-green-400",  bg: "bg-green-500/10" },
+type Category = { label: string; description: string; href: string; icon: typeof Compass };
+const categories: Category[] = [
+  { label: "Social", description: "Community surface; availability not verified", href: "/social", icon: Users },
+  { label: "Live", description: "Streaming surface; live state not verified", href: "/streaming", icon: Radio },
+  { label: "Video", description: "Video surface; content source not verified", href: "/reels", icon: Video },
+  { label: "Gaming", description: "Gaming surface; tournament state not verified", href: "/arcade", icon: Gamepad2 },
+  { label: "Crypto", description: "Crypto surface; network and data not verified", href: "/crypto-hub", icon: WalletCards },
+  { label: "Charity", description: "Campaign surface; recipient and funds not verified", href: "/charity", icon: Heart },
+  { label: "AI", description: "AI surface; model and capability not verified", href: "/ai-control-center", icon: Sparkles },
+  { label: "Communities", description: "Groups surface; moderation not verified", href: "/community", icon: Users },
+  { label: "Governance", description: "Governance surface; authority not verified", href: "/governance", icon: Globe },
+  { label: "Marketplace", description: "Commerce surface; listings and custody not verified", href: "/marketplace", icon: Compass },
+];
+
+const boundaries = [
+  { label: "Authenticated discovery scope, source provenance, moderation authority, and user consent", value: "Not connected", icon: KeyRound },
+  { label: "Trending, live, creator, community, engagement, ranking, and personalized recommendation data", value: "Unavailable", icon: Compass },
+  { label: "AI ranking, social safety, charity, marketplace, crypto, and financial data controls", value: "Not verified", icon: ShieldAlert },
+  { label: "Privacy, retention, redaction, audit, incident response, and user control", value: "Not configured", icon: FileCheck2 },
 ];
 
 export default function Explore() {
   const [search, setSearch] = useState("");
-  const { data: trending } = trpc.feed.trending.useQuery();
-  const { data: liveStreams } = trpc.stream.live.useQuery();
-  const { data: suggestions } = trpc.user.suggestedFollows.useQuery(undefined, { retry: false });
-
-  const filteredCategories = CATEGORIES.filter(c =>
-    !search || c.label.toLowerCase().includes(search.toLowerCase()) || c.desc.toLowerCase().includes(search.toLowerCase())
-  );
-
-  return (
-    <div className="container py-8 max-w-6xl animate-page-in space-y-8">
-      <PageHeader backHref="/social" icon={Compass} title="Explore" subtitle="Discover everything the SKYCOIN4444 ecosystem has to offer" />
-
-      {/* Search */}
-      <div className="relative max-w-md">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-        <Input
-          placeholder="Search categories, creators, topics..."
-          value={search}
-          onChange={e => setSearch(e.target.value)}
-          className="pl-9"
-        />
-      </div>
-
-      {/* Category Grid */}
-      <section>
-        <h2 className="text-lg font-bold mb-4 flex items-center gap-2">
-          <Compass className="w-5 h-5 text-primary" /> Browse Categories
-        </h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
-          {filteredCategories.map(c => (
-            <Link key={c.label} href={c.href}>
-              <div className="card p-4 text-center hover:border-primary/40 hover:shadow-glow-sm transition-all duration-200 cursor-pointer group">
-                <div className={`w-10 h-10 rounded-xl ${c.bg} flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform`}>
-                  <c.icon className={`w-5 h-5 ${c.color}`} />
-                </div>
-                <div className="font-semibold text-xs mb-1">{c.label}</div>
-                <div className="text-xs text-muted-foreground leading-tight">{c.desc}</div>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      {/* Live Streams */}
-      {liveStreams && (liveStreams as any[]).length > 0 && (
-        <section>
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-bold flex items-center gap-2">
-              <Radio className="w-5 h-5 text-red-400" />
-              <span>Live Now</span>
-              <Badge className="bg-red-500 text-white text-xs animate-pulse">LIVE</Badge>
-            </h2>
-            <Link href="/streaming">
-              <Button variant="ghost" size="sm">See all →</Button>
-            </Link>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            {(liveStreams as any[]).slice(0, 3).map((s: any) => (
-              <Link key={s.id} href="/streaming">
-                <div className="card overflow-hidden hover:border-red-500/40 transition-all cursor-pointer group">
-                  <div className="aspect-video bg-gradient-to-br from-zinc-800 to-zinc-900 relative flex items-center justify-center">
-                    <Radio className="w-8 h-8 text-red-400 opacity-60" />
-                    <Badge className="absolute top-2 left-2 bg-red-500 text-white text-xs">LIVE</Badge>
-                    {s.viewerCount > 0 && (
-                      <div className="absolute bottom-2 right-2 flex items-center gap-1 bg-black/60 rounded px-2 py-0.5 text-xs text-white">
-                        <Eye className="w-3 h-3" /> {s.viewerCount}
-                      </div>
-                    )}
-                  </div>
-                  <div className="p-3">
-                    <div className="font-semibold text-sm truncate">{s.title}</div>
-                    <div className="text-xs text-muted-foreground mt-1">{s.category || "Live Stream"}</div>
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {/* Trending Posts */}
-      {trending && (trending as any[]).length > 0 && (
-        <section>
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-bold flex items-center gap-2">
-              <Flame className="w-5 h-5 text-orange-400" /> Trending Posts
-            </h2>
-            <Link href="/social">
-              <Button variant="ghost" size="sm">See all →</Button>
-            </Link>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {(trending as any[]).slice(0, 4).map((post: any) => (
-              <div key={post.id} className="card p-4 hover:border-primary/30 transition-all">
-                <div className="flex items-start gap-3">
-                  <Avatar className="w-8 h-8 shrink-0">
-                    <AvatarFallback className="text-xs">{(post.author?.name || post.authorName || "U")[0]}</AvatarFallback>
-                  </Avatar>
-                  <div className="flex-1 min-w-0">
-                    <div className="font-semibold text-sm">{post.author?.name || post.authorName || "Creator"}</div>
-                    <p className="text-sm text-muted-foreground mt-1 line-clamp-2">{post.content}</p>
-                    <div className="flex items-center gap-3 mt-2 text-xs text-muted-foreground">
-                      <span>❤️ {post.likeCount || 0}</span>
-                      <span>💬 {post.commentCount || 0}</span>
-                      {post.trendScore && <Badge variant="outline" className="text-xs text-orange-400 border-orange-400/30">🔥 {Math.round(post.trendScore)}</Badge>}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {/* Suggested Creators */}
-      {suggestions && (suggestions as any[]).length > 0 && (
-        <section>
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-bold flex items-center gap-2">
-              <Star className="w-5 h-5 text-yellow-400" /> Creators to Follow
-            </h2>
-          </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-            {(suggestions as any[]).slice(0, 5).map((u: any) => (
-              <Link key={u.id} href={`/creator/${u.handle || u.id}`}>
-                <div className="card p-4 text-center hover:border-primary/40 transition-all cursor-pointer group">
-                  <Avatar className="w-12 h-12 mx-auto mb-2">
-                    <AvatarFallback className="text-sm">{(u.name || u.username || "U")[0]}</AvatarFallback>
-                  </Avatar>
-                  <div className="font-semibold text-sm truncate">{u.name || u.username}</div>
-                  {u.bio && <div className="text-xs text-muted-foreground mt-1 line-clamp-2">{u.bio}</div>}
-                  <Badge variant="outline" className="mt-2 text-xs">Follow</Badge>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </section>
-      )}
-    </div>
-  );
+  const filtered = useMemo(() => categories.filter((category) => `${category.label} ${category.description}`.toLowerCase().includes(search.toLowerCase())), [search]);
+  return <div className="min-h-screen bg-background"><PageHeader backHref="/social" icon={Compass} title="Explore" subtitle="Ecosystem-discovery readiness status; no live feed, creator recommendation, viewer count, engagement metric, personalized ranking, crypto state, marketplace listing, or AI capability is verified in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Discovery data is not verified</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen queried unverified trending posts, live streams, and suggested follows, used unchecked `any` values, and displayed live labels, viewer counts, likes, comments, trend scores, creator identities, and broad crypto, marketplace, charity, AI, governance, and social availability claims. No source provenance, consent, moderation, personalization, security, or authorization evidence supported those claims, so live data and recommendation cards were removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Compass aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Discovery readiness</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Trustworthy discovery requires authenticated scope, verified source provenance, consent and minimization, transparent ranking and AI evaluation, moderation and social safety, live-state freshness, privacy and user controls, and domain-specific safeguards for charity, commerce, crypto, and governance. Only the explicitly labeled local navigation below is available.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="explore-categories-heading"><div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"><h2 id="explore-categories-heading" className="text-xl font-semibold">Local category navigation</h2><div className="relative w-full sm:max-w-xs"><Search aria-hidden="true" className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" /><Input aria-label="Filter local category links" placeholder="Filter category links" value={search} onChange={(event) => setSearch(event.target.value)} className="pl-9" /></div></div><div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">{filtered.map(({ label, description, href, icon: Icon }) => <Link key={label} href={href}><Card className="h-full border border-border/50 bg-card p-4 transition-colors hover:border-primary/40"><Icon aria-hidden="true" className="mb-3 h-6 w-6 text-primary" /><h3 className="font-semibold">{label}</h3><p className="mt-1 text-xs leading-5 text-muted-foreground">{description}</p></Card></Link>)}</div>{filtered.length === 0 && <Card className="border border-border/50 bg-card p-6"><p className="text-sm text-muted-foreground">No local category link matches this filter. The filter does not query a search index or discover content.</p></Card>}</section><section aria-labelledby="explore-boundaries-heading"><h2 id="explore-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><FileCheck2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No discovery or engagement claim</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No feed, post, creator, community, stream, viewer count, like, comment, trend score, follower suggestion, ranking, recommendation, personalization, live state, or social metric is read, calculated, displayed, exported, or simulated.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Social, AI, crypto, commerce, charity, privacy, and safety warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Discovery can influence attention, relationships, purchases, donations, financial decisions, and exposure to user content. Verify source, consent, moderation, ranking behavior, AI oversight, wallet and marketplace provenance, recipient identity, privacy, and user controls before acting on a discovery surface.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/social"><Button variant="outline"><Users aria-hidden="true" className="mr-2 h-4 w-4" />Review social status</Button></Link><Link href="/crypto-hub"><Button variant="outline"><WalletCards aria-hidden="true" className="mr-2 h-4 w-4" />Review crypto status</Button></Link><Link href="/ai-control-center"><Button variant="outline"><Sparkles aria-hidden="true" className="mr-2 h-4 w-4" />Review AI status</Button></Link><Link href="/security-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security status</Button></Link><Link href="/contact-us-form"><Button variant="outline"><Search aria-hidden="true" className="mr-2 h-4 w-4" />Ask about discovery</Button></Link></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No auth check, feed query, stream query, suggested-follow query, user tracking, ranking, search-index request, viewer or engagement calculation, AI inference, crypto lookup, marketplace lookup, charity lookup, API request, database read or write, notification, export, or personal-data operation is performed. Only the local category filter and explicit route links operate.</p></div></Card></main></div>;
 }
