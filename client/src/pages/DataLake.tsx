@@ -1,136 +1,23 @@
-/**
- * DataLake — Phase 10 Data Economy
- * Platform-wide data ingestion, storage, and analytics pipeline
- */
-import { useState } from "react";
+import { Activity, BarChart3, CheckCircle2, Database, FileWarning, Layers, LockKeyhole, Server, ShieldAlert } from "lucide-react";
 import { Link } from "wouter";
-import { ArrowLeft, Database, Activity, Layers, TrendingUp, Clock, Server, Zap, BarChart2, Globe } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
 
-const DATA_STREAMS = [
-  { name: "Social Events", rate: "2.4K/min", volume: "1.2TB", status: "live", color: "text-blue-400" },
-  { name: "Transaction Logs", rate: "840/min", volume: "340GB", status: "live", color: "text-green-400" },
-  { name: "AI Inference Logs", rate: "1.1K/min", volume: "890GB", status: "live", color: "text-purple-400" },
-  { name: "Stream Metrics", rate: "320/min", volume: "2.1TB", status: "live", color: "text-pink-400" },
-  { name: "Wallet Events", rate: "560/min", volume: "180GB", status: "live", color: "text-yellow-400" },
-  { name: "Moderation Queue", rate: "120/min", volume: "45GB", status: "processing", color: "text-orange-400" },
+const readiness = [
+  { label: "Event sources, ingestion contracts, schemas, and ownership", value: "Not connected", icon: Activity },
+  { label: "Processing, storage, indexing, query, freshness, and data quality", value: "Unavailable", icon: Database },
+  { label: "Catalog, lineage, retention, deletion, export, and recovery", value: "Not configured", icon: Layers },
+  { label: "Security, encryption, access control, observability, and audit", value: "Not verified", icon: LockKeyhole },
 ];
 
-const PIPELINE_STAGES = [
-  { name: "Ingestion", desc: "Raw event capture", throughput: "8.5K events/s", icon: Activity },
-  { name: "Processing", desc: "ETL + enrichment", throughput: "7.2K events/s", icon: Zap },
-  { name: "Storage", desc: "Columnar + object store", throughput: "6.8K events/s", icon: Database },
-  { name: "Indexing", desc: "Search + analytics index", throughput: "6.1K events/s", icon: Layers },
-  { name: "Serving", desc: "Query + API layer", throughput: "5.9K events/s", icon: Server },
+const boundaries = [
+  { title: "No pipeline or telemetry claim", description: "No stream, event rate, throughput, storage volume, ingest total, query latency, live status, processing stage, uptime, or infrastructure metric is read, calculated, displayed, or simulated.", icon: Activity },
+  { title: "No catalog or dataset claim", description: "No table, dataset, row count, message, transaction, user signal, AI log, stream metric, schema, lineage, encrypted record, or data source is read or presented.", icon: Database },
+  { title: "No data action or persistence claim", description: "No ingest, process, store, index, query, refresh, edit, delete, export, API request, database read or write, access change, or recovery action can be initiated here.", icon: Server },
+  { title: "No security or business claim", description: "No encryption guarantee, privacy compliance, retention outcome, access decision, analytics result, AI capability, customer metric, financial result, or operational performance is asserted.", icon: LockKeyhole },
 ];
 
 export default function DataLake() {
-  const [activeTab, setActiveTab] = useState<"streams" | "pipeline" | "catalog">("streams");
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="sticky top-0 z-10 bg-background/80 backdrop-blur-sm border-b border-border/50 px-4 py-3 flex items-center gap-3">
-        <Link href="/" className="p-2 rounded-lg hover:bg-secondary/50 transition-colors text-muted-foreground">
-          <ArrowLeft className="w-4 h-4" />
-        </Link>
-        <div>
-          <h1 className="font-bold text-lg">Data Lake</h1>
-          <p className="text-xs text-muted-foreground">Platform-wide data infrastructure</p>
-        </div>
-        <div className="ml-auto flex items-center gap-1.5 text-xs text-green-400">
-          <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-          8.5K events/s
-        </div>
-      </div>
-
-      <div className="max-w-2xl mx-auto p-4 space-y-4">
-        <div className="grid grid-cols-3 gap-3">
-          {[
-            { label: "Total Data", value: "4.8 TB", icon: Database, color: "text-blue-400" },
-            { label: "Daily Ingest", value: "120 GB", icon: TrendingUp, color: "text-green-400" },
-            { label: "Query Latency", value: "12ms", icon: Clock, color: "text-purple-400" },
-          ].map(stat => (
-            <div key={stat.label} className="card p-3 text-center">
-              <stat.icon className={`w-5 h-5 ${stat.color} mx-auto mb-1`} />
-              <div className="font-bold">{stat.value}</div>
-              <div className="text-xs text-muted-foreground">{stat.label}</div>
-            </div>
-          ))}
-        </div>
-
-        <div className="flex gap-1 bg-secondary/30 rounded-xl p-1">
-          {(["streams", "pipeline", "catalog"] as const).map(tab => (
-            <button key={tab} onClick={() => setActiveTab(tab)}
-              className={`flex-1 py-2 rounded-lg text-sm font-medium capitalize transition-colors ${activeTab === tab ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}>
-              {tab}
-            </button>
-          ))}
-        </div>
-
-        {activeTab === "streams" && (
-          <div className="space-y-3">
-            {DATA_STREAMS.map(stream => (
-              <div key={stream.name} className="card p-4 flex items-center gap-4">
-                <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse shrink-0" />
-                <div className="flex-1">
-                  <div className="font-medium text-sm">{stream.name}</div>
-                  <div className="text-xs text-muted-foreground">{stream.volume} stored</div>
-                </div>
-                <div className="text-right">
-                  <div className={`text-sm font-bold ${stream.color}`}>{stream.rate}</div>
-                  <div className="text-xs text-muted-foreground capitalize">{stream.status}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {activeTab === "pipeline" && (
-          <div className="space-y-3">
-            {PIPELINE_STAGES.map((stage, i) => (
-              <div key={stage.name} className="card p-4">
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-                    <stage.icon className="w-4 h-4 text-primary" />
-                  </div>
-                  <div>
-                    <div className="font-medium text-sm">{i + 1}. {stage.name}</div>
-                    <div className="text-xs text-muted-foreground">{stage.desc}</div>
-                  </div>
-                  <div className="ml-auto text-xs font-medium text-green-400">{stage.throughput}</div>
-                </div>
-                {i < PIPELINE_STAGES.length - 1 && (
-                  <div className="ml-4 w-0.5 h-3 bg-border" />
-                )}
-              </div>
-            ))}
-          </div>
-        )}
-
-        {activeTab === "catalog" && (
-          <div className="space-y-3">
-            {[
-              { table: "events", rows: "2.4B", size: "1.2TB", desc: "All platform events" },
-              { table: "transactions", rows: "84M", size: "340GB", desc: "Wallet transactions" },
-              { table: "messages", rows: "1.1B", size: "890GB", desc: "Chat messages (encrypted)" },
-              { table: "user_signals", rows: "560M", size: "280GB", desc: "Behavioral signals" },
-              { table: "ai_logs", rows: "220M", size: "180GB", desc: "AI inference records" },
-              { table: "stream_metrics", rows: "45M", size: "45GB", desc: "Streaming analytics" },
-            ].map(table => (
-              <div key={table.table} className="card p-4 flex items-center gap-3">
-                <Database className="w-4 h-4 text-muted-foreground shrink-0" />
-                <div className="flex-1">
-                  <div className="font-mono text-sm font-medium">{table.table}</div>
-                  <div className="text-xs text-muted-foreground">{table.desc}</div>
-                </div>
-                <div className="text-right text-xs">
-                  <div className="font-medium">{table.rows} rows</div>
-                  <div className="text-muted-foreground">{table.size}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Database} title="Data Lake" subtitle="Data-lake-readiness status; no streams, events, datasets, storage, pipelines, catalogs, metrics, encryption, or platform telemetry are available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><ShieldAlert aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Data lake is unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous screen displayed fabricated live stream rates, storage volumes, pipeline throughput, query latency, catalog row counts, active pulse statuses, and an encrypted-message claim across social, transaction, AI, stream, wallet, and moderation data. No verified ingestion, storage, processing, catalog, security, privacy, or observability integration was connected, so those claims and controls were removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Database aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Data-lake-readiness status</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Production data infrastructure requires governed source contracts, schema evolution, durable ingestion, processing and storage guarantees, catalog and lineage, data quality and freshness checks, retention and deletion, access control, encryption and key management, recovery, observability, and auditable operations. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{readiness.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="lake-boundaries-heading"><h2 id="lake-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2">{boundaries.map(({ title, description, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><Icon aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p></Card>)}</div></section><div className="flex flex-wrap gap-3"><Link href="/data-grid"><Button variant="outline">View grid status</Button></Link><Link href="/data-privacy"><Button variant="outline">View privacy status</Button></Link><Link href="/contact-us-form"><Button variant="outline">Ask about availability</Button></Link></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No stream, event rate, throughput, storage volume, ingest total, query latency, live status, processing stage, table, dataset, row count, message, transaction, user signal, AI log, stream metric, schema, lineage, encrypted record, ingest, process, store, index, query, refresh, edit, delete, export, API request, database read or write, encryption guarantee, privacy outcome, analytics result, AI capability, customer metric, financial result, or operational performance is performed. This page is not evidence of data infrastructure, security, privacy, or telemetry.</p></div></Card></main></div>;
 }
