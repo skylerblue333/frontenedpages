@@ -1,144 +1,23 @@
-import { useState } from "react";
+import { AlertTriangle, CheckCircle2, Code2, FileCheck2, KeyRound, LockKeyhole, Search, ShieldAlert, TerminalSquare } from "lucide-react";
 import { Link } from "wouter";
-import { Code2, Play, Copy, CheckCircle, ChevronDown, ChevronRight, Globe, Shield, Zap, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
 import { PageHeader } from "@/components/PageHeader";
 
-const ENDPOINT_GROUPS = [
-  {
-    group: "Social", color: "text-cyan-400",
-    endpoints: [
-      { method: "GET",  path: "/api/trpc/social.getFeed",       desc: "Get personalized social feed",     params: '{"limit":10}' },
-      { method: "POST", path: "/api/trpc/social.createPost",    desc: "Create a new post",                params: '{"content":"Hello world!"}' },
-      { method: "POST", path: "/api/trpc/social.likePost",      desc: "Like or unlike a post",            params: '{"postId":"abc123"}' },
-    ],
-  },
-  {
-    group: "Users", color: "text-purple-400",
-    endpoints: [
-      { method: "GET",  path: "/api/trpc/auth.me",              desc: "Get current user profile",         params: '{}' },
-      { method: "POST", path: "/api/trpc/user.updateProfile",   desc: "Update user profile",              params: '{"bio":"New bio"}' },
-      { method: "POST", path: "/api/trpc/user.follow",          desc: "Follow a user",                    params: '{"userId":"user123"}' },
-    ],
-  },
-  {
-    group: "Crypto", color: "text-yellow-400",
-    endpoints: [
-      { method: "GET",  path: "/api/trpc/crypto.getBalance",    desc: "Get wallet balance",               params: '{}' },
-      { method: "POST", path: "/api/trpc/crypto.stake",         desc: "Stake SKY444 tokens",              params: '{"amount":1000,"duration":30}' },
-    ],
-  },
-  {
-    group: "AI", color: "text-green-400",
-    endpoints: [
-      { method: "POST", path: "/api/trpc/ai.chat",              desc: "Chat with AI assistant",           params: '{"message":"Hello AI"}' },
-      { method: "GET",  path: "/api/trpc/ai.getRecommendations",desc: "Get AI recommendations",           params: '{}' },
-    ],
-  },
+const boundaries = [
+  { label: "API source of truth, environment, endpoint inventory, version, schema, and ownership", value: "Not connected", icon: Code2 },
+  { label: "Authentication, authorization, input/output validation, rate limits, idempotency, and error contracts", value: "Unavailable", icon: KeyRound },
+  { label: "Request execution, side effects, database state, external integrations, credentials, and audit logs", value: "Not verified", icon: TerminalSquare },
+  { label: "Privacy, security, financial, crypto, AI, sensitive-data, and production-change safeguards", value: "Not configured", icon: ShieldAlert },
 ];
 
-const METHOD_COLOR: Record<string, string> = {
-  GET:  "bg-green-500/20 text-green-400 border-green-500/30",
-  POST: "bg-blue-500/20 text-blue-400 border-blue-500/30",
-};
+const surfaces = [
+  { title: "Contract and schema provenance", scope: "Generated endpoint inventory, version, source repository, request and response schemas, deprecation, ownership, environment, and test evidence", status: "Unavailable", icon: FileCheck2 },
+  { title: "Auth and request safety", scope: "Session, role, resource authorization, CSRF, validation, rate limit, idempotency, timeout, retry, and safe error semantics", status: "Not verified", icon: KeyRound },
+  { title: "Side effects and sensitive domains", scope: "Social writes, profile changes, crypto balances or staking, AI prompts, database writes, notifications, payments, and auditability", status: "Not configured", icon: ShieldAlert },
+  { title: "Developer documentation", scope: "Examples, SDKs, credentials, sandbox versus production separation, redaction, observability, and incident response", status: "Not connected", icon: Code2 },
+];
 
 export default function GeneratedApiExplorer() {
-  const [openGroup, setOpenGroup] = useState<string | null>("Social");
-  const [selected, setSelected] = useState<{ group: string; idx: number } | null>({ group: "Social", idx: 0 });
-  const [response, setResponse] = useState<string>("");
-  const [loading, setLoading] = useState(false);
-  const [copied, setCopied] = useState(false);
-
-  const selectedEndpoint = selected
-    ? ENDPOINT_GROUPS.find(g => g.group === selected.group)?.endpoints[selected.idx]
-    : null;
-
-  const runEndpoint = async () => {
-    if (!selectedEndpoint) return;
-    setLoading(true); setResponse("");
-    await new Promise(r => setTimeout(r, 800));
-    const mock = {
-      success: true,
-      data: selectedEndpoint.method === "GET"
-        ? { items: [{ id: "abc123", content: "Sample response", createdAt: new Date().toISOString() }], total: 1 }
-        : { id: "new_" + Math.random().toString(36).slice(2, 8), status: "created", timestamp: new Date().toISOString() },
-      meta: { latency: "42ms", version: "v1" },
-    };
-    setResponse(JSON.stringify(mock, null, 2));
-    setLoading(false);
-  };
-
-  return (
-    <div className="container py-8 max-w-5xl animate-page-in">
-      <PageHeader backHref="/developer-protocol" icon={Code2} title="API Explorer" subtitle="Browse and test all 305 tRPC endpoints interactively"
-        actions={<Link href="/api-docs"><Button variant="outline" className="gap-2 text-xs"><Globe className="w-3.5 h-3.5" /> Full Docs</Button></Link>}
-      />
-      <div className="grid lg:grid-cols-5 gap-6">
-        <div className="lg:col-span-2 space-y-2">
-          {ENDPOINT_GROUPS.map(group => (
-            <div key={group.group} className="card overflow-hidden">
-              <button onClick={() => setOpenGroup(openGroup === group.group ? null : group.group)}
-                className="w-full flex items-center gap-3 p-3.5 hover:bg-secondary/30 transition-colors">
-                {openGroup === group.group ? <ChevronDown className="w-4 h-4 text-muted-foreground shrink-0" /> : <ChevronRight className="w-4 h-4 text-muted-foreground shrink-0" />}
-                <span className={`font-semibold text-sm ${group.color}`}>{group.group}</span>
-                <Badge variant="outline" className="ml-auto text-[10px]">{group.endpoints.length}</Badge>
-              </button>
-              {openGroup === group.group && (
-                <div className="border-t border-slate-700/40">
-                  {group.endpoints.map((ep, i) => (
-                    <button key={i} onClick={() => { setSelected({ group: group.group, idx: i }); setResponse(""); }}
-                      className={`w-full flex items-center gap-2 px-3.5 py-2.5 text-left hover:bg-secondary/30 transition-colors ${
-                        selected?.group === group.group && selected.idx === i ? "bg-primary/10 border-l-2 border-primary" : ""
-                      }`}>
-                      <span className={`text-[10px] font-mono font-bold px-1.5 py-0.5 rounded border shrink-0 ${METHOD_COLOR[ep.method]}`}>{ep.method}</span>
-                      <span className="text-xs text-muted-foreground truncate">{ep.path.split(".")[1]}</span>
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-        <div className="lg:col-span-3 space-y-4">
-          {selectedEndpoint ? (
-            <>
-              <div className="card p-5">
-                <div className="flex items-center gap-3 mb-3">
-                  <span className={`text-xs font-mono font-bold px-2 py-1 rounded border ${METHOD_COLOR[selectedEndpoint.method]}`}>{selectedEndpoint.method}</span>
-                  <code className="text-xs font-mono text-foreground/80 flex-1 truncate">{selectedEndpoint.path}</code>
-                </div>
-                <p className="text-sm text-muted-foreground mb-4">{selectedEndpoint.desc}</p>
-                <div className="mb-4">
-                  <div className="text-xs font-semibold text-muted-foreground mb-2 flex items-center gap-1"><Shield className="w-3 h-3" /> Request Body</div>
-                  <pre className="bg-black/40 rounded-xl p-3 text-xs font-mono text-green-400 border border-slate-700/40 overflow-x-auto">{selectedEndpoint.params}</pre>
-                </div>
-                <Button onClick={runEndpoint} disabled={loading} className="btn-primary gap-2 w-full">
-                  {loading ? <><div className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Running…</> : <><Play className="w-3.5 h-3.5" /> Run Request</>}
-                </Button>
-              </div>
-              {response && (
-                <div className="card p-5">
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center gap-2"><Zap className="w-4 h-4 text-green-400" /><span className="text-sm font-semibold">Response</span><Badge variant="outline" className="text-[10px] text-green-400 border-green-500/30">200 OK</Badge></div>
-                    <button onClick={() => { navigator.clipboard.writeText(response); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
-                      className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs text-muted-foreground hover:text-foreground bg-secondary/50 hover:bg-secondary transition-all active:scale-95">
-                      {copied ? <CheckCircle className="w-3.5 h-3.5 text-green-400" /> : <Copy className="w-3.5 h-3.5" />}{copied ? "Copied!" : "Copy"}
-                    </button>
-                  </div>
-                  <pre className="bg-black/40 rounded-xl p-4 text-xs font-mono text-cyan-400 overflow-x-auto border border-slate-700/40 max-h-64">{response}</pre>
-                </div>
-              )}
-            </>
-          ) : (
-            <div className="card p-10 text-center"><Code2 className="w-10 h-10 text-muted-foreground mx-auto mb-3" /><p className="text-sm text-muted-foreground">Select an endpoint to test it</p></div>
-          )}
-          <div className="card p-4 flex items-center justify-between">
-            <div><div className="text-sm font-semibold">Full API Reference</div><div className="text-xs text-muted-foreground">305 endpoints with schemas</div></div>
-            <Link href="/api-docs"><Button size="sm" className="btn-primary gap-1 text-xs">View Docs <ArrowRight className="w-3 h-3" /></Button></Link>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader backHref="/developer-protocol" icon={Code2} title="API Explorer" subtitle="API-contract readiness status; no endpoint inventory, generated schema, credential, request runner, response fixture, or production API execution is connected in this deployment." actions={<Link href="/api-docs"><Button variant="outline" className="gap-2 text-xs"><FileCheck2 className="h-3.5 w-3.5" />Documentation status</Button></Link>} /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Interactive API execution is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen asserted a catalog of 305 endpoints and exposed a request runner that returned fabricated 200 responses, sample IDs, timestamps, latency, version metadata, social and profile writes, crypto balance and staking operations, and AI calls without source-backed contracts, credentials, auth, authorization, validation, side-effect handling, or environment separation. Those claims and controls were removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Code2 aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">API-contract readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A trustworthy API explorer requires a source-of-truth inventory, versioned schemas, environment separation, authenticated requests, resource authorization, input and output validation, rate limits, idempotency, safe retries and errors, redacted credentials, explicit side effects, audit logs, and qualified security, privacy, financial, crypto, AI, and legal review. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="api-surfaces-heading"><h2 id="api-surfaces-heading" className="mb-4 text-xl font-semibold">API surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No endpoint, schema, response, credential, side effect, financial, crypto, AI, privacy, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="api-boundaries-heading"><h2 id="api-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No endpoint or response claim</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No endpoint inventory lookup, request execution, mock response, sample ID, timestamp, latency, version, social write, profile write, crypto balance, staking, AI prompt, database operation, notification, credential access, API request, or personal-data operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">API, security, privacy, finance, crypto, AI, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not copy or run unverified examples as production calls. Verify source contracts, environment, auth, resource scope, validation, rate limits, side effects, secrets, logs, sensitive data, financial and crypto actions, AI data use, and qualified human review before integrating or executing any endpoint.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/api-docs"><Button variant="outline"><FileCheck2 aria-hidden="true" className="mr-2 h-4 w-4" />Review API docs</Button></Link><Link href="/developer-protocol"><Button variant="outline"><Code2 aria-hidden="true" className="mr-2 h-4 w-4" />Review developer protocol</Button></Link><Link href="/security-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link><Link href="/contact-us-form"><Button variant="outline"><Search aria-hidden="true" className="mr-2 h-4 w-4" />Ask about APIs</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No endpoint inventory lookup, request execution, mock response, sample ID, timestamp, latency, version, social write, profile write, crypto balance, staking, AI prompt, database operation, notification, credential access, API request, export, deletion, or personal-data operation is performed. This page is not evidence of 305 endpoints, live API contracts, production credentials, financial or crypto functionality, AI capability, or production integration readiness.</p></Card></main></div>;
 }
