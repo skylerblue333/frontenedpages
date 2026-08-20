@@ -1,20 +1,21 @@
-import React from "react";
-import { Button } from "@/components/ui/button";
+import { Archive, Database, FileCheck2, History, LockKeyhole, Search, ShieldAlert, Trash2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
 
-const ConversationArchive = () => {
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 p-6">
-      <div className="mx-auto max-w-6xl">
-        <h1 className="mb-6 text-4xl font-bold text-white">ConversationArchive</h1>
-        <Card className="border-purple-600 bg-slate-800 p-6">
-          <p className="text-gray-300">
-            ConversationArchive feature coming soon...
-          </p>
-        </Card>
-      </div>
-    </div>
-  );
-};
+const archiveStates = [
+  { label: "Conversation records, participants, timestamps, and message content", value: "Unavailable", icon: Archive },
+  { label: "Search, retrieval, export, synchronization, and pagination", value: "Not configured", icon: Search },
+  { label: "Retention, deletion, redaction, and restore behavior", value: "Not verified", icon: Trash2 },
+  { label: "Storage, access control, privacy, and audit evidence", value: "Not connected", icon: Database },
+];
 
-export default ConversationArchive;
+const boundaries = [
+  { title: "No archive claim", description: "No conversation, participant, message, timestamp, attachment, transcript, folder, item count, unread state, or archived status is read, displayed, or simulated.", icon: Archive },
+  { title: "No retrieval claim", description: "No search, filter, pagination, export, download, sync, restore, replay, AI summary, or message retrieval is available or asserted.", icon: Search },
+  { title: "No lifecycle claim", description: "No retention period, deletion, redaction, legal hold, recovery, expiration, or irreversible data-lifecycle action is performed.", icon: History },
+  { title: "No privacy claim", description: "No storage location, encryption, consent, access permission, data-rights workflow, audit trail, or private-conversation guarantee is connected. Do not enter sensitive content here.", icon: LockKeyhole },
+];
+
+export default function ConversationArchive() {
+  return <div className="min-h-screen bg-background"><PageHeader icon={Archive} title="Conversation Archive" subtitle="Conversation-archive status; no messages, participants, search, export, retention, deletion, storage, or privacy result is available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><ShieldAlert aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Conversation archive is unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous screen was a “coming soon” placeholder with no verified message store, participant identity, search index, export service, retention policy, deletion workflow, privacy boundary, or audit evidence. It has been replaced with an explicit readiness state rather than implying that conversations can be accessed, retained, exported, or erased here.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Archive aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Archive-readiness status</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Production conversation archiving requires authenticated ownership, participant authorization, durable storage, encryption, indexing, retention and deletion rules, export and access controls, redaction, legal-hold semantics, audit records, backup and restore, and explicit failure states. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{archiveStates.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="archive-boundaries-heading"><h2 id="archive-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2">{boundaries.map(({ title, description, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><Icon aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p></Card>)}</div></section><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><FileCheck2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No open, search, filter, export, download, sync, restore, delete, redact, refresh, API request, database write, notification, account mutation, external integration call, chart, count, AI summary, or recommendation is performed. This page is not evidence that any conversation exists, was stored, is private, was retained, or was deleted.</p></div></Card></main></div>;
+}
