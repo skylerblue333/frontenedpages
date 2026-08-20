@@ -1,75 +1,23 @@
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/_core/hooks/useAuth";
+import { AlertTriangle, BarChart3, CheckCircle2, FileCheck2, FileText, KeyRound, LockKeyhole, Search, ShieldAlert, UserRound } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
-import { Loader2, Plus, Search, Settings } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Authenticated organization scope, accounting role, approval authority, and least privilege", value: "Not connected", icon: KeyRound },
+  { label: "Ledger, source documents, accounting period, currency, exchange rate, and reconciliation provenance", value: "Unavailable", icon: FileCheck2 },
+  { label: "Revenue, expenses, assets, liabilities, tax, audit, forecasts, exports, and retention controls", value: "Not verified", icon: BarChart3 },
+  { label: "Personal, payroll, payment, financial, crypto, legal, and confidential-data safeguards", value: "Not configured", icon: ShieldAlert },
+];
+
+const surfaces = [
+  { title: "Statements and ledgers", scope: "Organization, accounting period, currency, chart of accounts, journal entries, revenue, expenses, assets, liabilities, and source documents", status: "Unavailable", icon: FileText },
+  { title: "Reconciliation and tax", scope: "Bank/payment/crypto rails, exchange rates, reconciliation, adjustments, tax basis, filing period, reviewer, and audit trail", status: "Not verified", icon: LockKeyhole },
+  { title: "Analysis and forecasts", scope: "Definitions, methodology, assumptions, actual-versus-forecast semantics, scenarios, materiality, and human review", status: "Not configured", icon: BarChart3 },
+  { title: "Sensitive records", scope: "Personal, payroll, payment, financial, crypto, legal, tax, health, and confidential organizational records", status: "Not connected", icon: UserRound },
+];
 
 export default function FinancialReports() {
-  const { isAuthenticated } = useAuth();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>FinancialReports</CardTitle>
-            <CardDescription>Sign in to access this feature</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full">Sign In</Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold">FinancialReports</h1>
-            <p className="text-muted-foreground mt-2">Financial statements</p>
-          </div>
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            New
-          </Button>
-        </div>
-
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Search className="w-4 h-4 text-muted-foreground" />
-              <Input
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="max-w-sm"
-              />
-              <Button variant="outline" size="icon">
-                <Settings className="w-4 h-4" />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {isLoading ? (
-              <div className="flex justify-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
-              </div>
-            ) : (
-              <div className="text-center py-12 text-muted-foreground">
-                <p>No data available. Start by creating a new item.</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={BarChart3} title="Financial Reports" subtitle="Financial-reporting readiness status; no authenticated organization, ledger, statement, balance, transaction, forecast, export, or personal-data record is available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Financial reporting is not verified</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen exposed a sign-in path and generic new, settings, search, loading, and empty-state controls without a connected ledger, source documents, accounting period, currency, reconciliation, tax, audit, forecast, export, or authorization boundary. No statement, balance, metric, or financial record was available, so reporting controls were removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><BarChart3 aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Financial-reporting readiness</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Trustworthy financial reporting requires authenticated organization scope, accounting roles and approvals, authoritative ledger and source-document provenance, defined periods and currencies, reconciled revenue, expenses, assets and liabilities, tax and audit controls, documented forecast methodology, safe exports, retention, and special handling for personal, payroll, payment, financial, crypto, legal, tax, or confidential records. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="financial-reports-surfaces-heading"><h2 id="financial-reports-surfaces-heading" className="mb-4 text-xl font-semibold">Reporting surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No financial record, balance, metric, forecast, audit property, privacy property, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="financial-reports-boundaries-heading"><h2 id="financial-reports-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><FileCheck2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No financial or accounting claim</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, ledger lookup, transaction lookup, balance calculation, report generation, forecast, tax calculation, export, API request, database read or write, notification, or personal-data operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Finance, crypto, tax, legal, privacy, and safety warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Financial reports may drive accounting, tax, payment, investment, crypto, legal, payroll, or governance decisions. Verify source authority, accounting treatment, period, currency, reconciliation, tax jurisdiction, access, audit, review, and professional sign-off before relying on or exporting a report.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/expense-management"><Button variant="outline"><FileText aria-hidden="true" className="mr-2 h-4 w-4" />Review expense status</Button></Link><Link href="/enterprise-analytics"><Button variant="outline"><BarChart3 aria-hidden="true" className="mr-2 h-4 w-4" />Review analytics status</Button></Link><Link href="/enterprise-billing"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review billing status</Button></Link><Link href="/security-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security status</Button></Link><Link href="/contact-us-form"><Button variant="outline"><Search aria-hidden="true" className="mr-2 h-4 w-4" />Ask about reports</Button></Link></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No auth check, ledger lookup, transaction lookup, balance calculation, report generation, forecast, tax calculation, export, API request, database read or write, notification, deletion, or personal-data operation is performed. This page is not evidence of financial statements, accounting accuracy, tax compliance, investment information, crypto reporting, or production reporting functionality.</p></div></Card></main></div>;
 }
