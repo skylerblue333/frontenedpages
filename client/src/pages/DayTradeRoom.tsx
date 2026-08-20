@@ -1,215 +1,23 @@
-// @ts-nocheck
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
-import { Card, IconTile } from "@/components/ui/sk";
+import { Activity, AlertTriangle, BarChart3, CheckCircle2, LockKeyhole, Mic, ShieldAlert, WalletCards, Zap } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { TrendingUp, Volume2, Zap, Mic } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
 
-const SYMBOLS = ["BTC", "ETH", "DODGE", "SKY444", "TRUMP"];
+const readiness = [
+  { label: "Authenticated account, broker/exchange, permitted market, and custody boundary", value: "Not connected", icon: WalletCards },
+  { label: "Authoritative quotes, order book, fees, slippage, liquidity, and market hours", value: "Unavailable", icon: BarChart3 },
+  { label: "Order validation, execution, settlement, reconciliation, and trade history", value: "Not configured", icon: Activity },
+  { label: "AI/voice claims, risk controls, limits, audit, and incident handling", value: "Not verified", icon: LockKeyhole },
+];
+
+const boundaries = [
+  { title: "No market or price claim", description: "No symbol, token, quote, price, quantity, total, order book, spread, volume, market state, fee, slippage, liquidity, timestamp, or market-hours result is fetched, displayed, calculated, or simulated.", icon: BarChart3 },
+  { title: "No trade or financial action", description: "No signal, buy, sell, open trade, close trade, order, voice command, wallet action, broker/exchange request, API request, database read or write, or financial account mutation can be initiated here.", icon: WalletCards },
+  { title: "No AI, performance, or history claim", description: "No AI signal, confidence, recommendation, voice partner, trade history, profit, loss, return, win rate, execution, settlement, or performance outcome is asserted.", icon: Zap },
+  { title: "Financial and crypto warn-and-proceed", description: "Day trading and crypto can cause rapid and total loss, leverage and liquidity risk, scams, custody loss, and unsuitable recommendations. Do not enter credentials, private keys, seed phrases, payment data, or funds here; independently verify all financial information and consult a qualified professional before acting.", icon: ShieldAlert },
+];
 
 export default function DayTradeRoom() {
-  const [selectedSymbol, setSelectedSymbol] = useState("BTC");
-  const [currentPrice, setCurrentPrice] = useState(45000);
-  const [quantity, setQuantity] = useState(1);
-  const [isVoiceOn, setIsVoiceOn] = useState(false);
-
-  const { data: signals } = trpc.trading.getSignals.useQuery({ symbol: selectedSymbol });
-  const generateSignal = trpc.trading.generateSignal.useMutation();
-  const openTrade = trpc.trading.openTrade.useMutation();
-  const { data: tradeHistory } = trpc.trading.getTradeHistory.useQuery();
-
-  const handleGenerateSignal = async () => {
-    await generateSignal.mutateAsync({ symbol: selectedSymbol, currentPrice });
-  };
-
-  const handleOpenTrade = async () => {
-    await openTrade.mutateAsync({
-      symbol: selectedSymbol,
-      entryPrice: currentPrice,
-      quantity,
-    });
-  };
-
-  return (
-    <div className="min-h-screen bg-background p-6">
-      <div className="max-w-6xl mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-2">Day Trade Room</h1>
-          <p className="text-muted-foreground">AI-powered trading with voice partner and real-time signals</p>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Trading Panel */}
-          <div className="lg:col-span-2 space-y-6">
-            {/* Symbol Selector */}
-            <Card className="p-6">
-              <h2 className="text-xl font-bold mb-4">Select Trading Pair</h2>
-              <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
-                {SYMBOLS.map(sym => (
-                  <button
-                    key={sym}
-                    onClick={() => setSelectedSymbol(sym)}
-                    className={`p-3 rounded-lg font-semibold transition-colors ${
-                      selectedSymbol === sym
-                        ? "bg-[var(--neon-cyan)] text-black"
-                        : "bg-card border border-border hover:bg-secondary"
-                    }`}
-                  >
-                    {sym}
-                  </button>
-                ))}
-              </div>
-            </Card>
-
-            {/* Price Input */}
-            <Card className="p-6">
-              <h2 className="text-xl font-bold mb-4">Market Entry</h2>
-              <div className="space-y-4">
-                <div>
-                  <label className="text-sm text-muted-foreground">Current Price ($)</label>
-                  <Input
-                    type="number"
-                    value={currentPrice}
-                    onChange={e => setCurrentPrice(Number(e.target.value))}
-                    className="mt-2"
-                  />
-                </div>
-                <div>
-                  <label className="text-sm text-muted-foreground">Quantity</label>
-                  <Input
-                    type="number"
-                    value={quantity}
-                    onChange={e => setQuantity(Number(e.target.value))}
-                    className="mt-2"
-                  />
-                </div>
-                <div className="text-sm text-muted-foreground">
-                  Total: ${(currentPrice * quantity).toLocaleString()}
-                </div>
-              </div>
-            </Card>
-
-            {/* AI Signals */}
-            <Card className="p-6">
-              <h2 className="text-xl font-bold mb-4">AI Trading Signals</h2>
-              <Button
-                onClick={handleGenerateSignal}
-                disabled={generateSignal.isPending}
-                className="w-full sk-gradient mb-4"
-              >
-                <Zap className="w-4 h-4 mr-2" />
-                {generateSignal.isPending ? "Generating..." : "Generate Signal"}
-              </Button>
-
-              {signals && signals.length > 0 && (
-                <div className="space-y-2">
-                  {signals.slice(0, 3).map((signal, i) => (
-                    <div key={i} className="p-3 bg-card border border-border rounded-lg">
-                      <div className="flex justify-between items-center">
-                        <span className={`font-semibold uppercase ${
-                          signal.signal === "buy" ? "text-[var(--neon-green)]" :
-                          signal.signal === "sell" ? "text-red-500" :
-                          "text-yellow-500"
-                        }`}>
-                          {signal.signal}
-                        </span>
-                        <span className="text-[var(--neon-cyan)]">
-                          {(signal.confidence * 100).toFixed(0)}% confidence
-                        </span>
-                      </div>
-                      <p className="text-sm text-muted-foreground mt-1">${signal.price}</p>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </Card>
-
-            {/* Trade Action */}
-            <Card className="p-6">
-              <Button
-                onClick={handleOpenTrade}
-                disabled={openTrade.isPending}
-                className="w-full bg-[var(--neon-green)] text-black hover:bg-[var(--neon-green)]/90 font-bold py-3"
-              >
-                <TrendingUp className="w-4 h-4 mr-2" />
-                {openTrade.isPending ? "Opening..." : "Open Trade"}
-              </Button>
-            </Card>
-          </div>
-
-          {/* Voice Partner Panel */}
-          <div className="space-y-6">
-            {/* AI Voice Partner */}
-            <Card className="p-6 text-center">
-              <div className={`w-20 h-20 mx-auto mb-4 rounded-full flex items-center justify-center transition-all ${
-                isVoiceOn 
-                  ? "bg-gradient-to-br from-[var(--neon-cyan)] to-[var(--neon-magenta)] animate-pulse"
-                  : "bg-gradient-to-br from-[var(--neon-cyan)] to-[var(--neon-magenta)]"
-              }`}>
-                <Volume2 className="w-10 h-10 text-black" />
-              </div>
-              <h3 className="text-lg font-bold mb-2">AI Voice Partner</h3>
-              <p className="text-sm text-muted-foreground mb-4">Real-time trading insights & analysis</p>
-              <Button
-                onClick={() => setIsVoiceOn(!isVoiceOn)}
-                variant={isVoiceOn ? "default" : "outline"}
-                className="w-full"
-              >
-                <Mic className="w-4 h-4 mr-2" />
-                {isVoiceOn ? "Voice: ON" : "Voice: OFF"}
-              </Button>
-              {isVoiceOn && (
-                <p className="text-xs text-[var(--neon-cyan)] mt-3">🎙️ Voice partner active</p>
-              )}
-            </Card>
-
-            {/* Trade History */}
-            <Card className="p-6">
-              <h3 className="text-lg font-bold mb-4">Recent Trades</h3>
-              {tradeHistory && tradeHistory.length > 0 ? (
-                <div className="space-y-2">
-                  {tradeHistory.slice(0, 5).map(trade => (
-                    <div key={trade.id} className="p-2 bg-card border border-border rounded text-sm">
-                      <div className="flex justify-between">
-                        <span className="font-semibold">{trade.symbol}</span>
-                        <span className={trade.profitLoss >= 0 ? "text-[var(--neon-green)]" : "text-red-500"}>
-                          {trade.profitLoss >= 0 ? "+" : ""}{trade.profitLoss.toFixed(2)}
-                        </span>
-                      </div>
-                      <p className="text-xs text-muted-foreground">
-                        {trade.status === "open" ? "🟢 Open" : "🔴 Closed"}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-sm text-muted-foreground">No trades yet. Start trading!</p>
-              )}
-            </Card>
-
-            {/* Stats */}
-            <Card className="p-6">
-              <h3 className="text-lg font-bold mb-4">Quick Stats</h3>
-              <div className="space-y-2 text-sm">
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Total Trades:</span>
-                  <span className="font-semibold">{tradeHistory?.length || 0}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Win Rate:</span>
-                  <span className="font-semibold text-[var(--neon-green)]">
-                    {tradeHistory && tradeHistory.length > 0
-                      ? ((tradeHistory.filter(t => t.profitLoss > 0).length / tradeHistory.length) * 100).toFixed(0) + "%"
-                      : "N/A"}
-                  </span>
-                </div>
-              </div>
-            </Card>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={BarChart3} title="Day Trade Room" subtitle="Trading-readiness status; no markets, quotes, signals, AI, voice, orders, execution, balances, returns, history, broker, exchange, wallet, or financial account state are available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Trading room is unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous screen disabled TypeScript checking, hardcoded symbols and a $45,000 price, accepted quantity and total inputs, queried trading signals and history, offered an AI signal mutation and open-trade mutation, displayed confidence, profit/loss and win-rate calculations, and presented an AI voice toggle. No verified market data, broker or exchange, custody, authorization, order validation, execution, settlement, AI, voice, or risk-control integration was connected, so those claims and actions were removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><BarChart3 aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Trading-readiness status</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Production trading infrastructure requires authoritative market sources, a permitted execution venue, authenticated account and custody boundaries, server-side validation, fees and slippage, market and risk controls, idempotent order handling, signed execution and settlement, reconciliation, auditability, privacy, observability, and clear financial disclosures. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{readiness.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="trading-boundaries-heading"><h2 id="trading-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2">{boundaries.map(({ title, description, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><Icon aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p></Card>)}</div></section><div className="flex flex-wrap gap-3"><Link href="/crypto"><Button variant="outline">View crypto status</Button></Link><Link href="/crypto-exchange"><Button variant="outline">View exchange status</Button></Link><Link href="/portfolio"><Button variant="outline">View portfolio status</Button></Link><Link href="/contact-us-form"><Button variant="outline"><Mic aria-hidden="true" className="mr-2 h-4 w-4" />Ask about availability</Button></Link></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No symbol, token, quote, price, quantity, total, order book, spread, volume, market state, fee, slippage, liquidity, timestamp, market-hours result, signal, confidence, buy, sell, open trade, close trade, order, voice command, wallet action, trade history, profit, loss, return, win rate, execution, settlement, API request, database read or write, broker/exchange request, custody, AI recommendation, or financial result is performed. This page is not evidence of market accuracy, execution, custody, security, suitability, profitability, or financial advice.</p></div></Card></main></div>;
 }
