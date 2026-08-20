@@ -1,75 +1,23 @@
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/_core/hooks/useAuth";
+import { AlertTriangle, CheckCircle2, FileCheck2, KeyRound, LockKeyhole, MessageCircle, Search, ShieldAlert, Users } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
-import { Loader2, Plus, Search, Settings } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Authenticated member, organization, room, message, participant, and moderation authorization scope", value: "Not connected", icon: KeyRound },
+  { label: "Room membership, message transport, delivery, ordering, editing, deletion, search, and event provenance", value: "Unavailable", icon: MessageCircle },
+  { label: "Moderation, reporting, presence, notifications, rate limits, retention, export, deletion, and audit", value: "Not verified", icon: ShieldAlert },
+  { label: "Privacy, minors, AI, accessibility, security, abuse, and least-privilege safeguards", value: "Not configured", icon: LockKeyhole },
+];
+
+const surfaces = [
+  { title: "Rooms and membership", scope: "Organization, room identity, membership, invitations, roles, mute/block, presence, private-room visibility, and lifecycle", status: "Unavailable", icon: Users },
+  { title: "Messages and delivery", scope: "Transport, ordering, delivery, edits, deletion, attachments, search, encryption claims, retries, and event provenance", status: "Not verified", icon: MessageCircle },
+  { title: "Moderation and safety", scope: "Reports, abuse, harassment, spam, minors, AI content, escalation, rate limits, audit, retention, and incident response", status: "Not configured", icon: ShieldAlert },
+  { title: "Privacy and notifications", scope: "Personal data, consent, presence, notification delivery, export, deletion, sharing, accessibility, and authorization", status: "Not connected", icon: FileCheck2 },
+];
 
 export default function GroupChat() {
-  const { isAuthenticated } = useAuth();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>GroupChat</CardTitle>
-            <CardDescription>Sign in to access this feature</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full">Sign In</Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold">GroupChat</h1>
-            <p className="text-muted-foreground mt-2">Group messaging</p>
-          </div>
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            New
-          </Button>
-        </div>
-
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Search className="w-4 h-4 text-muted-foreground" />
-              <Input
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="max-w-sm"
-              />
-              <Button variant="outline" size="icon">
-                <Settings className="w-4 h-4" />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {isLoading ? (
-              <div className="flex justify-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
-              </div>
-            ) : (
-              <div className="text-center py-12 text-muted-foreground">
-                <p>No data available. Start by creating a new item.</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={MessageCircle} title="Group Chat" subtitle="Group-messaging readiness status; no authenticated room, member, message transport, presence, moderation, notification, or production chat service is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Group messaging is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen exposed a sign-in path and generic new, settings, search, loading, and empty-state controls without a connected room, member scope, message transport, presence, moderation, notifications, privacy, retention, or authorization boundary. Those unsupported controls were removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><MessageCircle aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Group-messaging readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Trustworthy group chat requires authenticated room and organization scope, membership and role controls, reliable message transport and ordering, clear delivery and deletion semantics, moderation and reporting, presence and notification consent, rate limits, retention and export/deletion, minors protections, accessibility, and qualified privacy and security review. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="group-chat-surfaces-heading"><h2 id="group-chat-surfaces-heading" className="mb-4 text-xl font-semibold">Chat surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No room, member, message, presence, notification, moderation, AI, privacy, security, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="group-chat-boundaries-heading"><h2 id="group-chat-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No room or message claim</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, room lookup, membership lookup, message lookup, search, send, edit, delete, presence, notification, moderation, report, API request, database read or write, export, deletion, or personal-data operation is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Messaging, privacy, minors, AI, security, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not treat this page as evidence of rooms, members, messages, presence, encryption, notifications, moderation, AI safety, or message delivery. Verify identity, membership, private-content rules, consent, minors protections, abuse controls, retention, deletion, and human review before exposing chat.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/group-chats"><Button variant="outline"><MessageCircle aria-hidden="true" className="mr-2 h-4 w-4" />Review group chats</Button></Link><Link href="/profile"><Button variant="outline"><Users aria-hidden="true" className="mr-2 h-4 w-4" />Review identity</Button></Link><Link href="/security-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link><Link href="/documentation"><Button variant="outline"><FileCheck2 aria-hidden="true" className="mr-2 h-4 w-4" />Review evidence</Button></Link><Link href="/contact-us-form"><Button variant="outline"><Search aria-hidden="true" className="mr-2 h-4 w-4" />Ask about chat</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No auth check, room lookup, membership lookup, message lookup, search, send, edit, delete, presence, notification, moderation, report, API request, database read or write, export, deletion, or personal-data operation is performed. This page is not evidence of rooms, members, messages, presence, encryption, notifications, moderation, AI safety, message delivery, or production chat functionality.</p></Card></main></div>;
 }
