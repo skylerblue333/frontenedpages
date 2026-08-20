@@ -1,89 +1,23 @@
-import { Zap } from "lucide-react";
+import { AlertTriangle, BarChart3, CheckCircle2, Gavel, LockKeyhole, ShieldAlert, WalletCards, Zap } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { PageHeader } from "@/components/PageHeader";
 
+const readiness = [
+  { label: "Exchange venue, assets, markets, prices, and order-book source", value: "Not verified", icon: BarChart3 },
+  { label: "Wallet or custody ownership, balances, and permissions", value: "Not connected", icon: WalletCards },
+  { label: "Orders, fills, fees, settlement, withdrawals, and reconciliation", value: "Unavailable", icon: Zap },
+  { label: "Security, compliance, limits, monitoring, and audit evidence", value: "Not configured", icon: LockKeyhole },
+];
+
+const boundaries = [
+  { title: "No exchange or market claim", description: "No exchange venue, market, order book, token price, quote, liquidity, spread, volume, balance, asset, active user, transaction, success rate, or response time is read or displayed.", icon: BarChart3 },
+  { title: "No order or settlement action", description: "No account, wallet, custody, deposit, withdrawal, order, trade, fill, fee, approval, signature, transaction, settlement, refund, or reconciliation can be initiated or confirmed.", icon: Zap },
+  { title: "No automation or security claim", description: "No trading bot, automation, analytics, AI insight, uptime, latency, throughput, encryption guarantee, compliance status, or security certification is asserted.", icon: Gavel },
+  { title: "Crypto warn-and-proceed", description: "Exchange activity can cause irreversible loss, custody exposure, fees, market risk, fraud, and tax consequences. Verify venue, asset, address, and records through trusted sources before acting.", icon: AlertTriangle },
+];
+
 export default function CryptoExchange() {
-  return (
-    <div className="min-h-screen bg-background">
-      <PageHeader icon={Zap} title="Crypto Exchange" subtitle="Fully functional crypto exchange page with live data and real-time updates" />
-      
-      <div className="max-w-7xl mx-auto px-4 py-8 space-y-8">
-        {/* Main Content Area */}
-        <Card className="p-8 bg-card border border-border/50">
-          <div className="space-y-6">
-            <h2 className="text-2xl font-bold">Crypto Exchange</h2>
-            
-            {/* Feature Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <Zap className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 1</h3>
-                  <p className="text-sm text-muted-foreground">Real-time data and live updates</p>
-                </div>
-              </Card>
-              
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <Zap className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 2</h3>
-                  <p className="text-sm text-muted-foreground">Advanced analytics and insights</p>
-                </div>
-              </Card>
-              
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <Zap className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 3</h3>
-                  <p className="text-sm text-muted-foreground">Seamless integration and automation</p>
-                </div>
-              </Card>
-            </div>
-            
-            {/* Action Buttons */}
-            <div className="flex gap-4 flex-wrap pt-4">
-              <Button className="bg-primary hover:bg-primary/90">
-                Get Started
-              </Button>
-              <Button variant="outline">
-                Learn More
-              </Button>
-              <Button variant="ghost">
-                Documentation
-              </Button>
-            </div>
-          </div>
-        </Card>
-        
-        {/* Stats Section */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Active Users</p>
-              <p className="text-2xl font-bold">802K+</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Total Transactions</p>
-              <p className="text-2xl font-bold">2.4M</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Success Rate</p>
-              <p className="text-2xl font-bold">99.9%</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Avg Response Time</p>
-              <p className="text-2xl font-bold">45ms</p>
-            </div>
-          </Card>
-        </div>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader backHref="/crypto-hub" icon={Zap} title="Crypto Exchange" subtitle="Exchange-readiness status; no live markets, order books, prices, balances, orders, fills, withdrawals, custody, or transaction history are available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-red-400/30 bg-red-950/20 p-6"><div className="flex items-start gap-3"><ShieldAlert aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-red-300" /><div><h2 className="font-semibold text-red-100">Crypto exchange is unavailable</h2><p className="mt-1 text-sm leading-6 text-red-100/80">The previous screen claimed a fully functional exchange with live data and real-time updates, offered generic feature and action controls, and displayed fabricated active-user, transaction, success-rate, and response-time metrics. No verified venue, asset, price, wallet, custody, order, settlement, security, or audit integration was connected, so those claims and controls were removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Zap aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Exchange-readiness status</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Production exchange infrastructure requires verified venue and market sources, asset and network configuration, authenticated custody or non-custodial wallet boundaries, order validation, price and fee provenance, risk limits, execution and settlement, withdrawal controls, reconciliation, monitoring, compliance, incident recovery, and auditable records. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{readiness.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="exchange-boundaries-heading"><h2 id="exchange-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2">{boundaries.map(({ title, description, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><Icon aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p></Card>)}</div></section><div className="flex flex-wrap gap-3"><Link href="/crypto-hub"><Button variant="outline">View crypto status</Button></Link><Link href="/wallet"><Button variant="outline">View wallet status</Button></Link><Link href="/contact-us-form"><Button variant="outline">Ask about exchange availability</Button></Link></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No market, price, order book, quote, liquidity, spread, volume, wallet, balance, account, deposit, withdrawal, order, trade, fill, fee, approval, signature, transaction, settlement, refund, reconciliation, API request, database read or write, notification, user count, success rate, response time, or financial recommendation is performed. This page is not evidence of exchange support, liquidity, custody, execution, or platform performance.</p></div></Card></main></div>;
 }
