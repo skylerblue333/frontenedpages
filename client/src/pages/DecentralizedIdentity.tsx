@@ -1,122 +1,23 @@
-/**
- * DecentralizedIdentity — Phase 11 Decentralized Identity (DID)
- * Self-sovereign identity, verifiable credentials, Web3 identity layer
- */
-import { useState } from "react";
+import { CheckCircle2, Globe, Key, LockKeyhole, ShieldAlert, UserRound, WalletCards } from "lucide-react";
 import { Link } from "wouter";
-import { ArrowLeft, Key, Shield, CheckCircle, Lock, Globe, User } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
 
-const CREDENTIALS = [
-  { type: "Email Verified", issuer: "ShadowChat", date: "2024-01-15", status: "active" },
-  { type: "Phone Verified", issuer: "ShadowChat", date: "2024-01-16", status: "active" },
-  { type: "KYC Level 1", issuer: "ShadowChat Trust", date: "2024-02-01", status: "active" },
-  { type: "Creator Verified", issuer: "ShadowChat", date: "2024-03-10", status: "active" },
+const readiness = [
+  { label: "Authenticated DID method, resolver, controller, key lifecycle, and recovery", value: "Not connected", icon: Key },
+  { label: "Verifiable-credential issuers, schemas, status, revocation, and consent", value: "Unavailable", icon: CheckCircle2 },
+  { label: "Wallets, signatures, key custody, device binding, and account linking", value: "Not configured", icon: WalletCards },
+  { label: "Privacy, ZK circuits, data minimization, compliance, and audit evidence", value: "Not verified", icon: LockKeyhole },
+];
+
+const boundaries = [
+  { title: "No identity or credential claim", description: "No DID, identity type, controller, creation date, update date, linked wallet, email, phone, KYC, creator, issuer, credential, status, or verification result is fetched, displayed, calculated, or simulated.", icon: UserRound },
+  { title: "No wallet, key, or credential action", description: "No identity creation, key generation, signing, wallet linking, credential issuance, addition, presentation, revocation, recovery, API request, database read or write, or account mutation can be initiated here.", icon: WalletCards },
+  { title: "No privacy or zero-knowledge guarantee", description: "No zero-knowledge proof, age, income, location, credit, data-sharing, consent, selective-disclosure, encryption, compliance, or privacy-preserving behavior is asserted.", icon: LockKeyhole },
+  { title: "Identity and privacy warn-and-proceed", description: "Identity systems can expose personal data, enable account takeover, create irreversible key loss, or misrepresent verification. Do not enter government IDs, KYC documents, wallet credentials, private keys, seed phrases, or sensitive personal data here; independently verify issuers and privacy terms before acting.", icon: ShieldAlert },
 ];
 
 export default function DecentralizedIdentity() {
-  const [tab, setTab] = useState<"identity" | "credentials" | "privacy">("identity");
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="sticky top-0 z-10 bg-background/80 backdrop-blur-sm border-b border-border/50 px-4 py-3 flex items-center gap-3">
-        <Link href="/" className="p-2 rounded-lg hover:bg-secondary/50 transition-colors text-muted-foreground">
-          <ArrowLeft className="w-4 h-4" />
-        </Link>
-        <div>
-          <h1 className="font-bold text-lg flex items-center gap-2">
-            <Key className="w-5 h-5 text-yellow-400" />
-            Decentralized Identity
-          </h1>
-          <p className="text-xs text-muted-foreground">Self-sovereign identity — Phase 11</p>
-        </div>
-      </div>
-
-      <div className="max-w-2xl mx-auto p-4 space-y-4">
-        {/* DID Card */}
-        <div className="card p-4 bg-gradient-to-br from-primary/10 to-purple-500/10 border border-primary/20">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
-              <User className="w-6 h-6 text-primary" />
-            </div>
-            <div>
-              <div className="font-bold">Your DID</div>
-              <div className="text-xs font-mono text-muted-foreground">did:shadow:0x7f3a...9c2b</div>
-            </div>
-            <div className="ml-auto">
-              <span className="text-xs px-2 py-1 bg-green-500/20 text-green-400 rounded-full">Active</span>
-            </div>
-          </div>
-          <div className="text-xs text-muted-foreground">Your identity is self-sovereign. You control what you share and with whom.</div>
-        </div>
-
-        <div className="flex gap-1 bg-secondary/30 rounded-xl p-1">
-          {(["identity", "credentials", "privacy"] as const).map(t => (
-            <button key={t} onClick={() => setTab(t)}
-              className={`flex-1 py-2 rounded-lg text-xs font-medium capitalize transition-colors ${tab === t ? "bg-background text-foreground shadow-sm" : "text-muted-foreground"}`}>
-              {t}
-            </button>
-          ))}
-        </div>
-
-        {tab === "identity" && (
-          <div className="space-y-3">
-            {[
-              { label: "Identity Type", value: "Shadow DID v1.0", icon: Globe },
-              { label: "Created", value: "January 15, 2024", icon: Key },
-              { label: "Last Updated", value: "March 10, 2024", icon: Shield },
-              { label: "Linked Wallets", value: "2 wallets", icon: Lock },
-            ].map(item => (
-              <div key={item.label} className="card p-3 flex items-center gap-3">
-                <item.icon className="w-4 h-4 text-primary shrink-0" />
-                <span className="text-sm text-muted-foreground">{item.label}</span>
-                <span className="ml-auto text-sm font-medium">{item.value}</span>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {tab === "credentials" && (
-          <div className="space-y-3">
-            {CREDENTIALS.map((c, i) => (
-              <div key={i} className="card p-4 flex items-center gap-3">
-                <CheckCircle className="w-5 h-5 text-green-400 shrink-0" />
-                <div className="flex-1">
-                  <div className="font-medium text-sm">{c.type}</div>
-                  <div className="text-xs text-muted-foreground">Issued by {c.issuer} · {c.date}</div>
-                </div>
-                <span className="text-xs px-2 py-0.5 bg-green-500/20 text-green-400 rounded-full">{c.status}</span>
-              </div>
-            ))}
-            <button className="w-full card p-3 text-sm text-primary border-dashed border-primary/30 hover:bg-primary/5 transition-colors">
-              + Add Credential
-            </button>
-          </div>
-        )}
-
-        {tab === "privacy" && (
-          <div className="space-y-3">
-            <div className="card p-4 bg-primary/5 border border-primary/20">
-              <h4 className="font-semibold text-sm mb-2">Zero-Knowledge Proofs</h4>
-              <p className="text-xs text-muted-foreground">Prove facts about yourself without revealing the underlying data. e.g., "I am over 18" without sharing your birthdate.</p>
-            </div>
-            {[
-              { claim: "Age verification", status: "enabled", desc: "Prove 18+ without sharing DOB" },
-              { claim: "Income range", status: "disabled", desc: "Prove income bracket for services" },
-              { claim: "Location region", status: "enabled", desc: "Prove country without exact location" },
-              { claim: "Credit score range", status: "disabled", desc: "Prove creditworthiness privately" },
-            ].map(p => (
-              <div key={p.claim} className="card p-3 flex items-center gap-3">
-                <div className={`w-2 h-2 rounded-full shrink-0 ${p.status === "enabled" ? "bg-green-400" : "bg-secondary"}`} />
-                <div className="flex-1">
-                  <div className="font-medium text-sm">{p.claim}</div>
-                  <div className="text-xs text-muted-foreground">{p.desc}</div>
-                </div>
-                <span className={`text-xs ${p.status === "enabled" ? "text-green-400" : "text-muted-foreground"}`}>{p.status}</span>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader backHref="/" icon={Key} title="Decentralized Identity" subtitle="Identity-readiness status; no DID, credentials, KYC, verification, wallet linking, signatures, zero-knowledge proofs, or personal-data state are available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><ShieldAlert aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Decentralized identity is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen displayed a hardcoded DID, active email, phone, KYC and creator credentials, Shadow issuers and dates, linked-wallet count, enabled privacy proofs, and an add-credential control. No DID method, resolver, issuer, credential registry, revocation, wallet, signing, key custody, ZK, consent, privacy, or compliance integration was connected, so those claims and actions were removed.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Globe aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Identity-readiness status</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A trustworthy decentralized identity service requires a defined DID method, secure key lifecycle and recovery, verified issuers and schemas, credential status and revocation, explicit consent, selective disclosure, data minimization, device and wallet binding, privacy controls, accessibility, auditability, and recovery. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{readiness.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="identity-boundaries-heading"><h2 id="identity-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2">{boundaries.map(({ title, description, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><Icon aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p></Card>)}</div></section><div className="flex flex-wrap gap-3"><Link href="/settings"><Button variant="outline">View account settings</Button></Link><Link href="/wallet"><Button variant="outline">View wallet status</Button></Link><Link href="/privacy-policy"><Button variant="outline">Review privacy status</Button></Link><Link href="/contact-us-form"><Button variant="outline">Ask about availability</Button></Link></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No DID, identity type, controller, creation date, update date, linked wallet, email, phone, KYC, creator, issuer, credential, status, verification result, identity creation, key generation, signing, wallet linking, credential issuance, presentation, revocation, recovery, API request, database read or write, zero-knowledge proof, age, income, location, credit, consent, encryption, compliance result, or privacy guarantee is performed. This page is not evidence of identity verification, credential validity, key security, custody, privacy, or compliance.</p></div></Card></main></div>;
 }
