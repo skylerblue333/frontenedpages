@@ -1,20 +1,23 @@
-import React from "react";
+import { AlertTriangle, CheckCircle2, FileCheck2, KeyRound, Network, Search, ShieldAlert, WalletCards } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
 
-const EthereumPoolSelector = () => {
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 p-6">
-      <div className="mx-auto max-w-6xl">
-        <h1 className="mb-6 text-4xl font-bold text-white">EthereumPoolSelector</h1>
-        <Card className="border-purple-600 bg-slate-800 p-6">
-          <p className="text-gray-300">
-            EthereumPoolSelector feature coming soon...
-          </p>
-        </Card>
-      </div>
-    </div>
-  );
-};
+const boundaries = [
+  { label: "Ethereum network, chain ID, contracts, pool identifiers, token addresses, and oracle provenance", value: "Not verified", icon: Network },
+  { label: "Liquidity, reserves, TVL, APY, fees, rewards, slippage, price, and market-data freshness", value: "Unavailable", icon: FileCheck2 },
+  { label: "Wallet ownership, custody, approvals, transaction simulation, signatures, nonce, gas, and finality", value: "Not connected", icon: WalletCards },
+  { label: "User authorization, risk disclosures, sanctions, privacy, monitoring, and incident recovery", value: "Not configured", icon: ShieldAlert },
+];
 
-export default EthereumPoolSelector;
+const surfaces = [
+  { title: "Pool discovery", scope: "Verified network, protocol, pool, token, contract, audit, deployment, oracle, and data-source provenance", status: "Unavailable" },
+  { title: "Pool economics", scope: "Reserves, liquidity, TVL, APY, rewards, fees, price, slippage, impermanent loss, and data freshness", status: "Not verified" },
+  { title: "Wallet and transaction safety", scope: "Address ownership, custody, approvals, simulation, calldata, nonce, gas, signature, confirmation, failure, and reversal limits", status: "Not connected" },
+  { title: "Risk and governance", scope: "Smart-contract risk, bridge risk, oracle risk, sanctions, privacy, access, monitoring, incident response, and support", status: "Not configured" },
+];
+
+export default function EthereumPoolSelector() {
+  return <div className="min-h-screen bg-background"><PageHeader icon={WalletCards} title="Ethereum Pool Selector" subtitle="Ethereum pool-readiness status; no verified network, contract, pool, token, liquidity, APY, TVL, wallet, market-data, or transaction state is available in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Ethereum pool selection is not verified</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen was only a coming-soon placeholder and did not provide a verified chain, protocol, pool, token, liquidity, APY, TVL, fee, oracle, wallet, transaction, or risk source. No pool selector or crypto action is available, so no pool, return, balance, or transaction claim is made.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><WalletCards aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Ethereum pool readiness</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Safe pool selection requires verified network and contract provenance, token-address validation, fresh reserve and oracle data, transparent fees and risks, wallet and custody boundaries, transaction simulation, explicit signing, nonce and gas handling, confirmation and failure states, authorization, monitoring, and audit. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="ethereum-pool-surfaces-heading"><h2 id="ethereum-pool-surfaces-heading" className="mb-4 text-xl font-semibold">Pool surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Network aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No pool, metric, return, asset, security property, or transaction outcome is asserted.</p></Card>)}</div></section><section aria-labelledby="ethereum-pool-boundaries-heading"><h2 id="ethereum-pool-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><FileCheck2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No pool or financial claim</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No chain, contract, token, pool, address, reserve, liquidity, TVL, APY, fee, reward, price, balance, wallet, approval, gas, slippage, transaction, or financial outcome is read, calculated, displayed, recommended, or simulated.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Crypto and finance warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Pool participation can cause irreversible loss and smart-contract, oracle, bridge, custody, market, fee, and regulatory risks. Verify chain, contracts, token addresses, source data, risks, wallet control, simulation, approvals, signatures, finality, and recovery limits before enabling or acting on a pool.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/crypto-hub"><Button variant="outline"><WalletCards aria-hidden="true" className="mr-2 h-4 w-4" />Review crypto status</Button></Link><Link href="/defi"><Button variant="outline"><Network aria-hidden="true" className="mr-2 h-4 w-4" />Review DeFi status</Button></Link><Link href="/security-center"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security status</Button></Link><Link href="/contact-us-form"><Button variant="outline"><Search aria-hidden="true" className="mr-2 h-4 w-4" />Ask about pool availability</Button></Link></div><Card className="border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" /><p className="text-sm leading-6 text-muted-foreground">No network request, chain lookup, contract read, pool query, price calculation, market-data fetch, wallet connection, balance read, approval, signing, transaction simulation, transaction submission, database read or write, or personal-data operation is performed. This page is not evidence of Ethereum, DeFi, pool, yield, liquidity, custody, transaction, or financial functionality.</p></div></Card></main></div>;
+}
