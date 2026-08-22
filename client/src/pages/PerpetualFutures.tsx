@@ -1,84 +1,23 @@
-import { TrendingUp } from "lucide-react";
+import { AlertTriangle, CheckCircle2, FileCheck2, KeyRound, LockKeyhole, ShieldAlert, TrendingUp, WalletCards } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { PageHeader } from "@/components/PageHeader";
 
+const boundaries = [
+  { label: "Authenticated trader, account, venue, instrument, and authorization scope", value: "Not connected", icon: KeyRound },
+  { label: "Contract, quote, funding, margin, leverage, liquidation, and market-data provenance", value: "Unavailable", icon: FileCheck2 },
+  { label: "Order, position, execution, settlement, risk, and failure behavior", value: "Not verified", icon: TrendingUp },
+  { label: "Financial data, credentials, wallet keys, privacy, security, and safeguards", value: "Not configured", icon: LockKeyhole },
+];
+
+const surfaces = [
+  { title: "Trader, account, venue, instrument, and authorization scope", scope: "Authenticated trader, account, organization, venue, instrument, role, suitability, consent, purpose, and authorization", status: "Unavailable", icon: KeyRound },
+  { title: "Contract and market-data provenance", scope: "Contract specification, index, mark price, quotes, funding, open interest, timestamp, venue, source, and freshness", status: "Not connected", icon: FileCheck2 },
+  { title: "Leverage, margin, liquidation, and risk controls", scope: "Leverage, collateral, initial and maintenance margin, funding, liquidation threshold, fees, risk limits, and suitability", status: "Not verified", icon: ShieldAlert },
+  { title: "Orders, positions, execution, and settlement", scope: "Order intent, validation, submission, fills, position state, P&L, settlement, cancellation, failure, replay, and reconciliation", status: "Not configured", icon: WalletCards },
+];
+
 export default function PerpetualFutures() {
-  return (
-    <div className="min-h-screen bg-background">
-      <PageHeader icon={TrendingUp} title="Perpetual Futures" subtitle="Advanced perpetual futures with cutting-edge technology" />
-      
-      <div className="max-w-7xl mx-auto px-4 py-8 space-y-8">
-        {/* Main Content Area */}
-        <Card className="p-8 bg-gradient-to-br from-primary/10 to-secondary/10 border border-primary/20">
-          <div className="space-y-6">
-            <h2 className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Perpetual Futures</h2>
-            
-            {/* Advanced Features */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <Card className="p-4 bg-background/80 border border-primary/30 hover:border-primary/80 transition-all cursor-pointer hover:shadow-lg hover:shadow-primary/20">
-                <div className="space-y-3">
-                  <TrendingUp className="w-8 h-8 text-primary" />
-                  <h3 className="font-bold text-lg">Advanced Analytics</h3>
-                  <p className="text-sm text-muted-foreground">Real-time data processing with AI insights</p>
-                  <Button size="sm" variant="outline" className="w-full">Explore</Button>
-                </div>
-              </Card>
-              
-              <Card className="p-4 bg-background/80 border border-primary/30 hover:border-primary/80 transition-all cursor-pointer hover:shadow-lg hover:shadow-primary/20">
-                <div className="space-y-3">
-                  <TrendingUp className="w-8 h-8 text-primary" />
-                  <h3 className="font-bold text-lg">Automation Engine</h3>
-                  <p className="text-sm text-muted-foreground">Autonomous operations with intelligent decision making</p>
-                  <Button size="sm" variant="outline" className="w-full">Configure</Button>
-                </div>
-              </Card>
-              
-              <Card className="p-4 bg-background/80 border border-primary/30 hover:border-primary/80 transition-all cursor-pointer hover:shadow-lg hover:shadow-primary/20">
-                <div className="space-y-3">
-                  <TrendingUp className="w-8 h-8 text-primary" />
-                  <h3 className="font-bold text-lg">Security First</h3>
-                  <p className="text-sm text-muted-foreground">Robust encryption and protection</p>
-                  <Button size="sm" variant="outline" className="w-full">Secure</Button>
-                </div>
-              </Card>
-            </div>
-            
-            {/* Performance Metrics */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4">
-              <div className="p-4 bg-background/50 rounded-lg border border-border/50">
-                <p className="text-xs text-muted-foreground">Processing Speed</p>
-                <p className="text-2xl font-bold text-primary">99.9%</p>
-              </div>
-              <div className="p-4 bg-background/50 rounded-lg border border-border/50">
-                <p className="text-xs text-muted-foreground">Uptime</p>
-                <p className="text-2xl font-bold text-primary">24/7</p>
-              </div>
-              <div className="p-4 bg-background/50 rounded-lg border border-border/50">
-                <p className="text-xs text-muted-foreground">Latency</p>
-                <p className="text-2xl font-bold text-primary">&lt;50ms</p>
-              </div>
-              <div className="p-4 bg-background/50 rounded-lg border border-border/50">
-                <p className="text-xs text-muted-foreground">Throughput</p>
-                <p className="text-2xl font-bold text-primary">10K+/s</p>
-              </div>
-            </div>
-            
-            {/* Action Section */}
-            <div className="flex gap-4 flex-wrap pt-6">
-              <Button size="lg" className="bg-primary hover:bg-primary/90">
-                Get Started Now
-              </Button>
-              <Button size="lg" variant="outline">
-                View Documentation
-              </Button>
-              <Button size="lg" variant="ghost">
-                Schedule Demo
-              </Button>
-            </div>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={TrendingUp} title="Perpetual Futures" subtitle="Derivatives-market readiness status; no authenticated trader, venue, contract registry, market-data feed, margin engine, liquidation service, order router, custody system, or production execution backend is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Perpetual futures are unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen claimed advanced real-time AI analytics, autonomous automation, encryption, 99.9% processing speed, 24/7 uptime, less-than-50ms latency, 10K+/s throughput, and offered inert Explore, Configure, Secure, Get Started, and Schedule Demo actions without connected market data, contract registry, margin, liquidation, order, custody, risk, privacy, or authorization infrastructure. Those claims and operations were removed. No instrument, quote, funding rate, leverage, margin, liquidation, order, position, P&L, execution, settlement, performance, or availability state is displayed, calculated, stored, transmitted, verified, or mutated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><TrendingUp aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Derivatives-market readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Trustworthy perpetual-futures functionality requires authenticated trader and account scope, authoritative contract and venue records, timestamped market-data provenance, funding and mark-price semantics, server-side leverage and margin rules, liquidation and risk controls, suitability boundaries, order validation and idempotency, secure custody, execution and fill evidence, settlement and reconciliation, failure handling, privacy-safe financial data, and least-privilege authorization. A quote, funding rate, margin, liquidation threshold, position, P&L, execution, uptime, latency, throughput, or trading capability is not a fact without verified records. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="perpetual-surfaces-heading"><h2 id="perpetual-surfaces-heading" className="mb-4 text-xl font-semibold">Derivatives control surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No instrument, quote, funding, margin, leverage, liquidation, order, position, P&L, execution, settlement, privacy, security, safety, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="perpetual-boundaries-heading"><h2 id="perpetual-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No derivatives operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, contract or quote lookup, market-data query, leverage or margin calculation, liquidation evaluation, order validation, submission, execution, position update, P&L calculation, settlement, API request, database read or write, export, or deletion is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Finance, trading, crypto, credentials, personal data, privacy, safety, accessibility, security, compliance, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not enter passwords, authentication codes, API keys, payment details, private keys, seed phrases, identity documents, or confidential financial information here. Do not treat this page as evidence of an instrument, quote, funding rate, leverage, margin, liquidation, position, P&L, execution, settlement, risk control, uptime, latency, throughput, privacy protection, security, compliance, or trading capability. Verify trader and account scope, contract and venue, market-data source, timestamps, funding and mark-price rules, suitability, collateral, leverage, margin, liquidation, order limits, execution, custody, fees, settlement, reconciliation, risk, accessibility, privacy, security, compliance, and authorization before relying on or taking trading action.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/options-trading"><Button variant="outline"><TrendingUp aria-hidden="true" className="mr-2 h-4 w-4" />Review options status</Button></Link><Link href="/order-book"><Button variant="outline"><FileCheck2 aria-hidden="true" className="mr-2 h-4 w-4" />Review market data</Button></Link><Link href="/security"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No auth check, contract or quote lookup, market-data query, leverage or margin calculation, liquidation evaluation, order validation, submission, execution, position update, P&L calculation, settlement, API request, database read or write, export, or deletion is performed. This page is not evidence of an instrument, quote, funding rate, leverage, margin, liquidation, position, P&L, execution, settlement, risk control, uptime, latency, throughput, privacy protection, security, compliance, or trading capability.</p></Card></main></div>;
 }
