@@ -1,130 +1,16 @@
-import React, { useState } from 'react';
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Spinner } from '@/components/ui/spinner';
+import { AlertTriangle, BrainCircuit, CheckCircle2, FileCheck2, GraduationCap, KeyRound, LockKeyhole, Shield, Sparkles, Trophy, UserRound, WalletCards } from "lucide-react";
+import { Link } from "wouter";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const surfaces = [
+  ["Course catalog", "Verified authored content, instructor or model identity, duration, level, localization, accessibility, and external-asset provenance", "Not connected", GraduationCap],
+  ["AI teaching service", "Model/version, prompt and learner-data handling, grounded answers, evaluation, safety filters, cost, and human escalation", "Unavailable", BrainCircuit],
+  ["Enrollment and progress", "Authenticated learner ownership, enrollment, lesson completion, assessment source, skill calculations, and recovery", "Not verified", UserRound],
+  ["Commerce and credentials", "Price/currency source, payment authorization, refunds, certificates, rewards, wallet custody, privacy, and authorization", "Not configured", WalletCards],
+] as const;
 
 export default function SkySchoolAI() {
-  const [selectedCourse, setSelectedCourse] = useState<string | null>(null);
-  const [isLoading] = useState(false);
-
-  const courses = [
-    {
-      id: 'blockchain-101',
-      title: 'Blockchain Fundamentals',
-      instructor: 'HOPE AI',
-      level: 'Beginner',
-      duration: '4 weeks',
-      students: 1250,
-      rating: 4.8,
-      skills: ['Crypto', 'Web3', 'Smart Contracts'],
-      price: 'Free',
-    },
-    {
-      id: 'ai-agents',
-      title: 'Building AI Agents',
-      instructor: 'HOPE AI',
-      level: 'Intermediate',
-      duration: '6 weeks',
-      students: 840,
-      rating: 4.9,
-      skills: ['AI', 'Automation', 'LLMs'],
-      price: '$49',
-    },
-    {
-      id: 'economy-design',
-      title: 'Token Economy Design',
-      instructor: 'HOPE AI',
-      level: 'Advanced',
-      duration: '8 weeks',
-      students: 320,
-      rating: 4.7,
-      skills: ['Economics', 'Tokenomics', 'Game Theory'],
-      price: '$99',
-    },
-  ];
-
-  const skillTrees = [
-    { name: 'Blockchain Developer', progress: 65, skills: 8 },
-    { name: 'AI Engineer', progress: 42, skills: 5 },
-    { name: 'Ecosystem Designer', progress: 28, skills: 3 },
-  ];
-
-  if (isLoading) return <Spinner />;
-
-  return (
-    <div className="min-h-screen bg-black text-white p-8">
-      <div className="max-w-7xl mx-auto">
-        <div className="mb-12">
-          <h1 className="text-4xl font-bold mb-2">SKYSCHOOL AI</h1>
-          <p className="text-gray-400">Learn from the world's best AI teacher — personalized education at scale</p>
-        </div>
-
-        {/* Featured Courses */}
-        <div className="mb-16">
-          <h2 className="text-2xl font-bold mb-6">FEATURED COURSES</h2>
-          <div className="grid grid-cols-3 gap-6">
-            {courses.map((course) => (
-              <Card
-                key={course.id}
-                className="bg-gray-900 border-gray-800 p-6 cursor-pointer hover:border-cyan-500 transition"
-                onClick={() => setSelectedCourse(course.id)}
-              >
-                <div className="flex items-center justify-between mb-4">
-                  <Badge className="bg-purple-600">{course.level}</Badge>
-                  <span className="text-yellow-400">★ {course.rating}</span>
-                </div>
-                <h3 className="text-xl font-bold mb-2">{course.title}</h3>
-                <p className="text-gray-400 text-sm mb-4">{course.instructor}</p>
-
-                <div className="space-y-3 mb-6">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-gray-400">Duration</span>
-                    <span>{course.duration}</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-gray-400">Students</span>
-                    <span>{course.students.toLocaleString()}</span>
-                  </div>
-                </div>
-
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {course.skills.map((skill) => (
-                    <Badge key={skill} className="bg-gray-700 text-xs">{skill}</Badge>
-                  ))}
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <span className="text-lg font-bold">{course.price}</span>
-                  <Button className="bg-cyan-600 hover:bg-cyan-700">Enroll</Button>
-                </div>
-              </Card>
-            ))}
-          </div>
-        </div>
-
-        {/* Skill Trees */}
-        <div>
-          <h2 className="text-2xl font-bold mb-6">YOUR SKILL TREES</h2>
-          <div className="space-y-4">
-            {skillTrees.map((tree) => (
-              <Card key={tree.name} className="bg-gray-900 border-gray-800 p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-bold text-lg">{tree.name}</h3>
-                  <span className="text-sm text-gray-400">{tree.skills} skills unlocked</span>
-                </div>
-                <div className="w-full bg-gray-700 rounded-full h-3">
-                  <div
-                    className="bg-gradient-to-r from-cyan-500 to-purple-500 h-3 rounded-full"
-                    style={{ width: `${tree.progress}%` }}
-                  />
-                </div>
-                <p className="text-sm text-gray-400 mt-2">{tree.progress}% complete</p>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={BrainCircuit} title="SkySchool AI" subtitle="AI-education readiness status; no verified course marketplace, AI tutor, learner record, enrollment, progress, assessment, commerce, credential, reward, or authorization backend is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">SkySchool AI is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen displayed fabricated course instructors, student counts, ratings, durations, prices, an AI-teacher claim, enrollment controls, and personalized skill-tree progress without verified sources. Those claims and controls were removed. No course, model, instructor, learner, student, rating, price, enrollment, progress, score, certificate, reward, wallet, financial, privacy, compliance, or authorization state is displayed, calculated, stored, transmitted, verified, granted, or mutated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><BrainCircuit aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">AI-education readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A trustworthy AI learning product requires verified authored content and asset provenance, instructor/model identity, model/version and prompt/data governance, grounded answers and evaluation, safety filters and human escalation, authenticated learner ownership, enrollment/progress/assessment sources, price and currency provenance, payment/refund controls, certificate/reward semantics, wallet custody boundaries, privacy, retention/deletion, auditability, and honest operational states. A course, rating, price, learner progress, AI capability, or credential is not a fact without verified records. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{surfaces.map(([label,,value,Icon])=><Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="ai-school-surfaces-heading"><h2 id="ai-school-surfaces-heading" className="mb-4 text-xl font-semibold">AI-school control surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(([title,scope,status,Icon])=><Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No course, model, instructor, learner, student, rating, price, enrollment, progress, score, certificate, reward, wallet, financial, privacy, compliance, or authorization status is asserted.</p></Card>)}</div></section><section aria-labelledby="ai-school-boundaries-heading"><h2 id="ai-school-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No AI-school operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No course lookup, model invocation, learner lookup, enrollment, progress calculation, assessment, skill-tree update, payment, refund, certificate issuance, reward allocation, wallet action, database read or write, export, or deletion is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Personal data, identity, AI, finance, crypto, privacy, safety, security, compliance, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not enter passwords, authentication codes, API tokens, private keys, seed phrases, wallet addresses, identity documents, health records, payment details, account numbers, learner records, private prompts, or confidential source code here. Do not treat this page as evidence of an AI tutor, course availability, student count, rating, price, progress, score, certificate, reward, wallet entitlement, privacy control, security control, compliance state, or authorization. Verify model, content, data handling, consent, identity, payment, source, safety, assessment, privacy, and human review before relying on AI education.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/sky-school"><Button variant="outline"><GraduationCap aria-hidden="true" className="mr-2 h-4 w-4" />Review SkySchool</Button></Link><Link href="/ai-control-center"><Button variant="outline"><BrainCircuit aria-hidden="true" className="mr-2 h-4 w-4" />Review AI controls</Button></Link><Link href="/school-dashboard"><Button variant="outline"><UserRound aria-hidden="true" className="mr-2 h-4 w-4" />Review learner dashboard</Button></Link><Link href="/school-certificate"><Button variant="outline"><FileCheck2 aria-hidden="true" className="mr-2 h-4 w-4" />Review certificates</Button></Link><Link href="/wallet"><Button variant="outline"><WalletCards aria-hidden="true" className="mr-2 h-4 w-4" />Review wallet</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link><Link href="/permissions"><Button variant="outline"><KeyRound aria-hidden="true" className="mr-2 h-4 w-4" />Review permissions</Button></Link><Link href="/security"><Button variant="outline"><Shield aria-hidden="true" className="mr-2 h-4 w-4" />Review security</Button></Link><Link href="/documentation"><Button variant="outline"><FileCheck2 aria-hidden="true" className="mr-2 h-4 w-4" />Review evidence</Button></Link><Link href="/skill-badges"><Button variant="outline"><Trophy aria-hidden="true" className="mr-2 h-4 w-4" />Review credentials</Button></Link><Link href="/marketplace"><Button variant="outline"><Sparkles aria-hidden="true" className="mr-2 h-4 w-4" />Review marketplace</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No course lookup, model invocation, learner lookup, enrollment, progress calculation, assessment, skill-tree update, payment, refund, certificate issuance, reward allocation, wallet action, database read or write, export, or deletion is performed. This page is not evidence of an AI tutor, course availability, student count, rating, price, progress, score, certificate, reward, wallet entitlement, privacy control, security control, compliance state, or authorization.</p></Card></main></div>;
 }
