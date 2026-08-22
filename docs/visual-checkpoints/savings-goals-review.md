@@ -1,0 +1,5 @@
+# SavingsGoals visual checkpoint
+
+SavingsGoals was hardened from an authenticated-looking savings-tracking CRUD shell with nonfunctional Sign In, New, Search, Settings, loading, and empty-data controls without an account, balance, transaction, or goal service. Those controls were removed. No balance, target, progress, interest, projection, deposit, withdrawal, fee, account, user, tenant, currency, privacy, compliance, or availability state is displayed, calculated, stored, transmitted, verified, granted, or mutated.
+
+The page documents verified account ownership, tenant and currency scope, goal purpose, authoritative balances and transactions, timestamps and pending state, fees and reconciliation, contribution schedules, calculation basis, rate assumptions, uncertainty and scenarios, separation of records from projections, privacy, retention, least-privilege access, fraud controls, auditability, incident response, and financial/consumer-protection review. Finance warn-and-proceed language is present. Files: `savings-goals-desktop.webp`, `savings-goals-mobile.png`.

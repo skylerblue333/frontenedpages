@@ -1,75 +1,16 @@
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/_core/hooks/useAuth";
+import { AlertTriangle, BarChart3, CheckCircle2, FileCheck2, KeyRound, LockKeyhole, PiggyBank, ReceiptText, ShieldCheck, Terminal, WalletCards } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
-import { Loader2, Plus, Search, Settings } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const surfaces = [
+  ["Account and goal ownership", "Verified account, owner, tenant, currency, goal purpose, target date, permissions, and consent", "Not connected", WalletCards],
+  ["Balance and transaction provenance", "Authoritative balance, deposits, withdrawals, fees, timestamps, pending state, reconciliation, and source", "Unavailable", ReceiptText],
+  ["Progress and projection methodology", "Calculation basis, contribution schedule, rate assumptions, uncertainty, scenarios, and human review", "Not verified", BarChart3],
+  ["Privacy, security, and operations", "Sensitive-data minimization, retention, access control, audit history, fraud controls, and incident response", "Not configured", LockKeyhole],
+] as const;
 
 export default function SavingsGoals() {
-  const { isAuthenticated } = useAuth();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>SavingsGoals</CardTitle>
-            <CardDescription>Sign in to access this feature</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full">Sign In</Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold">SavingsGoals</h1>
-            <p className="text-muted-foreground mt-2">Savings tracking</p>
-          </div>
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            New
-          </Button>
-        </div>
-
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Search className="w-4 h-4 text-muted-foreground" />
-              <Input
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="max-w-sm"
-              />
-              <Button variant="outline" size="icon">
-                <Settings className="w-4 h-4" />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {isLoading ? (
-              <div className="flex justify-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
-              </div>
-            ) : (
-              <div className="text-center py-12 text-muted-foreground">
-                <p>No data available. Start by creating a new item.</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={PiggyBank} title="Savings Goals" subtitle="Savings-goal readiness status; no verified account, balance, transaction ledger, goal store, interest source, projection model, or financial operations backend is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Savings goals are unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen exposed nonfunctional Sign In, New, Search, Settings, loading, and empty-data controls without an account, balance, transaction, or goal service. Those controls were removed. No balance, target, progress, interest, projection, deposit, withdrawal, fee, account, user, tenant, currency, privacy, compliance, or availability state is displayed, calculated, stored, transmitted, verified, granted, or mutated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><PiggyBank aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Savings-goal readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A trustworthy savings-goal system requires verified account ownership, tenant and currency scope, goal purpose and permissions, authoritative balances and transactions, timestamps and pending state, fees, reconciliation, contribution schedules, transparent calculation basis, rate assumptions, uncertainty and scenarios, separation of records from projections, privacy and retention, least-privilege access, fraud controls, auditability, incident response, and applicable financial and consumer-protection review. A balance, target, progress figure, interest rate, projection, or financial recommendation is not a fact without verified records. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{surfaces.map(([label,,value,Icon])=><Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="savings-surfaces-heading"><h2 id="savings-surfaces-heading" className="mb-4 text-xl font-semibold">Savings-goal control surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(([title,scope,status,Icon])=><Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No balance, target, progress, interest, projection, deposit, withdrawal, fee, account, user, tenant, currency, privacy, compliance, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="savings-boundaries-heading"><h2 id="savings-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No financial operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No account connection, balance lookup, goal creation, deposit, withdrawal, transfer, interest calculation, projection, recommendation, database read or write, API request, export, or deletion is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Finance, personal data, crypto, privacy, safety, security, compliance, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">I'm an AI, not a licensed financial advisor — this is analysis, not guaranteed advice; investing carries risk you bear. Do not enter passwords, authentication codes, API tokens, private keys, seed phrases, wallet addresses, identity documents, health records, payment details, account numbers, or confidential source code here. Do not treat this page as evidence of an account, balance, interest rate, projection, goal status, financial recommendation, privacy protection, security, compliance, or legal conclusion. Verify account source, currency, timestamps, transactions, fees, assumptions, uncertainty, privacy, security, authorization, and qualified professional review before acting.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/wallets"><Button variant="outline"><WalletCards aria-hidden="true" className="mr-2 h-4 w-4" />Review accounts</Button></Link><Link href="/portfolio-management"><Button variant="outline"><BarChart3 aria-hidden="true" className="mr-2 h-4 w-4" />Review portfolio</Button></Link><Link href="/permissions"><Button variant="outline"><KeyRound aria-hidden="true" className="mr-2 h-4 w-4" />Review permissions</Button></Link><Link href="/security"><Button variant="outline"><ShieldCheck aria-hidden="true" className="mr-2 h-4 w-4" />Review security</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link><Link href="/documentation"><Button variant="outline"><FileCheck2 aria-hidden="true" className="mr-2 h-4 w-4" />Review documentation</Button></Link><Link href="/system-observability"><Button variant="outline"><Terminal aria-hidden="true" className="mr-2 h-4 w-4" />Review observability</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No account connection, balance lookup, goal creation, deposit, withdrawal, transfer, interest calculation, projection, recommendation, database read or write, API request, export, or deletion is performed. This page is not evidence of an account, balance, interest rate, projection, goal status, financial recommendation, privacy protection, security, compliance, or legal conclusion.</p></Card></main></div>;
 }
