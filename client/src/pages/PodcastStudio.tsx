@@ -1,75 +1,23 @@
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/_core/hooks/useAuth";
+import { AlertTriangle, CheckCircle2, FileAudio2, FileCheck2, KeyRound, LockKeyhole, Mic2, ShieldAlert } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
-import { Loader2, Plus, Search, Settings } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Authenticated creator, organization, show, episode, and authorization scope", value: "Not connected", icon: KeyRound },
+  { label: "Recording, guest, audio, transcript, artwork, and media provenance", value: "Unavailable", icon: FileCheck2 },
+  { label: "Editing, processing, publishing, distribution, moderation, and analytics behavior", value: "Not verified", icon: Mic2 },
+  { label: "Personal data, voice, copyright, monetization, privacy, and safeguards", value: "Not configured", icon: LockKeyhole },
+];
+
+const surfaces = [
+  { title: "Creator, organization, show, and authorization scope", scope: "Authenticated creator, organization, show, collaborator, guest, role, purpose, consent, and authorization", status: "Unavailable", icon: KeyRound },
+  { title: "Recording, guest, audio, transcript, and media provenance", scope: "Recording identity, participants, consent, audio source, transcript, artwork, edit history, processing provider, and lineage", status: "Not connected", icon: FileAudio2 },
+  { title: "Editing, publishing, distribution, and moderation controls", scope: "Media processing, episode version, publication state, feeds, distribution providers, content moderation, takedown, and failure handling", status: "Not verified", icon: Mic2 },
+  { title: "Analytics, monetization, copyright, privacy, and access controls", scope: "Audience events, analytics definitions, sponsorship, payouts, rights, licenses, personal data, voice, retention, deletion, security, accessibility, and access", status: "Not configured", icon: ShieldAlert },
+];
 
 export default function PodcastStudio() {
-  const { isAuthenticated } = useAuth();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>PodcastStudio</CardTitle>
-            <CardDescription>Sign in to access this feature</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full">Sign In</Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold">PodcastStudio</h1>
-            <p className="text-muted-foreground mt-2">Record and edit podcasts</p>
-          </div>
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            New
-          </Button>
-        </div>
-
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Search className="w-4 h-4 text-muted-foreground" />
-              <Input
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="max-w-sm"
-              />
-              <Button variant="outline" size="icon">
-                <Settings className="w-4 h-4" />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {isLoading ? (
-              <div className="flex justify-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
-              </div>
-            ) : (
-              <div className="text-center py-12 text-muted-foreground">
-                <p>No data available. Start by creating a new item.</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Mic2} title="Podcast Studio" subtitle="Podcast-production readiness status; no authenticated creator, recording service, media processor, transcript provider, publishing pipeline, distribution feed, analytics store, monetization rail, moderation system, or production podcast backend is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Podcast production is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen was an authenticated-only generic search and New-item shell with a nonfunctional sign-in button, unused loading state, and no creator, recording, guest consent, audio, transcript, artwork, editing, publishing, distribution, analytics, monetization, copyright, moderation, privacy, or authorization workflow. It was replaced with this explicit production boundary. No show, episode, recording, guest, transcript, audience, revenue, payout, license, moderation, or availability state is displayed, searched, calculated, stored, transmitted, verified, or mutated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Mic2 aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Podcast-production readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Trustworthy podcast production requires authenticated creator and organization scope, participant and guest consent, secure recording and upload, media and transcript provenance, reversible editing, processing status, rights and licensing evidence, feed and distribution contracts, content moderation and takedown, analytics definitions and consent, monetization and payout records, privacy-safe voice and personal-data handling, accessibility, and least-privilege authorization. A recording, episode, transcript, audience metric, payout, license, or publishing state is not a fact without verified records. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="podcast-surfaces-heading"><h2 id="podcast-surfaces-heading" className="mb-4 text-xl font-semibold">Podcast control surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No show, episode, recording, guest, transcript, audience, revenue, payout, license, moderation, privacy, security, copyright, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="podcast-boundaries-heading"><h2 id="podcast-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No podcast operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, show or episode lookup, recording, upload, transcript, media processing, edit, publish, feed generation, distribution call, analytics query, moderation, payout, API request, database read or write, export, or deletion is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Voice, personal data, copyright, privacy, safety, accessibility, security, compliance, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not enter passwords, authentication codes, payment details, private keys, seed phrases, identity documents, health or legal records, private audio, guest information, voice recordings, copyrighted media, or confidential audience data here. Do not treat this page as evidence of recording, transcript accuracy, publishing, distribution, audiences, revenue, payouts, rights, moderation, privacy protection, security, or compliance. Verify creator and organization scope, participant consent, media and transcript provenance, rights and licensing, provider custody, moderation, takedown, analytics definitions, monetization, retention, deletion, accessibility, privacy, security, copyright, compliance, and authorization before relying on podcast data.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/music-generation"><Button variant="outline"><FileAudio2 aria-hidden="true" className="mr-2 h-4 w-4" />Review audio status</Button></Link><Link href="/security"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No auth check, show or episode lookup, recording, upload, transcript, media processing, edit, publish, feed generation, distribution call, analytics query, moderation, payout, API request, database read or write, export, or deletion is performed. This page is not evidence of recording, transcript accuracy, publishing, distribution, audiences, revenue, payouts, rights, moderation, privacy protection, security, or compliance.</p></Card></main></div>;
 }
