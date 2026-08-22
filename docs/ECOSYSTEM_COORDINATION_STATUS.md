@@ -25,6 +25,8 @@ The larger `skycoin4444`, `SKYCOIN4444-Ecosystem`, and `skycoin4444hopeAIShadowc
 
 The broad screen-count audit is frozen. Do not add placeholder pages, fabricated metrics, fake wallet balances, simulated market data, invented AI results, or generic marketing controls. Select one existing product workflow, define its typed API contract, implement real persistence and authorization where supported, add tests, run the build, and push a clean commit. If an integration is unavailable, document it as unavailable. Do not overwrite another chat's uncommitted work; inspect `git status` first and coordinate through a branch or commit.
 
+The latest `skycoin4444` core checkpoint is remote commit `b89f8d6`. Its repaired CI now performs a locked install and real typecheck/test/build commands. GitHub Actions verified the install but failed at typecheck. The local and remote evidence reports **722 remaining TypeScript errors**, largely because client pages call methods absent from the backend's generic feature routers. This is a real blocker; it must be fixed by implementing concrete contracts or removing unsupported claims, not by adding `any`, `@ts-ignore`, or excluding the errors from CI.
+
 ## Highest-value next slice
 
 Extend the verified API foundation into a real authenticated application workflow only after choosing the target repository and persistence model. The minimum credible slice is: account/session boundary, one typed domain entity, create/list/read/update authorization checks, durable database migration or explicitly documented local-store boundary, integration tests, error handling, structured logs without secrets, and a frontend client that displays loading, success, empty, and failure states.
