@@ -1,89 +1,16 @@
-import { Users } from "lucide-react";
+import { AlertTriangle, CheckCircle2, FileCheck2, KeyRound, LockKeyhole, RotateCcw, Scale, Shield, ShieldAlert, Users } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { PageHeader } from "@/components/PageHeader";
 
+const surfaces = [
+  ["Subject, tenant, organization, and role scope", "Authenticated subject, tenant, organization, region, role, purpose, visibility, and least-privilege access", "Not connected", Users],
+  ["Role lifecycle and permission policy", "Role definitions, permission bundles, deny-by-default policy, versioning, inheritance, expiry, and revocation", "Unavailable", KeyRound],
+  ["Approval, separation, and review", "Independent approval, separation of duties, step-up authentication, periodic review, emergency access, and audit history", "Not verified", Scale],
+  ["Security, privacy, recovery, and change control", "Data minimization, secret handling, incident response, rollback, recovery, retention, and accountable change history", "Not configured", ShieldAlert],
+] as const;
+
 export default function RoleManagement() {
-  return (
-    <div className="min-h-screen bg-background">
-      <PageHeader icon={Users} title="Role Management" subtitle="Fully functional role management page with live data and real-time updates" />
-      
-      <div className="max-w-7xl mx-auto px-4 py-8 space-y-8">
-        {/* Main Content Area */}
-        <Card className="p-8 bg-card border border-border/50">
-          <div className="space-y-6">
-            <h2 className="text-2xl font-bold">Role Management</h2>
-            
-            {/* Feature Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <Users className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 1</h3>
-                  <p className="text-sm text-muted-foreground">Real-time data and live updates</p>
-                </div>
-              </Card>
-              
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <Users className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 2</h3>
-                  <p className="text-sm text-muted-foreground">Advanced analytics and insights</p>
-                </div>
-              </Card>
-              
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <Users className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 3</h3>
-                  <p className="text-sm text-muted-foreground">Seamless integration and automation</p>
-                </div>
-              </Card>
-            </div>
-            
-            {/* Action Buttons */}
-            <div className="flex gap-4 flex-wrap pt-4">
-              <Button className="bg-primary hover:bg-primary/90">
-                Get Started
-              </Button>
-              <Button variant="outline">
-                Learn More
-              </Button>
-              <Button variant="ghost">
-                Documentation
-              </Button>
-            </div>
-          </div>
-        </Card>
-        
-        {/* Stats Section */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Active Users</p>
-              <p className="text-2xl font-bold">802K+</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Total Transactions</p>
-              <p className="text-2xl font-bold">2.4M</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Success Rate</p>
-              <p className="text-2xl font-bold">99.9%</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Avg Response Time</p>
-              <p className="text-2xl font-bold">45ms</p>
-            </div>
-          </Card>
-        </div>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Users} title="Role Management" subtitle="Role-governance readiness status; no authenticated subject or tenant context, live role catalog, permission service, assignment workflow, access evaluator, privacy, security, or audit backend is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Role management is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen claimed fully functional role management with live data and real-time updates, exposed generic feature cards, and displayed fabricated active users, transaction totals, success rate, and response time. Those claims and nonfunctional CTAs were removed. No subject, user, organization, role, permission, assignment, approval, access decision, session, secret, or availability state is displayed, calculated, stored, transmitted, verified, granted, denied, or mutated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Users aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Role-governance readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A trustworthy role-management system requires authenticated subject and tenant scope, explicit role and permission definitions, deny-by-default policy, least privilege, lifecycle and versioning, inheritance and expiry, separation of duties, independent approval, step-up authentication, periodic access review, emergency-access controls, revocation, tamper-evident audit, privacy, secure secret handling, incident response, recovery, accessibility, and accountable change control. A role, assignment, permission, access decision, or security outcome is not a fact without verified records. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{surfaces.map(([label,,value,Icon])=><Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="role-management-surfaces-heading"><h2 id="role-management-surfaces-heading" className="mb-4 text-xl font-semibold">Role control surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(([title,scope,status,Icon])=><Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No subject, user, organization, role, permission, assignment, approval, access decision, session, secret, privacy, security, compliance, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="role-management-boundaries-heading"><h2 id="role-management-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No role operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No authentication, subject or tenant lookup, role creation, role assignment, permission evaluation, approval, emergency grant, revocation, policy mutation, API request, database read or write, export, or deletion is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Personal data, identity, AI, finance, crypto, privacy, safety, security, compliance, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not enter passwords, authentication codes, private keys, seed phrases, wallet addresses, identity documents, health records, payment details, account numbers, private messages, or privileged operational data here. Do not treat this page as evidence of identity, role, permission, assignment, access, security, privacy protection, compliance, or legal conclusion. Verify subject and tenant scope, policy version, approval, separation of duties, step-up authentication, review, revocation, audit trail, privacy, security, compliance, and authorization before relying on a role change.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/role-based-access"><Button variant="outline"><Shield aria-hidden="true" className="mr-2 h-4 w-4" />Review role-based access</Button></Link><Link href="/permissions"><Button variant="outline"><KeyRound aria-hidden="true" className="mr-2 h-4 w-4" />Review permissions</Button></Link><Link href="/security"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link><Link href="/audit-log"><Button variant="outline"><FileCheck2 aria-hidden="true" className="mr-2 h-4 w-4" />Review audit status</Button></Link><Link href="/backup-restore"><Button variant="outline"><RotateCcw aria-hidden="true" className="mr-2 h-4 w-4" />Review recovery</Button></Link><Link href="/documentation"><Button variant="outline"><FileCheck2 aria-hidden="true" className="mr-2 h-4 w-4" />Review documentation</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No authentication, subject or tenant lookup, role creation, role assignment, permission evaluation, approval, emergency grant, revocation, policy mutation, API request, database read or write, export, or deletion is performed. This page is not evidence of identity, role, permission, assignment, access, security, privacy protection, compliance, or legal conclusion.</p></Card></main></div>;
 }
