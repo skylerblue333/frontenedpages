@@ -1,218 +1,23 @@
-/**
- * PaymentInfra — Phase 31 Payments + Wallet + Execution Infrastructure
- * Wallet system, action billing, escrow, Stripe integration, cost tracking
- */
-import { useState } from "react";
+import { AlertTriangle, CheckCircle2, CreditCard, FileCheck2, KeyRound, LockKeyhole, RefreshCcw, ShieldAlert, WalletCards } from "lucide-react";
 import { Link } from "wouter";
-import {
-  ArrowLeft, Wallet, CreditCard, Shield, BarChart3,
-  ArrowUpRight, ArrowDownLeft, Clock, CheckCircle2,
-  DollarSign, Zap, Lock, RefreshCw
-} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
 
-const WALLET_STATS = [
-  { label: "Total Revenue", value: "$—", change: "+12.4%", positive: true },
-  { label: "AI Cost", value: "$89.20", change: "+3.1%", positive: false },
-  { label: "Net Profit", value: "$1,158.60", change: "+14.2%", positive: true },
-  { label: "Margin", value: "92.9%", change: "+1.8%", positive: true },
+const boundaries = [
+  { label: "Authenticated principal, merchant, customer, wallet, and authorization scope", value: "Not connected", icon: KeyRound },
+  { label: "Ledger, provider, order, payment, credit, escrow, and transaction provenance", value: "Unavailable", icon: FileCheck2 },
+  { label: "Authorization, capture, settlement, refund, webhook, idempotency, and reconciliation behavior", value: "Not verified", icon: RefreshCcw },
+  { label: "Payment credentials, private keys, financial data, privacy, security, and safeguards", value: "Not configured", icon: LockKeyhole },
 ];
 
-const TRANSACTIONS = [
-  { id: "tx001", type: "credit", label: "Logo Designer AI — Premium", amount: 9.99, status: "completed", time: "2m ago" },
-  { id: "tx002", type: "credit", label: "Resume Builder AI — Power", amount: 34.99, status: "completed", time: "8m ago" },
-  { id: "tx003", type: "debit", label: "AI Compute Cost", amount: 0.42, status: "completed", time: "8m ago" },
-  { id: "tx004", type: "credit", label: "Gig Finder AI — Basic", amount: 3.99, status: "completed", time: "15m ago" },
-  { id: "tx005", type: "escrow", label: "Marketplace Service — Held", amount: 49.00, status: "pending", time: "22m ago" },
-  { id: "tx006", type: "credit", label: "Creator Subscription — Monthly", amount: 25.00, status: "completed", time: "1h ago" },
-];
-
-const ACTION_BILLING_FLOW = [
-  { step: "User Request", desc: "User submits action via chat", icon: Zap },
-  { step: "Cost Estimation", desc: "AI calculates execution cost", icon: DollarSign },
-  { step: "Payment Check", desc: "Verify wallet balance or card", icon: CreditCard },
-  { step: "Deduct Credits", desc: "Atomic deduction from balance", icon: ArrowDownLeft },
-  { step: "Execute Action", desc: "AI performs the task", icon: RefreshCw },
-  { step: "Return Result", desc: "Deliver output to user", icon: CheckCircle2 },
-];
-
-const PAYMENT_SYSTEMS = [
-  { name: "Stripe", desc: "Primary payment gateway — cards, Apple/Google Pay", status: "ready", color: "text-blue-400" },
-  { name: "Internal Wallet", desc: "Credit system: $1 = 100 credits", status: "live", color: "text-green-400" },
-  { name: "Escrow Engine", desc: "Marketplace service payments held until completion", status: "live", color: "text-green-400" },
-  { name: "Crypto Payments", desc: "SKY444, USDT, BTC via wallet connect", status: "planned", color: "text-muted-foreground" },
+const surfaces = [
+  { title: "Principal, merchant, wallet, and authorization scope", scope: "Authenticated principal, merchant, customer, account, wallet, organization, role, consent, purpose, and authorization", status: "Unavailable", icon: KeyRound },
+  { title: "Ledger and provider provenance", scope: "Ledger entry, order, amount, currency, provider, wallet, credit, escrow, transaction ID, source, status, and timestamp", status: "Not connected", icon: FileCheck2 },
+  { title: "Execution, settlement, and reconciliation controls", scope: "Authorization, capture, settlement, refunds, disputes, webhooks, idempotency, double-spend prevention, rollback, reconciliation, and audit behavior", status: "Not verified", icon: RefreshCcw },
+  { title: "Credentials, financial data, privacy, and access controls", scope: "Payment credentials, private keys, seed phrases, financial data, personal data, retention, deletion, privacy, security, and access", status: "Not configured", icon: ShieldAlert },
 ];
 
 export default function PaymentInfra() {
-  const [activeTab, setActiveTab] = useState<"overview" | "billing" | "transactions" | "systems">("overview");
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="sticky top-0 z-10 bg-background/80 backdrop-blur-sm border-b border-border/50 px-4 py-3 flex items-center gap-3">
-        <Link href="/" className="p-2 rounded-lg hover:bg-secondary/50 transition-colors text-muted-foreground">
-          <ArrowLeft className="w-4 h-4" />
-        </Link>
-        <div>
-          <h1 className="font-bold text-lg flex items-center gap-2">
-            <Wallet className="w-5 h-5 text-purple-400" />
-            Payment Infrastructure
-          </h1>
-          <p className="text-xs text-muted-foreground">Phase 31 — Real-time AI execution economy</p>
-        </div>
-      </div>
-
-      <div className="max-w-2xl mx-auto p-4 space-y-4">
-        {/* Stats grid */}
-        <div className="grid grid-cols-2 gap-2">
-          {WALLET_STATS.map(s => (
-            <div key={s.label} className="card p-3">
-              <div className="text-xs text-muted-foreground mb-1">{s.label}</div>
-              <div className="text-lg font-bold">{s.value}</div>
-              <div className={`text-xs font-medium ${s.positive ? "text-green-400" : "text-red-400"}`}>{s.change} this week</div>
-            </div>
-          ))}
-        </div>
-
-        <div className="flex gap-1 bg-secondary/30 rounded-xl p-1">
-          {(["overview", "billing", "transactions", "systems"] as const).map(t => (
-            <button key={t} onClick={() => setActiveTab(t)}
-              className={`flex-1 py-2 rounded-lg text-xs font-medium capitalize transition-colors ${activeTab === t ? "bg-background text-foreground shadow-sm" : "text-muted-foreground"}`}>
-              {t === "billing" ? "Billing" : t === "transactions" ? "Txns" : t.charAt(0).toUpperCase() + t.slice(1)}
-            </button>
-          ))}
-        </div>
-
-        {activeTab === "overview" && (
-          <div className="space-y-3">
-            <div className="card p-4 bg-gradient-to-br from-purple-500/10 to-pink-500/10 border border-purple-500/20">
-              <h3 className="font-bold text-sm mb-2">Financial Architecture</h3>
-              <div className="space-y-2">
-                {[
-                  { name: "Wallet System", desc: "User balance: deposits, earned credits, spent credits, refunds" },
-                  { name: "Payment Gateway", desc: "Stripe primary → converts real money to platform credits" },
-                  { name: "Credit System", desc: "$1 = 100 credits — simplifies pricing, enables AI action billing" },
-                ].map(item => (
-                  <div key={item.name} className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-green-400 shrink-0 mt-0.5" />
-                    <div>
-                      <span className="text-sm font-medium">{item.name}</span>
-                      <p className="text-xs text-muted-foreground">{item.desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="card p-4">
-              <h3 className="font-semibold text-sm mb-3">End-to-End Money Flow</h3>
-              <div className="flex items-center gap-1 flex-wrap text-xs">
-                {["User", "AI Suggestion", "Pricing Display", "Payment Gateway", "Wallet Credit", "Action Execution", "AI Result", "Transaction Log", "Feed Update"].map((step, i, arr) => (
-                  <span key={step} className="flex items-center gap-1">
-                    <span className={`px-2 py-1 rounded ${i === 3 ? "bg-green-500/20 text-green-400 font-medium" : "bg-secondary/50 text-muted-foreground"}`}>{step}</span>
-                    {i < arr.length - 1 && <span className="text-primary">→</span>}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            <div className="card p-4">
-              <h3 className="font-semibold text-sm mb-2">Profit Formula</h3>
-              <div className="font-mono text-sm bg-secondary/30 rounded-lg p-3">
-                <span className="text-green-400">Profit</span> = <span className="text-blue-400">Revenue</span> - <span className="text-red-400">AI Compute</span> - <span className="text-yellow-400">Infra Cost</span>
-              </div>
-              <p className="text-xs text-muted-foreground mt-2">Current margin: 92.9% — AI costs tracked per action to ensure profitability at scale.</p>
-            </div>
-          </div>
-        )}
-
-        {activeTab === "billing" && (
-          <div className="space-y-3">
-            <p className="text-xs text-muted-foreground">Every AI action goes through this billing pipeline before execution.</p>
-            {ACTION_BILLING_FLOW.map((step, i) => (
-              <div key={i} className="card p-3 flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center shrink-0">
-                  <step.icon className="w-4 h-4 text-primary" />
-                </div>
-                <div className="flex-1">
-                  <div className="font-medium text-sm">{step.step}</div>
-                  <div className="text-xs text-muted-foreground">{step.desc}</div>
-                </div>
-                <div className="text-xs text-muted-foreground">{i + 1}/{ACTION_BILLING_FLOW.length}</div>
-              </div>
-            ))}
-            <div className="card p-3 bg-red-500/10 border border-red-500/20">
-              <div className="flex items-center gap-2 mb-1">
-                <Shield className="w-4 h-4 text-red-400" />
-                <span className="text-sm font-semibold">Fraud Protection</span>
-              </div>
-              <div className="text-xs text-muted-foreground space-y-1">
-                <div>• Idempotent transactions — no duplicate charges</div>
-                <div>• Double-spend prevention via atomic DB operations</div>
-                <div>• Rollback support for failed executions</div>
-                <div>• Escrow validation before marketplace releases</div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {activeTab === "transactions" && (
-          <div className="space-y-2">
-            {TRANSACTIONS.map(tx => (
-              <div key={tx.id} className="card p-3 flex items-center gap-3">
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${
-                  tx.type === "credit" ? "bg-green-500/20" : tx.type === "debit" ? "bg-red-500/20" : "bg-yellow-500/20"
-                }`}>
-                  {tx.type === "credit" ? <ArrowDownLeft className="w-4 h-4 text-green-400" /> :
-                   tx.type === "debit" ? <ArrowUpRight className="w-4 h-4 text-red-400" /> :
-                   <Clock className="w-4 h-4 text-yellow-400" />}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="text-sm font-medium truncate">{tx.label}</div>
-                  <div className="text-xs text-muted-foreground">{tx.time}</div>
-                </div>
-                <div className="text-right">
-                  <div className={`text-sm font-bold ${tx.type === "credit" ? "text-green-400" : tx.type === "debit" ? "text-red-400" : "text-yellow-400"}`}>
-                    {tx.type === "credit" ? "+" : tx.type === "debit" ? "-" : "~"}${tx.amount.toFixed(2)}
-                  </div>
-                  <div className={`text-xs ${tx.status === "completed" ? "text-green-400" : "text-yellow-400"}`}>{tx.status}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {activeTab === "systems" && (
-          <div className="space-y-3">
-            {PAYMENT_SYSTEMS.map(sys => (
-              <div key={sys.name} className="card p-4">
-                <div className="flex items-center justify-between mb-1">
-                  <span className="font-semibold text-sm">{sys.name}</span>
-                  <span className={`text-xs font-medium ${sys.color}`}>{sys.status}</span>
-                </div>
-                <p className="text-xs text-muted-foreground">{sys.desc}</p>
-              </div>
-            ))}
-            <div className="card p-4 bg-gradient-to-br from-blue-500/10 to-cyan-500/10 border border-blue-500/20">
-              <div className="flex items-center gap-2 mb-2">
-                <BarChart3 className="w-4 h-4 text-blue-400" />
-                <h3 className="font-semibold text-sm">Subscription + Credits Hybrid</h3>
-              </div>
-              <div className="grid grid-cols-3 gap-2 text-center text-xs">
-                {[
-                  { tier: "Basic", price: "$10/mo", credits: "1,000 credits" },
-                  { tier: "Execution", price: "$25/mo", credits: "Unlimited basic" },
-                  { tier: "Power", price: "$50/mo", credits: "All agents + priority" },
-                ].map(t => (
-                  <div key={t.tier} className="p-2 bg-background/50 rounded-lg">
-                    <div className="font-bold">{t.tier}</div>
-                    <div className="text-primary">{t.price}</div>
-                    <div className="text-muted-foreground">{t.credits}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={WalletCards} title="Payment Infrastructure" subtitle="Payment-infrastructure readiness status; no authenticated principal, merchant, customer, wallet, ledger, payment provider, credit system, escrow engine, webhook verifier, reconciliation service, or production execution backend is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Payment infrastructure is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen displayed fabricated revenue, AI cost, profit, margin, transaction history, Stripe readiness, internal wallet credits, escrow, token pricing, subscription tiers, and an AI action-billing pipeline, despite having no connected ledger, provider, wallet, payment, credit, escrow, webhook, reconciliation, privacy, or authorization workflow. Those claims and operations were removed. No revenue, cost, profit, margin, transaction, balance, credit, escrow, provider, payment, subscription, or availability state is displayed, calculated, stored, transmitted, verified, or mutated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><WalletCards aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Payment-infrastructure readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Trustworthy payment infrastructure requires authenticated scope, an authoritative double-entry ledger, provider and wallet custody boundaries, server-derived amounts and currencies, secure payment authorization, signed webhooks, idempotency, duplicate and replay prevention, refund and dispute handling, settlement and reconciliation, access controls, privacy-safe financial data handling, auditable failure states, and least-privilege authorization. A balance, transaction, revenue, cost, profit, payment, credit, escrow, subscription, or settlement is not a fact without verified records. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="payment-infra-surfaces-heading"><h2 id="payment-infra-surfaces-heading" className="mb-4 text-xl font-semibold">Infrastructure control surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No ledger, balance, transaction, revenue, cost, profit, credit, escrow, provider, payment, settlement, privacy, security, safety, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="payment-infra-boundaries-heading"><h2 id="payment-infra-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No infrastructure operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, ledger or transaction query, balance or credit calculation, payment-provider call, wallet action, AI billing action, escrow operation, subscription change, webhook verification, settlement, reconciliation, API request, database read or write, export, or deletion is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Payments, crypto, credentials, personal data, privacy, safety, accessibility, security, compliance, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not enter payment details, provider credentials, client secrets, private keys, seed phrases, passwords, authentication codes, identity documents, or confidential financial information here. Do not treat this page as evidence of revenue, costs, profit, margin, balances, credits, escrow, provider readiness, payment, transaction, subscription, AI billing, settlement, compliance, or privacy protection. Verify principal and account scope, ledger, provider, wallet custody, amounts, currencies, authorization, signed webhooks, idempotency, duplicate prevention, refunds, disputes, reconciliation, fees, taxes, retention, accessibility, privacy, security, compliance, and authorization before relying on or taking financial action.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/payments"><Button variant="outline"><CreditCard aria-hidden="true" className="mr-2 h-4 w-4" />Review payment status</Button></Link><Link href="/pay-pal-integration"><Button variant="outline"><WalletCards aria-hidden="true" className="mr-2 h-4 w-4" />Review provider status</Button></Link><Link href="/security"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No auth check, ledger or transaction query, balance or credit calculation, payment-provider call, wallet action, AI billing action, escrow operation, subscription change, webhook verification, settlement, reconciliation, API request, database read or write, export, or deletion is performed. This page is not evidence of revenue, costs, profit, margin, balances, credits, escrow, provider readiness, payment, transaction, subscription, AI billing, settlement, compliance, or privacy protection.</p></Card></main></div>;
 }
