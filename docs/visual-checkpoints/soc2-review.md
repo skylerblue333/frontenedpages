@@ -1,0 +1,5 @@
+# SOC2 visual checkpoint
+
+SOC2 was hardened from an authenticated-looking compliance CRUD shell with nonfunctional Sign In, New, Search, Settings, loading, and empty-data controls without an assurance evidence repository or independent examination. Those controls were removed. No certification, attestation, control, test result, audit period, auditor, report, uptime, security, privacy, user, tenant, or compliance state is displayed, calculated, stored, transmitted, verified, granted, published, or mutated.
+
+The page documents service scope and ownership, trust services criteria, risk and control evidence, policies and procedures, access reviews, change and incident evidence, vendor/subservice treatment, management assertion, qualified service auditor, report period/type/opinion, exceptions, remediation, privacy, security, auditability, and authorization. It explicitly states that it is not evidence of SOC 2 certification or an audit opinion. Files: `soc2-desktop.webp`, `soc2-mobile.png`.
