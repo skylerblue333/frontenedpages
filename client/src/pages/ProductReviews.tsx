@@ -1,75 +1,23 @@
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/_core/hooks/useAuth";
+import { AlertTriangle, CheckCircle2, FileCheck2, KeyRound, LockKeyhole, MessageSquareQuote, Package, ShieldAlert, Star } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
-import { Loader2, Plus, Search, Settings } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Authenticated reviewer, buyer, seller, owner, and authorization scope", value: "Not connected", icon: KeyRound },
+  { label: "Review author, verified purchase, product, and source provenance", value: "Unavailable", icon: MessageSquareQuote },
+  { label: "Rating, helpfulness, moderation, incentives, disputes, and audit evidence", value: "Not verified", icon: Star },
+  { label: "Personal data, privacy, safety, security, AI, finance, and safeguards", value: "Not configured", icon: LockKeyhole },
+];
+
+const surfaces = [
+  { title: "Reviewer, buyer, seller, owner, and authorization scope", scope: "Authenticated reviewer and buyer or seller identity, product relationship, organization, role, consent, conflict disclosure, and least-privilege authorization", status: "Unavailable", icon: KeyRound },
+  { title: "Review author, verified purchase, product, and source provenance", scope: "Review author, verified purchase or use, product and version, timestamps, source, edits, attachments, language, and provenance", status: "Not connected", icon: MessageSquareQuote },
+  { title: "Rating, helpfulness, moderation, incentives, disputes, and audit evidence", scope: "Rating semantics, aggregation, helpfulness, moderation, abuse detection, incentives, seller response, dispute handling, takedown, appeals, and audit history", status: "Not verified", icon: Star },
+  { title: "Personal data, privacy, safety, security, AI, finance, and access controls", scope: "Personal data and sensitive content, profiling, AI-assisted moderation, financial or purchase influence, privacy, security, accessibility, compliance, and access review", status: "Not configured", icon: ShieldAlert },
+];
 
 export default function ProductReviews() {
-  const { isAuthenticated } = useAuth();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>ProductReviews</CardTitle>
-            <CardDescription>Sign in to access this feature</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full">Sign In</Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold">ProductReviews</h1>
-            <p className="text-muted-foreground mt-2">Detailed review management and moderation</p>
-          </div>
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            New
-          </Button>
-        </div>
-
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Search className="w-4 h-4 text-muted-foreground" />
-              <Input
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="max-w-sm"
-              />
-              <Button variant="outline" size="icon">
-                <Settings className="w-4 h-4" />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {isLoading ? (
-              <div className="flex justify-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
-              </div>
-            ) : (
-              <div className="text-center py-12 text-muted-foreground">
-                <p>No data available. Start by creating a new item.</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={MessageSquareQuote} title="Product Reviews" subtitle="Marketplace-review readiness status; no authenticated reviewer or buyer context, product and purchase registry, review store, rating methodology, moderation, dispute, privacy, or authorization backend is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Product reviews are unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen required authentication but did not actually authorize a reviewer or buyer, exposed nonfunctional New, Search, and Settings controls, maintained only local search and loading state, and implied detailed review management and moderation without review-author, verified-purchase, product, version, rating, helpfulness, moderation, abuse detection, incentives, seller response, dispute, appeals, privacy, safety, security, or authorization infrastructure. Those implications and operations were removed. No reviewer, buyer, seller, product, review, rating, score, helpfulness, dispute, customer, account, or moderation state is displayed, searched, calculated, stored, transmitted, verified, created, published, or mutated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><MessageSquareQuote aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Marketplace-review readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Trustworthy reviews require authenticated reviewer and buyer or seller scope, source-backed author and verified-purchase provenance, product and version identity, clear rating semantics, aggregation methodology, moderation and abuse controls, incentives and conflicts, seller responses, disputes and appeals, sensitive-content handling, privacy, safety, security, accessibility, compliance, and least-privilege authorization. A review, author, verified purchase, rating, score, helpfulness result, moderation decision, or dispute outcome is not a fact without verified records and evidence. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="reviews-surfaces-heading"><h2 id="reviews-surfaces-heading" className="mb-4 text-xl font-semibold">Review control surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No reviewer, buyer, seller, product, review, rating, score, helpfulness, dispute, moderation, customer, account, privacy, security, compliance, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="reviews-boundaries-heading"><h2 id="reviews-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No review operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No reviewer or buyer auth check, review or product query, search, creation, rating, helpfulness vote, moderation, seller response, dispute, appeal, takedown, API request, database read or write, export, or deletion is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Legal, personal data, AI, finance, crypto, privacy, safety, security, compliance, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not enter passwords, authentication codes, private keys, seed phrases, identity documents, health records, payment details, financial data, private messages, or confidential customer information here. Do not treat this page as evidence of a review, reviewer identity, verified purchase, rating, score, helpfulness, moderation decision, seller response, dispute outcome, AI capability, financial result, privacy protection, security control, compliance, or legal conclusion. Verify identity, product and purchase provenance, rating methodology, incentives, conflicts, moderation, sensitive-content handling, appeals, privacy, security, accessibility, compliance, and authorization before relying on or publishing review information.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/product-detail"><Button variant="outline"><Package aria-hidden="true" className="mr-2 h-4 w-4" />Review product status</Button></Link><Link href="/product-catalog"><Button variant="outline"><Package aria-hidden="true" className="mr-2 h-4 w-4" />Review catalog status</Button></Link><Link href="/product-approval"><Button variant="outline"><FileCheck2 aria-hidden="true" className="mr-2 h-4 w-4" />Review approval status</Button></Link><Link href="/security"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No reviewer or buyer auth check, review or product query, search, creation, rating, helpfulness vote, moderation, seller response, dispute, appeal, takedown, API request, database read or write, export, or deletion is performed. This page is not evidence of a review, reviewer identity, verified purchase, rating, score, helpfulness, moderation decision, seller response, dispute outcome, AI capability, financial result, privacy protection, security control, compliance, or legal conclusion.</p></Card></main></div>;
 }
