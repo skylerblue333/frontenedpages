@@ -1,0 +1,9 @@
+# QuantumComputing visual checkpoint
+
+QuantumComputing was hardened from an advanced quantum hub that claimed real-time AI analytics, autonomous decision-making, robust encryption, processing speed, uptime, latency, throughput, and Get Started, Configure, Secure, Schedule Demo, and documentation controls without a connected quantum provider, hardware or simulator, workload, algorithm, AI service, automation, cryptographic implementation, benchmark, reliability, cost, privacy, or authorization backend. Those unsupported claims and operations were removed. The registered route is `/quantum-computing`. No provider, device, circuit, algorithm, result, AI output, automation, key, encryption, benchmark, uptime, latency, throughput, user, or availability state is displayed, invoked, calculated, stored, transmitted, verified, or mutated from this page.
+
+No provider or user auth check, hardware or simulator connection, workload submission, circuit execution, AI invocation, automation action, key generation, encryption, benchmark, performance measurement, API request, database read or write, export, or deletion is read, calculated, displayed, asserted, initiated, or simulated.
+
+Files: `quantum-computing-desktop.webp`, `quantum-computing-mobile.png`.
+
+The 390px capture was reviewed for readable wrapped unavailable disclosure, stacked quantum-computing readiness cards, stacked provider/workload/algorithm/cryptography/performance surfaces, quantum/AI/cryptography/personal-data/finance/crypto/privacy/safety/security/compliance/authorization warn-and-proceed notice, safe quantum-safe/integration/AI/privacy/security links, and absence of horizontal overflow or fake quantum providers, hardware, simulators, circuits, results, encryption, AI, automation, uptime, latency, throughput, or performance claims.
