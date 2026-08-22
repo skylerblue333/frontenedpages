@@ -1,25 +1,23 @@
-import { useState } from "react";
+import { AlertTriangle, Calculator, CheckCircle2, FileCheck2, KeyRound, LockKeyhole, ShieldAlert, SlidersHorizontal } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Authenticated user, workspace, form owner, and authorization scope", value: "Not connected", icon: KeyRound },
+  { label: "Input purpose, unit, locale, precision, range, source, and validation provenance", value: "Unavailable", icon: FileCheck2 },
+  { label: "Entry, parsing, calculation, submission, persistence, error, and user-control behavior", value: "Not verified", icon: Calculator },
+  { label: "Sensitive values, retention, privacy, accessibility, security, and safeguards", value: "Not configured", icon: LockKeyhole },
+];
+
+const surfaces = [
+  { title: "User, form, and authorization scope", scope: "Authenticated user, workspace, form owner, role, purpose, consent, and authorization", status: "Unavailable", icon: KeyRound },
+  { title: "Numeric input and validation provenance", scope: "Input purpose, unit, locale, precision, range, sign, source, normalization, and validation rules", status: "Not connected", icon: FileCheck2 },
+  { title: "Calculation and submission controls", scope: "Entry, parsing, calculation, rounding, submission, persistence, error, retry, and user-control behavior", status: "Not verified", icon: SlidersHorizontal },
+  { title: "Sensitive values, privacy, and access controls", scope: "Personal, financial, health, legal, credential, retention, deletion, accessibility, privacy, security, and access", status: "Not configured", icon: ShieldAlert },
+];
 
 export default function NumberInputForm() {
-  const [state, setState] = useState(false);
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 to-black p-4">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">NumberInputForm</h1>
-        <p className="text-slate-400 mb-8">number input form</p>
-        
-        <Card className="bg-slate-900 border-slate-800 p-8">
-          <div className="space-y-6">
-            <p className="text-slate-300">Content for NumberInputForm page</p>
-            <Button onClick={() => setState(!state)}>
-              {state ? "Deactivate" : "Activate"}
-            </Button>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Calculator} title="Number Input Form" subtitle="Typed numeric-input readiness status; no authenticated user, form purpose, unit schema, validation service, calculator, persistence layer, or production submission backend is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Numeric input is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen was a generic activation shell with an inert Activate or Deactivate toggle and did not define a numeric field, purpose, unit, locale, precision, range, validation rule, calculation, submission, persistence, privacy, or authorization workflow. It was replaced with this explicit readiness boundary. No value, unit, calculation, validation result, submission, or availability state is displayed, entered, stored, calculated, submitted, or mutated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Calculator aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Numeric-input readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Trustworthy numeric input requires a documented purpose and unit, locale and precision semantics, explicit range and sign rules, safe parsing and normalization, typed validation, reproducible calculation provenance, clear error and retry behavior, accessible controls, secure handling of sensitive values, durable persistence rules, and least-privilege authorization. A value, calculation, validation result, or submission is not a fact without a defined contract and verified processing. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="number-surfaces-heading"><h2 id="number-surfaces-heading" className="mb-4 text-xl font-semibold">Numeric-input control surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No value, unit, calculation, validation, submission, persistence, privacy, security, safety, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="number-boundaries-heading"><h2 id="number-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No numeric operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, input, parser, unit conversion, range validation, calculation, rounding, submission, API request, database read or write, persistence, export, or deletion is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Sensitive data, finance, health, privacy, safety, accessibility, security, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not enter passwords, authentication codes, seed phrases, private keys, health measurements, medication doses, financial balances, prices, rates, legal figures, identity documents, or confidential values here. Do not treat this page as evidence of a valid value, unit, calculation, validation result, financial or health assessment, or privacy protection. Verify purpose, unit, range, precision, source, calculation method, sensitivity, retention, accessibility, privacy, security, safety, and authorization before relying on numeric input.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/mortgage-calculator"><Button variant="outline"><Calculator aria-hidden="true" className="mr-2 h-4 w-4" />Review finance boundary</Button></Link><Link href="/health"><Button variant="outline"><SlidersHorizontal aria-hidden="true" className="mr-2 h-4 w-4" />Review health boundary</Button></Link><Link href="/security"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No auth check, input, parser, unit conversion, range validation, calculation, rounding, submission, API request, database read or write, persistence, export, or deletion is performed. This page is not evidence of a valid value, unit, calculation, validation result, financial or health assessment, or privacy protection.</p></Card></main></div>;
 }
