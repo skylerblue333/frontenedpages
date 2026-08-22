@@ -1,0 +1,53 @@
+=== SKYCOIN4444-Ecosystem ===
+tracked_files=1999
+source_files=1874
+test_files=33
+package_scripts=build,check,db:push,dev,format,start,test
+SKYCOIN4444-Ecosystem/client/index.html
+SKYCOIN4444-Ecosystem/drizzle/index.ts
+SKYCOIN4444-Ecosystem/server/index.ts
+=== ShadowChat-Core ===
+tracked_files=1706
+source_files=1573
+test_files=9
+package_scripts=build,check,db:push,dev,format,start,test
+ShadowChat-Core/client/index.html
+ShadowChat-Core/go_modules/main.go
+=== ShadowChat-Pro-Edition ===
+tracked_files=1621
+source_files=1563
+test_files=9
+package_scripts=build,check,db:push,dev,format,start,test
+ShadowChat-Pro-Edition/client/index.html
+ShadowChat-Pro-Edition/go_modules/main.go
+=== TS-Express-API ===
+tracked_files=6261
+source_files=4074
+test_files=196
+package_scripts=build,start,test
+TS-Express-API/src/index.ts
+TS-Express-API/tests/index.test.ts
+=== frontendpages ===
+tracked_files=7636
+source_files=1250
+test_files=4
+package_scripts=build,check,db:push,dev,format,start,test
+frontendpages/client/index.html
+=== skycoin-production ===
+tracked_files=34
+source_files=0
+test_files=0
+=== skycoin4444 ===
+tracked_files=1301
+source_files=1199
+test_files=1
+package_scripts=build,check,check:packages,db:push,dev,format,start,test
+skycoin4444/client/index.html
+=== skycoin4444hopeAIShadowchat ===
+tracked_files=2273
+source_files=2050
+test_files=37
+package_scripts=build,check,db:push,dev,format,lint,start,test
+skycoin4444hopeAIShadowchat/client/index.html
+skycoin4444hopeAIShadowchat/drizzle/index.ts
+skycoin4444hopeAIShadowchat/server/index.ts
