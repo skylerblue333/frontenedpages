@@ -1,75 +1,16 @@
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/_core/hooks/useAuth";
+import { AlertTriangle, BarChart3, CheckCircle2, ClipboardCheck, FileCheck2, KeyRound, LockKeyhole, MessageSquareText, ShieldCheck, Terminal, Users } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
-import { Loader2, Plus, Search, Settings } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const surfaces = [
+  ["Survey purpose and participant scope", "Question purpose, audience, eligibility, consent, sampling, tenant, invitation source, and accessibility", "Not connected", Users],
+  ["Response integrity and provenance", "Response identifiers, timestamps, duplicate prevention, source, completion rules, and retention", "Unavailable", ClipboardCheck],
+  ["Scoring and interpretation", "Question scale, scoring method, missing responses, uncertainty, segmentation, sentiment methodology, and human review", "Not verified", BarChart3],
+  ["Privacy, access, and operations", "Data minimization, anonymity or confidentiality, access control, deletion, audit history, incident response, and authorization", "Not configured", LockKeyhole],
+] as const;
 
 export default function SatisfactionSurvey() {
-  const { isAuthenticated } = useAuth();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>SatisfactionSurvey</CardTitle>
-            <CardDescription>Sign in to access this feature</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full">Sign In</Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold">SatisfactionSurvey</h1>
-            <p className="text-muted-foreground mt-2">CSAT surveys</p>
-          </div>
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            New
-          </Button>
-        </div>
-
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Search className="w-4 h-4 text-muted-foreground" />
-              <Input
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="max-w-sm"
-              />
-              <Button variant="outline" size="icon">
-                <Settings className="w-4 h-4" />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {isLoading ? (
-              <div className="flex justify-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
-              </div>
-            ) : (
-              <div className="text-center py-12 text-muted-foreground">
-                <p>No data available. Start by creating a new item.</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={MessageSquareText} title="Satisfaction Surveys" subtitle="Feedback-collection readiness status; no verified survey registry, participant source, consent record, response store, scoring method, sentiment model, analytics, or privacy backend is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Satisfaction surveys are unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen exposed nonfunctional Sign In, New, Search, Settings, loading, and empty-data controls without a survey registry or consent-aware feedback service. Those controls were removed. No survey, question, participant, response, score, sentiment, sample, user, tenant, consent, privacy, compliance, or availability state is displayed, calculated, stored, transmitted, verified, granted, or mutated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><MessageSquareText aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Feedback-collection readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A trustworthy satisfaction-survey system requires a defined purpose and audience, participant eligibility and consent, accessible questions, sampling provenance, response integrity, timestamps, duplicate prevention, retention, transparent scoring, missing-response and uncertainty treatment, segmentation boundaries, sentiment methodology, human interpretation, anonymity or confidentiality controls, data minimization, deletion, least-privilege access, auditability, incident response, and applicable privacy and research review. A response count, satisfaction score, sentiment result, sample, or customer insight is not a fact without verified records. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{surfaces.map(([label,,value,Icon])=><Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="survey-surfaces-heading"><h2 id="survey-surfaces-heading" className="mb-4 text-xl font-semibold">Survey control surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(([title,scope,status,Icon])=><Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No survey, question, participant, response, score, sentiment, sample, user, tenant, consent, privacy, compliance, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="survey-boundaries-heading"><h2 id="survey-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No survey operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No participant import, consent capture, survey creation, question entry, invitation, response submission, score calculation, sentiment inference, analytics export, database read or write, or deletion is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Personal data, identity, AI, finance, crypto, privacy, safety, security, compliance, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not enter phone numbers, passwords, authentication codes, API tokens, private keys, seed phrases, wallet addresses, identity documents, health records, payment details, account numbers, sensitive feedback, or confidential source code here. Do not treat an unverified response, score, sentiment result, customer insight, or compliance statement as fact. Verify purpose, participant consent, sampling, anonymity, scale, methodology, uncertainty, retention, privacy, security, authorization, and human review before collecting or acting on feedback.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/analytics"><Button variant="outline"><BarChart3 aria-hidden="true" className="mr-2 h-4 w-4" />Review analytics</Button></Link><Link href="/permissions"><Button variant="outline"><KeyRound aria-hidden="true" className="mr-2 h-4 w-4" />Review permissions</Button></Link><Link href="/security"><Button variant="outline"><ShieldCheck aria-hidden="true" className="mr-2 h-4 w-4" />Review security</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link><Link href="/documentation"><Button variant="outline"><FileCheck2 aria-hidden="true" className="mr-2 h-4 w-4" />Review documentation</Button></Link><Link href="/system-observability"><Button variant="outline"><Terminal aria-hidden="true" className="mr-2 h-4 w-4" />Review observability</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No participant import, consent capture, survey creation, question entry, invitation, response submission, score calculation, sentiment inference, analytics export, database read or write, or deletion is performed. This page is not evidence of participant consent, response integrity, satisfaction, sentiment, customer behavior, privacy protection, compliance, or legal conclusion.</p></Card></main></div>;
 }

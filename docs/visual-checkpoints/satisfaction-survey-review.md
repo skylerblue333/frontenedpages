@@ -1,0 +1,5 @@
+# SatisfactionSurvey visual checkpoint
+
+SatisfactionSurvey was hardened from an authenticated-looking CSAT CRUD shell with nonfunctional Sign In, New, Search, Settings, loading, and empty-data controls without a survey registry or consent-aware feedback service. Those controls were removed. No survey, question, participant, response, score, sentiment, sample, user, tenant, consent, privacy, compliance, or availability state is displayed, calculated, stored, transmitted, verified, granted, or mutated.
+
+The page documents defined purpose and audience, eligibility and consent, accessible questions, sampling provenance, response integrity, timestamps, duplicate prevention, retention, transparent scoring, uncertainty and missing-response treatment, segmentation, sentiment methodology, human interpretation, anonymity/confidentiality, data minimization, deletion, least-privilege access, auditability, incident response, and privacy/research review. Files: `satisfaction-survey-desktop.webp`, `satisfaction-survey-mobile.png`.
