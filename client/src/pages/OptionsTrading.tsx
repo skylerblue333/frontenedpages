@@ -1,84 +1,23 @@
-import { Zap } from "lucide-react";
+import { AlertTriangle, BarChart3, CheckCircle2, FileCheck2, KeyRound, LockKeyhole, ShieldAlert, TrendingUp } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { PageHeader } from "@/components/PageHeader";
 
+const boundaries = [
+  { label: "Authenticated trader, account, broker, suitability, and authorization scope", value: "Not connected", icon: KeyRound },
+  { label: "Underlying, option contract, chain, quote, Greeks, volatility, source, and timestamp provenance", value: "Unavailable", icon: FileCheck2 },
+  { label: "Buying power, positions, order validation, execution, fills, P&L, and risk behavior", value: "Not verified", icon: TrendingUp },
+  { label: "Financial data, credentials, privacy, security, risk disclosure, and safeguards", value: "Not configured", icon: LockKeyhole },
+];
+
+const surfaces = [
+  { title: "Trader, account, and authorization scope", scope: "Authenticated trader, account, broker, suitability, jurisdiction, role, consent, and authorization", status: "Unavailable", icon: KeyRound },
+  { title: "Market and option-contract provenance", scope: "Underlying, option contract, chain, quote, bid/ask, volume, open interest, Greeks, volatility, source, and timestamp", status: "Not connected", icon: FileCheck2 },
+  { title: "Order, position, and risk controls", scope: "Buying power, positions, order validation, suitability, execution, fills, assignment, expiration, P&L, margin, and risk behavior", status: "Not verified", icon: BarChart3 },
+  { title: "Financial credentials, privacy, and access controls", scope: "Broker credentials, account data, financial information, retention, deletion, privacy, security, and access", status: "Not configured", icon: ShieldAlert },
+];
+
 export default function OptionsTrading() {
-  return (
-    <div className="min-h-screen bg-background">
-      <PageHeader icon={Zap} title="Options Trading" subtitle="Advanced options trading with cutting-edge technology" />
-      
-      <div className="max-w-7xl mx-auto px-4 py-8 space-y-8">
-        {/* Main Content Area */}
-        <Card className="p-8 bg-gradient-to-br from-primary/10 to-secondary/10 border border-primary/20">
-          <div className="space-y-6">
-            <h2 className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Options Trading</h2>
-            
-            {/* Advanced Features */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <Card className="p-4 bg-background/80 border border-primary/30 hover:border-primary/80 transition-all cursor-pointer hover:shadow-lg hover:shadow-primary/20">
-                <div className="space-y-3">
-                  <Zap className="w-8 h-8 text-primary" />
-                  <h3 className="font-bold text-lg">Advanced Analytics</h3>
-                  <p className="text-sm text-muted-foreground">Real-time data processing with AI insights</p>
-                  <Button size="sm" variant="outline" className="w-full">Explore</Button>
-                </div>
-              </Card>
-              
-              <Card className="p-4 bg-background/80 border border-primary/30 hover:border-primary/80 transition-all cursor-pointer hover:shadow-lg hover:shadow-primary/20">
-                <div className="space-y-3">
-                  <Zap className="w-8 h-8 text-primary" />
-                  <h3 className="font-bold text-lg">Automation Engine</h3>
-                  <p className="text-sm text-muted-foreground">Autonomous operations with intelligent decision making</p>
-                  <Button size="sm" variant="outline" className="w-full">Configure</Button>
-                </div>
-              </Card>
-              
-              <Card className="p-4 bg-background/80 border border-primary/30 hover:border-primary/80 transition-all cursor-pointer hover:shadow-lg hover:shadow-primary/20">
-                <div className="space-y-3">
-                  <Zap className="w-8 h-8 text-primary" />
-                  <h3 className="font-bold text-lg">Security First</h3>
-                  <p className="text-sm text-muted-foreground">Robust encryption and protection</p>
-                  <Button size="sm" variant="outline" className="w-full">Secure</Button>
-                </div>
-              </Card>
-            </div>
-            
-            {/* Performance Metrics */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4">
-              <div className="p-4 bg-background/50 rounded-lg border border-border/50">
-                <p className="text-xs text-muted-foreground">Processing Speed</p>
-                <p className="text-2xl font-bold text-primary">99.9%</p>
-              </div>
-              <div className="p-4 bg-background/50 rounded-lg border border-border/50">
-                <p className="text-xs text-muted-foreground">Uptime</p>
-                <p className="text-2xl font-bold text-primary">24/7</p>
-              </div>
-              <div className="p-4 bg-background/50 rounded-lg border border-border/50">
-                <p className="text-xs text-muted-foreground">Latency</p>
-                <p className="text-2xl font-bold text-primary">&lt;50ms</p>
-              </div>
-              <div className="p-4 bg-background/50 rounded-lg border border-border/50">
-                <p className="text-xs text-muted-foreground">Throughput</p>
-                <p className="text-2xl font-bold text-primary">10K+/s</p>
-              </div>
-            </div>
-            
-            {/* Action Section */}
-            <div className="flex gap-4 flex-wrap pt-6">
-              <Button size="lg" className="bg-primary hover:bg-primary/90">
-                Get Started Now
-              </Button>
-              <Button size="lg" variant="outline">
-                View Documentation
-              </Button>
-              <Button size="lg" variant="ghost">
-                Schedule Demo
-              </Button>
-            </div>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={TrendingUp} title="Options Trading" subtitle="Options-market readiness status; no authenticated trader, brokerage account, market-data provider, option-chain service, order router, custody system, or production trading backend is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Options trading is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen claimed advanced AI analytics, autonomous decision-making, robust encryption, uptime, latency, throughput, and “Get Started,” “Configure,” “Secure,” documentation, and demo actions without verified market, brokerage, or trading contracts. It was replaced with this explicit readiness boundary. No underlying, option contract, quote, chain, Greek, signal, position, buying power, order, fill, P&amp;L, risk result, or availability state is displayed, calculated, submitted, executed, or mutated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><TrendingUp aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Options-market readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Trustworthy options functionality requires authoritative market data, contract and chain identity, timestamp and freshness semantics, disclosed quote limitations, verified account and buying power, suitability and jurisdiction controls, robust order validation, broker confirmation of fills and assignment, margin and risk calculations, no implied AI advantage, and least-privilege authorization. An option quote, Greek, signal, position, order, execution, P&amp;L, or risk outcome is not a fact without verified records. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="options-surfaces-heading"><h2 id="options-surfaces-heading" className="mb-4 text-xl font-semibold">Options control surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No contract, quote, chain, Greek, signal, position, order, execution, P&amp;L, risk, privacy, security, safety, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="options-boundaries-heading"><h2 id="options-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No trading operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, market or chain lookup, quote query, Greek calculation, suitability check, buying-power check, order creation, submission, execution, fill confirmation, position update, P&amp;L calculation, margin assessment, API request, database read or write, export, or deletion is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Finance, trading, credentials, privacy, safety, accessibility, security, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">I'm an AI, not a licensed financial advisor — this is analysis, not guaranteed advice; investing carries risk you bear. Do not enter broker credentials, account numbers, private keys, seed phrases, passwords, authentication codes, or confidential financial information here. Do not treat this page as evidence of a quote, Greek, signal, AI advantage, suitability, buying power, order, execution, fill, P&amp;L, margin, risk result, encryption, uptime, or privacy protection. Options can involve substantial or total loss. Verify contract identity, data source, freshness, broker, suitability, margin, assignment, expiration, fees, execution, retention, accessibility, privacy, security, and authorization before relying on options information or taking action.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/crypto-hub"><Button variant="outline"><TrendingUp aria-hidden="true" className="mr-2 h-4 w-4" />Review market status</Button></Link><Link href="/portfolio"><Button variant="outline"><BarChart3 aria-hidden="true" className="mr-2 h-4 w-4" />Review portfolio status</Button></Link><Link href="/security"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No auth check, market or chain lookup, quote query, Greek calculation, suitability check, buying-power check, order creation, submission, execution, fill confirmation, position update, P&amp;L calculation, margin assessment, API request, database read or write, export, or deletion is performed. This page is not evidence of a quote, Greek, signal, AI advantage, suitability, buying power, order, execution, fill, P&amp;L, margin, risk result, or privacy protection.</p></Card></main></div>;
 }
