@@ -1,58 +1,16 @@
+import { AlertTriangle, Bug, CheckCircle2, FileCheck2, Fingerprint, Globe, KeyRound, Lock, LockKeyhole, Shield, Terminal, Eye } from "lucide-react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
 import { PageHeader } from "@/components/PageHeader";
-import { StatCard } from "@/components/StatCard";
-import { Shield, Lock, Eye, AlertTriangle, CheckCircle, Zap, Key, Fingerprint, Globe, Bug, Server, Activity } from "lucide-react";
 
-const SECURITY_FEATURES = [
-  { icon: Lock, label: "End-to-End Encryption", status: "active", desc: "All DMs and sensitive data encrypted at rest and in transit" },
-  { icon: Fingerprint, label: "2FA Authentication", status: "active", desc: "TOTP and hardware key support for all accounts" },
-  { icon: Eye, label: "Audit Logging", status: "active", desc: "Every action logged with IP, timestamp, and user agent" },
-  { icon: Globe, label: "WAF Protection", status: "active", desc: "Web Application Firewall blocks malicious traffic" },
-  { icon: Bug, label: "Bug Bounty Program", status: "active", desc: "Earn up to $10,000 for critical vulnerability reports" },
-  { icon: Key, label: "API Key Management", status: "active", desc: "Scoped API keys with expiry and rate limiting" },
-];
+const surfaces = [
+  ["Identity and session security", "Verified authentication, MFA enrollment, session lifecycle, recovery, authorization, and account-owner evidence", "Not verified", Fingerprint],
+  ["Data and transport protection", "Encryption configuration, key ownership and rotation, secret handling, TLS, backups, and retention", "Not configured", Lock],
+  ["Detection and response", "Structured logs, alert source, threat detections, vulnerability triage, incident response, and notification evidence", "Unavailable", Eye],
+  ["Perimeter and application controls", "WAF/firewall provenance, dependency scanning, input validation, rate limits, CSRF/XSS/SSRF defenses, and auditability", "Not connected", Globe],
+] as const;
 
 export default function Security() {
-  return (
-    <div className="container py-8 max-w-5xl animate-page-in">
-      <PageHeader backHref="/dashboard" icon={Shield} title="Security Center" subtitle="Robust security protecting your assets and data" badge="SOC 2 Ready" badgeVariant="default" />
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-        <StatCard icon={Shield} label="Threats Blocked" value="12,847" change={-5.2} changeLabel="this month" color="success" />
-        <StatCard icon={Activity} label="Uptime" value="..." change={0.01} color="primary" />
-        <StatCard icon={AlertTriangle} label="Active Alerts" value="0" color="warning" />
-        <StatCard icon={Bug} label="Bugs Reported" value="3" change={-25} changeLabel="this month" color="accent" />
-      </div>
-      <div className="grid md:grid-cols-2 gap-4 mb-8">
-        {SECURITY_FEATURES.map(f => (
-          <div key={f.label} className="card p-4 flex items-start gap-3">
-            <div className="w-9 h-9 rounded-lg bg-success/10 border border-success/20 flex items-center justify-center shrink-0">
-              <f.icon className="w-4 h-4 text-success" />
-            </div>
-            <div className="flex-1">
-              <div className="flex items-center gap-2 mb-1">
-                <span className="font-medium text-sm">{f.label}</span>
-                <Badge variant="outline" className="text-xs text-success border-success/30">Active</Badge>
-              </div>
-              <p className="text-xs text-muted-foreground">{f.desc}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-      <div className="card p-6 border-warning/30 bg-warning/5">
-        <h3 className="font-semibold mb-3 flex items-center gap-2"><Bug className="w-5 h-5 text-warning" />Bug Bounty Program</h3>
-        <p className="text-sm text-muted-foreground mb-4">Found a vulnerability? Report it responsibly and earn rewards up to $10,000 in SKY444.</p>
-        <div className="grid sm:grid-cols-3 gap-3 mb-4">
-          {[{level:"Critical",reward:"$5,000–$10,000"},{level:"High",reward:"$1,000–$5,000"},{level:"Medium",reward:"$100–$1,000"}].map(b => (
-            <div key={b.level} className="p-3 bg-secondary/50 rounded-lg text-center">
-              <div className="text-sm font-semibold">{b.level}</div>
-              <div className="text-xs font-mono text-primary mt-1">{b.reward}</div>
-            </div>
-          ))}
-        </div>
-        <Button className="btn-primary gap-2"><Bug className="w-4 h-4" />Report Vulnerability</Button>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader backHref="/dashboard" icon={Shield} title="Security Center" subtitle="Security-readiness status; no verified security telemetry, control inventory, certification evidence, threat feed, vulnerability program, or incident backend is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Security status is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen displayed fabricated threat counts, uptime, active alerts, bug totals, active encryption/MFA/audit/WAF/API-key controls, a “SOC 2 Ready” badge, and bug-bounty rewards up to $10,000 in SKY444 without independent evidence or submission handling. Those claims and actions were removed. No security control, metric, certification, threat, vulnerability, reward, uptime, user, credential, privacy, compliance, or authorization state is displayed, calculated, stored, transmitted, verified, granted, or mutated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Shield aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Security-readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A production security center requires independently evidenced identity and session controls, MFA and recovery, authorization, encryption and key ownership, secret handling, TLS, backups and retention, structured logs, alert provenance, threat detection, vulnerability triage, incident response and notification, perimeter controls, dependency scanning, input validation, rate limits, CSRF/XSS/SSRF defenses, least privilege, auditability, and honest loading/empty/error/retry states. A control, metric, certification, threat, vulnerability, uptime, or reward is not a fact without verified evidence. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{surfaces.map(([label,,value,Icon])=><Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="security-surfaces-heading"><h2 id="security-surfaces-heading" className="mb-4 text-xl font-semibold">Security control surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(([title,scope,status,Icon])=><Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No control, metric, certification, threat, vulnerability, uptime, reward, user, privacy, compliance, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="security-boundaries-heading"><h2 id="security-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No security operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No control check, telemetry read, threat scan, vulnerability submission, incident creation, certification claim, database read or write, API request, credential handling, or notification is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Personal data, identity, AI, finance, crypto, privacy, safety, security, compliance, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not enter passwords, authentication codes, API tokens, private keys, seed phrases, wallet addresses, identity documents, health records, payment details, account numbers, or confidential source code here. Do not treat an unverified control, metric, certification, threat, vulnerability, uptime, reward, or legal/compliance statement as fact. Verify scope, evidence, freshness, owner, authorization, privacy, security, incident process, and human review before relying on security status or reporting a vulnerability.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/security-audit"><Button variant="outline"><Bug aria-hidden="true" className="mr-2 h-4 w-4" />Review security audit</Button></Link><Link href="/security-compliance"><Button variant="outline"><FileCheck2 aria-hidden="true" className="mr-2 h-4 w-4" />Review compliance</Button></Link><Link href="/security-settings"><Button variant="outline"><KeyRound aria-hidden="true" className="mr-2 h-4 w-4" />Review settings</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link><Link href="/permissions"><Button variant="outline"><KeyRound aria-hidden="true" className="mr-2 h-4 w-4" />Review permissions</Button></Link><Link href="/documentation"><Button variant="outline"><FileCheck2 aria-hidden="true" className="mr-2 h-4 w-4" />Review evidence</Button></Link><Link href="/system-observability"><Button variant="outline"><Terminal aria-hidden="true" className="mr-2 h-4 w-4" />Review observability</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No control check, telemetry read, threat scan, vulnerability submission, incident creation, certification claim, database read or write, API request, credential handling, or notification is performed. This page is not evidence of security controls, certification, uptime, threats blocked, bugs, bug-bounty terms, privacy protection, compliance, or legal conclusion.</p></Card></main></div>;
 }
