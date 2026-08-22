@@ -1,213 +1,23 @@
-/**
- * ProductionArchitecture — Phase 40
- * Cloud deployment design: microservices, event bus, simulation cluster,
- * AI scaling, WebSocket gateway, CI/CD, monitoring stack
- */
-import { Server, Zap, Database, Globe, Shield, Activity, GitBranch, Cpu, Network, Cloud } from "lucide-react";
+import { Activity, AlertTriangle, CheckCircle2, Cloud, Database, FileCheck2, GitBranch, KeyRound, LockKeyhole, Network, Server, ShieldAlert, Workflow } from "lucide-react";
+import { Link } from "wouter";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
 
-const SERVICES = [
-  { name: "chat-service", desc: "WebSocket + message persistence", color: "bg-blue-500/20 text-blue-400", scale: "2-10x" },
-  { name: "feed-service", desc: "Feed generation + Redis cache", color: "bg-green-500/20 text-green-400", scale: "3-20x" },
-  { name: "ai-service", desc: "Intent parsing + LLM routing", color: "bg-purple-500/20 text-purple-400", scale: "5-50x" },
-  { name: "action-service", desc: "Action execution + event emit", color: "bg-orange-500/20 text-orange-400", scale: "2-15x" },
-  { name: "wallet-service", desc: "Payments + transaction log", color: "bg-yellow-500/20 text-yellow-400", scale: "2-8x" },
-  { name: "simulation-service", desc: "Persona tick + world engine", color: "bg-cyan-500/20 text-cyan-400", scale: "1-5x" },
-  { name: "auth-service", desc: "Sessions + OAuth + RBAC", color: "bg-red-500/20 text-red-400", scale: "2-10x" },
-  { name: "notification-service", desc: "Push + email + in-app", color: "bg-pink-500/20 text-pink-400", scale: "2-12x" },
+const boundaries = [
+  { label: "Deployment environment, owner, account, and authorization scope", value: "Not connected", icon: KeyRound },
+  { label: "Runtime topology, services, data stores, queues, and network paths", value: "Unavailable", icon: Network },
+  { label: "Build, deploy, scaling, observability, resilience, and recovery evidence", value: "Not verified", icon: Activity },
+  { label: "Security, privacy, AI, finance, crypto, compliance, and safeguards", value: "Not configured", icon: ShieldAlert },
 ];
 
-const DB_LAYERS = [
-  { name: "PostgreSQL (Primary)", desc: "Users, transactions, actions — source of truth", icon: "🐘" },
-  { name: "Redis (Cache)", desc: "Feed projections, sessions, real-time state", icon: "⚡" },
-  { name: "Kafka / NATS (Events)", desc: "Event bus, simulation triggers, worker queues", icon: "📡" },
-  { name: "ClickHouse (Analytics)", desc: "Aggregated metrics, revenue analytics, AI training data", icon: "📊" },
-];
-
-const MONITORING = [
-  { tool: "Prometheus", purpose: "Metrics collection — latency, throughput, error rates" },
-  { tool: "Grafana", purpose: "Real-time dashboards — AI cost, revenue per action, uptime" },
-  { tool: "ELK Stack", purpose: "Centralized logs — all services, errors, audit trail" },
-  { tool: "OpenTelemetry", purpose: "Distributed tracing — request flow across microservices" },
-];
-
-const CICD_STEPS = [
-  "Git push → GitHub Actions trigger",
-  "Build + lint + type check",
-  "Docker image build per service",
-  "Automated test suite (vitest)",
-  "Deploy to staging (Kubernetes)",
-  "Health checks + smoke tests",
-  "Deploy to production (rolling)",
-  "Monitor + alert on anomalies",
+const surfaces = [
+  { title: "Deployment environment, owner, account, and authorization scope", scope: "Deployment target, cloud account, environment, owner, operator, access role, change authority, secrets boundary, and least-privilege authorization", status: "Unavailable", icon: KeyRound },
+  { title: "Runtime topology, services, data stores, queues, and network paths", scope: "Actual frontend and backend services, APIs, databases, caches, queues, event buses, workers, WebSockets, network boundaries, and source-of-truth ownership", status: "Not connected", icon: Server },
+  { title: "Build, deploy, scaling, observability, resilience, and recovery evidence", scope: "Reproducible build, CI/CD workflow, deployment history, health checks, performance measurements, autoscaling, logs, traces, alerts, backups, failover, incident response, and recovery tests", status: "Not verified", icon: GitBranch },
+  { title: "Security, privacy, AI, finance, crypto, compliance, and access controls", scope: "Security controls, privacy impact, AI and model boundaries, financial or wallet services, cryptographic custody, compliance evidence, accessibility, and access review", status: "Not configured", icon: ShieldAlert },
 ];
 
 export default function ProductionArchitecture() {
-  return (
-    <div className="min-h-screen bg-background p-6 max-w-5xl mx-auto space-y-8">
-      {/* Header */}
-      <div>
-        <div className="flex items-center gap-3 mb-2">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center">
-            <Cloud className="w-5 h-5 text-white" />
-          </div>
-          <div>
-            <h1 className="text-2xl font-bold">Production Architecture</h1>
-            <p className="text-sm text-muted-foreground">Phase 40 — Cloud Deployment + Scalability Design</p>
-          </div>
-        </div>
-        <div className="mt-3 p-3 bg-cyan-500/10 border border-cyan-500/20 rounded-xl text-sm text-cyan-400">
-          "ShadowChat is a distributed AI-native OS deployed on cloud microservices with event-driven simulation, real-time communication, and scalable monetization."
-        </div>
-      </div>
-
-      {/* System flow */}
-      <div className="card p-5">
-        <div className="flex items-center gap-2 mb-4">
-          <Network className="w-4 h-4 text-cyan-400" />
-          <h2 className="font-semibold">Global System Flow</h2>
-        </div>
-        <div className="flex flex-wrap items-center gap-2 text-sm">
-          {["User", "CDN (Cloudflare)", "Frontend (OS/Legacy)", "API Gateway (NGINX)", "Microservices Cluster", "Event Bus (Kafka)", "Simulation Engine + AI", "Databases + Redis", "WebSocket Gateway", "UI Update"].map((step, i, arr) => (
-            <div key={step} className="flex items-center gap-2">
-              <div className="px-3 py-1.5 rounded-lg bg-secondary/50 text-xs font-medium">{step}</div>
-              {i < arr.length - 1 && <span className="text-muted-foreground">→</span>}
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Microservices */}
-      <div>
-        <div className="flex items-center gap-2 mb-3">
-          <Server className="w-4 h-4 text-purple-400" />
-          <h2 className="font-semibold">Independent Microservices (each scales separately)</h2>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {SERVICES.map(s => (
-            <div key={s.name} className="card p-4 flex items-start gap-3">
-              <div className={`px-2 py-1 rounded-lg text-xs font-mono font-bold ${s.color}`}>{s.name}</div>
-              <div className="flex-1 min-w-0">
-                <p className="text-xs text-muted-foreground">{s.desc}</p>
-                <p className="text-xs text-green-400 mt-1">Scale: {s.scale} instances</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Database layers */}
-      <div>
-        <div className="flex items-center gap-2 mb-3">
-          <Database className="w-4 h-4 text-green-400" />
-          <h2 className="font-semibold">Database Stack (split by purpose)</h2>
-        </div>
-        <div className="space-y-2">
-          {DB_LAYERS.map(db => (
-            <div key={db.name} className="card p-3 flex items-center gap-3">
-              <span className="text-xl">{db.icon}</span>
-              <div>
-                <div className="font-medium text-sm">{db.name}</div>
-                <div className="text-xs text-muted-foreground">{db.desc}</div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* AI scaling */}
-      <div className="card p-5">
-        <div className="flex items-center gap-2 mb-3">
-          <Cpu className="w-4 h-4 text-purple-400" />
-          <h2 className="font-semibold">AI Scaling Layer (cost control)</h2>
-        </div>
-        <div className="flex flex-wrap gap-2 text-xs">
-          {["Request", "AI Gateway", "Model Router", "Cache Check", "Execution", "Response"].map((step, i, arr) => (
-            <div key={step} className="flex items-center gap-2">
-              <div className="px-2 py-1 rounded bg-purple-500/20 text-purple-400">{step}</div>
-              {i < arr.length - 1 && <span className="text-muted-foreground">→</span>}
-            </div>
-          ))}
-        </div>
-        <div className="grid grid-cols-3 gap-3 mt-3">
-          {[["Fast", "Chat responses", "< 200ms"], ["Medium", "Analysis tasks", "< 2s"], ["Heavy", "Action execution", "< 10s"]].map(([tier, use, latency]) => (
-            <div key={tier} className="bg-secondary/30 rounded-xl p-3 text-center">
-              <div className="font-bold text-sm">{tier}</div>
-              <div className="text-xs text-muted-foreground">{use}</div>
-              <div className="text-xs text-green-400">{latency}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Auto-scaling rules */}
-      <div className="card p-5">
-        <div className="flex items-center gap-2 mb-3">
-          <Zap className="w-4 h-4 text-yellow-400" />
-          <h2 className="font-semibold">Auto-Scaling Rules</h2>
-        </div>
-        <div className="space-y-2 text-sm">
-          {[
-            ["CPU > 70%", "Scale up service instances automatically"],
-            ["Event queue grows", "Scale worker pool to drain backlog"],
-            ["AI cost spikes", "Throttle model usage, route to cheaper tier"],
-            ["WebSocket connections > 10K", "Add gateway nodes"],
-            ["DB read latency > 100ms", "Scale read replicas"],
-          ].map(([trigger, action]) => (
-            <div key={trigger} className="flex items-start gap-3 p-2 rounded-lg bg-secondary/20">
-              <span className="text-yellow-400 font-mono text-xs shrink-0">IF {trigger}</span>
-              <span className="text-muted-foreground text-xs">→ {action}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* CI/CD */}
-      <div className="card p-5">
-        <div className="flex items-center gap-2 mb-3">
-          <GitBranch className="w-4 h-4 text-cyan-400" />
-          <h2 className="font-semibold">CI/CD Pipeline</h2>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          {CICD_STEPS.map((step, i) => (
-            <div key={step} className="flex items-center gap-2">
-              <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-secondary/50 text-xs">
-                <span className="text-muted-foreground">{i + 1}.</span>
-                {step}
-              </div>
-              {i < CICD_STEPS.length - 1 && <span className="text-muted-foreground text-xs">→</span>}
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Monitoring */}
-      <div>
-        <div className="flex items-center gap-2 mb-3">
-          <Activity className="w-4 h-4 text-green-400" />
-          <h2 className="font-semibold">Observability Stack</h2>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {MONITORING.map(m => (
-            <div key={m.tool} className="card p-3">
-              <div className="font-semibold text-sm text-green-400">{m.tool}</div>
-              <div className="text-xs text-muted-foreground mt-1">{m.purpose}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Failover */}
-      <div className="card p-5 border-red-500/20">
-        <div className="flex items-center gap-2 mb-3">
-          <Shield className="w-4 h-4 text-red-400" />
-          <h2 className="font-semibold">Failover + Resilience</h2>
-        </div>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          {["Service redundancy (multi-instance)", "Fallback AI responses", "Degraded mode (feed-only)", "Retry queues for events"].map(item => (
-            <div key={item} className="bg-red-500/10 border border-red-500/20 rounded-xl p-3 text-xs text-red-400 text-center">{item}</div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Cloud} title="Production Architecture" subtitle="Deployment-architecture readiness status; no verified infrastructure inventory, cloud account, environment, runtime topology, service registry, data-store registry, CI/CD evidence, observability backend, or authorization system is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Production architecture is not verified</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen presented an asserted ShadowChat cloud microservice architecture with named chat, feed, AI, action, wallet, simulation, auth, and notification services; instance scaling ranges; PostgreSQL, Redis, Kafka or NATS, and ClickHouse layers; an API gateway, CDN, WebSocket gateway, AI router, latency tiers, autoscaling triggers, CI/CD pipeline, Kubernetes deployment, monitoring stack, uptime-like observability, and failover claims. These were documentation-shaped assertions, not verified infrastructure evidence. They were removed. No deployment, cloud account, service, database, queue, network, model, latency, capacity, build, deploy, metric, alert, uptime, failover, backup, security, or availability state is displayed, queried, calculated, stored, transmitted, verified, or mutated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Cloud aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Deployment-architecture readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Trustworthy architecture documentation requires source-backed environment and cloud-account ownership, an inventory of deployed components, actual API and network paths, data-store and source-of-truth definitions, secret and identity boundaries, reproducible builds, deployment history, measured performance, capacity methodology, observability evidence, backups, failover, incident response, recovery testing, security review, privacy impact assessment, accessibility, compliance, and least-privilege authorization. A service, database, queue, scaling rule, latency, uptime, failover capability, security control, or production status is not a fact without verified configuration and evidence. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="architecture-surfaces-heading"><h2 id="architecture-surfaces-heading" className="mb-4 text-xl font-semibold">Architecture control surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No deployment, cloud account, service, database, queue, network, model, latency, capacity, build, deploy, metric, alert, uptime, failover, backup, security, privacy, compliance, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="architecture-boundaries-heading"><h2 id="architecture-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No architecture operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No cloud or deployment auth check, infrastructure discovery, service query, configuration lookup, build, deployment, scaling action, health check, metric calculation, log or trace query, alert, failover, backup, API request, database read or write, export, or deletion is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Legal, personal data, AI, finance, crypto, privacy, safety, security, compliance, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not enter passwords, authentication codes, private keys, seed phrases, cloud credentials, database credentials, access tokens, identity documents, health records, financial data, private messages, or confidential infrastructure details here. Do not treat this page as evidence of a deployed service, database, queue, model, latency, capacity, CI/CD pipeline, uptime, failover, backup, security control, privacy protection, AI capability, financial capability, crypto custody, compliance, or legal conclusion. Verify environment ownership, service inventory, network paths, data stores, secret boundaries, build and deployment records, measurements, observability, recovery tests, security, privacy, compliance, and authorization before relying on architecture documentation or changing infrastructure.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/system-observability"><Button variant="outline"><Activity aria-hidden="true" className="mr-2 h-4 w-4" />Review observability status</Button></Link><Link href="/deployment-readiness"><Button variant="outline"><Workflow aria-hidden="true" className="mr-2 h-4 w-4" />Review deployment readiness</Button></Link><Link href="/security"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link><Link href="/documentation"><Button variant="outline"><FileCheck2 aria-hidden="true" className="mr-2 h-4 w-4" />Review documentation</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No cloud or deployment auth check, infrastructure discovery, service query, configuration lookup, build, deployment, scaling action, health check, metric calculation, log or trace query, alert, failover, backup, API request, database read or write, export, or deletion is performed. This page is not evidence of a deployed service, database, queue, model, latency, capacity, CI/CD pipeline, uptime, failover, backup, security control, privacy protection, AI capability, financial capability, crypto custody, compliance, or legal conclusion.</p></Card></main></div>;
 }
