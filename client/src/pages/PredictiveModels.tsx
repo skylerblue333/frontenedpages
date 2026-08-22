@@ -1,74 +1,23 @@
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/_core/hooks/useAuth";
+import { AlertTriangle, BarChart3, CheckCircle2, Database, FileCheck2, KeyRound, LockKeyhole, ShieldAlert, SlidersHorizontal } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Loader2, Plus, Search, Settings } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Authenticated owner, organization, model, dataset, and authorization scope", value: "Not connected", icon: KeyRound },
+  { label: "Model version, training data, feature lineage, and reproducibility", value: "Unavailable", icon: Database },
+  { label: "Evaluation, accuracy, uncertainty, drift, deployment, and output behavior", value: "Not verified", icon: BarChart3 },
+  { label: "Personal data, fairness, high-impact use, privacy, security, and safeguards", value: "Not configured", icon: LockKeyhole },
+];
+
+const surfaces = [
+  { title: "Owner, organization, model, dataset, and authorization scope", scope: "Authenticated owner, organization, model owner, role, purpose, consent, dataset scope, and least-privilege authorization", status: "Unavailable", icon: KeyRound },
+  { title: "Model identity, training, features, versioning, and provenance", scope: "Model family, version, code, configuration, training run, dataset snapshot, feature lineage, artifacts, license, and reproducibility evidence", status: "Not connected", icon: FileCheck2 },
+  { title: "Evaluation, uncertainty, drift, deployment, and output controls", scope: "Holdout design, accuracy metrics, calibration, error bounds, uncertainty, drift, deployment gate, rollback, monitoring, explanation, human review, and failure handling", status: "Not verified", icon: SlidersHorizontal },
+  { title: "Personal data, fairness, high-impact use, privacy, security, and access controls", scope: "Sensitive fields, consent, minimization, fairness evaluation, high-impact decisions, retention, deletion, redaction, privacy, security, accessibility, and access", status: "Not configured", icon: ShieldAlert },
+];
 
 export default function PredictiveModels() {
-  const { isAuthenticated } = useAuth();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>PredictiveModels</CardTitle>
-            <CardDescription>Sign in to access this feature</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full">Sign In</Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold">PredictiveModels</h1>
-            <p className="text-muted-foreground mt-2">ML predictions</p>
-          </div>
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            New
-          </Button>
-        </div>
-
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Search className="w-4 h-4 text-muted-foreground" />
-              <Input
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="max-w-sm"
-              />
-              <Button variant="outline" size="icon">
-                <Settings className="w-4 h-4" />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {isLoading ? (
-              <div className="flex justify-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
-              </div>
-            ) : (
-              <div className="text-center py-12 text-muted-foreground">
-                <p>No data available. Start by creating a new item.</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={SlidersHorizontal} title="Predictive Models" subtitle="Model-governance readiness status; no authoritative model registry, dataset store, training service, evaluation pipeline, deployment control, monitoring system, or production prediction backend is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Predictive models are unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen was an authenticated-only generic ML-predictions shell with a nonfunctional sign-in button, unused loading state, and no model registry, dataset, feature lineage, training, evaluation, metrics, uncertainty, drift, deployment, monitoring, fairness, high-impact-use, privacy, or authorization workflow. It was replaced with this explicit governance boundary. No model, dataset, feature, training run, accuracy, score, forecast, recommendation, user, financial, health, education, safety, fairness, or availability state is displayed, searched, calculated, stored, transmitted, verified, or mutated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><SlidersHorizontal aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Model-governance readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Trustworthy predictive models require authenticated owner and organization scope, a model registry, documented dataset and feature lineage, consent and minimization, reproducible training artifacts, validation and calibration, uncertainty and error bounds, drift monitoring, deployment gates and rollback, explainability, human review, fairness assessment, high-impact-use safeguards, accessibility, privacy, security, and least-privilege authorization. A model identity, training result, accuracy metric, forecast, score, recommendation, or decision is not a fact without verified records and validated methodology. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="model-surfaces-heading"><h2 id="model-surfaces-heading" className="mb-4 text-xl font-semibold">Model control surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No model, dataset, feature, training, accuracy, score, forecast, recommendation, user, financial, health, education, safety, fairness, privacy, security, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="model-boundaries-heading"><h2 id="model-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No model operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, model or dataset lookup, feature query, training, evaluation, inference, forecast, score, recommendation, deployment, monitoring, API request, database read or write, export, or deletion is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">AI, personal data, finance, health, education, safety, fairness, privacy, security, compliance, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not enter passwords, authentication codes, payment details, private keys, seed phrases, identity documents, health records, education records, employment data, financial data, or confidential datasets here. Do not treat this page as AI capability, financial advice, health guidance, educational assessment, safety prediction, compliance evidence, or proof of model accuracy, fairness, privacy, or security. Verify purpose, consent, provenance, model and data versions, methodology, validation, uncertainty, drift, human review, appeal, fairness, high-impact safeguards, retention, deletion, privacy, security, compliance, and authorization before relying on model output or acting.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/predictive-analytics"><Button variant="outline"><BarChart3 aria-hidden="true" className="mr-2 h-4 w-4" />Review predictive analytics</Button></Link><Link href="/security"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No auth check, model or dataset lookup, feature query, training, evaluation, inference, forecast, score, recommendation, deployment, monitoring, API request, database read or write, export, or deletion is performed. This page is not evidence of AI capability, model accuracy, fairness, financial advice, health guidance, educational assessment, safety prediction, compliance, privacy, or security.</p></Card></main></div>;
 }
