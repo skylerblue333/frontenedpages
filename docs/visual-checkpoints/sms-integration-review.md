@@ -1,0 +1,5 @@
+# SMSIntegration visual checkpoint
+
+SMSIntegration was hardened from an authenticated-looking SMS service setup shell with nonfunctional Sign In, New, Search, Settings, loading, and empty-data controls without a provider connection or server-side integration service. Those controls were removed. No provider, sender, credential, phone number, message, delivery, price, billing, user, tenant, consent, compliance, or availability state is displayed, calculated, stored, transmitted, verified, granted, or mutated.
+
+The page documents provider and sender verification, account and region scope, server-side secret handling, least-privilege credentials, rotation and revocation, operator authorization, recipient provenance and consent, suppression, privacy and retention, message identifiers and provider receipts, pricing and billing controls, bounded retries, rate limits, auditability, incident response, and communications-law review. Files: `sms-integration-desktop.webp`, `sms-integration-mobile.png`.
