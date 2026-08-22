@@ -1,0 +1,9 @@
+# PrivacyPolicy visual checkpoint
+
+PrivacyPolicy was hardened from an authenticated-only shell that did not actually authorize a policy owner, exposed nonfunctional New, Search, and Settings controls, maintained only local search and loading state, and implied a privacy-policy registry without a policy document, organization, jurisdiction, version, effective date, data inventory, legal basis, rights process, retention, processor, transfer, security, breach, accessibility, privacy, or compliance infrastructure. Those implications and operations were removed. The registered route is `/privacy-policy`. No policy, organization, jurisdiction, version, data category, legal basis, recipient, retention period, right, processor, transfer, incident, account, or compliance state is displayed, searched, calculated, stored, transmitted, verified, published, or mutated from this page.
+
+No policy-owner auth check, organization or jurisdiction lookup, document query, search, creation, legal review, publication, consent update, rights request, retention update, processor or transfer record, API request, database read or write, export, or deletion is read, calculated, displayed, asserted, initiated, or simulated.
+
+Files: `privacy-policy-desktop.webp`, `privacy-policy-mobile.png`.
+
+The 390px capture was reviewed for readable wrapped unavailable disclosure, stacked privacy-policy readiness cards, stacked policy-owner/data-inventory/rights/security surfaces, legal/personal-data/identity/AI/finance/crypto/privacy/safety/security/compliance/authorization warn-and-proceed notice, safe privacy/data-governance/security links, and absence of horizontal overflow or fake policy, jurisdiction, version, legal-basis, retention, rights, processor, transfer, incident, security, privacy, or compliance claims.
