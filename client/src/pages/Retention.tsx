@@ -1,324 +1,59 @@
 import { useState } from "react";
 import { Link } from "wouter";
+import { AlertTriangle, Award, CheckCircle2, Circle, Flame, Gift, Heart, Lock, Shield, Sparkles, Target, TrendingUp, Users, Zap } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { useAuth } from "@/_core/hooks/useAuth";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { PageHeader } from "@/components/PageHeader";
 import { toast } from "sonner";
-import {
-  Flame, Trophy, Star, Gift, Zap, Shield, Crown, Target,
-  TrendingUp, Award, Lock, CheckCircle2, Circle,
-  ArrowRight, Sparkles, Heart
-} from "lucide-react";
 
-const TIER_COLORS: Record<string, string> = {
-  bronze: "text-amber-600", silver: "text-slate-400", gold: "text-yellow-400",
-  platinum: "text-cyan-400", diamond: "text-blue-400", legend: "text-purple-400",
-};
-const TIER_BG: Record<string, string> = {
-  bronze: "from-amber-900/30 to-amber-800/10 border-amber-700/30",
-  silver: "from-slate-700/30 to-slate-600/10 border-slate-500/30",
-  gold: "from-yellow-900/30 to-yellow-800/10 border-yellow-700/30",
-  platinum: "from-cyan-900/30 to-cyan-800/10 border-cyan-700/30",
-  diamond: "from-blue-900/30 to-blue-800/10 border-blue-700/30",
-  legend: "from-purple-900/30 to-purple-800/10 border-purple-700/30",
-};
-const RANK_NAMES = ["Newcomer","Explorer","Contributor","Builder","Creator","Influencer","Leader","Champion","Master","Legend"];
+type Tab = "overview" | "streaks" | "quests" | "badges";
+type RecordValue = Record<string, unknown>;
+const isRecord = (value: unknown): value is RecordValue => typeof value === "object" && value !== null;
+const asNumber = (value: unknown): number | null => typeof value === "number" && Number.isFinite(value) ? value : null;
+const asString = (value: unknown): string | null => typeof value === "string" && value.trim().length > 0 ? value : null;
+const readNumber = (value: unknown, key: string) => isRecord(value) ? asNumber(value[key]) : null;
+const readString = (value: unknown, key: string) => isRecord(value) ? asString(value[key]) : null;
+const readArray = (value: unknown): RecordValue[] => Array.isArray(value) ? value.filter(isRecord) : [];
+
+const tabs: Array<{ id: Tab; label: string; icon: typeof TrendingUp }> = [
+  { id: "overview", label: "Overview", icon: TrendingUp },
+  { id: "streaks", label: "Streaks", icon: Flame },
+  { id: "quests", label: "Quests", icon: Target },
+  { id: "badges", label: "Badges", icon: Award },
+];
 
 export default function Retention() {
   const { user } = useAuth();
-  const [activeTab, setActiveTab] = useState<"overview"|"streaks"|"quests"|"badges">("overview");
-
-  const { data: streak, refetch: refetchStreak } = trpc.audienceLockIn.getStreak.useQuery(undefined, { enabled: !!user });
-  const { data: loyalty } = trpc.audienceLockIn.getLoyaltyProfile.useQuery(undefined, { enabled: !!user });
-  const { data: badges } = trpc.audienceLockIn.getUserBadges.useQuery(undefined, { enabled: !!user });
-  const { data: quests, refetch: refetchQuests } = trpc.audienceLockIn.getActiveQuests.useQuery(undefined, { enabled: !!user });
-  const { data: fanLevel } = trpc.audienceLockIn.getFanLevel.useQuery(undefined, { enabled: !!user });
-
+  const [activeTab, setActiveTab] = useState<Tab>("overview");
+  const streakQuery = trpc.audienceLockIn.getStreak.useQuery(undefined, { enabled: Boolean(user) });
+  const loyaltyQuery = trpc.audienceLockIn.getLoyaltyProfile.useQuery(undefined, { enabled: Boolean(user) });
+  const badgesQuery = trpc.audienceLockIn.getUserBadges.useQuery(undefined, { enabled: Boolean(user) });
+  const questsQuery = trpc.audienceLockIn.getActiveQuests.useQuery(undefined, { enabled: Boolean(user) });
+  const fanLevelQuery = trpc.audienceLockIn.getFanLevel.useQuery(undefined, { enabled: Boolean(user) });
   const recordActivity = trpc.audienceLockIn.recordActivity.useMutation({
-    onSuccess: (data: any) => {
-      refetchStreak();
-      if (data?.increased) toast.success(`🔥 Streak extended! Day ${data.streak}`, { description: data.reward || `Multiplier: ${data.multiplier}x` });
-      else if (data?.broken) toast.error("💔 Streak broken", { description: "Start a new streak today!" });
-      else toast.success("✅ Activity recorded");
-    }
+    onSuccess: () => { void streakQuery.refetch(); toast.success("Activity recorded by the connected service."); },
+    onError: () => toast.error("Activity could not be recorded. No engagement state was changed locally."),
   });
-
-  const tierName = (loyalty as any)?.tier ?? "bronze";
-  const tierColor = TIER_COLORS[tierName] ?? "text-primary";
-  const tierBg = TIER_BG[tierName] ?? TIER_BG.bronze;
-  const currentStreak = (streak as any)?.current ?? 0;
-  const longestStreak = (streak as any)?.longest ?? 0;
-  const multiplier = (streak as any)?.multiplier ?? 1;
-  const loyaltyPoints = (loyalty as any)?.lifetimePoints ?? 0;
-  const level = (fanLevel as any)?.level ?? 1;
-  const xp = (fanLevel as any)?.xp ?? 0;
-  const xpToNext = (fanLevel as any)?.xpToNext ?? 1000;
-  const rankName = RANK_NAMES[Math.min(level - 1, RANK_NAMES.length - 1)];
-
-  const tabs = [
-    { id: "overview", label: "Overview", icon: TrendingUp },
-    { id: "streaks", label: "Streaks", icon: Flame },
-    { id: "quests", label: "Quests", icon: Target },
-    { id: "badges", label: "Badges", icon: Award },
-  ] as const;
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="border-b border-border/50 bg-card/50 backdrop-blur-sm sticky top-0 z-10">
-        <div className="container max-w-4xl py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <Link href="/dashboard"><button className="text-muted-foreground hover:text-foreground transition-colors text-sm">← Back</button></Link>
-              <div>
-                <h1 className="text-xl font-bold flex items-center gap-2"><Heart className="w-5 h-5 text-primary" /> Retention & Loyalty</h1>
-                <p className="text-xs text-muted-foreground">Your engagement rewards and progress</p>
-              </div>
-            </div>
-            <Button size="sm" onClick={() => recordActivity.mutate()} disabled={recordActivity.isPending} className="bg-primary hover:bg-primary/90">
-              <Zap className="w-4 h-4 mr-1" />{recordActivity.isPending ? "Recording..." : "Check In"}
-            </Button>
-          </div>
-          <div className="flex gap-1 mt-4">
-            {tabs.map(tab => (
-              <button key={tab.id} onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${activeTab === tab.id ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-secondary"}`}>
-                <tab.icon className="w-3.5 h-3.5" />{tab.label}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <div className="container max-w-4xl py-6 space-y-6">
-        {activeTab === "overview" && (
-          <div className="space-y-6">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {[
-                { icon: Flame, color: "text-orange-400", value: currentStreak, label: "Day Streak" },
-                { icon: Star, color: tierColor, value: tierName.charAt(0).toUpperCase()+tierName.slice(1), label: "Loyalty Tier" },
-                { icon: Zap, color: "text-primary", value: `${multiplier}x`, label: "XP Multiplier" },
-                { icon: Crown, color: "text-purple-400", value: `Lv.${level}`, label: rankName },
-              ].map((s, i) => (
-                <div key={i} className="card p-4 text-center">
-                  <s.icon className={`w-6 h-6 ${s.color} mx-auto mb-2`} />
-                  <div className={`text-2xl font-bold ${s.color}`}>{s.value}</div>
-                  <div className="text-xs text-muted-foreground">{s.label}</div>
-                </div>
-              ))}
-            </div>
-            <div className={`card p-5 bg-gradient-to-r ${tierBg} border`}>
-              <div className="flex items-center justify-between mb-3">
-                <div><div className={`text-lg font-bold capitalize ${tierColor}`}>{rankName}</div><div className="text-sm text-muted-foreground">{loyaltyPoints.toLocaleString()} lifetime points</div></div>
-                <div className="text-right"><div className="text-sm font-mono">{xp.toLocaleString()} / {xpToNext.toLocaleString()} XP</div><div className="text-xs text-muted-foreground">to Level {level + 1}</div></div>
-              </div>
-              <Progress value={Math.min(100, (xp / xpToNext) * 100)} className="h-3" />
-            </div>
-            <div className="card p-5">
-              <h3 className="font-semibold mb-4 flex items-center gap-2"><Gift className="w-4 h-4 text-primary" /> Your {tierName.charAt(0).toUpperCase()+tierName.slice(1)} Benefits</h3>
-              <div className="grid grid-cols-2 gap-3">
-                {[
-                  { label: "XP Multiplier", value: `${multiplier}x`, icon: Zap },
-                  { label: "Streak Shields", value: (streak as any)?.freezesRemaining ?? 3, icon: Shield },
-                  { label: "Longest Streak", value: `${longestStreak} days`, icon: Flame },
-                  { label: "Badges Earned", value: (badges as any[])?.length ?? 0, icon: Award },
-                ].map(b => (
-                  <div key={b.label} className="flex items-center gap-3 p-3 bg-secondary/50 rounded-lg">
-                    <b.icon className="w-4 h-4 text-primary shrink-0" />
-                    <div><div className="text-xs text-muted-foreground">{b.label}</div><div className="font-semibold text-sm">{b.value}</div></div>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="card p-5">
-              <h3 className="font-semibold mb-4 flex items-center gap-2"><TrendingUp className="w-4 h-4 text-primary" /> Tier Progression</h3>
-              <div className="space-y-2">
-                {(Object.entries({ bronze: 0, silver: 500, gold: 2000, platinum: 5000, diamond: 15000, legend: 50000 }) as [string, number][]).map(([tier, threshold]) => {
-                  const isActive = tier === tierName;
-                  const isUnlocked = loyaltyPoints >= threshold;
-                  return (
-                    <div key={tier} className={`flex items-center justify-between p-3 rounded-lg border transition-all ${isActive ? "border-primary/50 bg-primary/10" : isUnlocked ? "border-green-500/30 bg-green-500/5" : "border-border/30 opacity-50"}`}>
-                      <div className="flex items-center gap-3">
-                        {isUnlocked ? <CheckCircle2 className="w-4 h-4 text-green-400" /> : <Lock className="w-4 h-4 text-muted-foreground" />}
-                        <span className={`font-medium capitalize ${TIER_COLORS[tier]}`}>{tier}</span>
-                        {isActive && <Badge variant="outline" className="text-xs">Current</Badge>}
-                      </div>
-                      <span className="text-xs text-muted-foreground font-mono">{threshold.toLocaleString()} pts</span>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        )}
-
-        {activeTab === "streaks" && (
-          <div className="space-y-6">
-            <div className="card p-6 text-center">
-              <div className="text-6xl font-bold text-orange-400 mb-2">{currentStreak}</div>
-              <div className="text-lg text-muted-foreground mb-1">Day Streak</div>
-              <div className="text-sm text-muted-foreground">Longest: {longestStreak} days</div>
-              <Button className="mt-4 bg-orange-500 hover:bg-orange-600" onClick={() => recordActivity.mutate()} disabled={recordActivity.isPending}>
-                <Flame className="w-4 h-4 mr-2" />Record Today's Activity
-              </Button>
-            </div>
-            <div className="card p-5">
-              <h3 className="font-semibold mb-4">Streak Milestones</h3>
-              <div className="space-y-3">
-                {[
-                  { days: 1, reward: "10 SKY444", icon: "🔥" },
-                  { days: 7, reward: "100 SKY444 + Bronze Badge", icon: "⚡" },
-                  { days: 14, reward: "250 SKY444 + Silver Badge", icon: "🌟" },
-                  { days: 30, reward: "1,000 SKY444 + Gold Badge", icon: "👑" },
-                  { days: 60, reward: "3,000 SKY444 + Platinum Badge", icon: "💎" },
-                  { days: 100, reward: "10,000 SKY444 + Legend Crown NFT", icon: "🏆" },
-                  { days: 365, reward: "50,000 SKY444 + Founder Status", icon: "🚀" },
-                ].map(m => (
-                  <div key={m.days} className={`flex items-center justify-between p-3 rounded-lg border ${currentStreak >= m.days ? "border-green-500/40 bg-green-500/10" : "border-border/30"}`}>
-                    <div className="flex items-center gap-3">
-                      <span className="text-xl">{m.icon}</span>
-                      <div><div className="font-medium text-sm">{m.days}-Day Streak</div><div className="text-xs text-muted-foreground">{m.reward}</div></div>
-                    </div>
-                    {currentStreak >= m.days ? <CheckCircle2 className="w-5 h-5 text-green-400" /> : <span className="text-xs text-muted-foreground">{m.days - currentStreak} days away</span>}
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="card p-5">
-              <h3 className="font-semibold mb-3 flex items-center gap-2"><Shield className="w-4 h-4 text-primary" /> Streak Shields</h3>
-              <p className="text-sm text-muted-foreground mb-4">Streak shields protect your streak when you miss a day.</p>
-              <div className="flex items-center gap-3">
-                {Array.from({ length: 3 }).map((_, i) => (
-                  <div key={i} className={`w-12 h-12 rounded-full border-2 flex items-center justify-center ${i < ((streak as any)?.freezesRemaining ?? 3) ? "border-primary bg-primary/20" : "border-border/30 opacity-30"}`}>
-                    <Shield className="w-5 h-5 text-primary" />
-                  </div>
-                ))}
-                <div className="text-sm text-muted-foreground ml-2">{(streak as any)?.freezesRemaining ?? 3} shields remaining</div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {activeTab === "quests" && (
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <h2 className="font-semibold flex items-center gap-2"><Target className="w-4 h-4 text-primary" /> Active Quests</h2>
-              <Button variant="outline" size="sm" onClick={() => refetchQuests()}>Refresh</Button>
-            </div>
-            {!quests || (quests as any[]).length === 0 ? (
-              <div className="card p-8 text-center">
-                <Sparkles className="w-10 h-10 text-muted-foreground mx-auto mb-3" />
-                <p className="text-muted-foreground">No active quests right now.</p>
-                <p className="text-sm text-muted-foreground mt-1">Check back tomorrow for new daily quests!</p>
-              </div>
-            ) : (
-              (quests as any[]).map((quest: any, i: number) => (
-                <div key={quest.id ?? i} className="card p-4">
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <Badge variant={quest.type === "daily" ? "default" : "secondary"} className="text-xs">{quest.type ?? "quest"}</Badge>
-                        <span className="font-medium text-sm">{quest.title ?? quest.name ?? "Quest"}</span>
-                      </div>
-                      <p className="text-xs text-muted-foreground mb-3">{quest.description ?? ""}</p>
-                      {quest.progress !== undefined && (
-                        <div className="space-y-1">
-                          <div className="flex justify-between text-xs text-muted-foreground"><span>Progress</span><span>{quest.progress}/{quest.target ?? 1}</span></div>
-                          <Progress value={Math.min(100, ((quest.progress ?? 0) / (quest.target ?? 1)) * 100)} className="h-2" />
-                        </div>
-                      )}
-                    </div>
-                    <div className="text-right shrink-0">
-                      <div className="text-sm font-bold text-primary">+{quest.xpReward ?? quest.reward ?? 0} XP</div>
-                      {quest.skyReward && <div className="text-xs text-yellow-400">{quest.skyReward} SKY444</div>}
-                    </div>
-                  </div>
-                </div>
-              ))
-            )}
-            <div className="card p-5 border-dashed">
-              <h3 className="font-semibold mb-3 text-sm text-muted-foreground">Daily Quest Examples</h3>
-              <div className="space-y-2">
-                {[
-                  { title: "Post something today", xp: 50, done: false },
-                  { title: "Like 5 posts", xp: 25, done: true },
-                  { title: "Comment on 3 posts", xp: 30, done: false },
-                  { title: "Visit the marketplace", xp: 20, done: true },
-                  { title: "Check your wallet", xp: 15, done: false },
-                ].map((q, i) => (
-                  <div key={i} className={`flex items-center justify-between p-2.5 rounded-lg ${q.done ? "opacity-50" : ""}`}>
-                    <div className="flex items-center gap-2">
-                      {q.done ? <CheckCircle2 className="w-4 h-4 text-green-400" /> : <Circle className="w-4 h-4 text-muted-foreground" />}
-                      <span className={`text-sm ${q.done ? "line-through text-muted-foreground" : ""}`}>{q.title}</span>
-                    </div>
-                    <span className="text-xs text-primary font-mono">+{q.xp} XP</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-
-        {activeTab === "badges" && (
-          <div className="space-y-6">
-            <div className="flex items-center justify-between">
-              <h2 className="font-semibold flex items-center gap-2"><Award className="w-4 h-4 text-primary" /> Your Badges</h2>
-              <span className="text-sm text-muted-foreground">{(badges as any[])?.length ?? 0} earned</span>
-            </div>
-            {!badges || (badges as any[]).length === 0 ? (
-              <div className="card p-8 text-center">
-                <Award className="w-10 h-10 text-muted-foreground mx-auto mb-3" />
-                <p className="text-muted-foreground">No badges yet.</p>
-                <p className="text-sm text-muted-foreground mt-1">Complete quests and maintain streaks to earn badges!</p>
-              </div>
-            ) : (
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                {(badges as any[]).map((badge: any, i: number) => (
-                  <div key={badge.id ?? i} className="card p-4 text-center">
-                    <div className="text-3xl mb-2">{badge.icon ?? "🏅"}</div>
-                    <div className="font-medium text-sm">{badge.name ?? "Badge"}</div>
-                    <div className="text-xs text-muted-foreground mt-1">{badge.description ?? ""}</div>
-                    {badge.earnedAt && <div className="text-xs text-muted-foreground mt-2">{new Date(badge.earnedAt).toLocaleDateString()}</div>}
-                  </div>
-                ))}
-              </div>
-            )}
-            <div className="card p-5">
-              <h3 className="font-semibold mb-4">All Badges to Earn</h3>
-              <div className="grid grid-cols-2 gap-3">
-                {[
-                  { icon: "🔥", name: "7-Day Streak", desc: "Login 7 days in a row" },
-                  { icon: "⚡", name: "Power User", desc: "Post 50 times" },
-                  { icon: "🌟", name: "Influencer", desc: "Get 100 followers" },
-                  { icon: "💎", name: "Diamond Hands", desc: "Stake for 90 days" },
-                  { icon: "🏆", name: "Tournament Victor", desc: "Win a tournament" },
-                  { icon: "🎯", name: "Quest Master", desc: "Complete 30 quests" },
-                  { icon: "🐋", name: "Whale", desc: "Hold 100,000 SKY444" },
-                  { icon: "👑", name: "Legend", desc: "Reach Legend tier" },
-                ].map((b, i) => (
-                  <div key={i} className="flex items-center gap-3 p-3 bg-secondary/30 rounded-lg">
-                    <span className="text-2xl">{b.icon}</span>
-                    <div><div className="text-sm font-medium">{b.name}</div><div className="text-xs text-muted-foreground">{b.desc}</div></div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-
-        <div className="card p-5 bg-gradient-to-r from-primary/20 to-purple-500/10 border-primary/30">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="font-semibold">Earn more SKY444</h3>
-              <p className="text-sm text-muted-foreground">Complete quests, maintain streaks, and level up your loyalty tier.</p>
-            </div>
-            <Link href="/quests">
-              <Button size="sm" className="shrink-0">View Quests <ArrowRight className="w-3 h-3 ml-1" /></Button>
-            </Link>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+  const streak = streakQuery.data;
+  const loyalty = loyaltyQuery.data;
+  const fanLevel = fanLevelQuery.data;
+  const badges = readArray(badgesQuery.data);
+  const quests = readArray(questsQuery.data);
+  const currentStreak = readNumber(streak, "current");
+  const longestStreak = readNumber(streak, "longest");
+  const multiplier = readNumber(streak, "multiplier");
+  const tier = readString(loyalty, "tier");
+  const lifetimePoints = readNumber(loyalty, "lifetimePoints");
+  const level = readNumber(fanLevel, "level");
+  const xp = readNumber(fanLevel, "xp");
+  const xpToNext = readNumber(fanLevel, "xpToNext");
+  const hasError = streakQuery.isError || loyaltyQuery.isError || badgesQuery.isError || questsQuery.isError || fanLevelQuery.isError;
+  const hasLoading = streakQuery.isLoading || loyaltyQuery.isLoading || badgesQuery.isLoading || questsQuery.isLoading || fanLevelQuery.isLoading;
+  const unavailable = (value: number | string | null) => value === null ? "Unavailable" : value;
+  const badgeTitle = (badge: RecordValue) => readString(badge, "name") ?? readString(badge, "title");
+  return <div className="min-h-screen bg-background"><PageHeader icon={Heart} title="Retention & Loyalty" subtitle="Connected engagement-service status. Only authenticated backend values are shown; no loyalty, reward, streak, badge, quest, or SKY4 value is invented locally." /><main className="mx-auto max-w-5xl space-y-6 px-4 py-6">{!user && <Card className="border border-amber-400/30 bg-amber-950/20 p-5"><p className="text-sm text-amber-100">Sign in is required before private engagement data can be requested. No local fallback profile, points, streak, reward, or wallet value is shown.</p></Card>}{user && hasError && <Card className="border border-amber-400/30 bg-amber-950/20 p-5"><p className="text-sm text-amber-100">The engagement service did not return a complete response. Some panels may be unavailable; no fallback values are substituted.</p></Card>}<div className="flex flex-wrap items-center justify-between gap-3"><div className="flex items-center gap-2 rounded-xl border border-border/60 bg-card p-1">{tabs.map(({ id, label, icon: Icon }) => <button key={id} type="button" onClick={() => setActiveTab(id)} aria-pressed={activeTab === id} className={`flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary ${activeTab === id ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-secondary"}`}><Icon aria-hidden="true" className="h-4 w-4" />{label}</button>)}</div>{user && <Button size="sm" onClick={() => recordActivity.mutate()} disabled={recordActivity.isPending || hasLoading}>{recordActivity.isPending ? "Recording…" : "Record activity"}</Button>}</div>{activeTab === "overview" && <div className="space-y-6"><div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{[[Flame, "Day streak", currentStreak, "text-orange-400"], [Award, "Loyalty tier", tier, "text-yellow-400"], [Zap, "XP multiplier", multiplier === null ? null : `${multiplier}x`, "text-primary"], [TrendingUp, "Fan level", level === null ? null : `Lv. ${level}`, "text-purple-400"]].map(([Icon, label, value, color]) => <Card key={label as string} className="border-border/50 bg-card p-4 text-center"><Icon aria-hidden="true" className={`mx-auto mb-2 h-6 w-6 ${color as string}`} /><div className={`text-2xl font-bold ${color as string}`}>{hasLoading ? "Loading…" : unavailable(value as number | string | null)}</div><div className="text-xs text-muted-foreground">{label as string}</div></Card>)}</div><Card className="border border-primary/20 bg-gradient-to-r from-primary/10 to-secondary/10 p-6"><div className="flex flex-wrap items-end justify-between gap-3"><div><p className="text-sm text-muted-foreground">Connected loyalty record</p><h2 className="mt-1 text-2xl font-bold">{unavailable(tier)}</h2><p className="mt-1 text-sm text-muted-foreground">Lifetime points: {unavailable(lifetimePoints)}</p></div><div className="text-right text-sm text-muted-foreground">{xp !== null && xpToNext !== null ? `${xp.toLocaleString()} / ${xpToNext.toLocaleString()} XP` : "XP progress unavailable"}</div></div>{xp !== null && xpToNext !== null && xpToNext > 0 && <Progress value={Math.min(100, Math.max(0, xp / xpToNext * 100))} className="mt-4 h-3" />}</Card><Card className="border-border/50 bg-card p-6"><div className="flex items-center gap-2"><Gift aria-hidden="true" className="h-5 w-5 text-primary" /><h2 className="font-semibold">Verified benefits</h2></div><p className="mt-2 text-sm leading-6 text-muted-foreground">Benefits, rewards, and any SKY4 issuance are shown only when returned with a typed, authenticated service response. No reward amount, multiplier, shield, or wallet balance is inferred here.</p></Card></div>}{activeTab === "streaks" && <div className="space-y-6"><Card className="border-border/50 bg-card p-6 text-center"><Flame aria-hidden="true" className="mx-auto h-10 w-10 text-orange-400" /><div className="mt-3 text-5xl font-bold text-orange-400">{hasLoading ? "…" : unavailable(currentStreak)}</div><p className="mt-1 text-lg text-muted-foreground">Current streak</p><p className="mt-1 text-sm text-muted-foreground">Longest verified streak: {unavailable(longestStreak)}</p>{user && <Button className="mt-5" onClick={() => recordActivity.mutate()} disabled={recordActivity.isPending || hasLoading}><Flame aria-hidden="true" className="mr-2 h-4 w-4" />{recordActivity.isPending ? "Recording…" : "Record today's activity"}</Button>}</Card><Card className="border-border/50 bg-card p-6"><div className="flex items-center gap-2"><Shield aria-hidden="true" className="h-5 w-5 text-primary" /><h2 className="font-semibold">Streak protection</h2></div><p className="mt-2 text-sm leading-6 text-muted-foreground">Streak-shield inventory and milestone rewards are unavailable unless returned by the connected service. No shield count or SKY4 reward is fabricated.</p></Card></div>}{activeTab === "quests" && <div className="space-y-4"><div className="flex items-center justify-between"><h2 className="flex items-center gap-2 font-semibold"><Target aria-hidden="true" className="h-5 w-5 text-primary" />Verified active quests</h2><Button variant="outline" size="sm" onClick={() => void questsQuery.refetch()} disabled={questsQuery.isFetching}>Refresh</Button></div>{hasLoading ? <Card className="p-8 text-center text-muted-foreground">Loading connected quest data…</Card> : quests.length === 0 ? <Card className="p-8 text-center"><Sparkles aria-hidden="true" className="mx-auto mb-3 h-10 w-10 text-muted-foreground" /><p className="text-muted-foreground">No verified active quests were returned.</p><p className="mt-1 text-sm text-muted-foreground">No example quest, XP value, completion state, or SKY4 reward is displayed.</p></Card> : quests.map((quest, index) => <Card key={readString(quest, "id") ?? `quest-${index}`} className="border-border/50 bg-card p-5"><div className="flex items-start justify-between gap-4"><div><p className="font-semibold">{readString(quest, "title") ?? readString(quest, "name") ?? "Untitled quest"}</p><p className="mt-1 text-sm text-muted-foreground">{readString(quest, "description") ?? "Description unavailable"}</p></div><Badge variant="outline">Verified record</Badge></div></Card>)}</div>}{activeTab === "badges" && <div className="space-y-4"><div className="flex items-center justify-between"><h2 className="flex items-center gap-2 font-semibold"><Award aria-hidden="true" className="h-5 w-5 text-primary" />Verified badges</h2><span className="text-sm text-muted-foreground">{badges.length ? `${badges.length} returned` : "Unavailable"}</span></div>{badges.length === 0 ? <Card className="p-8 text-center"><Award aria-hidden="true" className="mx-auto mb-3 h-10 w-10 text-muted-foreground" /><p className="text-muted-foreground">No verified badges were returned.</p><p className="mt-1 text-sm text-muted-foreground">No badge, identity, achievement, or eligibility claim is inferred.</p></Card> : <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{badges.map((badge, index) => <Card key={readString(badge, "id") ?? `badge-${index}`} className="border-border/50 bg-card p-5"><Award aria-hidden="true" className="h-7 w-7 text-primary" /><h3 className="mt-3 font-semibold">{badgeTitle(badge) ?? "Unnamed badge"}</h3><p className="mt-1 text-sm text-muted-foreground">{readString(badge, "description") ?? "Description unavailable"}</p></Card>)}</div>}</div>}<Card className="border border-amber-400/30 bg-amber-950/15 p-5"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Truthfulness and financial boundary</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">No SKY4 reward, token balance, NFT, creator status, financial outcome, or loyalty value is promised. Any future reward or wallet integration requires authenticated ownership, verified ledger records, network and custody controls, tax treatment, anti-abuse rules, and clear terms. Do not use loyalty data for unauthorized profiling, trading, or sensitive decisions.</p></div></div></Card><div className="flex flex-wrap gap-3"><Link href="/quests"><Button variant="outline"><Target aria-hidden="true" className="mr-2 h-4 w-4" />Review quests</Button></Link><Link href="/reputation"><Button variant="outline"><Users aria-hidden="true" className="mr-2 h-4 w-4" />Review reputation</Button></Link><Link href="/wallet"><Button variant="outline"><Lock aria-hidden="true" className="mr-2 h-4 w-4" />Review wallet boundary</Button></Link><Link href="/privacy-center"><Button variant="outline"><Shield aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link></div><p className="text-xs leading-5 text-muted-foreground">No unauthenticated fallback profile, fabricated points, example quests, zero-value counts, reward amount, balance, transaction, or database mutation is performed by this page.</p></main></div>;
 }
