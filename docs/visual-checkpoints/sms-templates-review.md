@@ -1,0 +1,5 @@
+# SMSTemplates visual checkpoint
+
+SMSTemplates was hardened from a generic page that exposed “Content for SMSTemplates” and a nonfunctional Activate/Deactivate control without a template registry, content review, provider, recipient, or consent service. Those controls and claims were removed. No template, message, sender, recipient, variable, link, locale, opt-in, opt-out, approval, compliance, user, tenant, or availability state is displayed, calculated, stored, transmitted, verified, granted, published, or mutated.
+
+The page documents template provenance and ownership, purpose and audience, explicit consent language, sender disclosure, opt-out instructions, jurisdiction and quiet hours, versioning, variable validation, link safety, sensitive-data controls, human review and approval, localization, rendering limits, privacy, retention, access control, auditability, rollback, incident response, rate limits, and authorization. Files: `sms-templates-desktop.webp`, `sms-templates-mobile.png`.
