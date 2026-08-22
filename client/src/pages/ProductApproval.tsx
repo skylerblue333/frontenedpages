@@ -1,74 +1,23 @@
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/_core/hooks/useAuth";
+import { AlertTriangle, CheckCircle2, FileCheck2, KeyRound, LockKeyhole, PackageCheck, ShieldAlert, Workflow } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Loader2, Plus, Search, Settings } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Authenticated reviewer, owner, organization, role, and authorization scope", value: "Not connected", icon: KeyRound },
+  { label: "Product identity, provenance, version, seller, pricing, and entitlement evidence", value: "Unavailable", icon: PackageCheck },
+  { label: "Safety, security, privacy, legal review, approval, publication, and audit history", value: "Not verified", icon: FileCheck2 },
+  { label: "AI, finance, crypto, personal data, accessibility, and safeguards", value: "Not configured", icon: ShieldAlert },
+];
+
+const surfaces = [
+  { title: "Reviewer, owner, organization, role, and authorization scope", scope: "Authenticated reviewer and organization identity, product owner, role, purpose, separation of duties, approval authority, and least-privilege authorization", status: "Unavailable", icon: KeyRound },
+  { title: "Product identity, provenance, version, seller, pricing, and entitlement evidence", scope: "Product identity, creator or seller, source, version, dependencies, category, region, currency, price, tax, licensing, support, and entitlement evidence", status: "Not connected", icon: PackageCheck },
+  { title: "Safety, security, privacy, legal review, approval, publication, and audit history", scope: "Safety and security review, privacy impact, legal review, content moderation, test evidence, approval chain, publication state, rollback, incident handling, and audit history", status: "Not verified", icon: FileCheck2 },
+  { title: "AI, finance, crypto, personal data, accessibility, compliance, and access controls", scope: "AI or financial capability claims, crypto and payment boundaries, personal-data handling, accessibility, compliance evidence, monitoring, and access review", status: "Not configured", icon: ShieldAlert },
+];
 
 export default function ProductApproval() {
-  const { isAuthenticated } = useAuth();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>ProductApproval</CardTitle>
-            <CardDescription>Sign in to access this feature</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full">Sign In</Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold">ProductApproval</h1>
-            <p className="text-muted-foreground mt-2">Product approval</p>
-          </div>
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            New
-          </Button>
-        </div>
-
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Search className="w-4 h-4 text-muted-foreground" />
-              <Input
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="max-w-sm"
-              />
-              <Button variant="outline" size="icon">
-                <Settings className="w-4 h-4" />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {isLoading ? (
-              <div className="flex justify-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
-              </div>
-            ) : (
-              <div className="text-center py-12 text-muted-foreground">
-                <p>No data available. Start by creating a new item.</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={PackageCheck} title="Product Approval" subtitle="Product-approval readiness status; no authenticated reviewer context, submission registry, product catalog, evidence store, safety or legal review workflow, pricing service, entitlement service, or authorization backend is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Product approval is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen required authentication but did not actually authorize a reviewer, exposed nonfunctional New, Search, and Settings controls, maintained only local search and loading state, and implied an approval registry without product identity, owner, provenance, version, seller, pricing, licensing, evidence, safety, security, privacy, legal review, entitlement, publication, or audit infrastructure. Those implications and operations were removed. No product, submission, reviewer, approval, price, entitlement, customer, account, or publication state is displayed, searched, calculated, stored, transmitted, verified, approved, published, or mutated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><PackageCheck aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Product-approval readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Trustworthy product approval requires authenticated reviewer and organization scope, role-based access and separation of duties, product and seller provenance, versioned evidence, dependencies, pricing and entitlement definitions, safety and security testing, privacy impact assessment, legal and licensing review, accessibility, moderation, support, approval and publication controls, rollback, incident response, auditability, compliance, and least-privilege authorization. A product, seller, price, license, approval, safety status, security control, entitlement, or publication state is not a fact without verified records. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="approval-surfaces-heading"><h2 id="approval-surfaces-heading" className="mb-4 text-xl font-semibold">Product-approval control surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No product, seller, price, license, approval, safety, security, privacy, entitlement, publication, account, customer, compliance, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="approval-boundaries-heading"><h2 id="approval-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No approval operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No reviewer auth check, role lookup, product or submission query, search, creation, evidence upload, safety or legal review, approval, rejection, publication, entitlement grant, API request, database read or write, export, or deletion is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Legal, personal data, AI, finance, crypto, privacy, safety, security, compliance, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not enter passwords, authentication codes, private keys, seed phrases, identity documents, health records, financial data, payment details, confidential source code, or customer information here. Do not treat this page as evidence of a product approval, safety or security review, price, license, entitlement, AI capability, financial capability, privacy protection, compliance, or legal conclusion. Verify reviewer identity, separation of duties, product provenance, evidence, dependencies, pricing, licensing, safety, security, privacy, accessibility, compliance, and authorization with qualified reviewers and counsel before approving or publishing a product.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/product-catalog"><Button variant="outline"><PackageCheck aria-hidden="true" className="mr-2 h-4 w-4" />Review catalog status</Button></Link><Link href="/pricing-management"><Button variant="outline"><Workflow aria-hidden="true" className="mr-2 h-4 w-4" />Review pricing administration</Button></Link><Link href="/security"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No reviewer auth check, role lookup, product or submission query, search, creation, evidence upload, safety or legal review, approval, rejection, publication, entitlement grant, API request, database read or write, export, or deletion is performed. This page is not evidence of a product approval, safety or security review, price, license, entitlement, AI capability, financial capability, privacy protection, compliance, or legal conclusion.</p></Card></main></div>;
 }
