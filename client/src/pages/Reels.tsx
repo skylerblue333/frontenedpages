@@ -28,7 +28,10 @@ export default function Reels() {
 
   const recordEngagement = trpc.socialCore.recordEngagement.useMutation();
 
-  const fmt = (n: number) => n >= 1e6 ? `${(n/1e6).toFixed(1)}M` : n >= 1000 ? `${(n/1000).toFixed(1)}K` : String(n);
+  const fmt = (n: number | null | undefined) => {
+    if (typeof n !== "number" || !Number.isFinite(n) || n < 0) return null;
+    return n >= 1e6 ? `${(n / 1e6).toFixed(1)}M` : n >= 1000 ? `${(n / 1000).toFixed(1)}K` : String(n);
+  };
 
   const handleLike = useCallback((id: string) => {
     if (!isAuthenticated) { toast.error("Sign in to like reels"); return; }
@@ -78,10 +81,10 @@ export default function Reels() {
         <>
           <div className="flex items-center gap-2 mb-4 text-sm text-muted-foreground">
             <TrendingUp className="w-4 h-4 text-orange-400" />
-            <span>{reels.length} reels trending now</span>
+            <span>{reels.length} available reels returned by the connected feed</span>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {reels.map((reel: any, i: number) => {
+            {reels.map((reel, i: number) => {
               const id = String(reel.id || i);
               const isLiked = liked.has(id);
               const isSaved = saved.has(id);
@@ -101,7 +104,7 @@ export default function Reels() {
                         {muted ? <VolumeX className="w-3 h-3 text-white" /> : <Volume2 className="w-3 h-3 text-white" />}
                       </button>
                     </div>
-                    <div className="absolute bottom-2 left-2 z-10 text-xs text-white/90 bg-black/40 px-2 py-0.5 rounded-full">{fmt(reel.viewCount || 0)} views</div>
+                    {fmt(reel.viewCount) !== null && <div className="absolute bottom-2 left-2 z-10 text-xs text-white/90 bg-black/40 px-2 py-0.5 rounded-full">{fmt(reel.viewCount)} views</div>}
                     {reel.duration > 0 && <div className="absolute bottom-2 right-2 z-10 text-xs text-white/90 bg-black/40 px-2 py-0.5 rounded-full">{reel.duration}s</div>}
                   </div>
                   <div className="p-3">
@@ -114,10 +117,10 @@ export default function Reels() {
                     )}
                     <div className="flex items-center gap-3 mt-2">
                       <button onClick={() => handleLike(id)} className="flex items-center gap-1 text-xs text-muted-foreground hover:text-destructive transition-colors">
-                        <Heart className={`w-3 h-3 ${isLiked ? "fill-destructive text-destructive" : ""}`} />{fmt((reel.likeCount || 0) + (isLiked ? 1 : 0))}
+                        <Heart className={`w-3 h-3 ${isLiked ? "fill-destructive text-destructive" : ""}`} />{fmt(typeof reel.likeCount === "number" ? reel.likeCount + (isLiked ? 1 : 0) : undefined) ?? "—"}
                       </button>
                       <span className="flex items-center gap-1 text-xs text-muted-foreground">
-                        <MessageCircle className="w-3 h-3" />{fmt(reel.commentCount || 0)}
+                        <MessageCircle className="w-3 h-3" />{fmt(reel.commentCount) ?? "—"}
                       </span>
                       <button onClick={() => { navigator.clipboard?.writeText(`${window.location.origin}/reels/${id}`); toast.success("Link copied!"); }} className="flex items-center gap-1 text-xs text-muted-foreground hover:text-primary transition-colors">
                         <Share2 className="w-3 h-3" />
