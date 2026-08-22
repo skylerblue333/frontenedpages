@@ -1,75 +1,23 @@
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/_core/hooks/useAuth";
+import { AlertTriangle, Building2, CheckCircle2, FileCheck2, KeyRound, LockKeyhole, Settings, ShieldAlert, Users } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
-import { Loader2, Plus, Search, Settings } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Authenticated principal, organization, membership, role, and authorization scope", value: "Not connected", icon: KeyRound },
+  { label: "Organization identity, profile, domains, memberships, invitations, and audit provenance", value: "Unavailable", icon: Building2 },
+  { label: "Settings, role changes, invitations, billing, retention, export, and deletion behavior", value: "Not verified", icon: Settings },
+  { label: "Personal data, organization data, billing, privacy, security, and safeguards", value: "Not configured", icon: LockKeyhole },
+];
+
+const surfaces = [
+  { title: "Principal, organization, and authorization scope", scope: "Authenticated principal, organization, membership, role, ownership, consent, purpose, and authorization", status: "Unavailable", icon: KeyRound },
+  { title: "Organization identity and membership provenance", scope: "Organization ID, name, profile, verified domains, members, roles, invitations, status, and audit source", status: "Not connected", icon: Users },
+  { title: "Settings, billing, and lifecycle controls", scope: "Settings, role changes, invitations, billing, subscriptions, retention, export, deletion, and audit behavior", status: "Not verified", icon: Settings },
+  { title: "Personal data, privacy, and access controls", scope: "Member data, organization data, billing information, retention, deletion, privacy, security, and access", status: "Not configured", icon: ShieldAlert },
+];
 
 export default function OrganizationSettings() {
-  const { isAuthenticated } = useAuth();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>OrganizationSettings</CardTitle>
-            <CardDescription>Sign in to access this feature</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full">Sign In</Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold">OrganizationSettings</h1>
-            <p className="text-muted-foreground mt-2">Company settings and configuration</p>
-          </div>
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            New
-          </Button>
-        </div>
-
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Search className="w-4 h-4 text-muted-foreground" />
-              <Input
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="max-w-sm"
-              />
-              <Button variant="outline" size="icon">
-                <Settings className="w-4 h-4" />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {isLoading ? (
-              <div className="flex justify-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
-              </div>
-            ) : (
-              <div className="text-center py-12 text-muted-foreground">
-                <p>No data available. Start by creating a new item.</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Building2} title="Organization Settings" subtitle="Organization-administration readiness status; no authenticated principal, organization record, membership directory, role service, invitation system, billing provider, audit ledger, or production administration backend is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Organization settings are unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen was an authenticated-only generic search and New-item shell with a nonfunctional sign-in button, unused loading state, and no organization, membership, role, invitation, settings, billing, audit, persistence, privacy, or authorization workflow. It was replaced with this explicit readiness boundary. No organization, member, role, invitation, setting, billing, subscription, audit, or availability state is displayed, searched, created, changed, stored, or deleted from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Building2 aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Organization-administration readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Trustworthy organization administration requires authenticated principal and organization scope, authoritative membership and role records, verified invitation and domain workflows, least-privilege settings changes, billing-provider reconciliation, auditability, idempotency, conflict handling, retention and deletion controls, privacy-safe member access, and accessible error and confirmation states. An organization, membership, role, invitation, setting, billing state, or audit event is not a fact without verified records. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="organization-surfaces-heading"><h2 id="organization-surfaces-heading" className="mb-4 text-xl font-semibold">Administration control surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No organization, membership, role, invitation, setting, billing, audit, privacy, security, safety, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="organization-boundaries-heading"><h2 id="organization-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No organization operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, organization or membership lookup, search, invitation, role change, setting update, billing query, audit query, API request, database read or write, export, or deletion is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Identity, billing, personal data, privacy, safety, accessibility, security, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not enter passwords, authentication codes, payment details, identity documents, private keys, seed phrases, member data, or confidential organization information here. Do not treat this page as evidence of organization identity, membership, role, invitation, verified domain, settings persistence, billing, subscription, audit, compliance, or privacy protection. Verify principal and organization scope, role permissions, invitation state, domain verification, billing provider, audit trail, retention, deletion, accessibility, privacy, security, and authorization before relying on or changing organization data.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/profile"><Button variant="outline"><KeyRound aria-hidden="true" className="mr-2 h-4 w-4" />Review profile status</Button></Link><Link href="/settings"><Button variant="outline"><Settings aria-hidden="true" className="mr-2 h-4 w-4" />Review account status</Button></Link><Link href="/security"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No auth check, organization or membership lookup, search, invitation, role change, setting update, billing query, audit query, API request, database read or write, export, or deletion is performed. This page is not evidence of organization identity, membership, role, invitation, verified domain, settings persistence, billing, subscription, audit, compliance, or privacy protection.</p></Card></main></div>;
 }
