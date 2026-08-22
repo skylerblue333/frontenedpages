@@ -1,0 +1,5 @@
+# ScheduledReports visual checkpoint
+
+ScheduledReports was hardened from an authenticated-looking automated-report CRUD shell with nonfunctional Sign In, New, Search, Settings, loading, and empty-data controls without a report registry, source datasets, scheduler, recipient directory, or delivery provider. Those controls were removed. No report, dataset, metric, schedule, recipient, email, credential, execution, delivery, failure, user, tenant, privacy, compliance, or availability state is displayed, calculated, stored, transmitted, verified, granted, sent, or mutated.
+
+The page documents report purpose and query provenance, period/timezone/freshness, actual-versus-estimate boundaries, ownership, recipient consent, frequency and quiet hours, versioned output, access and encryption, server-side credentials, provider scope, delivery receipts, idempotency and retries, data minimization, retention, auditability, structured errors, pause/resume, rollback, and incident response. Files: `scheduled-reports-desktop.webp`, `scheduled-reports-mobile.png`.

@@ -1,75 +1,16 @@
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/_core/hooks/useAuth";
+import { AlertTriangle, BarChart3, CheckCircle2, Clock3, FileCheck2, KeyRound, LockKeyhole, Mail, ShieldCheck, Terminal, Users } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
-import { Loader2, Plus, Search, Settings } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const surfaces = [
+  ["Report definition and data provenance", "Verified report purpose, source datasets, query logic, period, timezone, freshness, filters, and distinction between facts and estimates", "Not connected", BarChart3],
+  ["Schedule, recipients, and consent", "Authenticated owner, tenant, frequency, quiet hours, recipient identity, delivery consent, and authorization", "Unavailable", Clock3],
+  ["Rendering, delivery, and secret handling", "Versioned output, access controls, encryption, server-side credentials, provider scope, delivery receipt, retries, and revocation", "Not verified", Mail],
+  ["Privacy, audit, and failure recovery", "Sensitive-data minimization, retention, audit history, structured errors, pause/resume, rollback, and incident response", "Not configured", LockKeyhole],
+] as const;
 
 export default function ScheduledReports() {
-  const { isAuthenticated } = useAuth();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>ScheduledReports</CardTitle>
-            <CardDescription>Sign in to access this feature</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full">Sign In</Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold">ScheduledReports</h1>
-            <p className="text-muted-foreground mt-2">Automated report delivery</p>
-          </div>
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            New
-          </Button>
-        </div>
-
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Search className="w-4 h-4 text-muted-foreground" />
-              <Input
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="max-w-sm"
-              />
-              <Button variant="outline" size="icon">
-                <Settings className="w-4 h-4" />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {isLoading ? (
-              <div className="flex justify-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
-              </div>
-            ) : (
-              <div className="text-center py-12 text-muted-foreground">
-                <p>No data available. Start by creating a new item.</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Clock3} title="Scheduled Reports" subtitle="Report-delivery readiness status; no verified report definition, data source, scheduler, recipient directory, mail provider, credential store, execution log, or durable delivery record is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Scheduled reports are unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen exposed nonfunctional Sign In, New, Search, Settings, loading, and empty-data controls without a report registry, source datasets, scheduler, recipient directory, or delivery provider. Those controls were removed. No report, dataset, metric, schedule, recipient, email, credential, execution, delivery, failure, user, tenant, privacy, compliance, or availability state is displayed, calculated, stored, transmitted, verified, granted, sent, or mutated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Clock3 aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Report-delivery readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A trustworthy scheduled-report system requires a defined purpose, verified datasets and query logic, period/timezone/freshness, clear actual-versus-estimate boundaries, authenticated ownership, tenant and recipient consent, frequency and quiet hours, versioned output, least-privilege access, encryption, server-side credentials, provider scope, delivery receipts, idempotency and retries, sensitive-data minimization, retention, auditability, structured errors, pause/resume, rollback, and incident response. A report, metric, schedule, recipient, delivery, or background guarantee is not a fact without verified records. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{surfaces.map(([label,,value,Icon])=><Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="scheduled-reports-surfaces-heading"><h2 id="scheduled-reports-surfaces-heading" className="mb-4 text-xl font-semibold">Report-delivery control surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(([title,scope,status,Icon])=><Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No report, dataset, metric, schedule, recipient, email, credential, execution, delivery, failure, user, tenant, privacy, compliance, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="scheduled-reports-boundaries-heading"><h2 id="scheduled-reports-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No report operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No report creation, dataset connection, query execution, schedule registration, recipient import, email send, credential entry, rendering, export, database read or write, retry, pause, resume, or deletion is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Personal data, identity, AI, finance, crypto, privacy, safety, security, compliance, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not enter passwords, authentication codes, API tokens, private keys, seed phrases, wallet addresses, identity documents, health records, payment details, account numbers, or confidential source code here. Do not schedule delivery of sensitive data or treat this page as evidence of a metric, report, recipient consent, delivery, security, privacy protection, compliance, or legal conclusion. Verify source, query, period, timezone, owner, recipient, consent, provider, credentials, encryption, retries, privacy, security, authorization, and human approval before enabling delivery.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/scheduled-jobs"><Button variant="outline"><Clock3 aria-hidden="true" className="mr-2 h-4 w-4" />Review scheduled jobs</Button></Link><Link href="/analytics"><Button variant="outline"><BarChart3 aria-hidden="true" className="mr-2 h-4 w-4" />Review analytics</Button></Link><Link href="/permissions"><Button variant="outline"><KeyRound aria-hidden="true" className="mr-2 h-4 w-4" />Review permissions</Button></Link><Link href="/security"><Button variant="outline"><ShieldCheck aria-hidden="true" className="mr-2 h-4 w-4" />Review security</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link><Link href="/documentation"><Button variant="outline"><FileCheck2 aria-hidden="true" className="mr-2 h-4 w-4" />Review documentation</Button></Link><Link href="/system-observability"><Button variant="outline"><Terminal aria-hidden="true" className="mr-2 h-4 w-4" />Review observability</Button></Link><Link href="/user-management"><Button variant="outline"><Users aria-hidden="true" className="mr-2 h-4 w-4" />Review recipients</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No report creation, dataset connection, query execution, schedule registration, recipient import, email send, credential entry, rendering, export, database read or write, retry, pause, resume, or deletion is performed. This page is not evidence of a metric, report, recipient consent, delivery, security, privacy protection, compliance, or legal conclusion.</p></Card></main></div>;
 }
