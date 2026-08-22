@@ -1,0 +1,5 @@
+# SMTPSettings visual checkpoint
+
+SMTPSettings was hardened from a fabricated live-data marketing shell. It claimed live data and real-time updates, exposed generic feature marketing and nonfunctional Get Started, Learn More, and Documentation actions, and displayed hardcoded active users, transaction totals, success rate, and response time. No verified mail provider, domain, DNS authentication, credential, queue, delivery, or analytics service was connected. Those claims and controls were removed.
+
+The page documents provider and account scope, server-side secrets, least-privilege scopes, credential rotation and revocation, owned sending domain, SPF/DKIM/DMARC and return-path evidence, sender authorization, message identifiers and provider responses, bounce/complaint/suppression controls, unsubscribe handling, rate limits, deliverability monitoring, data minimization, retention, auditability, incident response, privacy, security, and authorization. Files: `smtp-settings-desktop.webp`, `smtp-settings-mobile.png`.

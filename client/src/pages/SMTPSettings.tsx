@@ -1,89 +1,16 @@
-import { Settings } from "lucide-react";
+import { AlertTriangle, CheckCircle2, FileCheck2, KeyRound, LockKeyhole, Mail, Network, ReceiptText, Send, ShieldCheck, Terminal, UserCheck } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { PageHeader } from "@/components/PageHeader";
 
+const surfaces = [
+  ["Provider and account scope", "Verified mail provider, account or tenant, authorized operator, sending regions, API scopes, quotas, and credential lifecycle", "Not connected", Network],
+  ["Domain and sender authentication", "Owned domain, SPF, DKIM, DMARC, return-path, sender identity, verification timestamp, and rotation ownership", "Unavailable", Mail],
+  ["Delivery and reputation evidence", "Message IDs, provider responses, bounce and complaint handling, rate limits, suppression, and incident response", "Not verified", ReceiptText],
+  ["Privacy and operational controls", "Data minimization, retention, unsubscribe handling, access control, audit history, and deletion process", "Not configured", LockKeyhole],
+] as const;
+
 export default function SMTPSettings() {
-  return (
-    <div className="min-h-screen bg-background">
-      <PageHeader icon={Settings} title="SMTP Settings" subtitle="Fully functional smtp settings page with live data and real-time updates" />
-      
-      <div className="max-w-7xl mx-auto px-4 py-8 space-y-8">
-        {/* Main Content Area */}
-        <Card className="p-8 bg-card border border-border/50">
-          <div className="space-y-6">
-            <h2 className="text-2xl font-bold">SMTP Settings</h2>
-            
-            {/* Feature Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <Settings className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 1</h3>
-                  <p className="text-sm text-muted-foreground">Real-time data and live updates</p>
-                </div>
-              </Card>
-              
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <Settings className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 2</h3>
-                  <p className="text-sm text-muted-foreground">Advanced analytics and insights</p>
-                </div>
-              </Card>
-              
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <Settings className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 3</h3>
-                  <p className="text-sm text-muted-foreground">Seamless integration and automation</p>
-                </div>
-              </Card>
-            </div>
-            
-            {/* Action Buttons */}
-            <div className="flex gap-4 flex-wrap pt-4">
-              <Button className="bg-primary hover:bg-primary/90">
-                Get Started
-              </Button>
-              <Button variant="outline">
-                Learn More
-              </Button>
-              <Button variant="ghost">
-                Documentation
-              </Button>
-            </div>
-          </div>
-        </Card>
-        
-        {/* Stats Section */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Active Users</p>
-              <p className="text-2xl font-bold">802K+</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Total Transactions</p>
-              <p className="text-2xl font-bold">2.4M</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Success Rate</p>
-              <p className="text-2xl font-bold">99.9%</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Avg Response Time</p>
-              <p className="text-2xl font-bold">45ms</p>
-            </div>
-          </Card>
-        </div>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Mail} title="SMTP Settings" subtitle="Email-transport readiness status; no verified SMTP provider, sending domain, DNS authentication, server-side credential store, mail queue, delivery receipt, analytics, or privacy backend is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">SMTP configuration is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen claimed live data and real-time updates, exposed generic feature marketing and nonfunctional actions, and displayed fabricated active users, transaction totals, success rate, and response time. No verified mail provider, domain, DNS authentication, credential, queue, delivery, or analytics service was connected. Those claims and controls were removed. No provider, sender, domain, credential, email, recipient, delivery, bounce, complaint, user, tenant, privacy, compliance, or availability state is displayed, calculated, stored, transmitted, verified, granted, or mutated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Mail aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Email-transport readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A trustworthy SMTP system requires a verified provider and tenant, server-side secret handling, least-privilege scopes, credential rotation and revocation, owned sending domain, SPF/DKIM/DMARC and return-path evidence, sender authorization, message identifiers and provider responses, bounce/complaint/suppression controls, unsubscribe handling, rate limits, deliverability monitoring, data minimization, retention, auditability, incident response, and applicable privacy and communications-law review. A connection, sender, delivery rate, reputation, cost, or compliance outcome is not a fact without verified records. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{surfaces.map(([label,,value,Icon])=><Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="smtp-surfaces-heading"><h2 id="smtp-surfaces-heading" className="mb-4 text-xl font-semibold">SMTP control surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(([title,scope,status,Icon])=><Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No provider, sender, domain, credential, email, recipient, delivery, bounce, complaint, user, tenant, privacy, compliance, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="smtp-boundaries-heading"><h2 id="smtp-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No email operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No provider connection, DNS lookup, API-key entry, credential storage, sender verification, email composition, queue submission, delivery lookup, unsubscribe mutation, database read or write, export, or deletion is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Personal data, identity, AI, finance, crypto, privacy, safety, security, compliance, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not enter passwords, authentication codes, API keys, private keys, seed phrases, wallet addresses, phone numbers, identity documents, health records, payment details, account numbers, or confidential source code here. Do not connect an unverified provider or treat this page as evidence of domain ownership, DNS authentication, delivery, reputation, privacy protection, security, compliance, or legal conclusion. Verify provider, domain, sender, scopes, secrets handling, consent, suppression, receipts, retention, privacy, security, authorization, and human approval before sending.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/email-integration"><Button variant="outline"><Send aria-hidden="true" className="mr-2 h-4 w-4" />Review email integration</Button></Link><Link href="/email-templates"><Button variant="outline"><FileCheck2 aria-hidden="true" className="mr-2 h-4 w-4" />Review email templates</Button></Link><Link href="/permissions"><Button variant="outline"><KeyRound aria-hidden="true" className="mr-2 h-4 w-4" />Review permissions</Button></Link><Link href="/security"><Button variant="outline"><ShieldCheck aria-hidden="true" className="mr-2 h-4 w-4" />Review security</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link><Link href="/system-observability"><Button variant="outline"><Terminal aria-hidden="true" className="mr-2 h-4 w-4" />Review observability</Button></Link><Link href="/documentation"><Button variant="outline"><UserCheck aria-hidden="true" className="mr-2 h-4 w-4" />Review documentation</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No provider connection, DNS lookup, API-key entry, credential storage, sender verification, email composition, queue submission, delivery lookup, unsubscribe mutation, database read or write, export, or deletion is performed. This page is not evidence of domain ownership, DNS authentication, delivery, reputation, compliance, security, privacy protection, or legal conclusion.</p></Card></main></div>;
 }
