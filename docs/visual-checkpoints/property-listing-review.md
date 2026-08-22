@@ -1,0 +1,9 @@
+# PropertyListing visual checkpoint
+
+PropertyListing was hardened from an authenticated-only shell with search, a New control, settings, loading state, and a “No data available” message, but no connected property records, buyer or seller scope, title or ownership evidence, address privacy controls, condition or inspection source, pricing, taxes, financing, availability, moderation, approval, publication, transaction, privacy, safety, or authorization backend. Those controls and implications were removed. The registered route is `/property-listing`. No buyer, seller, owner, organization, property, address, title, price, tax, financing, availability, offer, contract, settlement, publication, or availability state is displayed, searched, calculated, stored, transmitted, verified, or mutated from this page.
+
+No buyer or seller auth check, property query, search, creation, address lookup, title verification, media load, pricing, taxes, financing, availability, moderation, approval, publication, offer, contract, settlement, API request, database read or write, export, or deletion is read, calculated, displayed, asserted, initiated, or simulated.
+
+Files: `property-listing-desktop.webp`, `property-listing-mobile.png`.
+
+The 390px capture was reviewed for readable wrapped unavailable disclosure, stacked real-estate marketplace readiness cards, stacked buyer/seller/property/title/pricing/publication surfaces, real-estate/finance/personal-data/identity/AI/crypto/privacy/safety/security/compliance/authorization warn-and-proceed notice, safe property-detail/comparison/product-listing/privacy/security/documentation links, and absence of horizontal overflow or fake properties, addresses, titles, conditions, prices, taxes, financing, availability, offers, contracts, settlements, payments, publication, or investment claims.
