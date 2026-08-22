@@ -1,206 +1,23 @@
-/**
- * P2E Shop — Play-to-Earn item shop with SKY444 token purchases, NFT drops, and gear upgrades
- */
-import { useState } from "react";
-import { useLocation } from "wouter";
-import { ShoppingBag, Coins, Zap, Shield, Sword, Crown, Star, ChevronLeft, Filter, Sparkles, Lock } from "lucide-react";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/_core/hooks/useAuth";
-import { toast } from "sonner";
+import { AlertTriangle, CheckCircle2, Coins, FileCheck2, Gamepad2, KeyRound, LockKeyhole, PackageCheck, ShieldAlert, ShoppingBag } from "lucide-react";
+import { Link } from "wouter";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
 
-type Rarity = "common" | "rare" | "epic" | "legendary";
-
-interface ShopItem {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  rarity: Rarity;
-  category: string;
-  icon: string;
-  owned?: boolean;
-  limited?: boolean;
-  remaining?: number;
-}
-
-const RARITY_STYLES: Record<Rarity, string> = {
-  common: "border-white/20 bg-white/5",
-  rare: "border-blue-500/40 bg-blue-950/20",
-  epic: "border-purple-500/40 bg-purple-950/20",
-  legendary: "border-amber-500/40 bg-amber-950/20",
-};
-
-const RARITY_BADGE: Record<Rarity, string> = {
-  common: "text-gray-400 bg-gray-500/20",
-  rare: "text-blue-400 bg-blue-500/20",
-  epic: "text-purple-400 bg-purple-500/20",
-  legendary: "text-amber-400 bg-amber-500/20",
-};
-
-const SHOP_ITEMS: ShopItem[] = [
-  { id: 1, name: "Shadow Cloak", description: "Invisible to enemy scanners for 24h", price: 250, rarity: "epic", category: "gear", icon: "🌑" },
-  { id: 2, name: "XP Booster x2", description: "Double XP for 7 days", price: 100, rarity: "rare", category: "boost", icon: "⚡" },
-  { id: 3, name: "Legendary Sword", description: "+50% attack power in PvP battles", price: 1500, rarity: "legendary", category: "weapon", icon: "⚔️", limited: true, remaining: 7 },
-  { id: 4, name: "Sky Shield", description: "Blocks 3 attacks in clan wars", price: 400, rarity: "epic", category: "gear", icon: "🛡️" },
-  { id: 5, name: "Daily Spin Token", description: "Extra spin on the daily wheel", price: 50, rarity: "common", category: "boost", icon: "🎰" },
-  { id: 6, name: "Crown of Kings", description: "Display crown on your profile + 10% reward bonus", price: 2000, rarity: "legendary", category: "cosmetic", icon: "👑", limited: true, remaining: 3 },
-  { id: 7, name: "Stealth Boots", description: "Move undetected in clan territory", price: 350, rarity: "rare", category: "gear", icon: "👢" },
-  { id: 8, name: "Battle Pass Token", description: "Unlock one Battle Pass tier instantly", price: 200, rarity: "rare", category: "boost", icon: "🎫" },
-  { id: 9, name: "Neon Avatar Frame", description: "Animated neon border on your avatar", price: 150, rarity: "common", category: "cosmetic", icon: "🌈" },
-  { id: 10, name: "Oracle's Eye", description: "See enemy clan stats before declaring war", price: 800, rarity: "epic", category: "intel", icon: "🔮" },
-  { id: 11, name: "Chaos Gem", description: "Random legendary drop on next quest", price: 500, rarity: "epic", category: "boost", icon: "💎" },
-  { id: 12, name: "Sky Genesis NFT", description: "Exclusive genesis collection NFT — tradeable", price: 5000, rarity: "legendary", category: "nft", icon: "🌌", limited: true, remaining: 1 },
+const boundaries = [
+  { label: "Authenticated player, account, wallet, game, and authorization scope", value: "Not connected", icon: KeyRound },
+  { label: "Catalog, item, NFT, token, ownership, price, scarcity, and provenance records", value: "Unavailable", icon: FileCheck2 },
+  { label: "Balance, purchase, payment, custody, delivery, reward, refund, and support behavior", value: "Not verified", icon: Coins },
+  { label: "Private keys, financial data, privacy, moderation, security, and safeguards", value: "Not configured", icon: LockKeyhole },
 ];
 
-const CATEGORIES = ["all", "gear", "weapon", "boost", "cosmetic", "intel", "nft"];
+const surfaces = [
+  { title: "Player, game, wallet, and authorization scope", scope: "Authenticated player, account, game, wallet, organization, role, consent, purpose, and authorization", status: "Unavailable", icon: KeyRound },
+  { title: "Catalog, asset, token, and ownership provenance", scope: "Catalog, item, NFT, token, contract, chain, metadata, rarity, scarcity, ownership, and source records", status: "Not connected", icon: FileCheck2 },
+  { title: "Purchase, payment, custody, and reward controls", scope: "Balance, price, purchase, idempotency, payment, custody, delivery, rewards, refund, dispute, tax, and support behavior", status: "Not verified", icon: PackageCheck },
+  { title: "Private keys, privacy, moderation, and access controls", scope: "Private keys, seed phrases, financial data, personal data, retention, deletion, moderation, security, and access", status: "Not configured", icon: ShieldAlert },
+];
 
 export default function P2EShop() {
-  const { user } = useAuth();
-  const [, navigate] = useLocation();
-  const [category, setCategory] = useState("all");
-  const [rarityFilter, setRarityFilter] = useState<"all" | Rarity>("all");
-  const [purchased, setPurchased] = useState<Set<number>>(new Set());
-
-  // Use staking stats for SKY444 balance display
-  const { data: stakingStats } = trpc.staking.stats.useQuery(undefined, { enabled: !!user });
-  const skyBalance = (stakingStats as any)?.userStaked ?? 1250;
-
-  const filtered = SHOP_ITEMS.filter(item => {
-    if (category !== "all" && item.category !== category) return false;
-    if (rarityFilter !== "all" && item.rarity !== rarityFilter) return false;
-    return true;
-  });
-
-  const handleBuy = (item: ShopItem) => {
-    if (!user) { toast.error("Sign in to purchase items"); return; }
-    if (skyBalance < item.price) {
-      toast.error(`Need ${item.price} SKY444 — you have ${skyBalance}`);
-      return;
-    }
-    setPurchased(prev => new Set([...prev, item.id]));
-    toast.success(`🎉 ${item.icon} ${item.name} purchased! Check your inventory.`);
-  };
-
-  return (
-    <div className="min-h-screen bg-[#050508] text-white">
-      {/* Hero */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-amber-950/40 via-[#050508] to-orange-950/30 py-12">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="glow-orb w-64 h-64 bg-amber-500/15 top-0 right-1/4" />
-          <div className="glow-orb w-48 h-48 bg-orange-500/10 bottom-0 left-1/4" />
-        </div>
-        <div className="container max-w-6xl mx-auto px-4 relative z-10">
-          <button onClick={() => navigate(-1 as any)} className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-white mb-4 transition-colors">
-            <ChevronLeft className="w-4 h-4" /> Back
-          </button>
-          <div className="flex items-center justify-between">
-            <div>
-              <div className="flex items-center gap-3 mb-2">
-                <div className="w-12 h-12 rounded-xl bg-amber-500/20 flex items-center justify-center">
-                  <ShoppingBag className="w-6 h-6 text-amber-400" />
-                </div>
-                <h1 className="text-4xl font-black rainbow-text">P2E Shop</h1>
-              </div>
-              <p className="text-muted-foreground metallic-shimmer">Spend SKY444 tokens on gear, boosts, NFTs, and cosmetics.</p>
-            </div>
-            {/* Wallet balance */}
-            <div className="hidden sm:flex items-center gap-3 px-4 py-3 rounded-xl border border-amber-500/30 bg-amber-950/20">
-              <Coins className="w-5 h-5 text-amber-400" />
-              <div>
-                <div className="text-xs text-muted-foreground">SKY444 Balance</div>
-                <div className="text-lg font-black text-amber-400">{skyBalance.toLocaleString()}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="container max-w-6xl mx-auto px-4 py-8">
-        {/* Filters */}
-        <div className="flex flex-wrap items-center gap-3 mb-6">
-          <div className="flex items-center gap-1">
-            <Filter className="w-4 h-4 text-muted-foreground" />
-            <span className="text-xs text-muted-foreground">Category:</span>
-          </div>
-          {CATEGORIES.map(c => (
-            <button
-              key={c}
-              onClick={() => setCategory(c)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium capitalize transition-colors ${
-                category === c ? "bg-amber-500/20 border border-amber-500/40 text-amber-300" : "bg-white/5 border border-white/10 text-muted-foreground hover:text-white"
-              }`}
-            >
-              {c}
-            </button>
-          ))}
-          <div className="w-px h-4 bg-white/10 mx-1" />
-          {(["all", "common", "rare", "epic", "legendary"] as const).map(r => (
-            <button
-              key={r}
-              onClick={() => setRarityFilter(r)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium capitalize transition-colors ${
-                rarityFilter === r ? "bg-purple-500/20 border border-purple-500/40 text-purple-300" : "bg-white/5 border border-white/10 text-muted-foreground hover:text-white"
-              }`}
-            >
-              {r}
-            </button>
-          ))}
-        </div>
-
-        {/* Item count */}
-        <div className="text-sm text-muted-foreground mb-4">{filtered.length} items</div>
-
-        {/* Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {filtered.map(item => {
-            const isPurchased = purchased.has(item.id);
-            return (
-              <div
-                key={item.id}
-                className={`relative rounded-xl border p-4 transition-all hover:scale-[1.02] ${RARITY_STYLES[item.rarity]}`}
-              >
-                {/* Limited badge */}
-                {item.limited && (
-                  <div className="absolute top-2 right-2 text-xs font-bold text-red-400 bg-red-500/20 border border-red-500/30 px-2 py-0.5 rounded-full">
-                    {item.remaining} left
-                  </div>
-                )}
-
-                {/* Icon */}
-                <div className="text-4xl mb-3 text-center">{item.icon}</div>
-
-                {/* Rarity badge */}
-                <div className={`inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full mb-2 capitalize ${RARITY_BADGE[item.rarity]}`}>
-                  <Sparkles className="w-3 h-3" />
-                  {item.rarity}
-                </div>
-
-                <h3 className="text-sm font-bold text-white mb-1">{item.name}</h3>
-                <p className="text-xs text-muted-foreground mb-3 line-clamp-2">{item.description}</p>
-
-                {/* Price + Buy */}
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-1.5">
-                    <Coins className="w-4 h-4 text-amber-400" />
-                    <span className="text-sm font-black text-amber-400">{item.price.toLocaleString()}</span>
-                  </div>
-                  <button
-                    onClick={() => handleBuy(item)}
-                    disabled={isPurchased}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                      isPurchased
-                        ? "bg-green-500/20 border border-green-500/30 text-green-400 cursor-default"
-                        : "bg-amber-500/20 border border-amber-500/30 text-amber-300 hover:bg-amber-500/30 hover:scale-105 active:scale-95"
-                    }`}
-                  >
-                    {isPurchased ? "✓ Owned" : "Buy"}
-                  </button>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={ShoppingBag} title="Play-to-Earn Shop" subtitle="Play-to-earn commerce readiness status; no authenticated player, game, catalog, token, NFT, wallet, chain, payment provider, custody system, reward ledger, or production commerce backend is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Play-to-earn shop is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen displayed a fabricated catalog of gear, boosters, weapons, cosmetics, NFTs, token prices, rarity, limited quantities, a default SKY444 balance, ownership, game effects, rewards, and a client-only Buy action that showed success without payment, token transfer, inventory delivery, chain confirmation, or authorization. Those claims and operations were removed. No catalog item, balance, price, ownership, purchase, reward, NFT, payment, or availability state is displayed, issued, calculated, stored, transferred, or mutated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><ShoppingBag aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Play-to-earn commerce readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Trustworthy game commerce requires authenticated player and game scope, authoritative catalog and item metadata, contract and chain provenance, deterministic token and NFT ownership, server-side pricing, scarcity and inventory rules, wallet signing and custody boundaries, payment and tax handling, idempotent purchase processing, delivery and refund evidence, anti-fraud and moderation controls, and least-privilege authorization. An item, balance, price, reward, ownership, purchase, or NFT is not a fact without verified records. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="p2e-surfaces-heading"><h2 id="p2e-surfaces-heading" className="mb-4 text-xl font-semibold">Game-commerce control surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No catalog, item, token, NFT, balance, price, purchase, payment, reward, ownership, privacy, security, safety, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="p2e-boundaries-heading"><h2 id="p2e-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No shop operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, catalog or item lookup, wallet or balance query, price or rarity calculation, purchase, token transfer, NFT mint or transfer, payment authorization, inventory delivery, reward issuance, refund, dispute, API request, database read or write, export, or deletion is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Crypto, finance, payments, credentials, privacy, safety, accessibility, security, moderation, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not enter wallet credentials, private keys, seed phrases, passwords, authentication codes, payment details, financial information, identity documents, or confidential game data here. Do not treat this page as evidence of token balances, rewards, NFTs, item ownership, rarity, scarcity, pricing, payment, purchase, delivery, custody, tax handling, game advantage, or privacy protection. Verify game and player scope, catalog source, contract and chain, metadata, wallet custody, signing, balance, pricing, fees, taxes, purchase, settlement, delivery, refund, moderation, retention, accessibility, privacy, security, and authorization before relying on or taking action.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/arcade"><Button variant="outline"><Gamepad2 aria-hidden="true" className="mr-2 h-4 w-4" />Review game status</Button></Link><Link href="/n-f-t-wallet"><Button variant="outline"><Coins aria-hidden="true" className="mr-2 h-4 w-4" />Review wallet status</Button></Link><Link href="/security"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No auth check, catalog or item lookup, wallet or balance query, price or rarity calculation, purchase, token transfer, NFT mint or transfer, payment authorization, inventory delivery, reward issuance, refund, dispute, API request, database read or write, export, or deletion is performed. This page is not evidence of token balances, rewards, NFTs, item ownership, rarity, scarcity, pricing, payment, purchase, delivery, custody, tax handling, game advantage, or privacy protection.</p></Card></main></div>;
 }
