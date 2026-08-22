@@ -1,219 +1,23 @@
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
+import { AlertTriangle, BarChart3, CheckCircle2, Database, FileCheck2, KeyRound, LockKeyhole, ShieldAlert, Workflow } from "lucide-react";
+import { Link } from "wouter";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { PageHeader } from "@/components/PageHeader";
-import { toast } from "sonner";
-import { TrendingUp, TrendingDown, AlertTriangle, Users, DollarSign, Activity, RefreshCw, Eye, Zap } from "lucide-react";
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from "recharts";
 
-const CHURN_DATA = [
-  { day: "Mon", risk: 12, predicted: 8 },
-  { day: "Tue", risk: 15, predicted: 11 },
-  { day: "Wed", risk: 9, predicted: 7 },
-  { day: "Thu", risk: 22, predicted: 18 },
-  { day: "Fri", risk: 18, predicted: 15 },
-  { day: "Sat", risk: 7, predicted: 6 },
-  { day: "Sun", risk: 10, predicted: 9 },
+const boundaries = [
+  { label: "Authenticated owner, organization, dataset, model, and authorization scope", value: "Not connected", icon: KeyRound },
+  { label: "User, revenue, activity, topic, and source-data provenance", value: "Unavailable", icon: Database },
+  { label: "Churn, trend, revenue-risk, intervention, and automated-decision behavior", value: "Not verified", icon: BarChart3 },
+  { label: "Personal data, finance, high-impact use, fairness, privacy, security, and safeguards", value: "Not configured", icon: LockKeyhole },
 ];
 
-const TREND_DATA = [
-  { hour: "00", score: 45 },
-  { hour: "04", score: 32 },
-  { hour: "08", score: 78 },
-  { hour: "12", score: 95 },
-  { hour: "16", score: 88 },
-  { hour: "20", score: 72 },
-  { hour: "23", score: 61 },
-];
-
-const REVENUE_RISK = [
-  { segment: "Premium", risk: "low", mrr: 48200, churnProb: 0.03, action: "Upsell to Scalable" },
-  { segment: "Creator", risk: "medium", mrr: 22100, churnProb: 0.12, action: "Engagement campaign" },
-  { segment: "Free", risk: "high", mrr: 0, churnProb: 0.34, action: "Conversion push" },
-  { segment: "Scalable", risk: "low", mrr: 91000, churnProb: 0.01, action: "Expand seats" },
+const surfaces = [
+  { title: "Owner, organization, dataset, model, and authorization scope", scope: "Authenticated owner, organization, model owner, role, purpose, consent, dataset scope, and least-privilege authorization", status: "Unavailable", icon: KeyRound },
+  { title: "Source data, segments, features, targets, and provenance", scope: "User, activity, subscription, revenue, content, topic, financial, or other source systems; collection purpose; target definition; feature lineage; timestamps; and data quality", status: "Not connected", icon: Database },
+  { title: "Predictions, uncertainty, drift, interventions, and decisions", scope: "Churn, trend, revenue-risk, or other model output; calibration, error bounds, uncertainty, drift, scenario assumptions, intervention policy, human review, appeal, and failure handling", status: "Not verified", icon: Workflow },
+  { title: "Personal data, finance, fairness, high-impact use, privacy, security, and access controls", scope: "Sensitive fields, financial or behavioral data, fairness evaluation, high-impact decisions, retention, deletion, redaction, privacy, security, accessibility, and access", status: "Not configured", icon: ShieldAlert },
 ];
 
 export default function PredictiveSystems() {
-  const [activeModel, setActiveModel] = useState<"churn" | "trends" | "revenue">("churn");
-  const { data: platformStats } = trpc.platform.stats.useQuery();
-
-  return (
-    <div className="container py-8 max-w-6xl animate-page-in">
-      <PageHeader
-        backHref="/memory-system"
-        icon={TrendingUp}
-        title="Predictive Systems"
-        subtitle="Phase 9 — Churn prediction, trend forecasting, revenue risk analysis"
-      />
-
-      {/* Model selector */}
-      <div className="flex gap-2 mb-6">
-        {(["churn", "trends", "revenue"] as const).map(model => (
-          <button
-            key={model}
-            onClick={() => setActiveModel(model)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium capitalize transition-colors ${
-              activeModel === model ? "bg-primary text-primary-foreground" : "bg-secondary/50 hover:bg-secondary text-muted-foreground"
-            }`}
-          >
-            {model === "churn" ? "Churn Prediction" : model === "trends" ? "Trend Forecasting" : "Revenue Risk"}
-          </button>
-        ))}
-      </div>
-
-      {/* Churn Prediction */}
-      {activeModel === "churn" && (
-        <div className="space-y-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {[
-              { label: "At-Risk Users", value: "247", change: "+12", bad: true, icon: Users },
-              { label: "Predicted Churn", value: "3.2%", change: "-0.4%", bad: false, icon: TrendingDown },
-              { label: "Saved This Week", value: "89", change: "+23", bad: false, icon: Zap },
-              { label: "Model Accuracy", value: "94.1%", change: "+0.3%", bad: false, icon: Activity },
-            ].map(stat => (
-              <div key={stat.label} className="card p-4">
-                <stat.icon className="w-5 h-5 text-muted-foreground mb-2" />
-                <div className="text-2xl font-bold">{stat.value}</div>
-                <div className="text-xs text-muted-foreground">{stat.label}</div>
-                <div className={`text-xs mt-1 font-medium ${stat.bad ? "text-red-400" : "text-green-400"}`}>{stat.change} vs last week</div>
-              </div>
-            ))}
-          </div>
-
-          <div className="card p-6">
-            <h3 className="font-semibold mb-4">Daily Churn Risk vs Prediction</h3>
-            <ResponsiveContainer width="100%" height={240}>
-              <AreaChart data={CHURN_DATA}>
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
-                <XAxis dataKey="day" tick={{ fontSize: 12 }} />
-                <YAxis tick={{ fontSize: 12 }} />
-                <Tooltip contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))" }} />
-                <Area type="monotone" dataKey="risk" stroke="#ef4444" fill="#ef444420" name="Actual Risk" />
-                <Area type="monotone" dataKey="predicted" stroke="#3b82f6" fill="#3b82f620" name="Predicted" />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
-
-          <div className="card p-6">
-            <h3 className="font-semibold mb-4">Top Churn Signals</h3>
-            <div className="space-y-3">
-              {[
-                { signal: "No login in 7+ days", weight: 0.89, users: 134 },
-                { signal: "Subscription expiring in 3 days", weight: 0.76, users: 67 },
-                { signal: "Zero posts in 14 days", weight: 0.71, users: 89 },
-                { signal: "Failed payment attempt", weight: 0.94, users: 23 },
-              ].map(s => (
-                <div key={s.signal} className="flex items-center gap-3">
-                  <div className="flex-1">
-                    <div className="flex justify-between text-sm mb-1">
-                      <span>{s.signal}</span>
-                      <span className="text-muted-foreground">{s.users} users</span>
-                    </div>
-                    <div className="h-2 bg-secondary rounded-full overflow-hidden">
-                      <div className="h-full bg-red-500 rounded-full" style={{ width: `${s.weight * 100}%` }} />
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => toast.success(`Intervention triggered for ${s.users} users`)}
-                    className="text-xs bg-primary/20 text-primary px-2 py-1 rounded-lg hover:bg-primary/30 transition-colors shrink-0"
-                  >
-                    Intervene
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Trend Forecasting */}
-      {activeModel === "trends" && (
-        <div className="space-y-6">
-          <div className="card p-6">
-            <h3 className="font-semibold mb-4">Trending Score by Hour (Next 24h Forecast)</h3>
-            <ResponsiveContainer width="100%" height={240}>
-              <BarChart data={TREND_DATA}>
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
-                <XAxis dataKey="hour" tick={{ fontSize: 12 }} />
-                <YAxis tick={{ fontSize: 12 }} />
-                <Tooltip contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))" }} />
-                <Bar dataKey="score" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} name="Trend Score" />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-4">
-            <div className="card p-5">
-              <h3 className="font-semibold mb-3 flex items-center gap-2">
-                <TrendingUp className="w-4 h-4 text-green-400" />
-                Predicted Rising Topics
-              </h3>
-              <div className="space-y-2">
-                {["#SKY444Mining", "#TRUMPToken", "#DeFiYield", "#AIAgents", "#Web3Social"].map((tag, i) => (
-                  <div key={tag} className="flex items-center justify-between">
-                    <span className="text-sm text-primary">{tag}</span>
-                    <span className="text-xs text-green-400">+{(85 - i * 12)}% predicted</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="card p-5">
-              <h3 className="font-semibold mb-3 flex items-center gap-2">
-                <TrendingDown className="w-4 h-4 text-red-400" />
-                Predicted Declining Topics
-              </h3>
-              <div className="space-y-2">
-                {["#NFTFlip", "#MetaverseLand", "#PlayToEarn", "#ICOSeason", "#DogeCoin"].map((tag, i) => (
-                  <div key={tag} className="flex items-center justify-between">
-                    <span className="text-sm text-muted-foreground">{tag}</span>
-                    <span className="text-xs text-red-400">-{(42 + i * 8)}% predicted</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Revenue Risk */}
-      {activeModel === "revenue" && (
-        <div className="space-y-4">
-          {REVENUE_RISK.map(seg => (
-            <div key={seg.segment} className="card p-5">
-              <div className="flex items-center justify-between mb-3">
-                <div>
-                  <div className="font-semibold">{seg.segment} Segment</div>
-                  <div className="text-sm text-muted-foreground">MRR: ${seg.mrr.toLocaleString()}</div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <span className={`text-xs px-2 py-1 rounded-full font-medium ${
-                    seg.risk === "low" ? "bg-green-500/20 text-green-400" :
-                    seg.risk === "medium" ? "bg-yellow-500/20 text-yellow-400" :
-                    "bg-red-500/20 text-red-400"
-                  }`}>
-                    {seg.risk} risk
-                  </span>
-                  <button
-                    onClick={() => toast.success(`Action triggered: ${seg.action}`)}
-                    className="text-xs bg-primary/20 text-primary px-3 py-1 rounded-lg hover:bg-primary/30 transition-colors"
-                  >
-                    {seg.action}
-                  </button>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <span className="text-xs text-muted-foreground">Churn probability:</span>
-                <div className="flex-1 h-2 bg-secondary rounded-full overflow-hidden">
-                  <div
-                    className={`h-full rounded-full ${seg.risk === "low" ? "bg-green-500" : seg.risk === "medium" ? "bg-yellow-500" : "bg-red-500"}`}
-                    style={{ width: `${seg.churnProb * 100}%` }}
-                  />
-                </div>
-                <span className="text-xs font-medium">{(seg.churnProb * 100).toFixed(0)}%</span>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader backHref="/memory-system" icon={Workflow} title="Predictive Systems" subtitle="Automated-prediction readiness status; no authoritative datasets, model registry, validation service, monitoring pipeline, intervention workflow, or production decision-support backend is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Predictive systems are unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen displayed fabricated churn counts, probabilities, saved-user counts, accuracy, trend scores, crypto-topic forecasts, revenue and MRR, risk labels, and intervention actions, queried unverified platform statistics, and allowed client-side action toasts. Those claims and operations were removed. No user, activity, subscription, revenue, topic, dataset, model, forecast, probability, score, recommendation, risk, intervention, financial, or availability state is displayed, searched, calculated, stored, transmitted, verified, or mutated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Workflow aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Automated-prediction readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Trustworthy predictive systems require authenticated owner and organization scope, documented source data and purpose, target and feature definitions, consent and minimization, reproducible model versions, validation and calibration, uncertainty and error bounds, drift monitoring, scenario assumptions, human review, intervention authorization, appeal and failure handling, fairness assessment, high-impact-use safeguards, accessibility, privacy, security, and least-privilege authorization. A churn risk, trend, revenue risk, user segment, intervention, forecast, or automated decision is not a fact without verified records and validated methodology. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="system-surfaces-heading"><h2 id="system-surfaces-heading" className="mb-4 text-xl font-semibold">Predictive-system control surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No user, activity, subscription, revenue, topic, dataset, model, forecast, probability, score, recommendation, risk, intervention, financial, privacy, security, fairness, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="system-boundaries-heading"><h2 id="system-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No predictive or intervention operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth or platform-statistics query, user or segment lookup, dataset or model query, training, inference, forecast, score, probability, recommendation, intervention, notification, API request, database read or write, export, or deletion is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">AI, personal data, finance, high-impact use, safety, fairness, privacy, security, compliance, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not enter passwords, authentication codes, payment details, private keys, seed phrases, identity documents, health records, education records, employment data, behavioral profiles, financial data, or confidential datasets here. Do not treat this page as AI capability, financial advice, health guidance, educational assessment, safety prediction, revenue evidence, compliance evidence, or proof of fairness, privacy, or security. Verify purpose, consent, provenance, methodology, uncertainty, human review, intervention authorization, appeal, fairness, high-impact safeguards, retention, deletion, privacy, security, compliance, and authorization before relying on an automated output or acting.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/predictive-analytics"><Button variant="outline"><BarChart3 aria-hidden="true" className="mr-2 h-4 w-4" />Review predictive analytics</Button></Link><Link href="/predictive-models"><Button variant="outline"><FileCheck2 aria-hidden="true" className="mr-2 h-4 w-4" />Review model governance</Button></Link><Link href="/security"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No auth or platform-statistics query, user or segment lookup, dataset or model query, training, inference, forecast, score, probability, recommendation, intervention, notification, API request, database read or write, export, or deletion is performed. This page is not evidence of AI capability, financial advice, health guidance, educational assessment, safety prediction, revenue, compliance, fairness, privacy, or security.</p></Card></main></div>;
 }
