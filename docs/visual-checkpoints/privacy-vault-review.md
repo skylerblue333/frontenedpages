@@ -1,0 +1,9 @@
+# PrivacyVault visual checkpoint
+
+PrivacyVault was hardened from a screen asserting digital sovereignty, identity masking, fingerprint randomization, IP rotation, traffic obfuscation, decentralized relay routing, Tor and I2P connectivity, surveillance detection, encryption, privacy scores, exposure findings, network reachability, uptime-like states, and destructive quick actions. It used fabricated scores and statuses and only local UI timers and toast messages; it did not provide the claimed device, network, cryptographic, scanner, secure-storage, privacy, security, or authorization infrastructure. Those claims and operations were removed. The registered route is `/privacy-vault`. No identity, device, network, tracker, exposure, score, encryption, key, connection, account, or availability state is displayed, scanned, generated, routed, changed, stored, transmitted, verified, or mutated from this page.
+
+No device or authorization check, identity or network query, fingerprint scan, tracker scan, DNS or WebRTC test, routing or relay connection, Tor or I2P connection, encryption or key operation, cookie clearing, cache flush, identity generation, connection termination, API request, database read or write, export, or deletion is read, calculated, displayed, asserted, initiated, or simulated.
+
+Files: `privacy-vault-desktop.webp`, `privacy-vault-mobile.png`.
+
+The 390px capture was reviewed for readable wrapped unavailable disclosure, stacked privacy and device-security readiness cards, stacked owner/device/identity/cryptography/scanner surfaces, personal-data/identity/AI/finance/crypto/privacy/safety/security/compliance/authorization warn-and-proceed notice, safe privacy/policy/security/data-governance links, and absence of horizontal overflow or fake identity masking, network routing, Tor/I2P, tracker scans, exposure findings, privacy scores, encryption, keys, connection status, security guarantees, or compliance claims.
