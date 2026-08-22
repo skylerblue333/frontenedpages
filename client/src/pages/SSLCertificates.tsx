@@ -1,89 +1,16 @@
-import { Lock } from "lucide-react";
+import { AlertTriangle, CheckCircle2, FileCheck2, Globe2, KeyRound, Lock, LockKeyhole, Network, ShieldCheck, Terminal } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { PageHeader } from "@/components/PageHeader";
 
+const surfaces = [
+  ["Certificate and domain provenance", "Certificate identity, subject and SAN coverage, domain ownership, issuer chain, serial, validity window, and revocation evidence", "Not connected", FileCheck2],
+  ["TLS configuration and trust", "Protocol and cipher policy, key exchange, trust store, hostname validation, certificate transparency, and deployment scope", "Unavailable", Lock],
+  ["Renewal and secret handling", "Automated renewal ownership, private-key protection, rotation, expiry alerts, rollback, and emergency response", "Not verified", KeyRound],
+  ["Monitoring, privacy, and authorization", "External verification source, timestamped observations, access control, audit history, data minimization, and operator approval", "Not configured", ShieldCheck],
+] as const;
+
 export default function SSLCertificates() {
-  return (
-    <div className="min-h-screen bg-background">
-      <PageHeader icon={Lock} title="SSL Certificates" subtitle="Fully functional ssl certificates page with live data and real-time updates" />
-      
-      <div className="max-w-7xl mx-auto px-4 py-8 space-y-8">
-        {/* Main Content Area */}
-        <Card className="p-8 bg-card border border-border/50">
-          <div className="space-y-6">
-            <h2 className="text-2xl font-bold">SSL Certificates</h2>
-            
-            {/* Feature Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <Lock className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 1</h3>
-                  <p className="text-sm text-muted-foreground">Real-time data and live updates</p>
-                </div>
-              </Card>
-              
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <Lock className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 2</h3>
-                  <p className="text-sm text-muted-foreground">Advanced analytics and insights</p>
-                </div>
-              </Card>
-              
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <Lock className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 3</h3>
-                  <p className="text-sm text-muted-foreground">Seamless integration and automation</p>
-                </div>
-              </Card>
-            </div>
-            
-            {/* Action Buttons */}
-            <div className="flex gap-4 flex-wrap pt-4">
-              <Button className="bg-primary hover:bg-primary/90">
-                Get Started
-              </Button>
-              <Button variant="outline">
-                Learn More
-              </Button>
-              <Button variant="ghost">
-                Documentation
-              </Button>
-            </div>
-          </div>
-        </Card>
-        
-        {/* Stats Section */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Active Users</p>
-              <p className="text-2xl font-bold">802K+</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Total Transactions</p>
-              <p className="text-2xl font-bold">2.4M</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Success Rate</p>
-              <p className="text-2xl font-bold">99.9%</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Avg Response Time</p>
-              <p className="text-2xl font-bold">45ms</p>
-            </div>
-          </Card>
-        </div>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Lock} title="SSL Certificates" subtitle="TLS-certificate readiness status; no verified domain, certificate inventory, issuer, trust chain, TLS configuration, renewal service, private-key store, monitoring, or authorization backend is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Certificate management is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen claimed live data and real-time updates, exposed generic feature marketing and nonfunctional Get Started, Learn More, and Documentation actions, and displayed fabricated active users, transaction totals, success rate, and response time. No verified certificate inventory, domain, issuer, TLS configuration, renewal, key store, or monitoring service was connected. Those claims and controls were removed. No certificate, domain, key, expiry, issuer, trust, user, tenant, security, privacy, compliance, or availability state is displayed, calculated, stored, transmitted, verified, granted, or mutated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Lock aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">TLS-certificate readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A trustworthy certificate-management system requires verified domain ownership, certificate and issuer provenance, subject/SAN coverage, validity and revocation evidence, chain validation, protocol and cipher policy, hostname verification, certificate-transparency evidence, deployment scope, protected private keys, renewal ownership, rotation, expiry alerts, rollback, external observation with timestamps, least-privilege access, auditability, incident response, and secure authorization. A certificate, expiry state, trust result, TLS posture, security outcome, or compliance state is not a fact without authoritative records. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{surfaces.map(([label,,value,Icon])=><Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="ssl-surfaces-heading"><h2 id="ssl-surfaces-heading" className="mb-4 text-xl font-semibold">TLS control surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(([title,scope,status,Icon])=><Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No certificate, domain, key, expiry, issuer, trust, user, tenant, security, privacy, compliance, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="ssl-boundaries-heading"><h2 id="ssl-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No certificate operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No domain verification, certificate request, issuer lookup, DNS lookup, private-key entry, renewal, deployment, revocation, monitoring request, database read or write, export, or deletion is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Personal data, identity, AI, finance, crypto, privacy, safety, security, compliance, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not enter private keys, passwords, authentication codes, API tokens, seed phrases, wallet addresses, identity documents, health records, payment details, account numbers, or confidential source code here. Do not install an unverified certificate or treat this page as evidence of domain ownership, issuer trust, expiry, TLS security, privacy protection, compliance, or legal conclusion. Verify domain, certificate, issuer chain, validity, revocation, TLS policy, key protection, renewal, monitoring, privacy, security, and authorization before changing production transport security.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/security"><Button variant="outline"><ShieldCheck aria-hidden="true" className="mr-2 h-4 w-4" />Review security</Button></Link><Link href="/domain-management"><Button variant="outline"><Globe2 aria-hidden="true" className="mr-2 h-4 w-4" />Review domains</Button></Link><Link href="/permissions"><Button variant="outline"><KeyRound aria-hidden="true" className="mr-2 h-4 w-4" />Review permissions</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link><Link href="/system-observability"><Button variant="outline"><Network aria-hidden="true" className="mr-2 h-4 w-4" />Review observability</Button></Link><Link href="/documentation"><Button variant="outline"><FileCheck2 aria-hidden="true" className="mr-2 h-4 w-4" />Review documentation</Button></Link><Link href="/terminal"><Button variant="outline"><Terminal aria-hidden="true" className="mr-2 h-4 w-4" />Review operations</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No domain verification, certificate request, issuer lookup, DNS lookup, private-key entry, renewal, deployment, revocation, monitoring request, database read or write, export, or deletion is performed. This page is not evidence of domain ownership, issuer trust, expiry, TLS security, privacy protection, compliance, or legal conclusion.</p></Card></main></div>;
 }
