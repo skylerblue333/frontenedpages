@@ -1,75 +1,16 @@
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/_core/hooks/useAuth";
+import { AlertTriangle, BarChart3, CheckCircle2, FileCheck2, KeyRound, LockKeyhole, MessageSquareText, Phone, Send, ShieldCheck, Terminal, Users } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
-import { Loader2, Plus, Search, Settings } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const surfaces = [
+  ["Provider, sender, and account scope", "Verified messaging provider, sender identity, account or tenant, operator role, API scope, rate limits, and credential lifecycle", "Not connected", Send],
+  ["Consent and recipient governance", "Opt-in evidence, purpose, jurisdiction, suppression list, preference center, age and privacy controls, and lawful basis", "Unavailable", Users],
+  ["Message content and approval", "Template version, content review, link safety, human approval, localization, quiet hours, and rollback", "Not verified", MessageSquareText],
+  ["Delivery and compliance evidence", "Message identifiers, provider receipts, delivery state, opt-out handling, retention, audit trail, and incident response", "Not configured", ShieldCheck],
+] as const;
 
 export default function SMSCampaigns() {
-  const { isAuthenticated } = useAuth();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>SMSCampaigns</CardTitle>
-            <CardDescription>Sign in to access this feature</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full">Sign In</Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold">SMSCampaigns</h1>
-            <p className="text-muted-foreground mt-2">SMS marketing</p>
-          </div>
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            New
-          </Button>
-        </div>
-
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Search className="w-4 h-4 text-muted-foreground" />
-              <Input
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="max-w-sm"
-              />
-              <Button variant="outline" size="icon">
-                <Settings className="w-4 h-4" />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {isLoading ? (
-              <div className="flex justify-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
-              </div>
-            ) : (
-              <div className="text-center py-12 text-muted-foreground">
-                <p>No data available. Start by creating a new item.</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={MessageSquareText} title="SMS Campaigns" subtitle="Messaging-campaign readiness status; no verified SMS provider, sender, recipient list, consent record, message queue, delivery receipt, analytics, billing, or compliance backend is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">SMS campaigns are unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen exposed nonfunctional Sign In, New, Search, Settings, loading, and empty-data controls without a messaging provider or consent-aware campaign service. Those controls were removed. No recipient, phone number, message, campaign, sender identity, delivery state, engagement, revenue, user, tenant, opt-in, opt-out, compliance, or availability state is displayed, calculated, stored, transmitted, verified, granted, or mutated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><MessageSquareText aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Messaging-campaign readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A trustworthy SMS campaign system requires a verified provider and sender, tenant scope, least-privilege credentials, recipient provenance, explicit and jurisdiction-aware consent, suppression and preference controls, content review, link safety, human approval, quiet hours, rate limits, message identifiers, provider receipts, delivery and opt-out evidence, retention, privacy, auditability, incident response, and applicable communications-law review. A recipient count, delivery rate, engagement, consent, compliance state, or campaign outcome is not a fact without verified records. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{surfaces.map(([label,,value,Icon])=><Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="sms-campaign-surfaces-heading"><h2 id="sms-campaign-surfaces-heading" className="mb-4 text-xl font-semibold">Campaign control surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(([title,scope,status,Icon])=><Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No recipient, phone number, message, campaign, sender identity, delivery, engagement, revenue, user, tenant, consent, opt-out, compliance, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="sms-campaign-boundaries-heading"><h2 id="sms-campaign-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No messaging operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No provider connection, phone-number import, recipient segmentation, consent check, message composition, campaign scheduling, message send, delivery lookup, opt-out mutation, database read or write, analytics calculation, export, or deletion is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Personal data, identity, AI, finance, crypto, privacy, safety, security, compliance, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not enter phone numbers, passwords, authentication codes, API tokens, private keys, seed phrases, wallet addresses, identity documents, health records, payment details, account numbers, or confidential source code here. Do not send an unreviewed message or treat this page as evidence of consent, lawful basis, delivery, opt-out protection, compliance, provider performance, security, privacy, or legal conclusion. Verify provider, sender, recipient provenance, consent, suppression, content, jurisdiction, rate limits, receipts, retention, privacy, security, authorization, and human approval before sending.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/sms-integration"><Button variant="outline"><Phone aria-hidden="true" className="mr-2 h-4 w-4" />Review SMS integration</Button></Link><Link href="/sms-templates"><Button variant="outline"><FileCheck2 aria-hidden="true" className="mr-2 h-4 w-4" />Review SMS templates</Button></Link><Link href="/analytics"><Button variant="outline"><BarChart3 aria-hidden="true" className="mr-2 h-4 w-4" />Review analytics</Button></Link><Link href="/permissions"><Button variant="outline"><KeyRound aria-hidden="true" className="mr-2 h-4 w-4" />Review permissions</Button></Link><Link href="/security"><Button variant="outline"><ShieldCheck aria-hidden="true" className="mr-2 h-4 w-4" />Review security</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link><Link href="/system-observability"><Button variant="outline"><Terminal aria-hidden="true" className="mr-2 h-4 w-4" />Review observability</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No provider connection, phone-number import, recipient segmentation, consent check, message composition, campaign scheduling, message send, delivery lookup, opt-out mutation, database read or write, analytics calculation, export, or deletion is performed. This page is not evidence of consent, delivery, compliance, provider performance, security, privacy protection, or legal conclusion.</p></Card></main></div>;
 }
