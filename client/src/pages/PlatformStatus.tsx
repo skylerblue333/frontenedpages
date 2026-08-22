@@ -1,90 +1,23 @@
+import { AlertTriangle, CheckCircle2, Clock3, FileCheck2, KeyRound, LockKeyhole, ServerCog, ShieldAlert } from "lucide-react";
 import { Link } from "wouter";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { PageHeader } from "@/components/PageHeader";
-import { Activity, CheckCircle, AlertTriangle, XCircle, Clock, Zap } from "lucide-react";
 
-const SERVICES = [
-  { name: "API Gateway", status: "operational", latency: "12ms", uptime: "99.99%" },
-  { name: "Authentication", status: "operational", latency: "8ms", uptime: "100%" },
-  { name: "Database (TiDB)", status: "operational", latency: "4ms", uptime: "..." },
-  { name: "File Storage (S3)", status: "operational", latency: "45ms", uptime: "99.99%" },
-  { name: "WebSocket Server", status: "degraded", latency: "120ms", uptime: "98.2%" },
-  { name: "AI/LLM Engine", status: "operational", latency: "850ms", uptime: "99.5%" },
-  { name: "Blockchain RPC", status: "operational", latency: "230ms", uptime: "99.1%" },
-  { name: "Email Service", status: "operational", latency: "320ms", uptime: "99.8%" },
-  { name: "CDN / Media", status: "operational", latency: "18ms", uptime: "99.99%" },
-  { name: "Sprint Engine", status: "operational", latency: "N/A", uptime: "99.3%" },
+const boundaries = [
+  { label: "Authenticated operator, organization, service, environment, and authorization scope", value: "Not connected", icon: KeyRound },
+  { label: "Service registry, deployment version, telemetry source, freshness, and provenance", value: "Unavailable", icon: FileCheck2 },
+  { label: "Health checks, latency, errors, uptime, incidents, alerts, and remediation evidence", value: "Not verified", icon: ServerCog },
+  { label: "Logs, identifiers, personal data, privacy, security, accessibility, and safeguards", value: "Not configured", icon: LockKeyhole },
 ];
 
-const INCIDENTS = [
-  { date: "Jun 15, 2026", title: "WebSocket latency spike", status: "monitoring", duration: "Ongoing", severity: "minor" },
-  { date: "Jun 10, 2026", title: "Database connection pool exhaustion", status: "resolved", duration: "14 min", severity: "major" },
-  { date: "Jun 3, 2026", title: "AI engine timeout errors", status: "resolved", duration: "8 min", severity: "minor" },
+const surfaces = [
+  { title: "Operator, organization, service, and authorization scope", scope: "Authenticated operator, organization, service, environment, role, purpose, consent, and authorization", status: "Unavailable", icon: KeyRound },
+  { title: "Service registry and telemetry provenance", scope: "Service identity, deployment version, environment, health-check definition, telemetry source, metric unit, time window, freshness, and lineage", status: "Not connected", icon: FileCheck2 },
+  { title: "Reliability and incident evidence", scope: "Latency, throughput, errors, uptime, capacity, alerts, incidents, severity, timestamps, duration, impact, remediation, and rollback", status: "Not verified", icon: Clock3 },
+  { title: "Logs, privacy, and access controls", scope: "Request metadata, identifiers, logs, redaction, retention, deletion, privacy, security, accessibility, and access", status: "Not configured", icon: ShieldAlert },
 ];
-
-function StatusIcon({ status }: { status: string }) {
-  if (status === "operational") return <CheckCircle className="w-4 h-4 text-success" />;
-  if (status === "degraded") return <AlertTriangle className="w-4 h-4 text-warning" />;
-  return <XCircle className="w-4 h-4 text-destructive" />;
-}
 
 export default function PlatformStatus() {
-  const allOperational = SERVICES.every(s => s.status === "operational");
-
-  return (
-    <div className="container py-8 max-w-4xl animate-page-in">
-      <PageHeader backHref="/dashboard" icon={Activity} title="Platform Status" subtitle="Real-time health and uptime for all SKYCOIN4444 services" />
-
-      {/* Overall Status Banner */}
-      <div className={`rounded-xl p-4 mb-8 flex items-center gap-3 border ${allOperational ? "bg-success/10 border-success/30" : "bg-warning/10 border-warning/30"}`}>
-        {allOperational ? <CheckCircle className="w-6 h-6 text-success" /> : <AlertTriangle className="w-6 h-6 text-warning" />}
-        <div>
-          <div className={`font-semibold ${allOperational ? "text-success" : "text-warning"}`}>
-            {allOperational ? "All Systems Operational" : "Minor Service Degradation"}
-          </div>
-          <div className="text-xs text-muted-foreground">Last updated: just now</div>
-        </div>
-        <div className="ml-auto text-right">
-          <div className="text-2xl font-bold text-success">99.97%</div>
-          <div className="text-xs text-muted-foreground">30-day uptime</div>
-        </div>
-      </div>
-
-      {/* Services Grid */}
-      <div className="card mb-6 overflow-hidden">
-        <div className="px-5 py-3 border-b border-border/50 flex items-center justify-between">
-          <h3 className="font-semibold text-sm">Service Health</h3>
-          <div className="flex items-center gap-1.5 text-xs text-muted-foreground"><Zap className="w-3 h-3 text-primary" />Live</div>
-        </div>
-        {SERVICES.map((s, i) => (
-          <div key={i} className="flex items-center gap-4 px-5 py-3 border-b border-border/10 last:border-0 hover:bg-secondary/20 transition-colors">
-            <StatusIcon status={s.status} />
-            <div className="flex-1 text-sm font-medium">{s.name}</div>
-            <div className="text-xs text-muted-foreground font-mono">{s.latency}</div>
-            <div className={`text-xs font-semibold ${s.status === "operational" ? "text-success" : "text-warning"}`}>{s.uptime}</div>
-            <div className={`text-xs px-2 py-0.5 rounded-full font-medium ${
-              s.status === "operational" ? "bg-success/10 text-success" :
-              s.status === "degraded" ? "bg-warning/10 text-warning" : "bg-destructive/10 text-destructive"
-            }`}>{s.status}</div>
-          </div>
-        ))}
-      </div>
-
-      {/* Incident History */}
-      <div className="card p-5">
-        <h3 className="font-semibold mb-4 flex items-center gap-2"><Clock className="w-4 h-4 text-primary" />Incident History</h3>
-        {INCIDENTS.map((inc, i) => (
-          <div key={i} className="flex items-start gap-3 py-3 border-b border-border/20 last:border-0">
-            <div className={`w-2 h-2 rounded-full mt-1.5 shrink-0 ${inc.status === "resolved" ? "bg-success" : "bg-warning"}`} />
-            <div className="flex-1">
-              <div className="text-sm font-medium">{inc.title}</div>
-              <div className="text-xs text-muted-foreground">{inc.date} · Duration: {inc.duration}</div>
-            </div>
-            <div className={`text-xs px-2 py-0.5 rounded-full ${inc.status === "resolved" ? "bg-success/10 text-success" : "bg-warning/10 text-warning"}`}>
-              {inc.status}
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={ServerCog} title="Platform Status" subtitle="Service-status readiness status; no authenticated operator, service registry, deployment inventory, monitoring pipeline, incident system, or production health backend is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Platform status is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen asserted real-time health, a 99.97% 30-day uptime figure, service-level operational or degraded states, latency and uptime values, a live indicator, a just-now timestamp, and incident history without connected monitoring or evidence. Those claims and operations were removed. No service, deployment, health, latency, throughput, error, uptime, incident, alert, duration, remediation, or availability state is displayed, calculated, stored, transmitted, verified, or mutated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><ServerCog aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Service-status readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Trustworthy platform status requires an authoritative service and environment registry, deployment identity, health-check semantics, traceable telemetry, explicit time windows and freshness, reliable latency and error definitions, uptime and capacity evidence, alert and incident correlation, remediation and rollback records, privacy-safe logs, retention controls, and least-privilege authorization. A health, uptime, latency, incident, or availability claim is not a fact without verified evidence. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="status-surfaces-heading"><h2 id="status-surfaces-heading" className="mb-4 text-xl font-semibold">Status control surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No service, deployment, health, latency, throughput, error, uptime, incident, alert, privacy, security, safety, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="status-boundaries-heading"><h2 id="status-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No status operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, service or deployment lookup, health check, telemetry query, aggregation, alert evaluation, incident correlation, API request, database read or write, export, or deletion is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Personal data, privacy, safety, accessibility, security, compliance, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not enter passwords, authentication codes, private keys, seed phrases, payment details, identity documents, health or legal records, request identifiers, or confidential telemetry here. Do not treat this page as evidence of service health, operational status, degraded status, uptime, latency, throughput, errors, incidents, alerts, remediation, availability, privacy protection, security, or compliance. Verify service scope, deployment, health-check semantics, telemetry source, metric definitions, timestamps, freshness, log redaction, retention, alerts, incidents, accessibility, privacy, security, compliance, and authorization before relying on status data.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/performance-metrics"><Button variant="outline"><ServerCog aria-hidden="true" className="mr-2 h-4 w-4" />Review metrics</Button></Link><Link href="/security"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No auth check, service or deployment lookup, health check, telemetry query, aggregation, alert evaluation, incident correlation, API request, database read or write, export, or deletion is performed. This page is not evidence of service health, operational status, degraded status, uptime, latency, throughput, errors, incidents, alerts, remediation, availability, privacy protection, security, or compliance.</p></Card></main></div>;
 }
