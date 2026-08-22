@@ -1,0 +1,9 @@
+# ProtocolLayer visual checkpoint
+
+ProtocolLayer was hardened from a developer platform screen that presented a ShadowChat Protocol, an “every platform feature” API claim, payment and AI routes, a public user-profile route, marketplace routes, installable SDKs, executable payment examples, real-time webhooks, production and test API keys, and key-generation and copy controls without verified contracts, provider identity, authentication, scopes, rate limits, secrets management, replay handling, payment or wallet safety, AI safeguards, privacy, or authorization infrastructure. Those unsupported claims and operations were removed. The registered route is `/protocol-layer`. No developer, organization, application, endpoint, SDK, webhook, event, API key, payment, wallet, AI, user, marketplace, or availability state is displayed, issued, copied, executed, stored, transmitted, verified, or mutated from this page.
+
+No developer or application auth check, endpoint lookup, API request, SDK install, action execution, payment or wallet operation, AI invocation, webhook registration or delivery, API-key issuance, copy, rotation, revocation, database read or write, export, or deletion is read, calculated, displayed, asserted, initiated, or simulated.
+
+Files: `protocol-layer-desktop.webp`, `protocol-layer-mobile.png`.
+
+The 390px capture was reviewed for readable wrapped unavailable disclosure, stacked API and integration readiness cards, stacked developer/API/SDK/webhook/security surfaces, developer/payment/wallet/AI/personal-data/privacy/safety/security/compliance/authorization warn-and-proceed notice, safe developer/key/AI/privacy/security/documentation links, and absence of horizontal overflow or fake endpoints, SDKs, webhooks, keys, payments, wallets, AI models, user or marketplace access, or integration claims.
