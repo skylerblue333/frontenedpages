@@ -1,169 +1,23 @@
-/**
- * SocialGraph — Visual network of followers, following, mutual connections, and suggested users
- */
-import { useState } from "react";
-import { useLocation } from "wouter";
-import { Users, UserPlus, UserCheck, ChevronLeft, Network, Star, TrendingUp, Zap } from "lucide-react";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/_core/hooks/useAuth";
-import { toast } from "sonner";
+import { AlertTriangle, CheckCircle2, FileCheck2, KeyRound, LockKeyhole, Network, Shield, UserCheck, Users, UserRound } from "lucide-react";
+import { Link } from "wouter";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
 
-function UserCard({ user, onFollow, isFollowing }: { user: any; onFollow: (id: number) => void; isFollowing: boolean }) {
-  return (
-    <div className="flex items-center gap-3 p-3 rounded-xl border border-white/10 bg-white/3 hover:bg-white/5 transition-all group">
-      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-fuchsia-600 flex items-center justify-center text-sm font-bold text-white flex-shrink-0">
-        {user.displayName?.[0] ?? user.username?.[0] ?? "?"}
-      </div>
-      <div className="flex-1 min-w-0">
-        <div className="text-sm font-bold text-white truncate">{user.displayName ?? user.username}</div>
-        <div className="text-xs text-muted-foreground truncate">@{user.username}</div>
-        {user.bio && <div className="text-xs text-muted-foreground truncate mt-0.5">{user.bio}</div>}
-      </div>
-      <button
-        onClick={() => onFollow(user.id)}
-        className={`flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
-          isFollowing
-            ? "bg-green-500/20 border border-green-500/30 text-green-400 hover:bg-red-500/20 hover:border-red-500/30 hover:text-red-400"
-            : "bg-purple-500/20 border border-purple-500/30 text-purple-300 hover:bg-purple-500/30"
-        }`}
-      >
-        {isFollowing ? <UserCheck className="w-3 h-3" /> : <UserPlus className="w-3 h-3" />}
-        {isFollowing ? "Following" : "Follow"}
-      </button>
-    </div>
-  );
-}
+type GraphSurface = {
+  label: string;
+  status: string;
+  detail: string;
+  icon: typeof Users;
+};
+
+const surfaces: GraphSurface[] = [
+  { label: "Followers and following", status: "Unavailable", detail: "No authenticated user, profile, follower, following, mutual-connection, relationship edge, block, mute, or visibility record is loaded.", icon: Users },
+  { label: "Suggested connections", status: "Not calculated", detail: "No recommendation source, ranking rule, social graph, interaction history, creator identity, or explanation is available.", icon: Network },
+  { label: "Follow and unfollow", status: "Disabled", detail: "No follow request, idempotency key, authorization check, database mutation, notification, or rollback is performed.", icon: UserCheck },
+  { label: "Identity and privacy", status: "Not verified", detail: "No username, display name, bio, avatar, verification, consent, audience, retention, deletion, or access role is verified.", icon: Shield },
+];
 
 export default function SocialGraph() {
-  const { user } = useAuth();
-  const [, navigate] = useLocation();
-  const [tab, setTab] = useState<"followers" | "following" | "suggested">("suggested");
-  const [followingSet, setFollowingSet] = useState<Set<number>>(new Set());
-
-  const { data: followers = [] } = trpc.user.followers.useQuery(
-    { userId: user?.id ?? 0 },
-    { enabled: !!user }
-  );
-  const { data: following = [] } = trpc.user.following.useQuery(
-    { userId: user?.id ?? 0 },
-    { enabled: !!user }
-  );
-  const { data: suggested = [] } = trpc.user.suggestedFollows.useQuery(undefined, { enabled: !!user });
-
-  const followMutation = trpc.user.follow.useMutation({
-    onSuccess: (_, vars) => {
-      setFollowingSet(prev => {
-        const next = new Set(prev);
-        if (next.has(vars.userId)) next.delete(vars.userId);
-        else next.add(vars.userId);
-        return next;
-      });
-    },
-    onError: (err: unknown) => toast.error((err as Error).message),
-  });
-
-  const handleFollow = (userId: number) => {
-    followMutation.mutate({ userId });
-  };
-
-  const tabs = [
-    { id: "suggested" as const, label: "Suggested", icon: Zap, data: suggested as any[] },
-    { id: "followers" as const, label: "Followers", icon: Users, data: followers as any[] },
-    { id: "following" as const, label: "Following", icon: UserCheck, data: following as any[] },
-  ];
-
-  const currentTab = tabs.find(t => t.id === tab)!;
-
-  return (
-    <div className="min-h-screen bg-[#050508] text-white">
-      {/* Hero */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-indigo-950/40 via-[#050508] to-purple-950/30 py-12">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="glow-orb w-56 h-56 bg-indigo-500/15 top-0 left-1/3" />
-          <div className="glow-orb w-40 h-40 bg-purple-500/10 bottom-0 right-1/4" />
-        </div>
-        <div className="container max-w-3xl mx-auto px-4 relative z-10">
-          <button onClick={() => navigate(-1 as any)} className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-white mb-4 transition-colors">
-            <ChevronLeft className="w-4 h-4" /> Back
-          </button>
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 rounded-xl bg-indigo-500/20 flex items-center justify-center">
-              <Network className="w-5 h-5 text-indigo-400" />
-            </div>
-            <h1 className="text-3xl font-black rainbow-text">Social Graph</h1>
-          </div>
-          <p className="text-muted-foreground metallic-shimmer">Your network of connections, followers, and suggested creators.</p>
-
-          {/* Stats */}
-          <div className="flex items-center gap-6 mt-6">
-            {[
-              { label: "Followers", value: (followers as any[]).length, icon: Users, color: "text-purple-400" },
-              { label: "Following", value: (following as any[]).length, icon: UserCheck, color: "text-cyan-400" },
-              { label: "Suggested", value: (suggested as any[]).length, icon: Star, color: "text-amber-400" },
-            ].map(s => {
-              const Icon = s.icon;
-              return (
-                <div key={s.label} className="flex items-center gap-2">
-                  <Icon className={`w-4 h-4 ${s.color}`} />
-                  <span className={`text-lg font-black ${s.color}`}>{s.value}</span>
-                  <span className="text-xs text-muted-foreground">{s.label}</span>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </div>
-
-      <div className="container max-w-3xl mx-auto px-4 py-8">
-        {!user ? (
-          <div className="text-center py-20 text-muted-foreground">Sign in to view your social graph</div>
-        ) : (
-          <>
-            {/* Tabs */}
-            <div className="flex items-center gap-2 mb-6 border-b border-white/10 pb-4">
-              {tabs.map(t => {
-                const Icon = t.icon;
-                return (
-                  <button
-                    key={t.id}
-                    onClick={() => setTab(t.id)}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                      tab === t.id ? "bg-indigo-500/20 border border-indigo-500/30 text-indigo-300" : "text-muted-foreground hover:text-white hover:bg-white/5"
-                    }`}
-                  >
-                    <Icon className="w-4 h-4" />
-                    {t.label}
-                    <span className="text-xs opacity-60">({t.data.length})</span>
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* User list */}
-            {currentTab.data.length === 0 ? (
-              <div className="text-center py-16">
-                <Network className="w-12 h-12 text-muted-foreground mx-auto mb-3 opacity-30" />
-                <div className="text-muted-foreground">
-                  {tab === "followers" ? "No followers yet — share your profile to grow your network" :
-                   tab === "following" ? "Not following anyone yet — explore and connect" :
-                   "No suggestions available right now"}
-                </div>
-              </div>
-            ) : (
-              <div className="space-y-2">
-                {currentTab.data.map((u: any) => (
-                  <UserCard
-                    key={u.id}
-                    user={u}
-                    isFollowing={followingSet.has(u.id) || (following as any[]).some((f: any) => f.id === u.id)}
-                    onFollow={handleFollow}
-                  />
-                ))}
-              </div>
-            )}
-          </>
-        )}
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader title="Social graph" description="Social-graph readiness status; no user identity, followers, following, mutual connections, recommendations, follow mutation, messaging, privacy, or authorization backend is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Social graph is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen queried generic user procedures, used unaudited `any` records, displayed follower/following/suggestion counts, and exposed follow mutations without verified identity, relationship authorization, privacy, or server evidence. Those claims and controls were removed. No person, relationship, count, suggestion, recommendation, follow state, notification, message, identity, AI, privacy, security, compliance, or authorization state is displayed, stored, transmitted, verified, granted, or mutated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Network aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Social-graph readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A trustworthy social graph requires an authenticated subject, typed user and relationship records, visibility and audience rules, block/mute/report enforcement, idempotent follow/unfollow mutations, reciprocal and pending states, recommendation provenance and ranking explanations, anti-abuse/rate limits, notification consent and delivery, messaging boundaries, retention/deletion/export, audit logs, and human review for safety-sensitive recommendations. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{surfaces.map(({ label, status, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{status}</p></Card>)}</div></Card><section aria-labelledby="graph-surfaces-heading"><h2 id="graph-surfaces-heading" className="mb-4 text-xl font-semibold">Graph control surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ label, status, detail, icon: Icon }) => <Card key={label} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{label}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{detail} No person, relationship, count, recommendation, interaction, notification, message, privacy, security, compliance, or authorization status is asserted.</p></Card>)}</div></section><section aria-labelledby="graph-warnings-heading"><h2 id="graph-warnings-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No social-graph operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No login, user lookup, follower/following query, suggestion query, relationship calculation, recommendation, follow/unfollow mutation, block, mute, report, notification, message, database read or write, export, or deletion is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Identity, privacy, safety, security, compliance, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not enter passwords, authentication codes, OAuth tokens, API keys, private keys, seed phrases, personal data, customer data, private relationship information, or confidential source code here. Do not treat this page as evidence of an account, person, connection, follower count, recommendation, follow state, message, notification, consent, privacy, security, compliance, or authorization. Verify subject identity, visibility, audience, block/mute rules, recommendation provenance, recipient, and human approval before taking social action.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/social-feed"><Button variant="outline"><Network aria-hidden="true" className="mr-2 h-4 w-4" />Review social feed</Button></Link><Link href="/social-media"><Button variant="outline"><UserRound aria-hidden="true" className="mr-2 h-4 w-4" />Review social media</Button></Link><Link href="/integrations"><Button variant="outline"><Network aria-hidden="true" className="mr-2 h-4 w-4" />Review integrations</Button></Link><Link href="/permissions"><Button variant="outline"><KeyRound aria-hidden="true" className="mr-2 h-4 w-4" />Review permissions</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link><Link href="/security"><Button variant="outline"><Shield aria-hidden="true" className="mr-2 h-4 w-4" />Review security</Button></Link><Link href="/documentation"><Button variant="outline"><FileCheck2 aria-hidden="true" className="mr-2 h-4 w-4" />Review evidence</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No login, user lookup, follower/following query, suggestion query, relationship calculation, recommendation, follow/unfollow mutation, block, mute, report, notification, message, database read or write, export, or deletion is performed. This page is not evidence of an account, person, connection, follower count, recommendation, follow state, message, notification, consent, privacy, security, compliance, or authorization.</p></Card></main></div>;
 }
