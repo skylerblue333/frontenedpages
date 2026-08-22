@@ -1,0 +1,5 @@
+# SavedProperties visual checkpoint
+
+SavedProperties was hardened from an authenticated-looking Favorites CRUD shell with nonfunctional Sign In, New, Search, Settings, loading, and empty-data controls without a listing source or saved-property service. Those controls were removed. No property, address, owner, price, valuation, availability, financing, tax, user, tenant, consent, privacy, compliance, or availability state is displayed, calculated, stored, transmitted, verified, granted, shared, or mutated.
+
+The page documents listing source and property identity, jurisdiction and timestamps, authenticated ownership, tenant and sharing boundaries, consent and deletion authority, as-of price and fees, valuation methodology, availability, tax and financing context, privacy, retention, least-privilege access, auditability, export controls, incident response, and housing/privacy/consumer-protection review. Real-estate warn-and-proceed language is present. Files: `saved-properties-desktop.webp`, `saved-properties-mobile.png`.
