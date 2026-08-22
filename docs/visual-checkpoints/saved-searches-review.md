@@ -1,0 +1,5 @@
+# SavedSearches visual checkpoint
+
+SavedSearches was hardened from an authenticated-looking saved-query CRUD shell with nonfunctional Sign In, New, Search, Settings, loading, and empty-data controls without a listing source, saved-query store, alert worker, or notification provider. Those controls were removed. No query, property, address, price, availability, owner, alert, notification, user, tenant, consent, privacy, compliance, or availability state is displayed, calculated, stored, transmitted, verified, granted, shared, or mutated.
+
+The page documents listing and geography provenance, timestamp and currency, availability semantics, authenticated ownership, tenant and sharing boundaries, notification consent, frequency and quiet hours, price/fee evidence, triggers, deduplication, receipts, retries, privacy, retention, least-privilege access, auditability, export controls, and incident response. Real-estate warn-and-proceed language is present. Files: `saved-searches-desktop.webp`, `saved-searches-mobile.png`.
