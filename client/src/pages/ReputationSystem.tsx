@@ -1,115 +1,21 @@
-/**
- * ReputationSystem — Phase 9 Social Reputation Engine
- * Creator scores, social proof, trust signals, leaderboards
- */
 import { useState } from "react";
 import { Link } from "wouter";
-import { ArrowLeft, Star, TrendingUp, Award, Users, Zap, Shield } from "lucide-react";
+import { AlertTriangle, Award, BarChart3, CheckCircle2, FileCheck2, Flag, KeyRound, LockKeyhole, Scale, ShieldAlert, Star, Users } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
 
-const TOP_CREATORS = [
-  { rank: 1, name: "skyler.eth", score: 9840, badge: "Elite Creator", change: "+120", avatar: "S" },
-  { rank: 2, name: "nova_builds", score: 9210, badge: "Top Builder", change: "+85", avatar: "N" },
-  { rank: 3, name: "crypto_alice", score: 8750, badge: "Verified Pro", change: "+64", avatar: "C" },
-  { rank: 4, name: "dev_marcus", score: 8120, badge: "Power User", change: "+42", avatar: "D" },
-  { rank: 5, name: "luna_creates", score: 7890, badge: "Rising Star", change: "+98", avatar: "L" },
-];
+const tabs = ["system boundary", "methodology", "fairness"] as const;
+type Tab = typeof tabs[number];
 
-const REPUTATION_FACTORS = [
-  { factor: "Content quality", weight: 25, icon: Star, color: "text-yellow-400" },
-  { factor: "Community engagement", weight: 20, icon: Users, color: "text-blue-400" },
-  { factor: "Transaction success", weight: 20, icon: Zap, color: "text-green-400" },
-  { factor: "Trust score", weight: 20, icon: Shield, color: "text-purple-400" },
-  { factor: "Creator earnings", weight: 15, icon: TrendingUp, color: "text-pink-400" },
+const requirements = [
+  ["Evidence and provenance", "Verified activity, review, source, timestamp, weighting, denominator, uncertainty, retention, and reproducible calculation", FileCheck2],
+  ["Consent and visibility", "Subject notice, lawful purpose, opt-out or correction path, viewer scope, data minimization, and sensitive-inference limits", Users],
+  ["Fairness and safety", "Bias testing, protected-attribute safeguards, abuse resistance, moderation, appeals, expiry, and human review", Scale],
+  ["Authorization and audit", "Authenticated role, organization scope, least privilege, change history, reviewer separation, and rollback", KeyRound],
 ];
 
 export default function ReputationSystem() {
-  const [tab, setTab] = useState<"leaderboard" | "factors" | "badges">("leaderboard");
-
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="sticky top-0 z-10 bg-background/80 backdrop-blur-sm border-b border-border/50 px-4 py-3 flex items-center gap-3">
-        <Link href="/" className="p-2 rounded-lg hover:bg-secondary/50 transition-colors text-muted-foreground">
-          <ArrowLeft className="w-4 h-4" />
-        </Link>
-        <div>
-          <h1 className="font-bold text-lg flex items-center gap-2">
-            <Award className="w-5 h-5 text-yellow-400" />
-            Reputation System
-          </h1>
-          <p className="text-xs text-muted-foreground">Social proof engine — Phase 9</p>
-        </div>
-      </div>
-
-      <div className="max-w-2xl mx-auto p-4 space-y-4">
-        <div className="flex gap-1 bg-secondary/30 rounded-xl p-1">
-          {(["leaderboard", "factors", "badges"] as const).map(t => (
-            <button key={t} onClick={() => setTab(t)}
-              className={`flex-1 py-2 rounded-lg text-xs font-medium capitalize transition-colors ${tab === t ? "bg-background text-foreground shadow-sm" : "text-muted-foreground"}`}>
-              {t}
-            </button>
-          ))}
-        </div>
-
-        {tab === "leaderboard" && (
-          <div className="space-y-2">
-            {TOP_CREATORS.map(c => (
-              <div key={c.rank} className="card p-4 flex items-center gap-3">
-                <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold ${c.rank === 1 ? "bg-yellow-500/20 text-yellow-400" : c.rank === 2 ? "bg-gray-500/20 text-gray-400" : c.rank === 3 ? "bg-orange-500/20 text-orange-400" : "bg-secondary text-muted-foreground"}`}>
-                  {c.rank}
-                </div>
-                <div className="w-9 h-9 rounded-full bg-primary/20 flex items-center justify-center font-bold text-primary">
-                  {c.avatar}
-                </div>
-                <div className="flex-1">
-                  <div className="font-medium text-sm">{c.name}</div>
-                  <div className="text-xs text-muted-foreground">{c.badge}</div>
-                </div>
-                <div className="text-right">
-                  <div className="font-bold text-sm">{c.score.toLocaleString()}</div>
-                  <div className="text-xs text-green-400">{c.change} pts</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {tab === "factors" && (
-          <div className="space-y-3">
-            <p className="text-sm text-muted-foreground">Reputation is calculated from multiple weighted signals.</p>
-            {REPUTATION_FACTORS.map(f => (
-              <div key={f.factor} className="card p-4 flex items-center gap-3">
-                <f.icon className={`w-5 h-5 ${f.color} shrink-0`} />
-                <div className="flex-1">
-                  <div className="font-medium text-sm">{f.factor}</div>
-                  <div className="mt-1.5 h-1.5 bg-secondary rounded-full overflow-hidden">
-                    <div className="h-full bg-primary rounded-full transition-all" style={{ width: `${f.weight * 4}%` }} />
-                  </div>
-                </div>
-                <div className="text-sm font-bold text-primary">{f.weight}%</div>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {tab === "badges" && (
-          <div className="grid grid-cols-2 gap-3">
-            {[
-              { name: "Elite Creator", desc: "Top 1% creator", color: "text-yellow-400", bg: "bg-yellow-500/10", icon: "👑" },
-              { name: "Verified Pro", desc: "Identity verified", color: "text-blue-400", bg: "bg-blue-500/10", icon: "✓" },
-              { name: "Power Trader", desc: "100+ transactions", color: "text-green-400", bg: "bg-green-500/10", icon: "⚡" },
-              { name: "Community Pillar", desc: "High engagement", color: "text-purple-400", bg: "bg-purple-500/10", icon: "🏛️" },
-              { name: "Rising Star", desc: "Fast growing", color: "text-pink-400", bg: "bg-pink-500/10", icon: "⭐" },
-              { name: "AI Pioneer", desc: "Early AI adopter", color: "text-cyan-400", bg: "bg-cyan-500/10", icon: "🤖" },
-            ].map(b => (
-              <div key={b.name} className={`card p-4 ${b.bg} border border-border/30`}>
-                <div className="text-2xl mb-2">{b.icon}</div>
-                <div className={`font-bold text-sm ${b.color}`}>{b.name}</div>
-                <div className="text-xs text-muted-foreground mt-0.5">{b.desc}</div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
-  );
+  const [tab, setTab] = useState<Tab>("system boundary");
+  return <div className="min-h-screen bg-background"><PageHeader icon={Award} title="Reputation System" subtitle="Reputation-governance readiness status; no live social-proof engine, scoring ledger, creator leaderboard, badge registry, AI inference service, or authorization backend is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Live reputation signals are unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen displayed fictional creator names, rankings, numeric scores, point changes, weighted factors, transaction-success and earnings signals, and identity or achievement badges. Those claims were removed. No person, score, rank, review, earning, transaction, identity verification, badge, trust claim, AI inference, or availability state is displayed, calculated, stored, transmitted, verified, or mutated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Award aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Reputation-governance control center</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A reputation system can affect access, opportunity, safety, and dignity. It therefore requires verified evidence, a transparent and reproducible method, consent and visibility, limits on sensitive inference, fairness testing, abuse resistance, moderation, appeals, correction and expiry, independent human review, privacy, accessibility, security, auditability, and least-privilege authorization. None are connected here.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{requirements.map(([label,,Icon]) => <Card key={label as string} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label as string}</p><p className="mt-2 font-semibold">Not connected</p></Card>)}</div></Card><section aria-labelledby="reputation-tabs-heading"><h2 id="reputation-tabs-heading" className="mb-4 text-xl font-semibold">Governance views</h2><div className="flex flex-wrap gap-2 rounded-xl border border-border/60 bg-card p-2">{tabs.map((item) => <button key={item} type="button" onClick={() => setTab(item)} aria-pressed={tab === item} className={`rounded-lg px-4 py-2 text-sm capitalize transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary ${tab === item ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-secondary"}`}>{item}</button>)}</div>{tab === "system boundary" && <Card className="mt-4 border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><ShieldAlert aria-hidden="true" className="h-6 w-6 shrink-0 text-primary" /><div><h3 className="text-xl font-semibold">No leaderboard or social-proof output</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">There is no verified creator, member, subject, score, rank, point change, badge, review, transaction, earning, trust signal, user count, or trend to show. The system does not infer quality, trust, fraud, identity, financial behavior, or social worth from unavailable data.</p></div></div></Card>}{tab === "methodology" && <Card className="mt-4 border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><BarChart3 aria-hidden="true" className="h-6 w-6 shrink-0 text-primary" /><div><h3 className="text-xl font-semibold">Proposed method, not an active formula</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No weights, percentages, thresholds, scores, denominators, success rates, earnings signals, transaction signals, or badge criteria are active. Before any methodology is approved, document each input, source, time window, missing-data rule, uncertainty, validation, adverse-impact review, recalculation, correction, expiry, and human override.</p></div></div></Card>}{tab === "fairness" && <Card className="mt-4 border border-border/50 bg-card p-6"><div className="flex items-start gap-3"><Scale aria-hidden="true" className="h-6 w-6 shrink-0 text-primary" /><div><h3 className="text-xl font-semibold">Fairness and appeal gate</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No protected-attribute inference, ranking, adverse action, identity badge, fraud label, or trust determination is made. Any future system needs bias and safety testing, subject notice, appeal, correction, deletion or expiry paths, independent review, retaliation protection, and a documented authorization model.</p></div></div></Card>}</section><section aria-labelledby="reputation-system-boundaries-heading"><h2 id="reputation-system-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No reputation operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No subject or viewer auth check, user or creator lookup, score calculation, ranking, badge issuance, review aggregation, AI inference, moderation, appeal, correction, API request, database read or write, export, or deletion is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Personal data, identity, AI, finance, crypto, privacy, safety, security, compliance, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not enter passwords, authentication codes, private keys, seed phrases, wallet addresses, identity documents, health records, payment details, account numbers, private messages, reviews, or sensitive identities here. Do not treat this page as evidence of a score, rank, review, identity verification, fraud label, trust claim, transaction behavior, creator earnings, AI inference, moderation outcome, privacy protection, security control, compliance, or legal conclusion. Verify consent, evidence, method, fairness, reviewer, appeal, correction, privacy, security, compliance, and authorization before relying on a reputation system.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/reputation"><Button variant="outline"><Star aria-hidden="true" className="mr-2 h-4 w-4" />Review reputation status</Button></Link><Link href="/rating-system"><Button variant="outline"><Star aria-hidden="true" className="mr-2 h-4 w-4" />Review ratings status</Button></Link><Link href="/report-user"><Button variant="outline"><Flag aria-hidden="true" className="mr-2 h-4 w-4" />Review user-report status</Button></Link><Link href="/users"><Button variant="outline"><Users aria-hidden="true" className="mr-2 h-4 w-4" />Review user status</Button></Link><Link href="/permissions"><Button variant="outline"><KeyRound aria-hidden="true" className="mr-2 h-4 w-4" />Review permissions status</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link><Link href="/security"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security</Button></Link><Link href="/documentation"><Button variant="outline"><FileCheck2 aria-hidden="true" className="mr-2 h-4 w-4" />Review documentation</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No subject or viewer auth check, user or creator lookup, score calculation, ranking, badge issuance, review aggregation, AI inference, moderation, appeal, correction, API request, database read or write, export, or deletion is performed. This page is not evidence of a score, rank, review, identity verification, fraud label, trust claim, transaction behavior, creator earnings, AI inference, moderation outcome, privacy protection, security control, compliance, or legal conclusion.</p></Card></main></div>;
 }
