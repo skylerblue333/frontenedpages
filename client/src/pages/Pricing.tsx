@@ -1,141 +1,23 @@
-import React from 'react';
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { AlertTriangle, CheckCircle2, CreditCard, FileCheck2, KeyRound, LockKeyhole, ShieldAlert, Tags } from "lucide-react";
+import { Link } from "wouter";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Authenticated owner, organization, account, and authorization scope", value: "Not connected", icon: KeyRound },
+  { label: "Product, plan, feature, region, currency, price, and tax provenance", value: "Unavailable", icon: Tags },
+  { label: "Checkout, payment, trial, subscription, entitlement, and refund behavior", value: "Not verified", icon: CreditCard },
+  { label: "Revenue sharing, AI or finance access, privacy, security, and safeguards", value: "Not configured", icon: LockKeyhole },
+];
+
+const surfaces = [
+  { title: "Owner, organization, account, and authorization scope", scope: "Authenticated owner and organization identity, account, role, purpose, consent, and least-privilege authorization", status: "Unavailable", icon: KeyRound },
+  { title: "Product, plan, feature, region, price, currency, and tax provenance", scope: "Versioned product catalog, plan and feature definitions, regional availability, currency, price, billing period, tax treatment, and source", status: "Not connected", icon: Tags },
+  { title: "Checkout, payment, trial, subscription, entitlement, and refunds", scope: "Checkout, payment provider, trial terms, subscription lifecycle, entitlement enforcement, usage limits, cancellation, renewal, refund, dispute, and failure handling", status: "Not verified", icon: CreditCard },
+  { title: "Revenue sharing, AI, finance, privacy, security, and access controls", scope: "Revenue-sharing terms, AI or financial feature access, payment-data boundaries, retention, deletion, redaction, privacy, security, accessibility, and access", status: "Not configured", icon: ShieldAlert },
+];
 
 export default function Pricing() {
-  const tiers = [
-    {
-      name: 'Citizen',
-      price: 'Free',
-      description: 'Start your journey',
-      features: [
-        'Digital Twin',
-        'Memory Graph (basic)',
-        'HOPE AI Companion',
-        'Community Access',
-        'Basic Analytics',
-        'Max 2 AI Agents',
-      ],
-      cta: 'Get Started',
-      highlighted: false,
-    },
-    {
-      name: 'Builder',
-      price: '$9.99',
-      period: '/month',
-      description: 'Create & earn',
-      features: [
-        'Everything in Citizen',
-        'Creator Tools',
-        'Max 10 AI Agents',
-        'Advanced Memory Graph',
-        'Startup Generator',
-        'Revenue Sharing (5%)',
-        'Priority Support',
-      ],
-      cta: 'Start Free Trial',
-      highlighted: true,
-    },
-    {
-      name: 'Scalable',
-      price: 'Custom',
-      description: 'Scale your impact',
-      features: [
-        'Everything in Builder',
-        'Unlimited AI Agents',
-        'API Access',
-        'Custom Integrations',
-        'Dedicated Account Manager',
-        'Revenue Sharing (10%)',
-        'SLA Support',
-      ],
-      cta: 'Contact Sales',
-      highlighted: false,
-    },
-  ];
-
-  return (
-    <div className="min-h-screen bg-black text-white p-8">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <h1 className="text-5xl font-bold mb-4">Simple, Transparent Pricing</h1>
-          <p className="text-xl text-gray-400">Choose the plan that fits your journey</p>
-        </div>
-
-        <div className="grid grid-cols-3 gap-8 mb-16">
-          {tiers.map((tier) => (
-            <Card
-              key={tier.name}
-              className={`p-8 flex flex-col ${
-                tier.highlighted
-                  ? 'bg-gradient-to-b from-cyan-900 to-gray-900 border-cyan-500 ring-2 ring-cyan-500'
-                  : 'bg-gray-900 border-gray-800'
-              }`}
-            >
-              {tier.highlighted && (
-                <Badge className="w-fit mb-4 bg-cyan-600">Most Popular</Badge>
-              )}
-              <h3 className="text-2xl font-bold mb-2">{tier.name}</h3>
-              <p className="text-gray-400 text-sm mb-6">{tier.description}</p>
-
-              <div className="mb-6">
-                <span className="text-4xl font-bold">{tier.price}</span>
-                {tier.period && <span className="text-gray-400">{tier.period}</span>}
-              </div>
-
-              <Button
-                className={`w-full mb-8 ${
-                  tier.highlighted
-                    ? 'bg-cyan-600 hover:bg-cyan-700'
-                    : 'bg-gray-700 hover:bg-gray-600'
-                }`}
-              >
-                {tier.cta}
-              </Button>
-
-              <div className="space-y-4 flex-1">
-                {tier.features.map((feature) => (
-                  <div key={feature} className="flex items-start">
-                    <span className="text-cyan-400 mr-3">✓</span>
-                    <span className="text-sm">{feature}</span>
-                  </div>
-                ))}
-              </div>
-            </Card>
-          ))}
-        </div>
-
-        {/* FAQ */}
-        <div className="max-w-3xl mx-auto">
-          <h2 className="text-3xl font-bold mb-8 text-center">Frequently Asked Questions</h2>
-          <div className="space-y-6">
-            {[
-              {
-                q: 'Can I upgrade or downgrade anytime?',
-                a: 'Yes, you can change your plan at any time. Changes take effect immediately.',
-              },
-              {
-                q: 'What payment methods do you accept?',
-                a: 'We accept all major credit cards, PayPal, and SKY444 tokens.',
-              },
-              {
-                q: 'Is there a free trial for paid plans?',
-                a: 'Yes, all paid plans include a 14-day free trial. No credit card required.',
-              },
-              {
-                q: 'What does Revenue Sharing mean?',
-                a: 'Earn a percentage of revenue generated by your AI agents, creators, or apps.',
-              },
-            ].map((item, i) => (
-              <Card key={i} className="bg-gray-900 border-gray-800 p-6">
-                <h4 className="font-bold mb-2">{item.q}</h4>
-                <p className="text-gray-400">{item.a}</p>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Tags} title="Pricing" subtitle="Pricing-readiness status; no authoritative product catalog, plan definitions, feature-entitlement service, regional price source, tax engine, billing provider, checkout, or subscription backend is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Pricing is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen asserted Citizen, Builder, and Scalable plans with unsupported prices, feature entitlements, AI-agent limits, revenue-sharing percentages, trial terms, payment methods, upgrade and downgrade behavior, and FAQ answers, and exposed nonfunctional checkout CTAs. Those claims and operations were removed. No product, plan, feature, price, currency, tax, invoice, payment, trial, subscription, entitlement, usage, revenue share, account, or availability state is displayed, searched, calculated, stored, transmitted, verified, purchased, or mutated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Tags aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Pricing-readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Trustworthy pricing requires authenticated owner and organization scope, a versioned product catalog, authoritative plan and feature definitions, regional availability, currency and tax treatment, a compliant billing provider, secure payment handling, clear trial and renewal terms, entitlement and usage enforcement, cancellation and refund rules, revenue-sharing disclosures, privacy, security, accessibility, and least-privilege authorization. A plan, price, feature entitlement, trial, payment method, subscription, revenue share, AI capability, or financial capability is not a fact without verified records. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="pricing-surfaces-heading"><h2 id="pricing-surfaces-heading" className="mb-4 text-xl font-semibold">Pricing control surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(({ title, scope, status, icon: Icon }) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No product, plan, feature, price, currency, tax, invoice, payment, trial, subscription, entitlement, usage, revenue share, account, user, AI, financial, privacy, security, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="pricing-boundaries-heading"><h2 id="pricing-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No pricing or subscription operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No auth check, account lookup, catalog or price query, checkout, payment collection, trial start, subscription creation, entitlement grant, usage update, renewal, cancellation, refund, dispute, API request, database read or write, export, or deletion is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Payment data, personal data, AI, finance, crypto, privacy, safety, security, compliance, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not enter passwords, authentication codes, card numbers, payment details, private keys, seed phrases, identity documents, health records, financial data, or confidential account information here. Do not treat this page as evidence of a price, plan, payment method, trial, subscription, entitlement, revenue share, AI capability, financial capability, privacy protection, or compliance. Verify owner and organization scope, catalog, region, currency, tax, billing provider, trial and renewal terms, cancellation, refund, usage limits, revenue-sharing terms, privacy, security, compliance, and authorization before purchasing or relying on a plan.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/premium-features"><Button variant="outline"><Tags aria-hidden="true" className="mr-2 h-4 w-4" />Review premium status</Button></Link><Link href="/billing-history"><Button variant="outline"><CreditCard aria-hidden="true" className="mr-2 h-4 w-4" />Review billing status</Button></Link><Link href="/security"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No auth check, account lookup, catalog or price query, checkout, payment collection, trial start, subscription creation, entitlement grant, usage update, renewal, cancellation, refund, dispute, API request, database read or write, export, or deletion is performed. This page is not evidence of a price, plan, payment method, trial, subscription, entitlement, revenue share, AI capability, financial capability, privacy protection, or compliance.</p></Card></main></div>;
 }
