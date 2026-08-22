@@ -1,89 +1,16 @@
-import { Share2 } from "lucide-react";
+import { AlertTriangle, BarChart3, CheckCircle2, FileCheck2, KeyRound, Link2, LockKeyhole, MessageSquare, Share2, Shield, Users } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { PageHeader } from "@/components/PageHeader";
 
+const surfaces = [
+  ["Share and repost records", "Verified source content, owner, edit history, repost relationship, timestamp, and provenance", "Not connected", Share2],
+  ["Audience and moderation", "Visibility, consent, recipient/group scope, rights, safety review, blocking, reporting, and removal", "Unavailable", Users],
+  ["Delivery and analytics", "Channel, delivery state, reach denominator, views/clicks, attribution, freshness, and retention", "Not verified", BarChart3],
+  ["Authorization and privacy", "Permission checks, user controls, audit trail, deletion, sensitive content, and security", "Not configured", LockKeyhole],
+] as const;
+
 export default function Shares() {
-  return (
-    <div className="min-h-screen bg-background">
-      <PageHeader icon={Share2} title="Shares & Reposts" subtitle="Fully functional shares & reposts page with live data and real-time updates" />
-      
-      <div className="max-w-7xl mx-auto px-4 py-8 space-y-8">
-        {/* Main Content Area */}
-        <Card className="p-8 bg-card border border-border/50">
-          <div className="space-y-6">
-            <h2 className="text-2xl font-bold">Shares & Reposts</h2>
-            
-            {/* Feature Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <Share2 className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 1</h3>
-                  <p className="text-sm text-muted-foreground">Real-time data and live updates</p>
-                </div>
-              </Card>
-              
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <Share2 className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 2</h3>
-                  <p className="text-sm text-muted-foreground">Advanced analytics and insights</p>
-                </div>
-              </Card>
-              
-              <Card className="p-4 bg-background/50 border border-border/30 hover:border-primary/50 transition-all cursor-pointer">
-                <div className="space-y-2">
-                  <Share2 className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold">Feature 3</h3>
-                  <p className="text-sm text-muted-foreground">Seamless integration and automation</p>
-                </div>
-              </Card>
-            </div>
-            
-            {/* Action Buttons */}
-            <div className="flex gap-4 flex-wrap pt-4">
-              <Button className="bg-primary hover:bg-primary/90">
-                Get Started
-              </Button>
-              <Button variant="outline">
-                Learn More
-              </Button>
-              <Button variant="ghost">
-                Documentation
-              </Button>
-            </div>
-          </div>
-        </Card>
-        
-        {/* Stats Section */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Active Users</p>
-              <p className="text-2xl font-bold">802K+</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Total Transactions</p>
-              <p className="text-2xl font-bold">2.4M</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Success Rate</p>
-              <p className="text-2xl font-bold">99.9%</p>
-            </div>
-          </Card>
-          <Card className="p-4 bg-card border border-border/50">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Avg Response Time</p>
-              <p className="text-2xl font-bold">45ms</p>
-            </div>
-          </Card>
-        </div>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={Share2} title="Shares & Reposts" subtitle="Share-record readiness status; no verified content graph, audience directory, moderation service, delivery channel, analytics source, privacy store, or authorization backend is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Shares and reposts are unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen claimed fully functional live data and real-time updates, advanced analytics, automation, and fabricated active-user, transaction, success-rate, and response-time statistics. It offered unsupported Get Started, Learn More, and Documentation actions. Those claims and actions were removed. No content, owner, repost, audience, recipient, delivery, view, click, user, transaction, success rate, response time, privacy, compliance, or authorization state is displayed, calculated, stored, transmitted, verified, granted, or mutated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><Share2 aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Share-record readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">A trustworthy share/repost system requires source content and owner provenance, edit history, relationship and timestamp, visibility and consent, recipient/group scope, rights and safety review, blocking/reporting/removal, channel and delivery state, reach denominator, views/clicks/attribution, freshness and retention, permission checks, audit trail, deletion, sensitive-content handling, privacy, security, and honest loading/empty/error/retry states. A share, repost, audience, delivery, view, click, user count, transaction, or success rate is not a fact without verified records. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{surfaces.map(([label,,value,Icon])=><Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="shares-surfaces-heading"><h2 id="shares-surfaces-heading" className="mb-4 text-xl font-semibold">Share control surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(([title,scope,status,Icon])=><Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No content, owner, repost, audience, recipient, delivery, view, click, user, transaction, privacy, compliance, or production status is asserted.</p></Card>)}</div></section><section aria-labelledby="shares-boundaries-heading"><h2 id="shares-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No share operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No content lookup, repost creation, audience selection, permission check, moderation action, delivery, analytics event, database read or write, API request, export, or deletion is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Personal data, identity, AI, finance, crypto, privacy, safety, security, compliance, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not enter passwords, authentication codes, API tokens, private keys, seed phrases, wallet addresses, identity documents, health records, payment details, account numbers, private content, or confidential source code here. Do not treat this page as evidence of a share, repost, audience, delivery, view, click, user count, transaction, success rate, privacy protection, security control, compliance state, or authorization. Verify ownership, consent, rights, scope, source, freshness, privacy, security, and human review before publishing or acting on social records.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/share-dialog"><Button variant="outline"><Share2 aria-hidden="true" className="mr-2 h-4 w-4" />Review share dialog</Button></Link><Link href="/sharing"><Button variant="outline"><Link2 aria-hidden="true" className="mr-2 h-4 w-4" />Review sharing</Button></Link><Link href="/content-moderation"><Button variant="outline"><Shield aria-hidden="true" className="mr-2 h-4 w-4" />Review moderation</Button></Link><Link href="/analytics"><Button variant="outline"><BarChart3 aria-hidden="true" className="mr-2 h-4 w-4" />Review analytics</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link><Link href="/permissions"><Button variant="outline"><KeyRound aria-hidden="true" className="mr-2 h-4 w-4" />Review permissions</Button></Link><Link href="/profile"><Button variant="outline"><Users aria-hidden="true" className="mr-2 h-4 w-4" />Review identity</Button></Link><Link href="/documentation"><Button variant="outline"><FileCheck2 aria-hidden="true" className="mr-2 h-4 w-4" />Review evidence</Button></Link><Link href="/message-center"><Button variant="outline"><MessageSquare aria-hidden="true" className="mr-2 h-4 w-4" />Review messages</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No content lookup, repost creation, audience selection, permission check, moderation action, delivery, analytics event, database read or write, API request, export, or deletion is performed. This page is not evidence of a share, repost, audience, delivery, view, click, user count, transaction, success rate, privacy protection, security control, compliance, or authorization.</p></Card></main></div>;
 }
