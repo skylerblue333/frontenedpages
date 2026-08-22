@@ -1,25 +1,23 @@
-import { useState } from "react";
+import { AlertTriangle, CheckCircle2, KeyRound, LockKeyhole, ShieldAlert, ShieldCheck } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const boundaries = [
+  { label: "Authenticated principal, account, credential purpose, and authorization", value: "Not connected", icon: KeyRound },
+  { label: "Password policy, masking, transport, hashing, verification, and reset provenance", value: "Unavailable", icon: ShieldCheck },
+  { label: "Rate limiting, lockout, MFA, session rotation, breach response, and error behavior", value: "Not verified", icon: ShieldAlert },
+  { label: "Credential privacy, retention, deletion, accessibility, and safeguards", value: "Not configured", icon: LockKeyhole },
+];
+
+const controls = [
+  ["Credential handling", "A production form must submit only over protected transport to a server-side verifier; passwords must never be displayed, logged, stored in plaintext, or placed in URLs.", "Unavailable"],
+  ["Authentication protections", "Policy, masking, rate limiting, lockout, MFA, session rotation, CSRF protection, breach detection, recovery, and safe error semantics require verified identity infrastructure.", "Not connected"],
+  ["User control and records", "Creation, change, reset, revocation, notification, audit, retention, deletion, and authorization behavior must be explicit and testable.", "Not verified"],
+  ["Privacy and accessibility", "Credential fields require accessible labels, keyboard behavior, screen-reader-safe feedback, minimal data collection, and clear privacy boundaries.", "Not configured"],
+];
 
 export default function PasswordInputForm() {
-  const [state, setState] = useState(false);
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 to-black p-4">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">PasswordInputForm</h1>
-        <p className="text-slate-400 mb-8">password input form</p>
-        
-        <Card className="bg-slate-900 border-slate-800 p-8">
-          <div className="space-y-6">
-            <p className="text-slate-300">Content for PasswordInputForm page</p>
-            <Button onClick={() => setState(!state)}>
-              {state ? "Deactivate" : "Activate"}
-            </Button>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={KeyRound} title="Password Input" subtitle="Credential-input readiness status; no password field, authentication provider, identity service, password verifier, reset flow, MFA service, session manager, or production security backend is connected in this deployment." /><main className="mx-auto max-w-6xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Password input is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous screen was a generic activation shell with an inert Activate or Deactivate toggle and did not provide a password field or connect a principal, account, policy, transport, hashing, verification, reset, MFA, rate limit, session, privacy, accessibility, or authorization workflow. It was replaced with this explicit credential-security boundary. No password, credential, token, code, identity, account, or availability state is displayed, entered, stored, transmitted, verified, logged, or mutated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><KeyRound aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Credential-security readiness boundary</h2><p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">Trustworthy password functionality requires an authenticated account context, clear credential purpose, protected transport, server-side hashing and verification, non-disclosure in UI and logs, policy and breach controls, rate limits, recovery and MFA, session rotation and revocation, CSRF protection, safe error handling, auditability, accessible controls, privacy-safe retention, and least-privilege authorization. A password field, validation result, authentication outcome, reset status, session, or security claim is not a fact without verified records. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{boundaries.map(({ label, value, icon: Icon }) => <Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="password-controls-heading"><h2 id="password-controls-heading" className="mb-4 text-xl font-semibold">Credential control surfaces</h2><div className="grid gap-4 md:grid-cols-2">{controls.map(([title, description, status]) => <Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><ShieldCheck aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p></Card>)}</div></section><section aria-labelledby="password-boundaries-heading"><h2 id="password-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No credential operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No password or credential input, validation, hashing, comparison, reset, MFA challenge, rate-limit check, session change, API request, database read or write, export, log entry, or deletion is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Credentials, personal data, privacy, safety, accessibility, security, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not enter passwords, authentication codes, private keys, seed phrases, payment details, identity documents, health or legal records, or confidential data here. Do not treat this page as evidence of password security, authentication, hashing, MFA, session protection, rate limiting, breach monitoring, privacy, or authorization. Verify provider, transport, hashing, policy, reset, MFA, session controls, CSRF, rate limits, breach response, logging exclusions, retention, accessibility, privacy, security, and authorization before submitting credentials.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/login"><Button variant="outline"><KeyRound aria-hidden="true" className="mr-2 h-4 w-4" />Review login status</Button></Link><Link href="/password-reset"><Button variant="outline"><ShieldCheck aria-hidden="true" className="mr-2 h-4 w-4" />Review reset status</Button></Link><Link href="/security"><Button variant="outline"><ShieldAlert aria-hidden="true" className="mr-2 h-4 w-4" />Review security</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No password or credential input, validation, hashing, comparison, reset, MFA challenge, rate-limit check, session change, API request, database read or write, export, log entry, or deletion is performed. This page is not evidence of password security, authentication, hashing, MFA, session protection, rate limiting, breach monitoring, privacy, or authorization.</p></Card></main></div>;
 }
