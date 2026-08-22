@@ -1,141 +1,18 @@
-import { useState } from "react";
+import { AlertTriangle, CheckCircle2, FileCheck2, KeyRound, LockKeyhole, Mail, ShieldCheck, UserPlus, UserRound } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { toast } from "sonner";
-import { useLocation } from "wouter";
-import { Mail, Lock, Loader2 } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+
+const surfaces = [
+  ["Credential verification", "Server-side password verification, rate limits, anti-abuse controls, and safe error handling", "Not connected", KeyRound],
+  ["Session and MFA", "Secure session cookies, MFA/challenge flow, device/session evidence, revocation, and recovery", "Unavailable", ShieldCheck],
+  ["Account ownership", "Verified identity, tenant/workspace scope, role claims, account lockout, and audit events", "Not verified", UserRound],
+  ["Privacy and recovery", "Consent, password reset, notification channels, retention/deletion, support, and authorization", "Not configured", LockKeyhole],
+] as const;
 
 export function Signin() {
-  const [, setLocation] = useLocation();
-  const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-
-    try {
-      // Validation
-      if (!formData.email || !formData.password) {
-        toast.error("Please fill all fields");
-        setLoading(false);
-        return;
-      }
-
-      // Mock signin - in production, call API
-      const token = btoa(`${formData.email}:${formData.password}`);
-      localStorage.setItem("auth_token", token);
-      localStorage.setItem("user_email", formData.email);
-      localStorage.setItem("user_name", formData.email.split("@")[0]);
-
-      toast.success("Welcome back! 🎉");
-      setLocation("/");
-    } catch (error) {
-      toast.error("Sign in failed");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-4">
-      <Card className="w-full max-w-md border-purple-500/20 bg-slate-900/80 backdrop-blur">
-        <CardHeader className="space-y-2 text-center">
-          <div className="text-4xl font-bold bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 bg-clip-text text-transparent">
-            SKYCOIN4444
-          </div>
-          <CardTitle className="text-xl text-white">Sign In</CardTitle>
-          <p className="text-sm text-slate-400">Welcome back to the ecosystem</p>
-        </CardHeader>
-
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Email */}
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-slate-300">Email</label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-3 w-4 h-4 text-purple-400" />
-                <Input
-                  type="email"
-                  name="email"
-                  placeholder="you@example.com"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="pl-10 bg-slate-800 border-slate-700 text-white placeholder:text-slate-500"
-                  disabled={loading}
-                />
-              </div>
-            </div>
-
-            {/* Password */}
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-slate-300">Password</label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-3 w-4 h-4 text-purple-400" />
-                <Input
-                  type="password"
-                  name="password"
-                  placeholder="••••••••"
-                  value={formData.password}
-                  onChange={handleChange}
-                  className="pl-10 bg-slate-800 border-slate-700 text-white placeholder:text-slate-500"
-                  disabled={loading}
-                />
-              </div>
-            </div>
-
-            {/* Submit */}
-            <Button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold"
-            >
-              {loading ? (
-                <>
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Signing In...
-                </>
-              ) : (
-                "Sign In"
-              )}
-            </Button>
-
-            {/* Sign Up Link */}
-            <div className="text-center text-sm text-slate-400">
-              Don't have an account?{" "}
-              <button
-                type="button"
-                onClick={() => setLocation("/signup")}
-                className="text-purple-400 hover:text-purple-300 font-medium"
-              >
-                Create one
-              </button>
-            </div>
-
-            {/* Demo Credentials */}
-            <div className="mt-6 pt-6 border-t border-slate-700 space-y-2">
-              <p className="text-xs font-semibold text-slate-300">🧪 Demo Credentials:</p>
-              <div className="bg-slate-800 p-3 rounded text-xs text-slate-300 space-y-1">
-                <div><span className="text-slate-500">Email:</span> demo@skycoin.com</div>
-                <div><span className="text-slate-500">Password:</span> demo1234</div>
-              </div>
-            </div>
-          </form>
-        </CardContent>
-      </Card>
-    </div>
-  );
+  return <div className="min-h-screen bg-background"><PageHeader icon={KeyRound} title="Sign In" subtitle="Authentication-readiness status; no verified credential verifier, session service, MFA provider, recovery flow, identity store, or authorization backend is connected in this deployment." /><main className="mx-auto max-w-5xl space-y-8 px-4 py-8"><Card className="border border-amber-400/30 bg-amber-950/20 p-6"><div className="flex items-start gap-3"><AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><h2 className="font-semibold text-amber-100">Sign in is unavailable</h2><p className="mt-1 text-sm leading-6 text-amber-100/80">The previous flow accepted email and password, encoded both with base64 into localStorage, claimed successful sign-in, redirected to the dashboard, and displayed demo credentials. That was not authentication. Those unsafe operations and claims were removed. No password, token, account, session, MFA, identity, role, user, authorization, privacy, compliance, or security state is displayed, calculated, stored, transmitted, verified, granted, or mutated from this page.</p></div></div></Card><Card className="border border-primary/20 bg-gradient-to-br from-primary/10 to-secondary/10 p-8"><div className="flex items-start gap-4"><div className="rounded-xl bg-primary/15 p-3"><KeyRound aria-hidden="true" className="h-8 w-8 text-primary" /></div><div><h2 className="text-3xl font-bold">Authentication-readiness boundary</h2><p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">A trustworthy login flow requires server-side credential verification, rate limits, anti-abuse controls, generic errors, secure session cookies, MFA/challenges, device and session evidence, revocation and recovery, verified identity and role scope, lockout, audit events, privacy, support, and explicit success/failure/retry states. A login, session, MFA result, identity, role, or authorization is not a fact without verified records. None are connected through this page.</p></div></div><div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">{surfaces.map(([label,,value,Icon])=><Card key={label} className="border border-primary/30 bg-background/80 p-4"><Icon aria-hidden="true" className="mb-3 h-7 w-7 text-primary" /><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 font-semibold">{value}</p></Card>)}</div></Card><section aria-labelledby="signin-surfaces-heading"><h2 id="signin-surfaces-heading" className="mb-4 text-xl font-semibold">Sign-in control surfaces</h2><div className="grid gap-4 md:grid-cols-2">{surfaces.map(([title,scope,status,Icon])=><Card key={title} className="border border-border/50 bg-card p-6"><div className="flex items-start justify-between gap-4"><Icon aria-hidden="true" className="h-7 w-7 shrink-0 text-primary" /><span className="rounded-full border border-border/60 px-2 py-1 text-xs text-muted-foreground">{status}</span></div><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{scope}. No credential, session, MFA, identity, role, user, privacy, compliance, or authorization status is asserted.</p></Card>)}</div></section><section aria-labelledby="signin-boundaries-heading"><h2 id="signin-boundaries-heading" className="mb-4 text-xl font-semibold">Current boundaries</h2><div className="grid gap-4 md:grid-cols-2"><Card className="border border-border/50 bg-card p-6"><CheckCircle2 aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">No sign-in operation</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">No form, password, email, localStorage token, base64 encoding, demo credential, credential verifier, API request, session cookie, MFA challenge, dashboard redirect, database read or write, notification, or deletion is performed.</p></Card><Card className="border border-border/50 bg-card p-6"><AlertTriangle aria-hidden="true" className="mb-4 h-7 w-7 text-primary" /><h3 className="text-lg font-semibold">Personal data, identity, AI, finance, crypto, privacy, safety, security, compliance, and authorization warn-and-proceed</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Do not enter passwords, authentication codes, API tokens, private keys, seed phrases, wallet addresses, identity documents, health records, payment details, account numbers, or confidential source code here. Do not treat this page as evidence that credentials were verified, a session was issued, MFA passed, identity or role was established, or privacy/security/compliance/authorization was enforced. Verify service ownership, domain, credential handling, session policy, MFA, recovery, privacy, and human review before using a login flow.</p></Card></div></section><div className="flex flex-wrap gap-3"><Link href="/sign-up"><Button variant="outline"><UserPlus aria-hidden="true" className="mr-2 h-4 w-4" />Review sign up</Button></Link><Link href="/security-settings"><Button variant="outline"><KeyRound aria-hidden="true" className="mr-2 h-4 w-4" />Review security</Button></Link><Link href="/privacy-center"><Button variant="outline"><LockKeyhole aria-hidden="true" className="mr-2 h-4 w-4" />Review privacy</Button></Link><Link href="/permissions"><Button variant="outline"><ShieldCheck aria-hidden="true" className="mr-2 h-4 w-4" />Review permissions</Button></Link><Link href="/profile"><Button variant="outline"><UserRound aria-hidden="true" className="mr-2 h-4 w-4" />Review profile</Button></Link><Link href="/documentation"><Button variant="outline"><FileCheck2 aria-hidden="true" className="mr-2 h-4 w-4" />Review evidence</Button></Link><Link href="/contact"><Button variant="outline"><Mail aria-hidden="true" className="mr-2 h-4 w-4" />Review support</Button></Link></div><Card className="border border-border/50 bg-card p-6"><p className="text-sm leading-6 text-muted-foreground">No form, password, email, localStorage token, base64 encoding, demo credential, credential verifier, API request, session cookie, MFA challenge, dashboard redirect, database read or write, notification, or deletion is performed. This page is not evidence that credentials were verified, a session was issued, MFA passed, identity or role was established, or privacy/security/compliance/authorization was enforced.</p></Card></main></div>;
 }
 
 export default Signin;
